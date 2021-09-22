@@ -6,12 +6,14 @@ include(CMakeParseArguments) # to support cmake 3.4 and older
 # Params:
 # - ENABLE_BUILD_WITH_TIME_TRACE: Enable -ftime-trace to generate time tracing .json files on clang
 # - ENABLE_PCH: Enable Precompiled Headers
+# - Enable_CACHE: Enable cache if available
 # - ENABLE_CONAN: Use Conan for dependency management
 # - ENABLE_UNITY: Enable Unity builds of projects
 macro(cmakelib)
   set(options
       ENABLE_BUILD_WITH_TIME_TRACE
       ENABLE_PCH
+      Enable_CACHE
       ENABLE_CONAN
       ENABLE_UNITY)
   cmake_parse_arguments(cmakelib "${options}" ${ARGN})
@@ -31,9 +33,11 @@ macro(cmakelib)
   # Link this 'library' to use the warnings specified in CompilerWarnings.cmake
   add_library(project_warnings INTERFACE)
 
-  # enable cache system
-  include("${CMAKE_CURRENT_LIST_DIR}/Cache.cmake")
-  enable_cache()
+  if (cmakelib_Enable_CACHE)
+    # enable cache system
+    include("${CMAKE_CURRENT_LIST_DIR}/Cache.cmake")
+    enable_cache()
+  endif()
 
   # Add linker configuration
   include("${CMAKE_CURRENT_LIST_DIR}/Linker.cmake")
