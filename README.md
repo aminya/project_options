@@ -17,6 +17,9 @@ FetchContent_Declare(cmakelib URL https://github.com/aminya/cmakelib/archive/ref
 FetchContent_MakeAvailable(cmakelib)
 include(${cmakelib_SOURCE_DIR}/Index.cmake)
 
+# initialize cmakelib
+cmakelib(ENABLE_CONAN)
+
 # project_options is defined inside cmakelib
 target_compile_features(project_options INTERFACE cxx_std_17)
 
