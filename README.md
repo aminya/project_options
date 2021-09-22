@@ -20,14 +20,15 @@ include(${cmakelib_SOURCE_DIR}/Index.cmake)
 # Initialize cmakelib
 # uncomment the options to enable them
 cmakelib(
-  # WARNINGS_AS_ERRORS
-  ENABLE_CONAN
-  # ENABLE_DOXYGEN
-  ENABLE_CACHE
-  # ENABLE_PCH
-  # ENABLE_BUILD_WITH_TIME_TRACE
-  # ENABLE_UNITY
-  # ENABLE_USER_LINKER
+      # WARNINGS_AS_ERRORS
+      Enable_CACHE
+      # ENABLE_PCH
+      ENABLE_CONAN
+      # ENABLE_DOXYGEN
+      # ENABLE_IPO
+      # ENABLE_USER_LINKER
+      # ENABLE_BUILD_WITH_TIME_TRACE
+      # ENABLE_UNITY
 )
 
 # project_options is defined inside cmakelib

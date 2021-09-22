@@ -6,27 +6,36 @@ set(CMAKELIB_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 #
 # Params:
-# - ENABLE_BUILD_WITH_TIME_TRACE: Enable -ftime-trace to generate time tracing .json files on clang
-# - ENABLE_PCH: Enable Precompiled Headers
+# - WARNINGS_AS_ERRORS: Treat compiler warnings as errors
 # - Enable_CACHE: Enable cache if available
+# - ENABLE_PCH: Enable Precompiled Headers
 # - ENABLE_CONAN: Use Conan for dependency management
 # - ENABLE_DOXYGEN: Enable doxygen doc builds of source
-# - ENABLE_UNITY: Enable Unity builds of projects
-# - WARNINGS_AS_ERRORS: Treat compiler warnings as errors
+# - ENABLE_IPO: Enable Interprocedural Optimization, aka Link Time Optimization (LTO)
 # - ENABLE_USER_LINKER: Enable a specific linker if available
+# - ENABLE_BUILD_WITH_TIME_TRACE: Enable -ftime-trace to generate time tracing .json files on clang
+# - ENABLE_UNITY: Enable Unity builds of projects
 macro(cmakelib)
   set(options
-      ENABLE_BUILD_WITH_TIME_TRACE
-      ENABLE_PCH
+      WARNINGS_AS_ERRORS
       Enable_CACHE
+      ENABLE_PCH
       ENABLE_CONAN
       ENABLE_DOXYGEN
+      ENABLE_IPO
+      ENABLE_USER_LINKER
+      ENABLE_BUILD_WITH_TIME_TRACE
       ENABLE_UNITY
-      WARNINGS_AS_ERRORS
-      ENABLE_USER_LINKER)
+  )
   cmake_parse_arguments(cmakelib "${options}" "" "" ${ARGN})
 
   include("${CMAKELIB_SRC_DIR}/StandardProjectSettings.cmake")
+
+  if(cmakelib_ENABLE_IPO)
+    include("${CMAKELIB_SRC_DIR}/InterproceduralOptimization.cmake")
+    enable_ipo()
+  endif()
+
   include("${CMAKELIB_SRC_DIR}/PreventInSourceBuilds.cmake")
 
   # Link this 'library' to set the c++ standard / compile-time options requested
