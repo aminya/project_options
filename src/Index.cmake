@@ -6,20 +6,14 @@ include(CMakeParseArguments) # to support cmake 3.4 and older
 # Params:
 # - ENABLE_BUILD_WITH_TIME_TRACE: Enable -ftime-trace to generate time tracing .json files on clang
 # - ENABLE_PCH: Enable Precompiled Headers
-# - Enable_CACHE: Enable cache if available
 # - ENABLE_CONAN: Use Conan for dependency management
-# - ENABLE_DOXYGEN: Enable doxygen doc builds of source
 # - ENABLE_UNITY: Enable Unity builds of projects
-# - WARNINGS_AS_ERRORS: Treat compiler warnings as errors
 macro(cmakelib)
   set(options
       ENABLE_BUILD_WITH_TIME_TRACE
       ENABLE_PCH
-      Enable_CACHE
       ENABLE_CONAN
-      ENABLE_DOXYGEN
-      ENABLE_UNITY
-      WARNINGS_AS_ERRORS)
+      ENABLE_UNITY)
   cmake_parse_arguments(cmakelib "${options}" ${ARGN})
 
   include("${CMAKE_CURRENT_LIST_DIR}/StandardProjectSettings.cmake")
@@ -37,11 +31,9 @@ macro(cmakelib)
   # Link this 'library' to use the warnings specified in CompilerWarnings.cmake
   add_library(project_warnings INTERFACE)
 
-  if (cmakelib_Enable_CACHE)
-    # enable cache system
-    include("${CMAKE_CURRENT_LIST_DIR}/Cache.cmake")
-    enable_cache()
-  endif()
+  # enable cache system
+  include("${CMAKE_CURRENT_LIST_DIR}/Cache.cmake")
+  enable_cache()
 
   # Add linker configuration
   include("${CMAKE_CURRENT_LIST_DIR}/Linker.cmake")
@@ -49,17 +41,15 @@ macro(cmakelib)
 
   # standard compiler warnings
   include("${CMAKE_CURRENT_LIST_DIR}/CompilerWarnings.cmake")
-  set_project_warnings(project_warnings cmakelib_WARNINGS_AS_ERRORS)
+  set_project_warnings(project_warnings)
 
   # sanitizer options if supported by compiler
   include("${CMAKE_CURRENT_LIST_DIR}/Sanitizers.cmake")
   enable_sanitizers(project_options)
 
-  if(cmakelib_ENABLE_DOXYGEN)
-    # enable doxygen
-    include("${CMAKE_CURRENT_LIST_DIR}/Doxygen.cmake")
-    enable_doxygen()
-  endif()
+  # enable doxygen
+  include("${CMAKE_CURRENT_LIST_DIR}/Doxygen.cmake")
+  enable_doxygen()
 
   # allow for static analysis options
   include("${CMAKE_CURRENT_LIST_DIR}/StaticAnalyzers.cmake")

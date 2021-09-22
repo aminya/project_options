@@ -18,12 +18,12 @@ FetchContent_MakeAvailable(cmakelib)
 include(${cmakelib_SOURCE_DIR}/Index.cmake)
 
 # Initialize cmakelib
-# uncomment the options you want to enable
+# uncomment the options to enable them
 cmakelib(
-  ENABLE_CACHE
   ENABLE_CONAN
-  # ENABLE_DOXYGEN
-  # WARNINGS_AS_ERRORS
+  # ENABLE_PCH
+  # ENABLE_BUILD_WITH_TIME_TRACE
+  # ENABLE_UNITY
 )
 
 # project_options is defined inside cmakelib
