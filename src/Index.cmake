@@ -1,70 +1,146 @@
 cmake_minimum_required(VERSION 3.15)
 
-include("${CMAKE_CURRENT_LIST_DIR}/StandardProjectSettings.cmake")
-include("${CMAKE_CURRENT_LIST_DIR}/PreventInSourceBuilds.cmake")
+include(CMakeParseArguments) # to support cmake 3.4 and older
 
-# Link this 'library' to set the c++ standard / compile-time options requested
-add_library(project_options INTERFACE)
+set(CMAKELIB_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 
-if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
-  option(ENABLE_BUILD_WITH_TIME_TRACE "Enable -ftime-trace to generate time tracing .json files on clang" OFF)
-  if(ENABLE_BUILD_WITH_TIME_TRACE)
-    target_compile_options(project_options INTERFACE -ftime-trace)
+#
+# Params:
+# - WARNINGS_AS_ERRORS: Treat compiler warnings as errors
+# - ENABLE_CPPCHECK: Enable static analysis with cppcheck
+# - ENABLE_CLANG_TIDY: Enable static analysis with clang-tidy
+# - ENABLE_INCLUDE_WHAT_YOU_USE: Enable static analysis with include-what-you-use
+# - ENABLE_COVERAGE: Enable coverage reporting for gcc/clang
+# - Enable_CACHE: Enable cache if available
+# - ENABLE_PCH: Enable Precompiled Headers
+# - ENABLE_CONAN: Use Conan for dependency management
+# - ENABLE_DOXYGEN: Enable doxygen doc builds of source
+# - ENABLE_IPO: Enable Interprocedural Optimization, aka Link Time Optimization (LTO)
+# - ENABLE_USER_LINKER: Enable a specific linker if available
+# - ENABLE_BUILD_WITH_TIME_TRACE: Enable -ftime-trace to generate time tracing .json files on clang
+# - ENABLE_UNITY: Enable Unity builds of projects
+# - ENABLE_SANITIZER_ADDRESS: Enable address sanitizer
+# - ENABLE_SANITIZER_LEAK: Enable leak sanitizer
+# - ENABLE_SANITIZER_UNDEFINED_BEHAVIOR: Enable undefined behavior sanitizer
+# - ENABLE_SANITIZER_THREAD: Enable thread sanitizer
+# - ENABLE_SANITIZER_MEMORY: Enable memory sanitizer
+macro(cmakelib)
+  set(options
+      WARNINGS_AS_ERRORS
+      ENABLE_COVERAGE
+      ENABLE_CPPCHECK
+      ENABLE_CLANG_TIDY
+      ENABLE_INCLUDE_WHAT_YOU_USE
+      Enable_CACHE
+      ENABLE_PCH
+      ENABLE_CONAN
+      ENABLE_DOXYGEN
+      ENABLE_IPO
+      ENABLE_USER_LINKER
+      ENABLE_BUILD_WITH_TIME_TRACE
+      ENABLE_UNITY
+      ENABLE_SANITIZER_ADDRESS
+      ENABLE_SANITIZER_LEAK
+      ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+      ENABLE_SANITIZER_THREAD
+      ENABLE_SANITIZER_MEMORY
+  )
+  cmake_parse_arguments(cmakelib "${options}" "" "" ${ARGN})
+
+  include("${CMAKELIB_SRC_DIR}/StandardProjectSettings.cmake")
+
+  if(${cmakelib_ENABLE_IPO})
+    include("${CMAKELIB_SRC_DIR}/InterproceduralOptimization.cmake")
+    enable_ipo()
   endif()
-endif()
 
-# Link this 'library' to use the warnings specified in CompilerWarnings.cmake
-add_library(project_warnings INTERFACE)
+  include("${CMAKELIB_SRC_DIR}/PreventInSourceBuilds.cmake")
 
-# enable cache system
-include("${CMAKE_CURRENT_LIST_DIR}/Cache.cmake")
+  # Link this 'library' to set the c++ standard / compile-time options requested
+  add_library(project_options INTERFACE)
 
-# Add linker configuration
-include("${CMAKE_CURRENT_LIST_DIR}/Linker.cmake")
-configure_linker(project_options)
+  if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+    if(cmakelib_ENABLE_BUILD_WITH_TIME_TRACE)
+      target_compile_options(project_options INTERFACE -ftime-trace)
+    endif()
+  endif()
 
-# standard compiler warnings
-include("${CMAKE_CURRENT_LIST_DIR}/CompilerWarnings.cmake")
-set_project_warnings(project_warnings)
+  # Link this 'library' to use the warnings specified in CompilerWarnings.cmake
+  add_library(project_warnings INTERFACE)
 
-# sanitizer options if supported by compiler
-include("${CMAKE_CURRENT_LIST_DIR}/Sanitizers.cmake")
-enable_sanitizers(project_options)
+  if (${cmakelib_Enable_CACHE})
+    # enable cache system
+    include("${CMAKELIB_SRC_DIR}/Cache.cmake")
+    enable_cache()
+  endif()
 
-# enable doxygen
-include("${CMAKE_CURRENT_LIST_DIR}/Doxygen.cmake")
-enable_doxygen()
+  if (${cmakelib_ENABLE_USER_LINKER})
+    # Add linker configuration
+    include("${CMAKELIB_SRC_DIR}/Linker.cmake")
+    configure_linker(project_options)
+  endif()
 
-# allow for static analysis options
-include("${CMAKE_CURRENT_LIST_DIR}/StaticAnalyzers.cmake")
+  # standard compiler warnings
+  include("${CMAKELIB_SRC_DIR}/CompilerWarnings.cmake")
+  set_project_warnings(project_warnings ${cmakelib_WARNINGS_AS_ERRORS})
 
-option(BUILD_SHARED_LIBS "Enable compilation of shared libraries" OFF)
-option(ENABLE_TESTING "Enable Test Builds" ON)
-option(ENABLE_FUZZING "Enable Fuzzing Builds" OFF)
+  include("${CMAKELIB_SRC_DIR}/Tests.cmake")
+  if(${cmakelib_ENABLE_COVERAGE})
+    enable_coverage()
+  endif()
 
-# Very basic PCH example
-option(ENABLE_PCH "Enable Precompiled Headers" OFF)
-if(ENABLE_PCH)
-  # This sets a global PCH parameter, each project will build its own PCH, which is a good idea if any #define's change
-  #
-  # consider breaking this out per project as necessary
-  target_precompile_headers(
+  # sanitizer options if supported by compiler
+  include("${CMAKELIB_SRC_DIR}/Sanitizers.cmake")
+  enable_sanitizers(
     project_options
-    INTERFACE
-    <vector>
-    <string>
-    <map>
-    <utility>)
-endif()
+    ${cmakelib_ENABLE_SANITIZER_ADDRESS}
+    ${cmakelib_ENABLE_SANITIZER_LEAK}
+    ${cmakelib_ENABLE_SANITIZER_UNDEFINED_BEHAVIOR}
+    ${cmakelib_ENABLE_SANITIZER_THREAD}
+    ${cmakelib_ENABLE_SANITIZER_MEMORY})
 
-option(ENABLE_CONAN "Use Conan for dependency management" ON)
-if(ENABLE_CONAN)
-  include("${CMAKE_CURRENT_LIST_DIR}/Conan.cmake")
-  run_conan()
-endif()
+  if(${cmakelib_ENABLE_DOXYGEN})
+    # enable doxygen
+    include("${CMAKELIB_SRC_DIR}/Doxygen.cmake")
+    enable_doxygen()
+  endif()
 
-option(ENABLE_UNITY "Enable Unity builds of projects" OFF)
-if(ENABLE_UNITY)
-  # Add for any project you want to apply unity builds for
-  set_target_properties(main PROPERTIES UNITY_BUILD ON)
-endif()
+  # allow for static analysis options
+  include("${CMAKELIB_SRC_DIR}/StaticAnalyzers.cmake")
+  if(${cmakelib_ENABLE_CPPCHECK})
+    enable_cppcheck()
+  endif()
+
+  if(${cmakelib_ENABLE_CLANG_TIDY})
+    enable_clang_tidy()
+  endif()
+
+  if(${cmakelib_ENABLE_INCLUDE_WHAT_YOU_USE})
+    enable_include_what_you_use()
+  endif()
+
+  # Very basic PCH example
+  if(${cmakelib_ENABLE_PCH})
+    # This sets a global PCH parameter, each project will build its own PCH, which is a good idea if any #define's change
+    #
+    # consider breaking this out per project as necessary
+    target_precompile_headers(
+      project_options
+      INTERFACE
+      <vector>
+      <string>
+      <map>
+      <utility>)
+  endif()
+
+  if(${cmakelib_ENABLE_CONAN})
+    include("${CMAKELIB_SRC_DIR}/Conan.cmake")
+    run_conan()
+  endif()
+
+  if(${cmakelib_ENABLE_UNITY})
+    # Add for any project you want to apply unity builds for
+    set_target_properties(main PROPERTIES UNITY_BUILD ON)
+  endif()
+
+endmacro()
