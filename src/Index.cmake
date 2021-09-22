@@ -19,6 +19,11 @@ set(CMAKELIB_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 # - ENABLE_USER_LINKER: Enable a specific linker if available
 # - ENABLE_BUILD_WITH_TIME_TRACE: Enable -ftime-trace to generate time tracing .json files on clang
 # - ENABLE_UNITY: Enable Unity builds of projects
+# - ENABLE_SANITIZER_ADDRESS: Enable address sanitizer
+# - ENABLE_SANITIZER_LEAK: Enable leak sanitizer
+# - ENABLE_SANITIZER_UNDEFINED_BEHAVIOR: Enable undefined behavior sanitizer
+# - ENABLE_SANITIZER_THREAD: Enable thread sanitizer
+# - ENABLE_SANITIZER_MEMORY: Enable memory sanitizer
 macro(cmakelib)
   set(options
       WARNINGS_AS_ERRORS
@@ -34,6 +39,11 @@ macro(cmakelib)
       ENABLE_USER_LINKER
       ENABLE_BUILD_WITH_TIME_TRACE
       ENABLE_UNITY
+      ENABLE_SANITIZER_ADDRESS
+      ENABLE_SANITIZER_LEAK
+      ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+      ENABLE_SANITIZER_THREAD
+      ENABLE_SANITIZER_MEMORY
   )
   cmake_parse_arguments(cmakelib "${options}" "" "" ${ARGN})
 
@@ -81,7 +91,13 @@ macro(cmakelib)
 
   # sanitizer options if supported by compiler
   include("${CMAKELIB_SRC_DIR}/Sanitizers.cmake")
-  enable_sanitizers(project_options)
+  enable_sanitizers(
+    project_options
+    cmakelib_ENABLE_SANITIZER_ADDRESS
+    cmakelib_ENABLE_SANITIZER_LEAK
+    cmakelib_ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+    cmakelib_ENABLE_SANITIZER_THREAD
+    cmakelib_ENABLE_SANITIZER_MEMORY)
 
   if(cmakelib_ENABLE_DOXYGEN)
     # enable doxygen
