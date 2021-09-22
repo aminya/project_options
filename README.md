@@ -20,13 +20,13 @@ include(${cmakelib_SOURCE_DIR}/Index.cmake)
 # Initialize cmakelib
 # uncomment the options to enable them
 cmakelib(
+      Enable_CACHE
+      ENABLE_CONAN
       # WARNINGS_AS_ERRORS
       # ENABLE_CPPCHECK
       # ENABLE_CLANG_TIDY
       # ENABLE_INCLUDE_WHAT_YOU_USE
-      Enable_CACHE
       # ENABLE_PCH
-      ENABLE_CONAN
       # ENABLE_DOXYGEN
       # ENABLE_IPO
       # ENABLE_USER_LINKER
@@ -39,3 +39,18 @@ target_compile_features(project_options INTERFACE cxx_std_17)
 
 # add src, tests, etc here:
 ```
+
+### `cmakelib` parameters
+
+- `WARNINGS_AS_ERRORS`: Treat compiler warnings as errors
+- `ENABLE_CPPCHECK`: Enable static analysis with Cppcheck
+- `ENABLE_CLANG_TIDY`: Enable static analysis with clang-tidy
+- `ENABLE_INCLUDE_WHAT_YOU_USE`: Enable static analysis with include-what-you-use
+- `Enable_CACHE`: Enable cache if available
+- `ENABLE_PCH`: Enable Precompiled Headers
+- `ENABLE_CONAN`: Use Conan for dependency management
+- `ENABLE_DOXYGEN`: Enable Doxygen doc builds of source
+- `ENABLE_IPO`: Enable Interprocedural Optimization, aka Link Time Optimization (LTO)
+- `ENABLE_USER_LINKER`: Enable a specific linker if available
+- `ENABLE_BUILD_WITH_TIME_TRACE`: Enable `-ftime-trace` to generate time tracing `.json` files on clang
+- `ENABLE_UNITY`: Enable Unity builds of projects
