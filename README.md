@@ -21,6 +21,9 @@ include(${cmakelib_SOURCE_DIR}/Index.cmake)
 # uncomment the options to enable them
 cmakelib(
       # WARNINGS_AS_ERRORS
+      # ENABLE_CPPCHECK
+      # ENABLE_CLANG_TIDY
+      # ENABLE_INCLUDE_WHAT_YOU_USE
       Enable_CACHE
       # ENABLE_PCH
       ENABLE_CONAN

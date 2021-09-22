@@ -7,6 +7,9 @@ set(CMAKELIB_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 #
 # Params:
 # - WARNINGS_AS_ERRORS: Treat compiler warnings as errors
+# - ENABLE_CPPCHECK: Enable static analysis with cppcheck
+# - ENABLE_CLANG_TIDY: Enable static analysis with clang-tidy
+# - ENABLE_INCLUDE_WHAT_YOU_USE: Enable static analysis with include-what-you-use
 # - Enable_CACHE: Enable cache if available
 # - ENABLE_PCH: Enable Precompiled Headers
 # - ENABLE_CONAN: Use Conan for dependency management
@@ -18,6 +21,9 @@ set(CMAKELIB_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 macro(cmakelib)
   set(options
       WARNINGS_AS_ERRORS
+      ENABLE_CPPCHECK
+      ENABLE_CLANG_TIDY
+      ENABLE_INCLUDE_WHAT_YOU_USE
       Enable_CACHE
       ENABLE_PCH
       ENABLE_CONAN
@@ -78,6 +84,17 @@ macro(cmakelib)
 
   # allow for static analysis options
   include("${CMAKELIB_SRC_DIR}/StaticAnalyzers.cmake")
+  if(cmakelib_ENABLE_CPPCHECK)
+    enable_cppcheck()
+  endif()
+
+  if(cmakelib_ENABLE_CLANG_TIDY)
+    enable_clang_tidy()
+  endif()
+
+  if(cmakelib_ENABLE_INCLUDE_WHAT_YOU_USE)
+    enable_include_what_you_use()
+  endif()
 
   # Very basic PCH example
   if(cmakelib_ENABLE_PCH)
