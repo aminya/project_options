@@ -10,6 +10,7 @@ include(CMakeParseArguments) # to support cmake 3.4 and older
 # - ENABLE_CONAN: Use Conan for dependency management
 # - ENABLE_DOXYGEN: Enable doxygen doc builds of source
 # - ENABLE_UNITY: Enable Unity builds of projects
+# - WARNINGS_AS_ERRORS: Treat compiler warnings as errors
 macro(cmakelib)
   set(options
       ENABLE_BUILD_WITH_TIME_TRACE
@@ -17,7 +18,8 @@ macro(cmakelib)
       Enable_CACHE
       ENABLE_CONAN
       ENABLE_DOXYGEN
-      ENABLE_UNITY)
+      ENABLE_UNITY
+      WARNINGS_AS_ERRORS)
   cmake_parse_arguments(cmakelib "${options}" ${ARGN})
 
   include("${CMAKE_CURRENT_LIST_DIR}/StandardProjectSettings.cmake")
@@ -47,7 +49,7 @@ macro(cmakelib)
 
   # standard compiler warnings
   include("${CMAKE_CURRENT_LIST_DIR}/CompilerWarnings.cmake")
-  set_project_warnings(project_warnings)
+  set_project_warnings(project_warnings cmakelib_WARNINGS_AS_ERRORS)
 
   # sanitizer options if supported by compiler
   include("${CMAKE_CURRENT_LIST_DIR}/Sanitizers.cmake")
