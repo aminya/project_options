@@ -21,6 +21,7 @@ include(${cmakelib_SOURCE_DIR}/Index.cmake)
 # uncomment the options to enable them
 cmakelib(
   ENABLE_CONAN
+  ENABLE_CACHE
   # ENABLE_PCH
   # ENABLE_BUILD_WITH_TIME_TRACE
   # ENABLE_UNITY
