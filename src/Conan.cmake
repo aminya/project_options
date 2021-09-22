@@ -43,7 +43,7 @@ macro(run_conan)
 
     # PATH_OR_REFERENCE ${CMAKE_SOURCE_DIR} is used to tell conan to process
     # the external "conanfile.py" provided with the project
-    # Alternatively a conanfile.txt could be used 
+    # Alternatively a conanfile.txt could be used
     conan_cmake_install(
       PATH_OR_REFERENCE
       ${CMAKE_SOURCE_DIR}
@@ -51,8 +51,6 @@ macro(run_conan)
       missing
       # Pass compile-time configured options into conan
       OPTIONS
-      cpp_starter_use_imgui=${CPP_STARTER_USE_IMGUI}
-      cpp_starter_use_sdl=${CPP_STARTER_USE_SDL}
       SETTINGS
       ${settings})
   endforeach()
