@@ -8,6 +8,7 @@ include(CMakeParseArguments) # to support cmake 3.4 and older
 # - ENABLE_PCH: Enable Precompiled Headers
 # - Enable_CACHE: Enable cache if available
 # - ENABLE_CONAN: Use Conan for dependency management
+# - ENABLE_DOXYGEN: Enable doxygen doc builds of source
 # - ENABLE_UNITY: Enable Unity builds of projects
 macro(cmakelib)
   set(options
@@ -15,6 +16,7 @@ macro(cmakelib)
       ENABLE_PCH
       Enable_CACHE
       ENABLE_CONAN
+      ENABLE_DOXYGEN
       ENABLE_UNITY)
   cmake_parse_arguments(cmakelib "${options}" ${ARGN})
 
@@ -51,9 +53,11 @@ macro(cmakelib)
   include("${CMAKE_CURRENT_LIST_DIR}/Sanitizers.cmake")
   enable_sanitizers(project_options)
 
-  # enable doxygen
-  include("${CMAKE_CURRENT_LIST_DIR}/Doxygen.cmake")
-  enable_doxygen()
+  if(cmakelib_ENABLE_DOXYGEN)
+    # enable doxygen
+    include("${CMAKE_CURRENT_LIST_DIR}/Doxygen.cmake")
+    enable_doxygen()
+  endif()
 
   # allow for static analysis options
   include("${CMAKE_CURRENT_LIST_DIR}/StaticAnalyzers.cmake")
