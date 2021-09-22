@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.15)
 
 include(CMakeParseArguments) # to support cmake 3.4 and older
 
+set(CMAKELIB_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
+
 #
 # Params:
 # - ENABLE_BUILD_WITH_TIME_TRACE: Enable -ftime-trace to generate time tracing .json files on clang
@@ -22,10 +24,10 @@ macro(cmakelib)
       ENABLE_UNITY
       WARNINGS_AS_ERRORS
       ENABLE_USER_LINKER)
-  cmake_parse_arguments(cmakelib "${options}" ${ARGN})
+  cmake_parse_arguments(cmakelib "${options}" "" "" ${ARGN})
 
-  include("${CMAKE_CURRENT_LIST_DIR}/StandardProjectSettings.cmake")
-  include("${CMAKE_CURRENT_LIST_DIR}/PreventInSourceBuilds.cmake")
+  include("${CMAKELIB_SRC_DIR}/StandardProjectSettings.cmake")
+  include("${CMAKELIB_SRC_DIR}/PreventInSourceBuilds.cmake")
 
   # Link this 'library' to set the c++ standard / compile-time options requested
   add_library(project_options INTERFACE)
@@ -41,32 +43,32 @@ macro(cmakelib)
 
   if (cmakelib_Enable_CACHE)
     # enable cache system
-    include("${CMAKE_CURRENT_LIST_DIR}/Cache.cmake")
+    include("${CMAKELIB_SRC_DIR}/Cache.cmake")
     enable_cache()
   endif()
 
   if (cmakelib_ENABLE_USER_LINKER)
     # Add linker configuration
-    include("${CMAKE_CURRENT_LIST_DIR}/Linker.cmake")
+    include("${CMAKELIB_SRC_DIR}/Linker.cmake")
     configure_linker(project_options)
   endif()
 
   # standard compiler warnings
-  include("${CMAKE_CURRENT_LIST_DIR}/CompilerWarnings.cmake")
+  include("${CMAKELIB_SRC_DIR}/CompilerWarnings.cmake")
   set_project_warnings(project_warnings cmakelib_WARNINGS_AS_ERRORS)
 
   # sanitizer options if supported by compiler
-  include("${CMAKE_CURRENT_LIST_DIR}/Sanitizers.cmake")
+  include("${CMAKELIB_SRC_DIR}/Sanitizers.cmake")
   enable_sanitizers(project_options)
 
   if(cmakelib_ENABLE_DOXYGEN)
     # enable doxygen
-    include("${CMAKE_CURRENT_LIST_DIR}/Doxygen.cmake")
+    include("${CMAKELIB_SRC_DIR}/Doxygen.cmake")
     enable_doxygen()
   endif()
 
   # allow for static analysis options
-  include("${CMAKE_CURRENT_LIST_DIR}/StaticAnalyzers.cmake")
+  include("${CMAKELIB_SRC_DIR}/StaticAnalyzers.cmake")
 
   # Very basic PCH example
   if(cmakelib_ENABLE_PCH)
@@ -83,7 +85,7 @@ macro(cmakelib)
   endif()
 
   if(cmakelib_ENABLE_CONAN)
-    include("${CMAKE_CURRENT_LIST_DIR}/Conan.cmake")
+    include("${CMAKELIB_SRC_DIR}/Conan.cmake")
     run_conan()
   endif()
 
