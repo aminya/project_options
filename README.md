@@ -26,6 +26,7 @@ cmakelib(
       # ENABLE_CPPCHECK
       # ENABLE_CLANG_TIDY
       # ENABLE_INCLUDE_WHAT_YOU_USE
+      # ENABLE_COVERAGE
       # ENABLE_PCH
       # ENABLE_DOXYGEN
       # ENABLE_IPO
@@ -46,6 +47,7 @@ target_compile_features(project_options INTERFACE cxx_std_17)
 - `ENABLE_CPPCHECK`: Enable static analysis with Cppcheck
 - `ENABLE_CLANG_TIDY`: Enable static analysis with clang-tidy
 - `ENABLE_INCLUDE_WHAT_YOU_USE`: Enable static analysis with include-what-you-use
+- `ENABLE_COVERAGE`: Enable coverage reporting for gcc/clang
 - `Enable_CACHE`: Enable cache if available
 - `ENABLE_PCH`: Enable Precompiled Headers
 - `ENABLE_CONAN`: Use Conan for dependency management

@@ -10,6 +10,7 @@ set(CMAKELIB_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 # - ENABLE_CPPCHECK: Enable static analysis with cppcheck
 # - ENABLE_CLANG_TIDY: Enable static analysis with clang-tidy
 # - ENABLE_INCLUDE_WHAT_YOU_USE: Enable static analysis with include-what-you-use
+# - ENABLE_COVERAGE: Enable coverage reporting for gcc/clang
 # - Enable_CACHE: Enable cache if available
 # - ENABLE_PCH: Enable Precompiled Headers
 # - ENABLE_CONAN: Use Conan for dependency management
@@ -21,6 +22,7 @@ set(CMAKELIB_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 macro(cmakelib)
   set(options
       WARNINGS_AS_ERRORS
+      ENABLE_COVERAGE
       ENABLE_CPPCHECK
       ENABLE_CLANG_TIDY
       ENABLE_INCLUDE_WHAT_YOU_USE
@@ -71,6 +73,11 @@ macro(cmakelib)
   # standard compiler warnings
   include("${CMAKELIB_SRC_DIR}/CompilerWarnings.cmake")
   set_project_warnings(project_warnings cmakelib_WARNINGS_AS_ERRORS)
+
+  include("${CMAKELIB_SRC_DIR}/Tests.cmake")
+  if(cmakelib_ENABLE_COVERAGE)
+    enable_coverage()
+  endif()
 
   # sanitizer options if supported by compiler
   include("${CMAKELIB_SRC_DIR}/Sanitizers.cmake")
