@@ -11,6 +11,7 @@ include(CMakeParseArguments) # to support cmake 3.4 and older
 # - ENABLE_DOXYGEN: Enable doxygen doc builds of source
 # - ENABLE_UNITY: Enable Unity builds of projects
 # - WARNINGS_AS_ERRORS: Treat compiler warnings as errors
+# - ENABLE_USER_LINKER: Enable a specific linker if available
 macro(cmakelib)
   set(options
       ENABLE_BUILD_WITH_TIME_TRACE
@@ -19,7 +20,8 @@ macro(cmakelib)
       ENABLE_CONAN
       ENABLE_DOXYGEN
       ENABLE_UNITY
-      WARNINGS_AS_ERRORS)
+      WARNINGS_AS_ERRORS
+      ENABLE_USER_LINKER)
   cmake_parse_arguments(cmakelib "${options}" ${ARGN})
 
   include("${CMAKE_CURRENT_LIST_DIR}/StandardProjectSettings.cmake")
@@ -43,9 +45,11 @@ macro(cmakelib)
     enable_cache()
   endif()
 
-  # Add linker configuration
-  include("${CMAKE_CURRENT_LIST_DIR}/Linker.cmake")
-  configure_linker(project_options)
+  if (cmakelib_ENABLE_USER_LINKER)
+    # Add linker configuration
+    include("${CMAKE_CURRENT_LIST_DIR}/Linker.cmake")
+    configure_linker(project_options)
+  endif()
 
   # standard compiler warnings
   include("${CMAKE_CURRENT_LIST_DIR}/CompilerWarnings.cmake")

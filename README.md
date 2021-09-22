@@ -27,6 +27,7 @@ cmakelib(
   # ENABLE_PCH
   # ENABLE_BUILD_WITH_TIME_TRACE
   # ENABLE_UNITY
+  # ENABLE_USER_LINKER
 )
 
 # project_options is defined inside cmakelib
