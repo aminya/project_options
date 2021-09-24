@@ -66,3 +66,6 @@ target_compile_features(project_options INTERFACE cxx_std_17)
 - `ENABLE_SANITIZER_UNDEFINED_BEHAVIOR`: Enable undefined behavior sanitizer
 - `ENABLE_SANITIZER_THREAD`: Enable thread sanitizer
 - `ENABLE_SANITIZER_MEMORY`: Enable memory sanitizer
+- `MSVC_WARNINGS`: Override the defaults for the MSVC warnings
+- `CLANG_WARNINGS`: Override the defaults for the CLANG warnings
+- `GCC_WARNINGS`: Override the defaults for the GCC warnings
