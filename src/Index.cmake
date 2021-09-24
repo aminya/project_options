@@ -24,6 +24,9 @@ set(CMAKELIB_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 # - ENABLE_SANITIZER_UNDEFINED_BEHAVIOR: Enable undefined behavior sanitizer
 # - ENABLE_SANITIZER_THREAD: Enable thread sanitizer
 # - ENABLE_SANITIZER_MEMORY: Enable memory sanitizer
+# - MSVC_WARNINGS: Override the defaults for the MSVC warnings
+# - CLANG_WARNINGS: Override the defaults for the CLANG warnings
+# - GCC_WARNINGS: Override the defaults for the GCC warnings
 macro(cmakelib)
   set(options
       WARNINGS_AS_ERRORS
@@ -45,7 +48,8 @@ macro(cmakelib)
       ENABLE_SANITIZER_THREAD
       ENABLE_SANITIZER_MEMORY
   )
-  cmake_parse_arguments(cmakelib "${options}" "" "" ${ARGN})
+  set(oneValueArgs CONAN_OPTIONS MSVC_WARNINGS CLANG_WARNINGS GCC_WARNINGS)
+  cmake_parse_arguments(cmakelib "${options}" "${oneValueArgs}" "" ${ARGN})
 
   include("${CMAKELIB_SRC_DIR}/StandardProjectSettings.cmake")
 
@@ -82,7 +86,12 @@ macro(cmakelib)
 
   # standard compiler warnings
   include("${CMAKELIB_SRC_DIR}/CompilerWarnings.cmake")
-  set_project_warnings(project_warnings ${cmakelib_WARNINGS_AS_ERRORS})
+  set_project_warnings(
+    "project_warnings"
+    WARNINGS_AS_ERRORS=${cmakelib_WARNINGS_AS_ERRORS}
+    MSVC_WARNINGS=${cmakelib_MSVC_WARNINGS}
+    CLANG_WARNINGS=${cmakelib_CLANG_WARNINGS}
+    GCC_WARNINGS=${cmakelib_GCC_WARNINGS})
 
   include("${CMAKELIB_SRC_DIR}/Tests.cmake")
   if(${cmakelib_ENABLE_COVERAGE})
