@@ -52,11 +52,6 @@ function(set_project_warnings project_name WARNINGS_AS_ERRORS MSVC_WARNINGS CLAN
     )
   endif()
 
-  if(${WARNINGS_AS_ERRORS})
-    set(CLANG_WARNINGS ${CLANG_WARNINGS} -Werror)
-    set(MSVC_WARNINGS ${MSVC_WARNINGS} /WX)
-  endif()
-
   if (NOT ${GCC_WARNINGS})
     set(GCC_WARNINGS
         ${CLANG_WARNINGS}
@@ -66,6 +61,13 @@ function(set_project_warnings project_name WARNINGS_AS_ERRORS MSVC_WARNINGS CLAN
         -Wlogical-op # warn about logical operations being used where bitwise were probably wanted
         -Wuseless-cast # warn if you perform a cast to the same type
     )
+  endif()
+
+  message(WARNING "${WARNINGS_AS_ERRORS}")
+  if(WARNINGS_AS_ERRORS STREQUAL TRUE)
+    list(APPEND CLANG_WARNINGS -Werror)
+    list(APPEND GCC_WARNINGS -Werror)
+    list(APPEND MSVC_WARNINGS /WX)
   endif()
 
   if(MSVC)
