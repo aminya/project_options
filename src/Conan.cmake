@@ -1,15 +1,11 @@
 macro(run_conan)
   # Download automatically, you can also just copy the conan.cmake file
   if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
-    message(
-      STATUS
-        "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
+    message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
     file(
-      DOWNLOAD
-      "https://raw.githubusercontent.com/conan-io/cmake-conan/v0.16.1/conan.cmake"
+      DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/v0.16.1/conan.cmake"
       "${CMAKE_BINARY_DIR}/conan.cmake"
-      EXPECTED_HASH
-        SHA256=396e16d0f5eabdc6a14afddbcfff62a54a7ee75c6da23f32f7a31bc85db23484
+      EXPECTED_HASH SHA256=396e16d0f5eabdc6a14afddbcfff62a54a7ee75c6da23f32f7a31bc85db23484
       TLS_VERIFY ON)
   endif()
 
@@ -21,10 +17,11 @@ macro(run_conan)
 
   # Add (or remove) remotes as needed
   # conan_add_remote(NAME conan-center URL https://conan.bintray.com)
-  conan_add_remote(NAME cci URL https://center.conan.io INDEX 0)
   conan_add_remote(
-    NAME bincrafters URL
-    https://bincrafters.jfrog.io/artifactory/api/conan/public-conan)
+    NAME cci
+    URL https://center.conan.io
+    INDEX 0)
+  conan_add_remote(NAME bincrafters URL https://bincrafters.jfrog.io/artifactory/api/conan/public-conan)
 
   # For multi configuration generators, like VS and XCode
   if(NOT CMAKE_CONFIGURATION_TYPES)
@@ -45,14 +42,11 @@ macro(run_conan)
     # the external "conanfile.py" provided with the project
     # Alternatively a conanfile.txt could be used
     conan_cmake_install(
-      PATH_OR_REFERENCE
-      ${CMAKE_SOURCE_DIR}
-      BUILD
-      missing
-      # Pass compile-time configured options into conan
+      PATH_OR_REFERENCE ${CMAKE_SOURCE_DIR}
+      BUILD missing
+            # Pass compile-time configured options into conan
       OPTIONS
-      SETTINGS
-      ${settings})
+      SETTINGS ${settings})
   endforeach()
 
 endmacro()

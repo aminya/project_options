@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
 
-include(CMakeParseArguments)
-
 set(CMAKELIB_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 include("${CMAKELIB_SRC_DIR}/PreventInSourceBuilds.cmake")
@@ -29,6 +27,8 @@ include("${CMAKELIB_SRC_DIR}/PreventInSourceBuilds.cmake")
 # - MSVC_WARNINGS: Override the defaults for the MSVC warnings
 # - CLANG_WARNINGS: Override the defaults for the CLANG warnings
 # - GCC_WARNINGS: Override the defaults for the GCC warnings
+#
+# NOTE: cmake-lint [C0103] Invalid macro name "cmakelib" doesn't match `[0-9A-Z_]+`
 macro(cmakelib)
   set(options
       WARNINGS_AS_ERRORS
@@ -36,7 +36,7 @@ macro(cmakelib)
       ENABLE_CPPCHECK
       ENABLE_CLANG_TIDY
       ENABLE_INCLUDE_WHAT_YOU_USE
-      Enable_CACHE
+      ENABLE_CACHE
       ENABLE_PCH
       ENABLE_CONAN
       ENABLE_DOXYGEN
@@ -48,10 +48,18 @@ macro(cmakelib)
       ENABLE_SANITIZER_LEAK
       ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       ENABLE_SANITIZER_THREAD
-      ENABLE_SANITIZER_MEMORY
-  )
-  set(oneValueArgs CONAN_OPTIONS MSVC_WARNINGS CLANG_WARNINGS GCC_WARNINGS)
-  cmake_parse_arguments(cmakelib "${options}" "${oneValueArgs}" "" ${ARGN})
+      ENABLE_SANITIZER_MEMORY)
+  set(oneValueArgs
+      CONAN_OPTIONS
+      MSVC_WARNINGS
+      CLANG_WARNINGS
+      GCC_WARNINGS)
+  cmake_parse_arguments(
+    cmakelib
+    "${options}"
+    "${oneValueArgs}"
+    ""
+    ${ARGN})
 
   include("${CMAKELIB_SRC_DIR}/StandardProjectSettings.cmake")
 
@@ -72,13 +80,13 @@ macro(cmakelib)
   # Link this 'library' to use the warnings specified in CompilerWarnings.cmake
   add_library(project_warnings INTERFACE)
 
-  if (${cmakelib_ENABLE_CACHE})
+  if(${cmakelib_ENABLE_CACHE})
     # enable cache system
     include("${CMAKELIB_SRC_DIR}/Cache.cmake")
     enable_cache()
   endif()
 
-  if (${cmakelib_ENABLE_USER_LINKER})
+  if(${cmakelib_ENABLE_USER_LINKER})
     # Add linker configuration
     include("${CMAKELIB_SRC_DIR}/Linker.cmake")
     configure_linker(project_options)

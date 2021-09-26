@@ -1,8 +1,15 @@
-_help_parse: Options affecting listfile parsing
 parse:
-  _help_additional_commands:
-  - Specify structure for custom cmake functions
   additional_commands:
+    cmakelib:
+      pargs:
+        nargs: '*'
+        flags: []
+      spelling: CMakeLib
+      kwargs:
+        CLANG_WARNINGS: 1
+        CONAN_OPTIONS: 1
+        GCC_WARNINGS: 1
+        MSVC_WARNINGS: 1
     catch_discover_tests:
       pargs:
         nargs: '*'
@@ -114,42 +121,15 @@ parse:
     cpmgetpackageversion:
       pargs: 2
       spelling: CPMGetPackageVersion
-_help_format: Options affecting formatting.
 format:
-  _help_line_width:
-  - How wide to allow formatted cmake files
   line_width: 120
-  _help_tab_size:
-  - How many spaces to tab for indent
   tab_size: 2
-  _help_max_pargs_hwrap:
-  - If a positional argument group contains more than this many
-  - arguments, then force it to a vertical layout.
   max_pargs_hwrap: 3
-  _help_separate_ctrl_name_with_space:
-  - If true, separate flow control names from their parentheses
-  - with a space
   separate_ctrl_name_with_space: false
-  _help_separate_fn_name_with_space:
-  - If true, separate function names from parentheses with a
-  - space
   separate_fn_name_with_space: false
-  _help_dangle_parens:
-  - If a statement is wrapped to more than one line, than dangle
-  - the closing parenthesis on its own line.
   dangle_parens: false
-  _help_line_ending:
-  - What style line endings to use in the output.
   line_ending: unix
-_help_markup: Options affecting comment reflow and formatting.
 markup:
-  _help_bullet_char:
-  - What character to use for bulleted lists
   bullet_char: '*'
-  _help_enum_char:
-  - What character to use as punctuation after numerals in an
-  - enumerated list
   enum_char: .
-  _help_enable_markup:
-  - enable comment markup parsing and reflow
   enable_markup: false
