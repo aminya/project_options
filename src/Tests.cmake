@@ -4,3 +4,4 @@ function(enable_coverage project_name)
     target_link_libraries(${project_name} INTERFACE --coverage)
   endif()
 endfunction()
+

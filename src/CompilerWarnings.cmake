@@ -2,8 +2,14 @@
 #
 # https://github.com/lefticus/cppbestpractices/blob/master/02-Use_the_Tools_Available.md
 
-function(set_project_warnings project_name WARNINGS_AS_ERRORS MSVC_WARNINGS CLANG_WARNINGS GCC_WARNINGS)
-  if (NOT ${MSVC_WARNINGS})
+function(
+  set_project_warnings
+  project_name
+  WARNINGS_AS_ERRORS
+  MSVC_WARNINGS
+  CLANG_WARNINGS
+  GCC_WARNINGS)
+  if(NOT ${MSVC_WARNINGS})
     set(MSVC_WARNINGS
         /W4 # Baseline reasonable warnings
         /w14242 # 'identifier': conversion from 'type1' to 'type1', possible loss of data
@@ -31,13 +37,13 @@ function(set_project_warnings project_name WARNINGS_AS_ERRORS MSVC_WARNINGS CLAN
     )
   endif()
 
-  if (NOT ${CLANG_WARNINGS})
+  if(NOT ${CLANG_WARNINGS})
     set(CLANG_WARNINGS
         -Wall
         -Wextra # reasonable and standard
         -Wshadow # warn the user if a variable declaration shadows one from a parent context
         -Wnon-virtual-dtor # warn the user if a class with virtual functions has a non-virtual destructor. This helps
-                          # catch hard to track down memory errors
+        # catch hard to track down memory errors
         -Wold-style-cast # warn for c-style casts
         -Wcast-align # warn for potential performance problem casts
         -Wunused # warn on anything being unused
@@ -52,12 +58,7 @@ function(set_project_warnings project_name WARNINGS_AS_ERRORS MSVC_WARNINGS CLAN
     )
   endif()
 
-  if(${WARNINGS_AS_ERRORS})
-    set(CLANG_WARNINGS ${CLANG_WARNINGS} -Werror)
-    set(MSVC_WARNINGS ${MSVC_WARNINGS} /WX)
-  endif()
-
-  if (NOT ${GCC_WARNINGS})
+  if(NOT ${GCC_WARNINGS})
     set(GCC_WARNINGS
         ${CLANG_WARNINGS}
         -Wmisleading-indentation # warn if indentation implies blocks where blocks do not exist
@@ -66,6 +67,13 @@ function(set_project_warnings project_name WARNINGS_AS_ERRORS MSVC_WARNINGS CLAN
         -Wlogical-op # warn about logical operations being used where bitwise were probably wanted
         -Wuseless-cast # warn if you perform a cast to the same type
     )
+  endif()
+
+  if(WARNINGS_AS_ERRORS STREQUAL TRUE)
+    message(AUTHOR_WARNING "NOTE: ${WARNINGS_AS_ERRORS}")
+    list(APPEND CLANG_WARNINGS -Werror)
+    list(APPEND GCC_WARNINGS -Werror)
+    list(APPEND MSVC_WARNINGS /WX)
   endif()
 
   if(MSVC)

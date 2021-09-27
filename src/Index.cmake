@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.15)
-
-include(CMakeParseArguments) # to support cmake 3.4 and older
+cmake_minimum_required(VERSION 3.16)
 
 set(CMAKELIB_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
+
+include("${CMAKELIB_SRC_DIR}/PreventInSourceBuilds.cmake")
 
 #
 # Params:
@@ -11,7 +11,7 @@ set(CMAKELIB_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 # - ENABLE_CLANG_TIDY: Enable static analysis with clang-tidy
 # - ENABLE_INCLUDE_WHAT_YOU_USE: Enable static analysis with include-what-you-use
 # - ENABLE_COVERAGE: Enable coverage reporting for gcc/clang
-# - Enable_CACHE: Enable cache if available
+# - ENABLE_CACHE: Enable cache if available
 # - ENABLE_PCH: Enable Precompiled Headers
 # - ENABLE_CONAN: Use Conan for dependency management
 # - ENABLE_DOXYGEN: Enable doxygen doc builds of source
@@ -27,6 +27,8 @@ set(CMAKELIB_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 # - MSVC_WARNINGS: Override the defaults for the MSVC warnings
 # - CLANG_WARNINGS: Override the defaults for the CLANG warnings
 # - GCC_WARNINGS: Override the defaults for the GCC warnings
+#
+# NOTE: cmake-lint [C0103] Invalid macro name "cmakelib" doesn't match `[0-9A-Z_]+`
 macro(cmakelib)
   set(options
       WARNINGS_AS_ERRORS
@@ -34,7 +36,7 @@ macro(cmakelib)
       ENABLE_CPPCHECK
       ENABLE_CLANG_TIDY
       ENABLE_INCLUDE_WHAT_YOU_USE
-      Enable_CACHE
+      ENABLE_CACHE
       ENABLE_PCH
       ENABLE_CONAN
       ENABLE_DOXYGEN
@@ -46,10 +48,18 @@ macro(cmakelib)
       ENABLE_SANITIZER_LEAK
       ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       ENABLE_SANITIZER_THREAD
-      ENABLE_SANITIZER_MEMORY
-  )
-  set(oneValueArgs CONAN_OPTIONS MSVC_WARNINGS CLANG_WARNINGS GCC_WARNINGS)
-  cmake_parse_arguments(cmakelib "${options}" "${oneValueArgs}" "" ${ARGN})
+      ENABLE_SANITIZER_MEMORY)
+  set(oneValueArgs
+      CONAN_OPTIONS
+      MSVC_WARNINGS
+      CLANG_WARNINGS
+      GCC_WARNINGS)
+  cmake_parse_arguments(
+    cmakelib
+    "${options}"
+    "${oneValueArgs}"
+    ""
+    ${ARGN})
 
   include("${CMAKELIB_SRC_DIR}/StandardProjectSettings.cmake")
 
@@ -57,8 +67,6 @@ macro(cmakelib)
     include("${CMAKELIB_SRC_DIR}/InterproceduralOptimization.cmake")
     enable_ipo()
   endif()
-
-  include("${CMAKELIB_SRC_DIR}/PreventInSourceBuilds.cmake")
 
   # Link this 'library' to set the c++ standard / compile-time options requested
   add_library(project_options INTERFACE)
@@ -72,13 +80,13 @@ macro(cmakelib)
   # Link this 'library' to use the warnings specified in CompilerWarnings.cmake
   add_library(project_warnings INTERFACE)
 
-  if (${cmakelib_Enable_CACHE})
+  if(${cmakelib_ENABLE_CACHE})
     # enable cache system
     include("${CMAKELIB_SRC_DIR}/Cache.cmake")
     enable_cache()
   endif()
 
-  if (${cmakelib_ENABLE_USER_LINKER})
+  if(${cmakelib_ENABLE_USER_LINKER})
     # Add linker configuration
     include("${CMAKELIB_SRC_DIR}/Linker.cmake")
     configure_linker(project_options)
@@ -87,7 +95,7 @@ macro(cmakelib)
   # standard compiler warnings
   include("${CMAKELIB_SRC_DIR}/CompilerWarnings.cmake")
   set_project_warnings(
-    "project_warnings"
+    project_warnings
     WARNINGS_AS_ERRORS=${cmakelib_WARNINGS_AS_ERRORS}
     MSVC_WARNINGS=${cmakelib_MSVC_WARNINGS}
     CLANG_WARNINGS=${cmakelib_CLANG_WARNINGS}
@@ -95,7 +103,7 @@ macro(cmakelib)
 
   include("${CMAKELIB_SRC_DIR}/Tests.cmake")
   if(${cmakelib_ENABLE_COVERAGE})
-    enable_coverage()
+    enable_coverage(${PROJECT_NAME})
   endif()
 
   # sanitizer options if supported by compiler
@@ -149,7 +157,7 @@ macro(cmakelib)
 
   if(${cmakelib_ENABLE_UNITY})
     # Add for any project you want to apply unity builds for
-    set_target_properties(main PROPERTIES UNITY_BUILD ON)
+    set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
   endif()
 
 endmacro()
