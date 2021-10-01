@@ -16,7 +16,8 @@ set(args
     ENABLE_SANITIZER_LEAK
     ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
     ENABLE_SANITIZER_THREAD
-    ENABLE_SANITIZER_MEMORY)
+    ENABLE_SANITIZER_MEMORY
+)
 foreach(opt ${args})
   option(${opt} "Set if needed, but note it may not work!" OFF)
   if(${opt})
