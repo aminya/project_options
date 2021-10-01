@@ -53,7 +53,7 @@ target_link_libraries(myprogram PRIVATE ${PROJECT_NAME})
 # ...
 ```
 
-### `cmakelib` parameters
+## `cmakelib` parameters
 
 - `WARNINGS_AS_ERRORS`: Treat compiler warnings as errors
 - `ENABLE_CPPCHECK`: Enable static analysis with Cppcheck
@@ -76,3 +76,59 @@ target_link_libraries(myprogram PRIVATE ${PROJECT_NAME})
 - `MSVC_WARNINGS`: Override the defaults for the MSVC warnings
 - `CLANG_WARNINGS`: Override the defaults for the CLANG warnings
 - `GCC_WARNINGS`: Override the defaults for the GCC warnings
+
+
+## Using global CMake options (⚠️ **not recommended**)
+
+⚠️ It is highly recommended to keep the build declarative and reproducible by using the function arguments as explained above.
+
+However, if you still want to change the CMake options on the fly (e.g. to enable sanitizers inside CI), you can include the `GlobalOptions.cmake`, which adds global options for the arguments of `cmakelib` function.
+
+```cmake
+cmake_minimum_required(VERSION 3.16)
+
+# Set the project name to your project name, my_project isn't very descriptive
+project(myproject LANGUAGES CXX)
+
+# Add cmakelib
+include(FetchContent)
+FetchContent_Declare(cmakelib URL https://github.com/aminya/cmakelib/archive/refs/heads/main.zip)
+FetchContent_MakeAvailable(cmakelib)
+include(${cmakelib_SOURCE_DIR}/Index.cmake)
+
+add_library(${PROJECT_NAME} INTERFACE)
+
+# Add global CMake options
+include(${cmakelib_SOURCE_DIR}/src/GlobalOptions.cmake)
+
+# Initialize cmakelib
+# uncomment the options to enable them
+cmakelib(
+      ENABLE_CACHE
+      ENABLE_CONAN
+      # WARNINGS_AS_ERRORS
+      # ENABLE_CPPCHECK
+      # ENABLE_CLANG_TIDY
+      # ENABLE_INCLUDE_WHAT_YOU_USE
+      # ENABLE_COVERAGE
+      # ENABLE_PCH
+      # ENABLE_DOXYGEN
+      # ENABLE_IPO
+      # ENABLE_USER_LINKER
+      # ENABLE_BUILD_WITH_TIME_TRACE
+      # ENABLE_UNITY
+      ${ENABLE_SANITIZER_ADDRESS}   # ❗ Now, the address sanitizer is enabled through CMake options
+      # ENABLE_SANITIZER_LEAK
+      # ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+      # ENABLE_SANITIZER_THREAD
+      # ENABLE_SANITIZER_MEMORY
+)
+
+# project_options is defined inside cmakelib
+target_compile_features(project_options INTERFACE cxx_std_17)
+target_link_libraries(${PROJECT_NAME} INTERFACE project_options project_warnings)
+
+# add src, tests, etc here:
+add_executable(myprogram main.cpp)
+target_link_libraries(myprogram PRIVATE ${PROJECT_NAME})
+```
