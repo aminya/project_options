@@ -18,7 +18,7 @@ set(args
     ENABLE_SANITIZER_THREAD
     ENABLE_SANITIZER_MEMORY)
 foreach(opt ${args})
-  option(${opt} OFF)
+  option(${opt} "Set if needed, but note it may not work!" OFF)
   if(${opt})
     set(${opt} ${opt})
   else()
