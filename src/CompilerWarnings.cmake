@@ -8,7 +8,8 @@ function(
   WARNINGS_AS_ERRORS
   MSVC_WARNINGS
   CLANG_WARNINGS
-  GCC_WARNINGS)
+  GCC_WARNINGS
+)
   if(NOT ${MSVC_WARNINGS})
     set(MSVC_WARNINGS
         /W4 # Baseline reasonable warnings
