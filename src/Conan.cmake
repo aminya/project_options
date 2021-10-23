@@ -6,8 +6,7 @@ macro(run_conan options)
       DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/v0.16.1/conan.cmake"
       "${CMAKE_BINARY_DIR}/conan.cmake"
       EXPECTED_HASH SHA256=396e16d0f5eabdc6a14afddbcfff62a54a7ee75c6da23f32f7a31bc85db23484
-      TLS_VERIFY ON
-    )
+      TLS_VERIFY ON)
   endif()
 
   set(ENV{CONAN_REVISIONS_ENABLED} 1)
@@ -21,8 +20,7 @@ macro(run_conan options)
   conan_add_remote(
     NAME cci
     URL https://center.conan.io
-    INDEX 0
-  )
+    INDEX 0)
   conan_add_remote(NAME bincrafters URL https://bincrafters.jfrog.io/artifactory/api/conan/public-conan)
 
   # For multi configuration generators, like VS and XCode

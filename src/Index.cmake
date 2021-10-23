@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(CMAKELIB_SRC_DIR
-    ${CMAKE_CURRENT_LIST_DIR}
-    CACHE FILEPATH ""
-)
+set(CMAKELIB_SRC_DIR ${CMAKE_CURRENT_LIST_DIR} CACHE FILEPATH "")
 
 include("${CMAKELIB_SRC_DIR}/PreventInSourceBuilds.cmake")
 
@@ -52,8 +49,7 @@ macro(cmakelib)
       ENABLE_SANITIZER_LEAK
       ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       ENABLE_SANITIZER_THREAD
-      ENABLE_SANITIZER_MEMORY
-  )
+      ENABLE_SANITIZER_MEMORY)
   set(oneValueArgs
       MSVC_WARNINGS
       CLANG_WARNINGS
@@ -104,8 +100,7 @@ macro(cmakelib)
     WARNINGS_AS_ERRORS=${cmakelib_WARNINGS_AS_ERRORS}
     MSVC_WARNINGS=${cmakelib_MSVC_WARNINGS}
     CLANG_WARNINGS=${cmakelib_CLANG_WARNINGS}
-    GCC_WARNINGS=${cmakelib_GCC_WARNINGS}
-  )
+    GCC_WARNINGS=${cmakelib_GCC_WARNINGS})
 
   include("${CMAKELIB_SRC_DIR}/Tests.cmake")
   if(${cmakelib_ENABLE_COVERAGE})
@@ -120,8 +115,7 @@ macro(cmakelib)
     ${cmakelib_ENABLE_SANITIZER_LEAK}
     ${cmakelib_ENABLE_SANITIZER_UNDEFINED_BEHAVIOR}
     ${cmakelib_ENABLE_SANITIZER_THREAD}
-    ${cmakelib_ENABLE_SANITIZER_MEMORY}
-  )
+    ${cmakelib_ENABLE_SANITIZER_MEMORY})
 
   if(${cmakelib_ENABLE_DOXYGEN})
     # enable doxygen
@@ -154,8 +148,7 @@ macro(cmakelib)
       <vector>
       <string>
       <map>
-      <utility>
-    )
+      <utility>)
   endif()
 
   if(${cmakelib_ENABLE_CONAN})

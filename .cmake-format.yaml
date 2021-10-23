@@ -127,7 +127,7 @@ format:
   max_pargs_hwrap: 3
   separate_ctrl_name_with_space: false
   separate_fn_name_with_space: false
-  dangle_parens: true
+  dangle_parens: false
   line_ending: unix
 markup:
   bullet_char: '*'
