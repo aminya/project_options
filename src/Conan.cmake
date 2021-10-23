@@ -1,4 +1,4 @@
-macro(run_conan)
+macro(run_conan options)
   # Download automatically, you can also just copy the conan.cmake file
   if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
     message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
@@ -45,7 +45,7 @@ macro(run_conan)
       PATH_OR_REFERENCE ${CMAKE_SOURCE_DIR}
       BUILD missing
             # Pass compile-time configured options into conan
-      OPTIONS
+      OPTIONS ${options}
       SETTINGS ${settings})
   endforeach()
 

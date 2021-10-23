@@ -40,6 +40,7 @@ cmakelib(
       # ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       # ENABLE_SANITIZER_THREAD
       # ENABLE_SANITIZER_MEMORY
+      # CONAN_OPTIONS
 )
 
 # project_options is defined inside cmakelib
@@ -76,7 +77,7 @@ target_link_libraries(myprogram PRIVATE ${PROJECT_NAME})
 - `MSVC_WARNINGS`: Override the defaults for the MSVC warnings
 - `CLANG_WARNINGS`: Override the defaults for the CLANG warnings
 - `GCC_WARNINGS`: Override the defaults for the GCC warnings
-
+- `CONAN_OPTIONS`: Extra Conan options
 
 ## Using global CMake options (⚠️ **not recommended**)
 
