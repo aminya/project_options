@@ -27,6 +27,7 @@ include("${CMAKELIB_SRC_DIR}/PreventInSourceBuilds.cmake")
 # - MSVC_WARNINGS: Override the defaults for the MSVC warnings
 # - CLANG_WARNINGS: Override the defaults for the CLANG warnings
 # - GCC_WARNINGS: Override the defaults for the GCC warnings
+# - CONAN_OPTIONS: Extra Conan options
 #
 # NOTE: cmake-lint [C0103] Invalid macro name "cmakelib" doesn't match `[0-9A-Z_]+`
 macro(cmakelib)
@@ -50,15 +51,15 @@ macro(cmakelib)
       ENABLE_SANITIZER_THREAD
       ENABLE_SANITIZER_MEMORY)
   set(oneValueArgs
-      CONAN_OPTIONS
       MSVC_WARNINGS
       CLANG_WARNINGS
       GCC_WARNINGS)
+  set(multiValueArgs CONAN_OPTIONS)
   cmake_parse_arguments(
     cmakelib
     "${options}"
     "${oneValueArgs}"
-    ""
+    "${multiValueArgs}"
     ${ARGN})
 
   include("${CMAKELIB_SRC_DIR}/StandardProjectSettings.cmake")
@@ -152,7 +153,7 @@ macro(cmakelib)
 
   if(${cmakelib_ENABLE_CONAN})
     include("${CMAKELIB_SRC_DIR}/Conan.cmake")
-    run_conan()
+    run_conan(${cmakelib_CONAN_OPTIONS})
   endif()
 
   if(${cmakelib_ENABLE_UNITY})
