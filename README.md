@@ -1,7 +1,8 @@
 # cmakelib
- A general-purpose CMake library that makes using CMake easier
 
-*NOTE*: It is planned to transfer this repository to [cpp-best-practices organization](https://github.com/cpp-best-practices/cpp_starter_project/issues/125). Stay tuned for that.
+A general-purpose CMake library that makes using CMake easier
+
+_NOTE_: It is planned to transfer this repository to [cpp-best-practices organization](https://github.com/cpp-best-practices/cpp_starter_project/issues/125). Stay tuned for that.
 
 ## Usage
 
@@ -16,8 +17,6 @@ include(FetchContent)
 FetchContent_Declare(cmakelib URL https://github.com/aminya/cmakelib/archive/refs/heads/main.zip)
 FetchContent_MakeAvailable(cmakelib)
 include(${cmakelib_SOURCE_DIR}/Index.cmake)
-
-add_library(${PROJECT_NAME} INTERFACE)
 
 # Initialize cmakelib
 # uncomment the options to enable them
@@ -43,15 +42,15 @@ cmakelib(
       # CONAN_OPTIONS
 )
 
-# project_options is defined inside cmakelib
+# add the C++ standard
 target_compile_features(project_options INTERFACE cxx_std_17)
-target_link_libraries(${PROJECT_NAME} INTERFACE project_options project_warnings)
 
-# add src, tests, etc here:
+
+# add your executables, libraries, etc. here:
+
 add_executable(myprogram main.cpp)
-target_link_libraries(myprogram PRIVATE ${PROJECT_NAME})
+target_link_libraries(myprogram PRIVATE project_options project_warnings) # connect cmakelib to myprogram
 
-# ...
 ```
 
 ## `cmakelib` parameters
@@ -97,8 +96,6 @@ FetchContent_Declare(cmakelib URL https://github.com/aminya/cmakelib/archive/ref
 FetchContent_MakeAvailable(cmakelib)
 include(${cmakelib_SOURCE_DIR}/Index.cmake)
 
-add_library(${PROJECT_NAME} INTERFACE)
-
 # Add global CMake options
 include(${cmakelib_SOURCE_DIR}/src/GlobalOptions.cmake)
 
@@ -125,11 +122,11 @@ cmakelib(
       # ENABLE_SANITIZER_MEMORY
 )
 
-# project_options is defined inside cmakelib
+# add the C++ standard
 target_compile_features(project_options INTERFACE cxx_std_17)
-target_link_libraries(${PROJECT_NAME} INTERFACE project_options project_warnings)
 
-# add src, tests, etc here:
+# add your executables, libraries, etc. here:
+
 add_executable(myprogram main.cpp)
-target_link_libraries(myprogram PRIVATE ${PROJECT_NAME})
+target_link_libraries(myprogram PRIVATE project_options project_warnings) # connect cmakelib to myprogram
 ```
