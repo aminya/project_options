@@ -7,9 +7,9 @@ parse:
       spelling: CMakeLib
       kwargs:
         CLANG_WARNINGS: 1
-        CONAN_OPTIONS: 1
         GCC_WARNINGS: 1
         MSVC_WARNINGS: 1
+        CONAN_OPTIONS: +
     catch_discover_tests:
       pargs:
         nargs: '*'

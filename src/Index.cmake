@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(CMAKELIB_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
+set(CMAKELIB_SRC_DIR ${CMAKE_CURRENT_LIST_DIR} CACHE FILEPATH "")
 
 include("${CMAKELIB_SRC_DIR}/PreventInSourceBuilds.cmake")
 
