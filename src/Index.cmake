@@ -153,7 +153,7 @@ macro(cmakelib)
 
   if(${cmakelib_ENABLE_CONAN})
     include("${CMAKELIB_SRC_DIR}/Conan.cmake")
-    run_conan(${cmakelib_CONAN_OPTIONS})
+    run_conan()
   endif()
 
   if(${cmakelib_ENABLE_UNITY})
