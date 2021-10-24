@@ -5,18 +5,18 @@ project(
   VERSION 0.1.0
   LANGUAGES CXX)
 
-### Add cmakelib
+### Add ProjectOptions
 # include(FetchContent)
-# FetchContent_Declare(cmakelib URL https://github.com/aminya/cmakelib/archive/refs/heads/main.zip)
-# FetchContent_MakeAvailable(cmakelib)
-# include(${cmakelib_SOURCE_DIR}/Index.cmake)
+# FetchContent_Declare(ProjectOptions URL https://github.com/aminya/ProjectOptions/archive/refs/heads/main.zip)
+# FetchContent_MakeAvailable(ProjectOptions)
+# include(${ProjectOptions_SOURCE_DIR}/Index.cmake)
 include(../src/Index.cmake)
 
 add_library(escape INTERFACE)
 
-# Initialize cmakelib
+# Initialize ProjectOptions
 # uncomment the options to enable them
-CMakeLib(
+ProjectOptions(
   ENABLE_CACHE
   # ENABLE_CONAN
   # WARNINGS_AS_ERRORS
@@ -37,7 +37,7 @@ CMakeLib(
   # ENABLE_SANITIZER_MEMORY
 )
 
-# NOTE: project_options and project_warnings are defined inside cmakelib
+# NOTE: project_options and project_warnings are defined inside ProjectOptions
 target_compile_features(project_options INTERFACE cxx_std_17)
 target_link_libraries(escape INTERFACE project_options project_warnings)
 

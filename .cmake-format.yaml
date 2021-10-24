@@ -1,10 +1,10 @@
 parse:
   additional_commands:
-    cmakelib:
+    ProjectOptions:
       pargs:
         nargs: '*'
         flags: []
-      spelling: CMakeLib
+      spelling: ProjectOptions
       kwargs:
         CLANG_WARNINGS: 1
         GCC_WARNINGS: 1
