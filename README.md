@@ -15,9 +15,9 @@ project(myproject LANGUAGES CXX)
 # Add ProjectOptions v0.2.0
 # https://github.com/aminya/ProjectOptions
 include(FetchContent)
-FetchContent_Declare(ProjectOptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.2.0.zip)
-FetchContent_MakeAvailable(ProjectOptions)
-include(${ProjectOptions_SOURCE_DIR}/Index.cmake)
+FetchContent_Declare(projectoptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.2.0.zip)
+FetchContent_MakeAvailable(projectoptions)
+include(${projectoptions_SOURCE_DIR}/Index.cmake)
 
 # Initialize ProjectOptions
 # uncomment the options to enable them
@@ -94,9 +94,9 @@ project(myproject LANGUAGES CXX)
 # Add ProjectOptions v0.2.0
 # https://github.com/aminya/ProjectOptions
 include(FetchContent)
-FetchContent_Declare(ProjectOptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.2.0.zip)
-FetchContent_MakeAvailable(ProjectOptions)
-include(${ProjectOptions_SOURCE_DIR}/Index.cmake)
+FetchContent_Declare(projectoptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.2.0.zip)
+FetchContent_MakeAvailable(projectoptions)
+include(${projectoptions_SOURCE_DIR}/Index.cmake)
 
 # Add global CMake options
 include(${ProjectOptions_SOURCE_DIR}/src/GlobalOptions.cmake)
