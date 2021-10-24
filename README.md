@@ -1,4 +1,4 @@
-# cmakelib
+# ProjectOptions
 
 A general-purpose CMake library that makes using CMake easier
 
@@ -12,15 +12,15 @@ cmake_minimum_required(VERSION 3.16)
 # Set the project name to your project name, my_project isn't very descriptive
 project(myproject LANGUAGES CXX)
 
-# Add cmakelib v0.1.1
+# Add ProjectOptions v0.1.1
 include(FetchContent)
-FetchContent_Declare(cmakelib URL https://github.com/aminya/cmakelib/archive/refs/tags/v0.1.1.zip)
-FetchContent_MakeAvailable(cmakelib)
-include(${cmakelib_SOURCE_DIR}/Index.cmake)
+FetchContent_Declare(ProjectOptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.1.1.zip)
+FetchContent_MakeAvailable(ProjectOptions)
+include(${ProjectOptions_SOURCE_DIR}/Index.cmake)
 
-# Initialize cmakelib
+# Initialize ProjectOptions
 # uncomment the options to enable them
-cmakelib(
+ProjectOptions(
       ENABLE_CACHE
       ENABLE_CONAN
       # WARNINGS_AS_ERRORS
@@ -49,11 +49,11 @@ target_compile_features(project_options INTERFACE cxx_std_17)
 # add your executables, libraries, etc. here:
 
 add_executable(myprogram main.cpp)
-target_link_libraries(myprogram PRIVATE project_options project_warnings) # connect cmakelib to myprogram
+target_link_libraries(myprogram PRIVATE project_options project_warnings) # connect ProjectOptions to myprogram
 
 ```
 
-## `cmakelib` parameters
+## `ProjectOptions` parameters
 
 - `WARNINGS_AS_ERRORS`: Treat compiler warnings as errors
 - `ENABLE_CPPCHECK`: Enable static analysis with Cppcheck
@@ -82,7 +82,7 @@ target_link_libraries(myprogram PRIVATE project_options project_warnings) # conn
 
 ⚠️ It is highly recommended to keep the build declarative and reproducible by using the function arguments as explained above.
 
-However, if you still want to change the CMake options on the fly (e.g. to enable sanitizers inside CI), you can include the `GlobalOptions.cmake`, which adds global options for the arguments of `cmakelib` function.
+However, if you still want to change the CMake options on the fly (e.g. to enable sanitizers inside CI), you can include the `GlobalOptions.cmake`, which adds global options for the arguments of `ProjectOptions` function.
 
 ```cmake
 cmake_minimum_required(VERSION 3.16)
@@ -90,18 +90,18 @@ cmake_minimum_required(VERSION 3.16)
 # Set the project name to your project name, my_project isn't very descriptive
 project(myproject LANGUAGES CXX)
 
-# Add cmakelib v0.1.1
+# Add ProjectOptions v0.1.1
 include(FetchContent)
-FetchContent_Declare(cmakelib URL https://github.com/aminya/cmakelib/archive/refs/tags/v0.1.1.zip)
-FetchContent_MakeAvailable(cmakelib)
-include(${cmakelib_SOURCE_DIR}/Index.cmake)
+FetchContent_Declare(ProjectOptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.1.1.zip)
+FetchContent_MakeAvailable(ProjectOptions)
+include(${ProjectOptions_SOURCE_DIR}/Index.cmake)
 
 # Add global CMake options
-include(${cmakelib_SOURCE_DIR}/src/GlobalOptions.cmake)
+include(${ProjectOptions_SOURCE_DIR}/src/GlobalOptions.cmake)
 
-# Initialize cmakelib
+# Initialize ProjectOptions
 # uncomment the options to enable them
-cmakelib(
+ProjectOptions(
       ENABLE_CACHE
       ENABLE_CONAN
       # WARNINGS_AS_ERRORS
@@ -128,5 +128,5 @@ target_compile_features(project_options INTERFACE cxx_std_17)
 # add your executables, libraries, etc. here:
 
 add_executable(myprogram main.cpp)
-target_link_libraries(myprogram PRIVATE project_options project_warnings) # connect cmakelib to myprogram
+target_link_libraries(myprogram PRIVATE project_options project_warnings) # connect ProjectOptions to myprogram
 ```

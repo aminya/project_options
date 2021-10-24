@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(CMAKELIB_SRC_DIR ${CMAKE_CURRENT_LIST_DIR} CACHE FILEPATH "")
+set(ProjectOptions_SRC_DIR ${CMAKE_CURRENT_LIST_DIR} CACHE FILEPATH "")
 
-include("${CMAKELIB_SRC_DIR}/PreventInSourceBuilds.cmake")
+include("${ProjectOptions_SRC_DIR}/PreventInSourceBuilds.cmake")
 
 #
 # Params:
@@ -29,8 +29,8 @@ include("${CMAKELIB_SRC_DIR}/PreventInSourceBuilds.cmake")
 # - GCC_WARNINGS: Override the defaults for the GCC warnings
 # - CONAN_OPTIONS: Extra Conan options
 #
-# NOTE: cmake-lint [C0103] Invalid macro name "cmakelib" doesn't match `[0-9A-Z_]+`
-macro(cmakelib)
+# NOTE: cmake-lint [C0103] Invalid macro name "ProjectOptions" doesn't match `[0-9A-Z_]+`
+macro(ProjectOptions)
   set(options
       WARNINGS_AS_ERRORS
       ENABLE_COVERAGE
@@ -56,16 +56,16 @@ macro(cmakelib)
       GCC_WARNINGS)
   set(multiValueArgs CONAN_OPTIONS)
   cmake_parse_arguments(
-    cmakelib
+    ProjectOptions
     "${options}"
     "${oneValueArgs}"
     "${multiValueArgs}"
     ${ARGN})
 
-  include("${CMAKELIB_SRC_DIR}/StandardProjectSettings.cmake")
+  include("${ProjectOptions_SRC_DIR}/StandardProjectSettings.cmake")
 
-  if(${cmakelib_ENABLE_IPO})
-    include("${CMAKELIB_SRC_DIR}/InterproceduralOptimization.cmake")
+  if(${ProjectOptions_ENABLE_IPO})
+    include("${ProjectOptions_SRC_DIR}/InterproceduralOptimization.cmake")
     enable_ipo()
   endif()
 
@@ -73,7 +73,7 @@ macro(cmakelib)
   add_library(project_options INTERFACE)
 
   if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
-    if(cmakelib_ENABLE_BUILD_WITH_TIME_TRACE)
+    if(ProjectOptions_ENABLE_BUILD_WITH_TIME_TRACE)
       target_compile_options(project_options INTERFACE -ftime-trace)
     endif()
   endif()
@@ -81,64 +81,64 @@ macro(cmakelib)
   # Link this 'library' to use the warnings specified in CompilerWarnings.cmake
   add_library(project_warnings INTERFACE)
 
-  if(${cmakelib_ENABLE_CACHE})
+  if(${ProjectOptions_ENABLE_CACHE})
     # enable cache system
-    include("${CMAKELIB_SRC_DIR}/Cache.cmake")
+    include("${ProjectOptions_SRC_DIR}/Cache.cmake")
     enable_cache()
   endif()
 
-  if(${cmakelib_ENABLE_USER_LINKER})
+  if(${ProjectOptions_ENABLE_USER_LINKER})
     # Add linker configuration
-    include("${CMAKELIB_SRC_DIR}/Linker.cmake")
+    include("${ProjectOptions_SRC_DIR}/Linker.cmake")
     configure_linker(project_options)
   endif()
 
   # standard compiler warnings
-  include("${CMAKELIB_SRC_DIR}/CompilerWarnings.cmake")
+  include("${ProjectOptions_SRC_DIR}/CompilerWarnings.cmake")
   set_project_warnings(
     project_warnings
-    WARNINGS_AS_ERRORS=${cmakelib_WARNINGS_AS_ERRORS}
-    MSVC_WARNINGS=${cmakelib_MSVC_WARNINGS}
-    CLANG_WARNINGS=${cmakelib_CLANG_WARNINGS}
-    GCC_WARNINGS=${cmakelib_GCC_WARNINGS})
+    WARNINGS_AS_ERRORS=${ProjectOptions_WARNINGS_AS_ERRORS}
+    MSVC_WARNINGS=${ProjectOptions_MSVC_WARNINGS}
+    CLANG_WARNINGS=${ProjectOptions_CLANG_WARNINGS}
+    GCC_WARNINGS=${ProjectOptions_GCC_WARNINGS})
 
-  include("${CMAKELIB_SRC_DIR}/Tests.cmake")
-  if(${cmakelib_ENABLE_COVERAGE})
+  include("${ProjectOptions_SRC_DIR}/Tests.cmake")
+  if(${ProjectOptions_ENABLE_COVERAGE})
     enable_coverage(${PROJECT_NAME})
   endif()
 
   # sanitizer options if supported by compiler
-  include("${CMAKELIB_SRC_DIR}/Sanitizers.cmake")
+  include("${ProjectOptions_SRC_DIR}/Sanitizers.cmake")
   enable_sanitizers(
     project_options
-    ${cmakelib_ENABLE_SANITIZER_ADDRESS}
-    ${cmakelib_ENABLE_SANITIZER_LEAK}
-    ${cmakelib_ENABLE_SANITIZER_UNDEFINED_BEHAVIOR}
-    ${cmakelib_ENABLE_SANITIZER_THREAD}
-    ${cmakelib_ENABLE_SANITIZER_MEMORY})
+    ${ProjectOptions_ENABLE_SANITIZER_ADDRESS}
+    ${ProjectOptions_ENABLE_SANITIZER_LEAK}
+    ${ProjectOptions_ENABLE_SANITIZER_UNDEFINED_BEHAVIOR}
+    ${ProjectOptions_ENABLE_SANITIZER_THREAD}
+    ${ProjectOptions_ENABLE_SANITIZER_MEMORY})
 
-  if(${cmakelib_ENABLE_DOXYGEN})
+  if(${ProjectOptions_ENABLE_DOXYGEN})
     # enable doxygen
-    include("${CMAKELIB_SRC_DIR}/Doxygen.cmake")
+    include("${ProjectOptions_SRC_DIR}/Doxygen.cmake")
     enable_doxygen()
   endif()
 
   # allow for static analysis options
-  include("${CMAKELIB_SRC_DIR}/StaticAnalyzers.cmake")
-  if(${cmakelib_ENABLE_CPPCHECK})
+  include("${ProjectOptions_SRC_DIR}/StaticAnalyzers.cmake")
+  if(${ProjectOptions_ENABLE_CPPCHECK})
     enable_cppcheck()
   endif()
 
-  if(${cmakelib_ENABLE_CLANG_TIDY})
+  if(${ProjectOptions_ENABLE_CLANG_TIDY})
     enable_clang_tidy()
   endif()
 
-  if(${cmakelib_ENABLE_INCLUDE_WHAT_YOU_USE})
+  if(${ProjectOptions_ENABLE_INCLUDE_WHAT_YOU_USE})
     enable_include_what_you_use()
   endif()
 
   # Very basic PCH example
-  if(${cmakelib_ENABLE_PCH})
+  if(${ProjectOptions_ENABLE_PCH})
     # This sets a global PCH parameter, each project will build its own PCH, which is a good idea if any #define's change
     #
     # consider breaking this out per project as necessary
@@ -151,12 +151,12 @@ macro(cmakelib)
       <utility>)
   endif()
 
-  if(${cmakelib_ENABLE_CONAN})
-    include("${CMAKELIB_SRC_DIR}/Conan.cmake")
+  if(${ProjectOptions_ENABLE_CONAN})
+    include("${ProjectOptions_SRC_DIR}/Conan.cmake")
     run_conan()
   endif()
 
-  if(${cmakelib_ENABLE_UNITY})
+  if(${ProjectOptions_ENABLE_UNITY})
     # Add for any project you want to apply unity builds for
     set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
   endif()

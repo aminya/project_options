@@ -45,7 +45,7 @@ macro(run_conan)
       PATH_OR_REFERENCE ${CMAKE_SOURCE_DIR}
       BUILD missing
             # Pass compile-time configured options into conan
-      OPTIONS ${cmakelib_CONAN_OPTIONS}
+      OPTIONS ${ProjectOptions_CONAN_OPTIONS}
       SETTINGS ${settings})
   endforeach()
 
