@@ -12,10 +12,10 @@ cmake_minimum_required(VERSION 3.16)
 # Set the project name to your project name, my_project isn't very descriptive
 project(myproject LANGUAGES CXX)
 
-# Add ProjectOptions v0.1.1
+# Add ProjectOptions v0.2.0
 # https://github.com/aminya/ProjectOptions
 include(FetchContent)
-FetchContent_Declare(ProjectOptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.1.1.zip)
+FetchContent_Declare(ProjectOptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.2.0.zip)
 FetchContent_MakeAvailable(ProjectOptions)
 include(${ProjectOptions_SOURCE_DIR}/Index.cmake)
 
@@ -91,10 +91,10 @@ cmake_minimum_required(VERSION 3.16)
 # Set the project name to your project name, my_project isn't very descriptive
 project(myproject LANGUAGES CXX)
 
-# Add ProjectOptions v0.1.1
+# Add ProjectOptions v0.2.0
 # https://github.com/aminya/ProjectOptions
 include(FetchContent)
-FetchContent_Declare(ProjectOptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.1.1.zip)
+FetchContent_Declare(ProjectOptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.2.0.zip)
 FetchContent_MakeAvailable(ProjectOptions)
 include(${ProjectOptions_SOURCE_DIR}/Index.cmake)
 
