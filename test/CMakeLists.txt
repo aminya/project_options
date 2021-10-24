@@ -12,8 +12,6 @@ project(
 # include(${ProjectOptions_SOURCE_DIR}/Index.cmake)
 include(../src/Index.cmake)
 
-add_library(escape INTERFACE)
-
 # Initialize ProjectOptions
 # uncomment the options to enable them
 ProjectOptions(
@@ -29,7 +27,7 @@ ProjectOptions(
   # ENABLE_IPO
   # ENABLE_USER_LINKER
   ENABLE_BUILD_WITH_TIME_TRACE
-  # ENABLE_UNITY
+  ENABLE_UNITY
   # ENABLE_SANITIZER_ADDRESS
   # ENABLE_SANITIZER_LEAK
   # ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
@@ -39,11 +37,10 @@ ProjectOptions(
 
 # NOTE: project_options and project_warnings are defined inside ProjectOptions
 target_compile_features(project_options INTERFACE cxx_std_17)
-target_link_libraries(escape INTERFACE project_options project_warnings)
 
 # add src, tests, etc here:
-add_executable(test_escape escape.cpp)
-target_link_libraries(test_escape PRIVATE escape)
+add_executable(escape escape.cpp)
+target_link_libraries(escape PRIVATE project_options project_warnings)
 
 enable_testing()
-add_test(NAME test_escape COMMAND test_escape)
+add_test(NAME escape COMMAND escape)
