@@ -52,11 +52,7 @@ macro(cmakelib)
       ENABLE_SANITIZER_THREAD
       ENABLE_SANITIZER_MEMORY
   )
-  set(oneValueArgs
-      MSVC_WARNINGS
-      CLANG_WARNINGS
-      GCC_WARNINGS
-  )
+  set(oneValueArgs MSVC_WARNINGS CLANG_WARNINGS GCC_WARNINGS)
   set(multiValueArgs CONAN_OPTIONS)
   cmake_parse_arguments(
     cmakelib

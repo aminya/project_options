@@ -2,21 +2,17 @@ cmake_minimum_required(VERSION 3.16...3.21)
 
 project(
   escape
-  VERSION 0.1.0
+  VERSION 0.1.1
   LANGUAGES CXX
 )
 
-### Add cmakelib
-# include(FetchContent)
-# FetchContent_Declare(cmakelib URL https://github.com/aminya/cmakelib/archive/refs/heads/main.zip)
-# FetchContent_MakeAvailable(cmakelib)
-# include(${cmakelib_SOURCE_DIR}/Index.cmake)
-include(../src/Index.cmake)
+### test cmakelib
+include(../cmake/Index.cmake)
 
-add_library(escape INTERFACE)
+add_library(${PROJECT_NAME} INTERFACE)
 
 # Add global CMake options
-include(../src/GlobalOptions.cmake)
+include(../cmake/GlobalOptions.cmake)
 
 # Initialize cmakelib
 # uncomment the options to enable them
@@ -43,11 +39,11 @@ CMakeLib(
 
 # NOTE: project_options and project_warnings are defined inside cmakelib
 target_compile_features(project_options INTERFACE cxx_std_17)
-target_link_libraries(escape INTERFACE project_options project_warnings)
+target_link_libraries(${PROJECT_NAME} INTERFACE project_options project_warnings)
 
 # add src, tests, etc here:
 add_executable(test_escape escape.cpp)
-target_link_libraries(test_escape PRIVATE escape)
+target_link_libraries(test_escape PRIVATE ${PROJECT_NAME})
 
 enable_testing()
 add_test(NAME test_escape COMMAND test_escape)

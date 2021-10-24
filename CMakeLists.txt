@@ -1,1 +1,1 @@
-include("${CMAKE_CURRENT_LIST_DIR}/src/Index.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/cmake/Index.cmake")
