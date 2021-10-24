@@ -13,6 +13,7 @@ cmake_minimum_required(VERSION 3.16)
 project(myproject LANGUAGES CXX)
 
 # Add ProjectOptions v0.1.1
+# https://github.com/aminya/ProjectOptions
 include(FetchContent)
 FetchContent_Declare(ProjectOptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.1.1.zip)
 FetchContent_MakeAvailable(ProjectOptions)
@@ -91,6 +92,7 @@ cmake_minimum_required(VERSION 3.16)
 project(myproject LANGUAGES CXX)
 
 # Add ProjectOptions v0.1.1
+# https://github.com/aminya/ProjectOptions
 include(FetchContent)
 FetchContent_Declare(ProjectOptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.1.1.zip)
 FetchContent_MakeAvailable(ProjectOptions)
