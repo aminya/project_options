@@ -13,7 +13,7 @@ lint:
 
 clean:
 ifeq ($(OS), Windows_NT)
-	cmd /c 'if exist test/build (rmdir /s /q test/build)'
+	cmd /c 'if exist "./test/build" (rmdir /s /q "./test/build")'
 else
 	rm -rf ./tset/build
 endif
