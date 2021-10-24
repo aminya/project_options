@@ -13,8 +13,9 @@ lint:
 	cmake-lint ./Index.cmake ./src/*.cmake
 
 clean:
+# clean ./test/build
 ifeq ($(OS), Windows_NT)
-	cmd /c 'if exist "./test/build" (rmdir /s /q "./test/build")'
+	pwsh -C 'if (Test-Path ./test/build) { rm -r -force ./test/build }'
 else
-	rm -rf ./tset/build
+	rm -rf ./test/build
 endif
