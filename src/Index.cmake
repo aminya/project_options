@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(ProjectOptions_SRC_DIR ${CMAKE_CURRENT_LIST_DIR} CACHE FILEPATH "")
+set(ProjectOptions_SRC_DIR
+    ${CMAKE_CURRENT_LIST_DIR}
+    CACHE FILEPATH "")
 
 include("${ProjectOptions_SRC_DIR}/PreventInSourceBuilds.cmake")
 
@@ -50,10 +52,7 @@ macro(ProjectOptions)
       ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       ENABLE_SANITIZER_THREAD
       ENABLE_SANITIZER_MEMORY)
-  set(oneValueArgs
-      MSVC_WARNINGS
-      CLANG_WARNINGS
-      GCC_WARNINGS)
+  set(oneValueArgs MSVC_WARNINGS CLANG_WARNINGS GCC_WARNINGS)
   set(multiValueArgs CONAN_OPTIONS)
   cmake_parse_arguments(
     ProjectOptions

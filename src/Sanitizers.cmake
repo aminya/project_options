@@ -1,4 +1,11 @@
-function(enable_sanitizers project_name ENABLE_SANITIZER_ADDRESS ENABLE_SANITIZER_LEAK ENABLE_SANITIZER_UNDEFINED_BEHAVIOR ENABLE_SANITIZER_THREAD ENABLE_SANITIZER_MEMORY)
+function(
+  enable_sanitizers
+  project_name
+  ENABLE_SANITIZER_ADDRESS
+  ENABLE_SANITIZER_LEAK
+  ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+  ENABLE_SANITIZER_THREAD
+  ENABLE_SANITIZER_MEMORY)
 
   if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
     set(SANITIZERS "")
@@ -24,7 +31,10 @@ function(enable_sanitizers project_name ENABLE_SANITIZER_ADDRESS ENABLE_SANITIZE
     endif()
 
     if(${ENABLE_SANITIZER_MEMORY} AND CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
-      message(WARNING "Memory sanitizer requires all the code (including libc++) to be MSan-instrumented otherwise it reports false positives")
+      message(
+        WARNING
+          "Memory sanitizer requires all the code (including libc++) to be MSan-instrumented otherwise it reports false positives"
+      )
       if("address" IN_LIST SANITIZERS
          OR "thread" IN_LIST SANITIZERS
          OR "leak" IN_LIST SANITIZERS)
