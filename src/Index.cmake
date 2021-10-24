@@ -103,7 +103,7 @@ macro(ProjectOptions)
 
   include("${ProjectOptions_SRC_DIR}/Tests.cmake")
   if(${ProjectOptions_ENABLE_COVERAGE})
-    enable_coverage(${PROJECT_NAME})
+    enable_coverage(project_options)
   endif()
 
   # sanitizer options if supported by compiler
@@ -157,7 +157,7 @@ macro(ProjectOptions)
 
   if(${ProjectOptions_ENABLE_UNITY})
     # Add for any project you want to apply unity builds for
-    set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
+    set_target_properties(project_options PROPERTIES UNITY_BUILD ON)
   endif()
 
 endmacro()
