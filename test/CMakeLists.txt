@@ -5,7 +5,8 @@ cmake_minimum_required(VERSION 3.16...3.21)
 # FetchContent_Declare(ProjectOptions URL https://github.com/aminya/ProjectOptions/archive/refs/heads/main.zip)
 # FetchContent_MakeAvailable(ProjectOptions)
 # include(${ProjectOptions_SOURCE_DIR}/Index.cmake)
-include(../src/Vcpkg.cmake)
+include(../src/Index.cmake)
+
 run_vcpkg()
 
 project(
@@ -14,7 +15,6 @@ project(
   LANGUAGES CXX)
 
 # Initialize ProjectOptions
-include(../src/Index.cmake)
 # uncomment the options to enable them
 ProjectOptions(
   ENABLE_CACHE

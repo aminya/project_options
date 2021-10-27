@@ -6,6 +6,8 @@ set(ProjectOptions_SRC_DIR
 
 include("${ProjectOptions_SRC_DIR}/PreventInSourceBuilds.cmake")
 
+include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
+
 #
 # Params:
 # - WARNINGS_AS_ERRORS: Treat compiler warnings as errors

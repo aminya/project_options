@@ -14,17 +14,16 @@ cmake_minimum_required(VERSION 3.16)
 include(FetchContent)
 FetchContent_Declare(projectoptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.2.0.zip)
 FetchContent_MakeAvailable(projectoptions)
+include(${projectoptions_SOURCE_DIR}/Index.cmake)
 
 # uncomment to enable vcpkg:
-# # Setup vcpkg (should be before calling project)
-# include(${projectoptions_SOURCE_DIR}/src/Vcpkg.cmake)
+# # Setup vcpkg - should be called before defining project()
 # run_vcpkg()
 
 # Set the project name to your project name, my_project isn't very descriptive
 project(myproject LANGUAGES CXX)
 
 # Initialize ProjectOptions
-include(${projectoptions_SOURCE_DIR}/Index.cmake)
 # uncomment the options to enable them:
 ProjectOptions(
       ENABLE_CACHE
@@ -98,18 +97,19 @@ cmake_minimum_required(VERSION 3.16)
 include(FetchContent)
 FetchContent_Declare(projectoptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.2.0.zip)
 FetchContent_MakeAvailable(projectoptions)
+include(${projectoptions_SOURCE_DIR}/Index.cmake)
+
+ # ❗ Add global CMake options
+include(${ProjectOptions_SOURCE_DIR}/src/GlobalOptions.cmake)
 
 # uncomment to enable vcpkg:
-# # Setup vcpkg (should be before calling project)
-# include(${projectoptions_SOURCE_DIR}/src/Vcpkg.cmake)
+# # Setup vcpkg - should be called before defining project()
 # run_vcpkg()
 
 # Set the project name to your project name, my_project isn't very descriptive
 project(myproject LANGUAGES CXX)
 
 # Initialize ProjectOptions
-include(${projectoptions_SOURCE_DIR}/Index.cmake)
-include(${ProjectOptions_SOURCE_DIR}/src/GlobalOptions.cmake) # ❗ Add global CMake options
 # uncomment the options to enable them:
 ProjectOptions(
       ENABLE_CACHE
