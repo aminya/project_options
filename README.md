@@ -9,21 +9,26 @@ _NOTE_: It is planned to transfer this repository to [cpp-best-practices organiz
 ```cmake
 cmake_minimum_required(VERSION 3.16)
 
-# Set the project name to your project name, my_project isn't very descriptive
-project(myproject LANGUAGES CXX)
-
 # Add ProjectOptions v0.2.0
 # https://github.com/aminya/ProjectOptions
 include(FetchContent)
 FetchContent_Declare(projectoptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.2.0.zip)
 FetchContent_MakeAvailable(projectoptions)
-include(${projectoptions_SOURCE_DIR}/Index.cmake)
+
+# uncomment to enable vcpkg:
+# # Setup vcpkg (should be before calling project)
+# include(${projectoptions_SOURCE_DIR}/src/Vcpkg.cmake)
+# run_vcpkg()
+
+# Set the project name to your project name, my_project isn't very descriptive
+project(myproject LANGUAGES CXX)
 
 # Initialize ProjectOptions
-# uncomment the options to enable them
+include(${projectoptions_SOURCE_DIR}/Index.cmake)
+# uncomment the options to enable them:
 ProjectOptions(
       ENABLE_CACHE
-      ENABLE_CONAN
+      # ENABLE_CONAN
       # WARNINGS_AS_ERRORS
       # ENABLE_CPPCHECK
       # ENABLE_CLANG_TIDY
@@ -88,21 +93,24 @@ However, if you still want to change the CMake options on the fly (e.g. to enabl
 ```cmake
 cmake_minimum_required(VERSION 3.16)
 
-# Set the project name to your project name, my_project isn't very descriptive
-project(myproject LANGUAGES CXX)
-
 # Add ProjectOptions v0.2.0
 # https://github.com/aminya/ProjectOptions
 include(FetchContent)
 FetchContent_Declare(projectoptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.2.0.zip)
 FetchContent_MakeAvailable(projectoptions)
-include(${projectoptions_SOURCE_DIR}/Index.cmake)
 
-# Add global CMake options
-include(${ProjectOptions_SOURCE_DIR}/src/GlobalOptions.cmake)
+# uncomment to enable vcpkg:
+# # Setup vcpkg (should be before calling project)
+# include(${projectoptions_SOURCE_DIR}/src/Vcpkg.cmake)
+# run_vcpkg()
+
+# Set the project name to your project name, my_project isn't very descriptive
+project(myproject LANGUAGES CXX)
 
 # Initialize ProjectOptions
-# uncomment the options to enable them
+include(${projectoptions_SOURCE_DIR}/Index.cmake)
+include(${ProjectOptions_SOURCE_DIR}/src/GlobalOptions.cmake) # ❗ Add global CMake options
+# uncomment the options to enable them:
 ProjectOptions(
       ENABLE_CACHE
       ENABLE_CONAN

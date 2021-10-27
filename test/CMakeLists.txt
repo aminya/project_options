@@ -1,18 +1,20 @@
 cmake_minimum_required(VERSION 3.16...3.21)
 
-project(
-  escape
-  VERSION 0.2.0
-  LANGUAGES CXX)
-
 ### Add ProjectOptions
 # include(FetchContent)
 # FetchContent_Declare(ProjectOptions URL https://github.com/aminya/ProjectOptions/archive/refs/heads/main.zip)
 # FetchContent_MakeAvailable(ProjectOptions)
 # include(${ProjectOptions_SOURCE_DIR}/Index.cmake)
-include(../src/Index.cmake)
+include(../src/Vcpkg.cmake)
+run_vcpkg()
+
+project(
+  escape
+  VERSION 0.2.0
+  LANGUAGES CXX)
 
 # Initialize ProjectOptions
+include(../src/Index.cmake)
 # uncomment the options to enable them
 ProjectOptions(
   ENABLE_CACHE
@@ -41,6 +43,9 @@ target_compile_features(project_options INTERFACE cxx_std_17)
 # add src, tests, etc here:
 add_executable(escape escape.cpp)
 target_link_libraries(escape PRIVATE project_options project_warnings)
+
+find_package(fmt REQUIRED)
+target_link_libraries(escape PRIVATE fmt::fmt)
 
 enable_testing()
 add_test(NAME escape COMMAND escape)

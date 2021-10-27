@@ -42,6 +42,7 @@ macro(ProjectOptions)
       ENABLE_CACHE
       ENABLE_PCH
       ENABLE_CONAN
+      ENABLE_VCPKG
       ENABLE_DOXYGEN
       ENABLE_IPO
       ENABLE_USER_LINKER
@@ -148,6 +149,11 @@ macro(ProjectOptions)
       <string>
       <map>
       <utility>)
+  endif()
+
+  if(${ProjectOptions_ENABLE_VCPKG})
+    include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
+    run_vcpkg()
   endif()
 
   if(${ProjectOptions_ENABLE_CONAN})
