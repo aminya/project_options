@@ -83,6 +83,10 @@ target_link_libraries(myprogram PRIVATE project_options project_warnings) # conn
 - `GCC_WARNINGS`: Override the defaults for the GCC warnings
 - `CONAN_OPTIONS`: Extra Conan options
 
+## `run_vcpkg` parameters
+- `VCPKG_DIR`: (Defaults to `~/vcpkg`). You can provide the vcpkg installation directory using this optional parameter. 
+If the directory does not exist, it will automatically install vcpkg in this directory.
+
 ## Using global CMake options (⚠️ **not recommended**)
 
 ⚠️ It is highly recommended to keep the build declarative and reproducible by using the function arguments as explained above.
