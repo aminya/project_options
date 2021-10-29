@@ -10,16 +10,17 @@ macro(run_vcpkg)
     ""
     ${ARGN})
 
-  # Default vcpkg installation directory
   if(${ProjectOptions_VCPKG_DIR})
     # the installation directory is specified
+    get_filename_component(VCPKG_PARENT_DIR ${ProjectOptions_VCPKG_DIR} DIRECTORY)
   else()
+    # Default vcpkg installation directory
     if(WIN32)
-      set(HOME_DIR $ENV{userprofile})
-      set(ProjectOptions_VCPKG_DIR ${HOME_DIR}/vcpkg)
+      set(VCPKG_PARENT_DIR $ENV{userprofile})
+      set(ProjectOptions_VCPKG_DIR ${VCPKG_PARENT_DIR}/vcpkg)
     else()
-      set(HOME_DIR $ENV{HOME})
-      set(ProjectOptions_VCPKG_DIR ${HOME_DIR}/vcpkg)
+      set(VCPKG_PARENT_DIR $ENV{HOME})
+      set(ProjectOptions_VCPKG_DIR ${VCPKG_PARENT_DIR}/vcpkg)
     endif()
   endif()
 
@@ -30,7 +31,7 @@ macro(run_vcpkg)
   else()
     message(STATUS "Installing vcpkg at ${ProjectOptions_VCPKG_DIR}")
     # clone vcpkg from Github
-    execute_process(COMMAND "git" "clone" "https://github.com/microsoft/vcpkg" WORKING_DIRECTORY ${HOME_DIR})
+    execute_process(COMMAND "git" "clone" "https://github.com/microsoft/vcpkg" WORKING_DIRECTORY ${VCPKG_PARENT_DIR})
     # Run vcpkg bootstrap
     execute_process(COMMAND "./vcpkg/bootstrap-vcpkg" WORKING_DIRECTORY "${ProjectOptions_VCPKG_DIR}")
   endif()
