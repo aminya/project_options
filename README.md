@@ -6,6 +6,8 @@ _NOTE_: It is planned to transfer this repository to [cpp-best-practices organiz
 
 ## Usage
 
+Here is a full example:
+
 ```cmake
 cmake_minimum_required(VERSION 3.16)
 
@@ -58,7 +60,9 @@ target_link_libraries(myprogram PRIVATE project_options project_warnings) # conn
 
 ```
 
-## `ProjectOptions` parameters
+## `ProjectOptions` function
+
+It accepts the following named flags:
 
 - `WARNINGS_AS_ERRORS`: Treat compiler warnings as errors
 - `ENABLE_CPPCHECK`: Enable static analysis with Cppcheck
@@ -78,14 +82,23 @@ target_link_libraries(myprogram PRIVATE project_options project_warnings) # conn
 - `ENABLE_SANITIZER_UNDEFINED_BEHAVIOR`: Enable undefined behavior sanitizer
 - `ENABLE_SANITIZER_THREAD`: Enable thread sanitizer
 - `ENABLE_SANITIZER_MEMORY`: Enable memory sanitizer
+
+It gets the following named parameters (each accepting multiple values):
+
 - `MSVC_WARNINGS`: Override the defaults for the MSVC warnings
 - `CLANG_WARNINGS`: Override the defaults for the CLANG warnings
 - `GCC_WARNINGS`: Override the defaults for the GCC warnings
 - `CONAN_OPTIONS`: Extra Conan options
 
-## `run_vcpkg` parameters
+## `run_vcpkg` function
 - `VCPKG_DIR`: (Defaults to `~/vcpkg`). You can provide the vcpkg installation directory using this optional parameter. 
 If the directory does not exist, it will automatically install vcpkg in this directory.
+
+
+## `target_link_system_libraries` function
+
+A very useful function that accepts the same arguments as `target_link_libraries` while marking their include directories as "SYSTEM", which suppresses their warnings. This helps in enabling `WARNINGS_AS_ERRORS` for your own source code.
+
 
 ## Using global CMake options (⚠️ **not recommended**)
 
