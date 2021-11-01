@@ -8,6 +8,8 @@ include("${ProjectOptions_SRC_DIR}/PreventInSourceBuilds.cmake")
 
 include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
 
+include("${ProjectOptions_SRC_DIR}/SystemLink.cmake")
+
 #
 # Params:
 # - WARNINGS_AS_ERRORS: Treat compiler warnings as errors

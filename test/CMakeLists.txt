@@ -23,12 +23,12 @@ ProjectOptions(
   # ENABLE_CPPCHECK
   ENABLE_CLANG_TIDY
   # ENABLE_INCLUDE_WHAT_YOU_USE
-  ENABLE_COVERAGE
+  # ENABLE_COVERAGE
   # ENABLE_PCH
   # ENABLE_DOXYGEN
   # ENABLE_IPO
   # ENABLE_USER_LINKER
-  ENABLE_BUILD_WITH_TIME_TRACE
+  # ENABLE_BUILD_WITH_TIME_TRACE
   ENABLE_UNITY
   # ENABLE_SANITIZER_ADDRESS
   # ENABLE_SANITIZER_LEAK
@@ -45,7 +45,7 @@ add_executable(escape escape.cpp)
 target_link_libraries(escape PRIVATE project_options project_warnings)
 
 find_package(fmt REQUIRED)
-target_link_libraries(escape PRIVATE fmt::fmt)
+target_link_system_libraries(escape PRIVATE fmt::fmt)
 
 enable_testing()
 add_test(NAME escape COMMAND escape)
