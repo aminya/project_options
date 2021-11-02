@@ -1,21 +1,30 @@
 # Include a system directory (which suppresses its warnings).
-function(
-  target_include_system_directories
-  target
-  scope
-  lib_include_dirs)
-  if(MSVC)
-    # system includes do not work in MSVC
-    # awaiting https://gitlab.kitware.com/cmake/cmake/-/issues/18272#
-    # awaiting https://gitlab.kitware.com/cmake/cmake/-/issues/17904
-    target_include_directories(${target} ${scope} ${lib_include_dirs})
-  else()
-    target_include_directories(
-      ${target}
-      SYSTEM
-      ${scope}
-      ${lib_include_dirs})
-  endif()
+function(target_include_system_directories target)
+  set(multiValueArgs INTERFACE PUBLIC PRIVATE)
+  cmake_parse_arguments(
+    ARG
+    ""
+    ""
+    "${multiValueArgs}"
+    ${ARGN})
+
+  foreach(scope IN ITEMS INTERFACE PUBLIC PRIVATE)
+    foreach(lib_include_dirs IN LISTS ARG_${scope})
+      if(MSVC)
+        # system includes do not work in MSVC
+        # awaiting https://gitlab.kitware.com/cmake/cmake/-/issues/18272#
+        # awaiting https://gitlab.kitware.com/cmake/cmake/-/issues/17904
+        target_include_directories(${target} ${scope} ${lib_include_dirs})
+      else()
+        target_include_directories(
+          ${target}
+          SYSTEM
+          ${scope}
+          ${lib_include_dirs})
+      endif()
+    endforeach()
+  endforeach()
+
 endfunction()
 
 # Include the directories of a library target as system directories (which suppresses their warnings).
