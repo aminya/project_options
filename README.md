@@ -11,10 +11,10 @@ Here is a full example:
 ```cmake
 cmake_minimum_required(VERSION 3.16)
 
-# Add ProjectOptions v0.5.0
+# Add ProjectOptions v0.5.1
 # https://github.com/aminya/ProjectOptions
 include(FetchContent)
-FetchContent_Declare(projectoptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.5.0.zip)
+FetchContent_Declare(projectoptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.5.1.zip)
 FetchContent_MakeAvailable(projectoptions)
 include(${projectoptions_SOURCE_DIR}/Index.cmake)
 
