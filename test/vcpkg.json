@@ -8,6 +8,11 @@
             "name": "fmt",
             "version>=": "8.0.1",
             "default-features": true
+        },
+        {
+            "name": "eigen3",
+            "version>=": "3.3.9",
+            "default-features": true
         }
     ]
 }

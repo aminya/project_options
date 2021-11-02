@@ -10,7 +10,7 @@ include(../src/Index.cmake)
 run_vcpkg()
 
 project(
-  escape
+  main
   VERSION 0.2.0
   LANGUAGES CXX)
 
@@ -20,8 +20,8 @@ ProjectOptions(
   ENABLE_CACHE
   # ENABLE_CONAN
   # WARNINGS_AS_ERRORS
-  # ENABLE_CPPCHECK
-  ENABLE_CLANG_TIDY
+  ENABLE_CPPCHECK
+  # ENABLE_CLANG_TIDY
   # ENABLE_INCLUDE_WHAT_YOU_USE
   # ENABLE_COVERAGE
   # ENABLE_PCH
@@ -38,14 +38,22 @@ ProjectOptions(
 )
 
 # NOTE: project_options and project_warnings are defined inside ProjectOptions
-target_compile_features(project_options INTERFACE cxx_std_17)
+target_compile_options(project_options INTERFACE "-std=c++17")
 
 # add src, tests, etc here:
-add_executable(escape escape.cpp)
-target_link_libraries(escape PRIVATE project_options project_warnings)
+add_executable(main main.cpp)
+target_link_libraries(main PRIVATE project_options project_warnings)
 
+# dependencies
 find_package(fmt REQUIRED)
-target_link_system_libraries(escape PRIVATE fmt::fmt)
+find_package(Eigen3 CONFIG REQUIRED)
+target_link_system_libraries(
+  main
+  PRIVATE
+  fmt::fmt
+  Eigen3::Eigen
+)
 
+# tests
 enable_testing()
-add_test(NAME escape COMMAND escape)
+add_test(NAME main COMMAND main)
