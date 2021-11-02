@@ -1,3 +1,23 @@
+# Include a system directory (which suppresses its warnings).
+function(
+  target_include_system_directories
+  target
+  scope
+  lib_include_dirs)
+  if(MSVC)
+    # system includes do not work in MSVC
+    # awaiting https://gitlab.kitware.com/cmake/cmake/-/issues/18272#
+    # awaiting https://gitlab.kitware.com/cmake/cmake/-/issues/17904
+    target_include_directories(${target} ${scope} ${lib_include_dirs})
+  else()
+    target_include_directories(
+      ${target}
+      SYSTEM
+      ${scope}
+      ${lib_include_dirs})
+  endif()
+endfunction()
+
 # Include the directories of a library target as system directories (which suppresses their warnings).
 function(
   target_include_system_library
@@ -6,18 +26,7 @@ function(
   lib)
   get_target_property(lib_include_dirs ${lib} INTERFACE_INCLUDE_DIRECTORIES)
   if(lib_include_dirs)
-    if(MSVC)
-      # system includes do not work in MSVC
-      # awaiting https://gitlab.kitware.com/cmake/cmake/-/issues/18272#
-      # awaiting https://gitlab.kitware.com/cmake/cmake/-/issues/17904
-      target_include_directories(${target} ${scope} ${lib_include_dirs})
-    else()
-      target_include_directories(
-        ${target}
-        SYSTEM
-        ${scope}
-        ${lib_include_dirs})
-    endif()
+    target_include_system_directories(${target} ${scope} ${lib_include_dirs})
   else()
     message(WARNING "${lib} library does not have the INTERFACE_INCLUDE_DIRECTORIES property.")
   endif()

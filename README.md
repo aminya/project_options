@@ -99,6 +99,9 @@ If the directory does not exist, it will automatically install vcpkg in this dir
 
 A very useful function that accepts the same arguments as `target_link_libraries` while marking their include directories as "SYSTEM", which suppresses their warnings. This helps in enabling `WARNINGS_AS_ERRORS` for your own source code.
 
+## `target_include_system_directories` function
+
+Similar to `target_include_directories`, but it suppresses the warnings. It is useful if you are including some external directories directly.
 
 ## Using global CMake options (⚠️ **not recommended**)
 
