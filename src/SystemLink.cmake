@@ -24,11 +24,14 @@ function(
   target
   scope
   lib)
-  get_target_property(lib_include_dirs ${lib} INTERFACE_INCLUDE_DIRECTORIES)
-  if(lib_include_dirs)
-    target_include_system_directories(${target} ${scope} ${lib_include_dirs})
-  else()
-    message(WARNING "${lib} library does not have the INTERFACE_INCLUDE_DIRECTORIES property.")
+  # check if this is a target
+  if(TARGET ${lib})
+    get_target_property(lib_include_dirs ${lib} INTERFACE_INCLUDE_DIRECTORIES)
+    if(lib_include_dirs)
+      target_include_system_directories(${target} ${scope} ${lib_include_dirs})
+    else()
+      message(WARNING "${lib} library does not have the INTERFACE_INCLUDE_DIRECTORIES property.")
+    endif()
   endif()
 endfunction()
 
