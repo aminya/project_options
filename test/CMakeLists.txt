@@ -36,12 +36,11 @@ ProjectOptions(
   # ENABLE_SANITIZER_THREAD
   # ENABLE_SANITIZER_MEMORY
 )
-
 # NOTE: project_options and project_warnings are defined inside ProjectOptions
-target_compile_options(project_options INTERFACE "-std=c++17")
 
 # add src, tests, etc here:
 add_executable(main main.cpp)
+target_compile_features(main INTERFACE cxx_std_17)
 target_link_libraries(main PRIVATE project_options project_warnings)
 
 # dependencies
