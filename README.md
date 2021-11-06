@@ -55,7 +55,7 @@ add_executable(myprogram main.cpp)
 target_compile_features(myprogram INTERFACE cxx_std_17)
 target_link_libraries(myprogram PRIVATE project_options project_warnings) # connect ProjectOptions to myprogram
 
-# find and link dependencies (assuming you have used vcpkg or Conan):
+# find and link dependencies (assuming you have enabled vcpkg or Conan):
 find_package(fmt REQUIRED)
 target_link_system_libraries(
   main
@@ -95,9 +95,9 @@ It gets the following named parameters (each accepting multiple values):
 - `CONAN_OPTIONS`: Extra Conan options
 
 ## `run_vcpkg` function
-- `VCPKG_DIR`: (Defaults to `~/vcpkg`). You can provide the vcpkg installation directory using this optional parameter. 
-If the directory does not exist, it will automatically install vcpkg in this directory.
 
+- `VCPKG_DIR`: (Defaults to `~/vcpkg`). You can provide the vcpkg installation directory using this optional parameter.
+  If the directory does not exist, it will automatically install vcpkg in this directory.
 
 ## `target_link_system_libraries` function
 
@@ -112,6 +112,9 @@ Similar to `target_include_directories`, but it suppresses the warnings. It is u
 ⚠️ It is highly recommended to keep the build declarative and reproducible by using the function arguments as explained above.
 
 However, if you still want to change the CMake options on the fly (e.g. to enable sanitizers inside CI), you can include the `GlobalOptions.cmake`, which adds global options for the arguments of `ProjectOptions` function.
+
+<details>
+<summary>Click to show the example:</summary>
 
 ```cmake
 cmake_minimum_required(VERSION 3.16)
@@ -161,7 +164,7 @@ add_executable(myprogram main.cpp)
 target_compile_features(myprogram INTERFACE cxx_std_17)
 target_link_libraries(myprogram PRIVATE project_options project_warnings) # connect ProjectOptions to myprogram
 
-# find and link dependencies:
+# find and link dependencies (assuming you have enabled vcpkg or Conan):
 find_package(fmt REQUIRED)
 target_link_system_libraries(
   main
@@ -169,3 +172,5 @@ target_link_system_libraries(
   fmt::fmt
 )
 ```
+
+</details>
