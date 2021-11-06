@@ -49,15 +49,19 @@ ProjectOptions(
       # CONAN_OPTIONS
 )
 
-# add the C++ standard
-target_compile_features(project_options INTERFACE cxx_std_17)
-
-
 # add your executables, libraries, etc. here:
 
 add_executable(myprogram main.cpp)
+target_compile_features(myprogram INTERFACE cxx_std_17)
 target_link_libraries(myprogram PRIVATE project_options project_warnings) # connect ProjectOptions to myprogram
 
+# find and link dependencies (assuming you have used vcpkg or Conan):
+find_package(fmt REQUIRED)
+target_link_system_libraries(
+  main
+  PRIVATE
+  fmt::fmt
+)
 ```
 
 ## `ProjectOptions` function
@@ -120,7 +124,7 @@ FetchContent_MakeAvailable(projectoptions)
 include(${projectoptions_SOURCE_DIR}/Index.cmake)
 
  # ❗ Add global CMake options
-include(${ProjectOptions_SOURCE_DIR}/src/GlobalOptions.cmake)
+include(${projectoptions_SOURCE_DIR}/src/GlobalOptions.cmake)
 
 # uncomment to enable vcpkg:
 # # Setup vcpkg - should be called before defining project()
@@ -151,12 +155,17 @@ ProjectOptions(
       # ENABLE_SANITIZER_THREAD
       # ENABLE_SANITIZER_MEMORY
 )
-
-# add the C++ standard
-target_compile_features(project_options INTERFACE cxx_std_17)
-
 # add your executables, libraries, etc. here:
 
 add_executable(myprogram main.cpp)
+target_compile_features(myprogram INTERFACE cxx_std_17)
 target_link_libraries(myprogram PRIVATE project_options project_warnings) # connect ProjectOptions to myprogram
+
+# find and link dependencies:
+find_package(fmt REQUIRED)
+target_link_system_libraries(
+  main
+  PRIVATE
+  fmt::fmt
+)
 ```
