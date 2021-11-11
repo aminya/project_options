@@ -1,6 +1,8 @@
 include(FetchContent)
 
 macro(run_vcpkg)
+  # named boolean ENABLE_VCPKG_UPDATE argument
+  set(options ENABLE_VCPKG_UPDATE)
   # optional named VCPKG_DIR argument
   set(oneValueArgs VCPKG_DIR)
   cmake_parse_arguments(
@@ -26,8 +28,11 @@ macro(run_vcpkg)
 
   # check if the vcpkg is installed
   if(EXISTS ${ProjectOptions_VCPKG_DIR})
-    message(STATUS "${ProjectOptions_VCPKG_DIR} already exists. Updating the repository...")
-    execute_process(COMMAND "git" "pull" WORKING_DIRECTORY ${ProjectOptions_VCPKG_DIR})
+    message(STATUS "${ProjectOptions_VCPKG_DIR} already exists.")
+    if(${ProjectOptions_ENABLE_VCPKG_UPDATE})
+      message(STATUS "Updating the repository...")
+      execute_process(COMMAND "git" "pull" WORKING_DIRECTORY ${ProjectOptions_VCPKG_DIR})
+    endif()
   else()
     message(STATUS "Installing vcpkg at ${ProjectOptions_VCPKG_DIR}")
     # clone vcpkg from Github
