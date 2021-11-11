@@ -96,6 +96,12 @@ It gets the following named parameters (each accepting multiple values):
 
 ## `run_vcpkg` function
 
+Named Option:
+
+- `ENABLE_VCPKG_UPDATE`: (Disabled by default). If enabled, the vcpkg registry is updated before building (using `git pull`). As a result, if some of your vcpkg dependencies have been updated in the registry, they will be rebuilt.
+
+Named String:
+
 - `VCPKG_DIR`: (Defaults to `~/vcpkg`). You can provide the vcpkg installation directory using this optional parameter.
   If the directory does not exist, it will automatically install vcpkg in this directory.
 
