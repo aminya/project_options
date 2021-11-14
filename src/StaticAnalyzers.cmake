@@ -6,7 +6,8 @@ macro(enable_cppcheck)
         --suppress=missingInclude
         --enable=all
         --inline-suppr
-        --inconclusive)
+        --inconclusive
+        --std=c++${CMAKE_CXX_STANDARD})
     if(WARNINGS_AS_ERRORS)
       list(APPEND CMAKE_CXX_CPPCHECK --error-exitcode=2)
     endif()
