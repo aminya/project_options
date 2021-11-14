@@ -6,8 +6,10 @@ macro(enable_cppcheck)
         --suppress=missingInclude
         --enable=all
         --inline-suppr
-        --inconclusive
-        --std=c++${CMAKE_CXX_STANDARD})
+        --inconclusive)
+    if(${CMAKE_CXX_STANDARD})
+      set(CMAKE_CXX_CPPCHECK ${CMAKE_CXX_CPPCHECK} --std=c++${CMAKE_CXX_STANDARD})
+    endif()
     if(WARNINGS_AS_ERRORS)
       list(APPEND CMAKE_CXX_CPPCHECK --error-exitcode=2)
     endif()
@@ -19,8 +21,10 @@ endmacro()
 macro(enable_clang_tidy)
   find_program(CLANGTIDY clang-tidy)
   if(CLANGTIDY)
-    set(CMAKE_CXX_CLANG_TIDY ${CLANGTIDY} -extra-arg=-Wno-unknown-warning-option
-                             -extra-arg=-std=c++${CMAKE_CXX_STANDARD})
+    set(CMAKE_CXX_CLANG_TIDY ${CLANGTIDY} -extra-arg=-Wno-unknown-warning-option)
+    if(${CMAKE_CXX_STANDARD})
+      set(CMAKE_CXX_CLANG_TIDY ${CMAKE_CXX_CLANG_TIDY} -extra-arg=-std=c++${CMAKE_CXX_STANDARD})
+    endif()
     if(WARNINGS_AS_ERRORS)
       list(APPEND CMAKE_CXX_CLANG_TIDY -warnings-as-errors=*)
     endif()
