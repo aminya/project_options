@@ -27,3 +27,24 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND MSVC_VERSION GREATER 1900)
 else()
   message(STATUS "No colored compiler diagnostic set for '${CMAKE_CXX_COMPILER_ID}' compiler.")
 endif()
+
+# if the default CMAKE_CXX_STANDARD is not set detect the latest CXX standard supported by the compiler and use it
+# this is needed for the tools like clang-tidy, cppcheck, etc.
+# Ideally, the user should read the warning and set a default CMAKE_CXX_STANDARD for their project
+# Like not having compiler warnings on by default, this fixes another `bad` defualt for the compilers
+if(NOT "${CMAKE_CXX_STANDARD}")
+  if(DEFINED CMAKE_CXX20_STANDARD_COMPILE_OPTION OR DEFINED CMAKE_CXX20_EXTENSION_COMPILE_OPTION)
+    set(CXX_LATEST_STANDARD 20)
+  elseif(DEFINED CMAKE_CXX17_STANDARD_COMPILE_OPTION OR DEFINED CMAKE_CXX17_EXTENSION_COMPILE_OPTION)
+    set(CXX_LATEST_STANDARD 17)
+  elseif(DEFINED CMAKE_CXX14_STANDARD_COMPILE_OPTION OR DEFINED CMAKE_CXX14_EXTENSION_COMPILE_OPTION)
+    set(CXX_LATEST_STANDARD 14)
+  else()
+    set(CXX_LATEST_STANDARD 11)
+  endif()
+  message(
+    WARNING
+      "The default CMAKE_CXX_STANDARD used by external tools like clang-tidy and cppcheck is not set yet. Using the latest supported C++ standard that is ${CXX_LATEST_STANDARD}"
+  )
+  set(CMAKE_CXX_STANDARD ${CXX_LATEST_STANDARD})
+endif()

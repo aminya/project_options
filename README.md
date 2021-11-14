@@ -11,6 +11,10 @@ Here is a full example:
 ```cmake
 cmake_minimum_required(VERSION 3.16)
 
+# set a default CXX standard used by the external tools like clang-tidy and cppcheck
+# You can later set fine-grained standards for each target using `target_compile_features`
+set(CMAKE_CXX_STANDARD 17)
+
 # Add ProjectOptions v0.6.0
 # https://github.com/aminya/ProjectOptions
 include(FetchContent)
@@ -124,6 +128,10 @@ However, if you still want to change the CMake options on the fly (e.g. to enabl
 
 ```cmake
 cmake_minimum_required(VERSION 3.16)
+
+# set a default CXX standard used by the external tools like clang-tidy and cppcheck
+# You can later set fine-grained standards for each target using `target_compile_features`
+set(CMAKE_CXX_STANDARD 17)
 
 # Add ProjectOptions v0.6.0
 # https://github.com/aminya/ProjectOptions
