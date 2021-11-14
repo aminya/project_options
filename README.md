@@ -33,11 +33,11 @@ ProjectOptions(
       # WARNINGS_AS_ERRORS
       # ENABLE_CPPCHECK
       # ENABLE_CLANG_TIDY
+      # ENABLE_IPO
       # ENABLE_INCLUDE_WHAT_YOU_USE
       # ENABLE_COVERAGE
       # ENABLE_PCH
       # ENABLE_DOXYGEN
-      # ENABLE_IPO
       # ENABLE_USER_LINKER
       # ENABLE_BUILD_WITH_TIME_TRACE
       # ENABLE_UNITY
@@ -71,13 +71,13 @@ It accepts the following named flags:
 - `WARNINGS_AS_ERRORS`: Treat compiler warnings as errors
 - `ENABLE_CPPCHECK`: Enable static analysis with Cppcheck
 - `ENABLE_CLANG_TIDY`: Enable static analysis with clang-tidy
+- `ENABLE_IPO`: Enable Interprocedural Optimization, aka Link Time Optimization (LTO) in the release builds
 - `ENABLE_INCLUDE_WHAT_YOU_USE`: Enable static analysis with include-what-you-use
 - `ENABLE_COVERAGE`: Enable coverage reporting for gcc/clang
 - `ENABLE_CACHE`: Enable cache if available
 - `ENABLE_PCH`: Enable Precompiled Headers
 - `ENABLE_CONAN`: Use Conan for dependency management
 - `ENABLE_DOXYGEN`: Enable Doxygen doc builds of source
-- `ENABLE_IPO`: Enable Interprocedural Optimization, aka Link Time Optimization (LTO)
 - `ENABLE_USER_LINKER`: Enable a specific linker if available
 - `ENABLE_BUILD_WITH_TIME_TRACE`: Enable `-ftime-trace` to generate time tracing `.json` files on clang
 - `ENABLE_UNITY`: Enable Unity builds of projects
@@ -150,6 +150,7 @@ ProjectOptions(
       # WARNINGS_AS_ERRORS
       # ENABLE_CPPCHECK
       # ENABLE_CLANG_TIDY
+      # ENABLE_IPO
       # ENABLE_INCLUDE_WHAT_YOU_USE
       # ENABLE_COVERAGE
       # ENABLE_PCH
