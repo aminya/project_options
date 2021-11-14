@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.16...3.21)
 
+# set a default CXX standard used by the external tools like clang-tidy, cppcheck, etc.
+# You can later set fine-grained standards for each target using `target_compile_features`
+set(CMAKE_CXX_STANDARD 17)
+
 ### Add ProjectOptions
 # include(FetchContent)
 # FetchContent_Declare(ProjectOptions URL https://github.com/aminya/ProjectOptions/archive/refs/heads/main.zip)
@@ -21,7 +25,7 @@ ProjectOptions(
   # ENABLE_CONAN
   # WARNINGS_AS_ERRORS
   ENABLE_CPPCHECK
-  # ENABLE_CLANG_TIDY
+  ENABLE_CLANG_TIDY
   # ENABLE_INCLUDE_WHAT_YOU_USE
   # ENABLE_COVERAGE
   # ENABLE_PCH
