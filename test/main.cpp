@@ -8,11 +8,11 @@
 #include <string_view>
 
 // test c libraries
-// #include <cassert>
-// #include <cctype>
-// #include <cstddef>
-// #include <cstring>
-// #include <cstdint>
+#include <cassert>
+#include <cctype>
+#include <cstddef>
+#include <cstring>
+#include <cstdint>
 
 
 int main() {
