@@ -29,6 +29,7 @@ ProjectOptions(
   # ENABLE_INCLUDE_WHAT_YOU_USE
   # ENABLE_COVERAGE
   # ENABLE_PCH
+  # PCH_HEADERS <Eigen/Dense> <fmt/core.h> <vector> <utility> <string> <string_view>
   # ENABLE_DOXYGEN
   # ENABLE_IPO
   # ENABLE_USER_LINKER
@@ -39,6 +40,7 @@ ProjectOptions(
   # ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
   # ENABLE_SANITIZER_THREAD
   # ENABLE_SANITIZER_MEMORY
+  # CLANG_WARNINGS "-Weverything"
 )
 # NOTE: project_options and project_warnings are defined inside ProjectOptions
 

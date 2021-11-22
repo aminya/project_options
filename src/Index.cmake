@@ -19,6 +19,7 @@ include("${ProjectOptions_SRC_DIR}/SystemLink.cmake")
 # - ENABLE_COVERAGE: Enable coverage reporting for gcc/clang
 # - ENABLE_CACHE: Enable cache if available
 # - ENABLE_PCH: Enable Precompiled Headers
+# - PCH_HEADERS: the list of the headers to precompile
 # - ENABLE_CONAN: Use Conan for dependency management
 # - ENABLE_DOXYGEN: Enable doxygen doc builds of source
 # - ENABLE_IPO: Enable Interprocedural Optimization, aka Link Time Optimization (LTO)
@@ -58,7 +59,7 @@ macro(ProjectOptions)
       ENABLE_SANITIZER_THREAD
       ENABLE_SANITIZER_MEMORY)
   set(oneValueArgs MSVC_WARNINGS CLANG_WARNINGS GCC_WARNINGS)
-  set(multiValueArgs CONAN_OPTIONS)
+  set(multiValueArgs PCH_HEADERS CONAN_OPTIONS)
   cmake_parse_arguments(
     ProjectOptions
     "${options}"
@@ -143,16 +144,16 @@ macro(ProjectOptions)
 
   # Very basic PCH example
   if(${ProjectOptions_ENABLE_PCH})
-    # This sets a global PCH parameter, each project will build its own PCH, which is a good idea if any #define's change
-    #
-    # consider breaking this out per project as necessary
-    target_precompile_headers(
-      project_options
-      INTERFACE
-      <vector>
-      <string>
-      <map>
-      <utility>)
+    # This sets a global PCH parameter, each project will build its own PCH, which is a good idea
+    # if any #define's change consider breaking this out per project as necessary
+    if(NOT ProjectOptions_PCH_HEADERS)
+      set(ProjectOptions_PCH_HEADERS
+          <vector>
+          <string>
+          <map>
+          <utility>)
+    endif()
+    target_precompile_headers(project_options INTERFACE ${ProjectOptions_PCH_HEADERS})
   endif()
 
   if(${ProjectOptions_ENABLE_VCPKG})

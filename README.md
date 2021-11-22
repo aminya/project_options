@@ -43,6 +43,7 @@ ProjectOptions(
       # ENABLE_INCLUDE_WHAT_YOU_USE
       # ENABLE_COVERAGE
       # ENABLE_PCH
+      # PCH_HEADERS
       # ENABLE_DOXYGEN
       # ENABLE_USER_LINKER
       # ENABLE_BUILD_WITH_TIME_TRACE
@@ -95,6 +96,7 @@ It accepts the following named flags:
 
 It gets the following named parameters (each accepting multiple values):
 
+- `PCH_HEADERS`: the list of the headers to precompile
 - `MSVC_WARNINGS`: Override the defaults for the MSVC warnings
 - `CLANG_WARNINGS`: Override the defaults for the CLANG warnings
 - `GCC_WARNINGS`: Override the defaults for the GCC warnings
@@ -166,6 +168,7 @@ ProjectOptions(
       # ENABLE_INCLUDE_WHAT_YOU_USE
       # ENABLE_COVERAGE
       # ENABLE_PCH
+      # PCH_HEADERS
       # ENABLE_DOXYGEN
       # ENABLE_IPO
       # ENABLE_USER_LINKER
