@@ -50,6 +50,16 @@ function(
       ","
       LIST_OF_SANITIZERS)
 
+  elseif(MSVC)
+    if(${ENABLE_SANITIZER_ADDRESS})
+      list(APPEND SANITIZERS "address")
+    endif()
+    if(${ENABLE_SANITIZER_LEAK}
+       OR ${ENABLE_SANITIZER_UNDEFINED_BEHAVIOR}
+       OR ${ENABLE_SANITIZER_THREAD}
+       OR ${ENABLE_SANITIZER_MEMORY})
+      message(WARNING "MSVC only supports address sanitizer")
+    endif()
   endif()
 
   if(LIST_OF_SANITIZERS)
@@ -57,8 +67,12 @@ function(
        "${LIST_OF_SANITIZERS}"
        STREQUAL
        "")
-      target_compile_options(${project_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
-      target_link_options(${project_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
+      if(NOT MSVC)
+        target_compile_options(${project_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
+        target_link_options(${project_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
+      else()
+        target_compile_options(${project_name} INTERFACE /fsanitize=${LIST_OF_SANITIZERS} /Zi /INCREMENTAL:NO)
+      endif()
     endif()
   endif()
 
