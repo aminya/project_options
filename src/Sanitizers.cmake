@@ -43,13 +43,6 @@ function(
         list(APPEND SANITIZERS "memory")
       endif()
     endif()
-
-    list(
-      JOIN
-      SANITIZERS
-      ","
-      LIST_OF_SANITIZERS)
-
   elseif(MSVC)
     if(${ENABLE_SANITIZER_ADDRESS})
       list(APPEND SANITIZERS "address")
@@ -62,6 +55,12 @@ function(
     endif()
   endif()
 
+  list(
+    JOIN
+    SANITIZERS
+    ","
+    LIST_OF_SANITIZERS)
+
   if(LIST_OF_SANITIZERS)
     if(NOT
        "${LIST_OF_SANITIZERS}"
@@ -71,7 +70,19 @@ function(
         target_compile_options(${project_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
         target_link_options(${project_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
       else()
+        if("$ENV{VCINSTALLDIR}" STREQUAL "")
+          message(
+            FATAL_ERROR
+              "Using MSVC sanitizers requires that you have set the MSVC environment before building the project. Please use the MSVC command prompt and rebuild the project. You can set up the MSVC environment using vcvarsall in cmd:
+                # find vcvarsall.bat
+                vswhere -products * -latest -prerelease -find \"**/VC/Auxiliary/Build/vcvarsall.bat\"
+
+                # set up the environment for x64
+                \"path/to/vcvarsall\" x64
+              ")
+        endif()
         target_compile_options(${project_name} INTERFACE /fsanitize=${LIST_OF_SANITIZERS} /Zi /INCREMENTAL:NO)
+        target_link_options(${project_name} INTERFACE /INCREMENTAL:NO)
       endif()
     endif()
   endif()

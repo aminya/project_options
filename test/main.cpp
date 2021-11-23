@@ -1,5 +1,6 @@
 // test external pac
 #include <fmt/core.h>
+#include <fmt/ostream.h>
 #include <Eigen/Dense>
 
 // test std libraries
@@ -19,8 +20,12 @@ int main() {
     fmt::print("Hello from fmt{}", "!");
 
     // populate an Eigen vector with the values
-    auto vec = Eigen::VectorXd::LinSpaced(10, 0, 1);
+    auto eigen_vec = Eigen::VectorXd::LinSpaced(10, 0, 1);
 
     // print the vector
-    fmt::print("{}", vec[0]);
+    fmt::print("{}", eigen_vec);
+
+    // trigger address sanitizer
+    int *p = nullptr;
+    *p = 1;
 }
