@@ -35,10 +35,10 @@ project(myproject LANGUAGES CXX)
 # uncomment the options to enable them:
 ProjectOptions(
       ENABLE_CACHE
-      # ENABLE_CONAN
+      ENABLE_CPPCHECK
+      ENABLE_CLANG_TIDY
       # WARNINGS_AS_ERRORS
-      # ENABLE_CPPCHECK
-      # ENABLE_CLANG_TIDY
+      # ENABLE_CONAN
       # ENABLE_IPO
       # ENABLE_INCLUDE_WHAT_YOU_USE
       # ENABLE_COVERAGE
@@ -75,7 +75,7 @@ target_link_system_libraries(
 
 It accepts the following named flags:
 
-- `WARNINGS_AS_ERRORS`: Treat compiler warnings as errors
+- `WARNINGS_AS_ERRORS`: Treat the warnings as errors
 - `ENABLE_CPPCHECK`: Enable static analysis with Cppcheck
 - `ENABLE_CLANG_TIDY`: Enable static analysis with clang-tidy
 - `ENABLE_IPO`: Enable Interprocedural Optimization, aka Link Time Optimization (LTO) in the release builds
@@ -160,10 +160,10 @@ project(myproject LANGUAGES CXX)
 # uncomment the options to enable them:
 ProjectOptions(
       ENABLE_CACHE
-      ENABLE_CONAN
+      ENABLE_CPPCHECK
+      ENABLE_CLANG_TIDY
       # WARNINGS_AS_ERRORS
-      # ENABLE_CPPCHECK
-      # ENABLE_CLANG_TIDY
+      # ENABLE_CONAN
       # ENABLE_IPO
       # ENABLE_INCLUDE_WHAT_YOU_USE
       # ENABLE_COVERAGE
