@@ -17,8 +17,7 @@ function(run_vcvarsall)
             "${MSVC_DIR}/../../../../../../.."
       PATH_SUFFIXES "VC/Auxiliary/Build" "Common7/Tools" "Tools")
 
-    if(VCVARSALL_FILE_FOUND)
-
+    if(EXISTS ${VCVARSALL_FILE})
       # detect the architecture
       string(TOLOWER "${CMAKE_SYSTEM_PROCESSOR}" CMAKE_SYSTEM_PROCESSOR_LOWER)
       if(CMAKE_SYSTEM_PROCESSOR_LOWER STREQUAL x86 OR CMAKE_SYSTEM_PROCESSOR_LOWER MATCHES "^i[3456]86$")
