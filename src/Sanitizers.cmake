@@ -70,16 +70,12 @@ function(
         target_compile_options(${project_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
         target_link_options(${project_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
       else()
-        if("$ENV{VCINSTALLDIR}" STREQUAL "")
+        string(FIND "$ENV{VSINSTALLDIR}" "$ENV{PATH}" index_of_vs_install_dir)
+        if("index_of_vs_install_dir" STREQUAL "-1")
           message(
-            FATAL_ERROR
-              "Using MSVC sanitizers requires that you have set the MSVC environment before building the project. Please use the MSVC command prompt and rebuild the project. You can set up the MSVC environment using vcvarsall in cmd:
-                # find vcvarsall.bat
-                vswhere -products * -latest -prerelease -find \"**/VC/Auxiliary/Build/vcvarsall.bat\"
-
-                # set up the environment for x64
-                \"path/to/vcvarsall\" x64
-              ")
+            SEND_ERROR
+              "Using MSVC sanitizers requires setting the MSVC environment before building the project. Please manually open the MSVC command prompt and rebuild the project."
+          )
         endif()
         target_compile_options(${project_name} INTERFACE /fsanitize=${LIST_OF_SANITIZERS} /Zi /INCREMENTAL:NO)
         target_link_options(${project_name} INTERFACE /INCREMENTAL:NO)
