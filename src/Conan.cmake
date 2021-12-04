@@ -44,8 +44,10 @@ macro(run_conan)
     conan_cmake_install(
       PATH_OR_REFERENCE ${CMAKE_SOURCE_DIR}
       BUILD missing
-            # Pass compile-time configured options into conan
+      # Pass compile-time configured options into conan
       OPTIONS ${ProjectOptions_CONAN_OPTIONS}
+      # Pass CMake compilers to Conan
+      ENV "CC=${CMAKE_C_COMPILER}" "CXX=${CMAKE_CXX_COMPILER}"
       SETTINGS ${settings})
   endforeach()
 
