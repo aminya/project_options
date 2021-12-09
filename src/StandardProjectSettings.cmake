@@ -50,5 +50,4 @@ if(NOT "${CMAKE_CXX_STANDARD}")
 endif()
 
 # run vcvarsall when msvc is used
-include("${ProjectOptions_SRC_DIR}/VCEnvironment.cmake")
 run_vcvarsall()

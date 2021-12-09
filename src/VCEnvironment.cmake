@@ -1,9 +1,39 @@
 include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
 
+function(find_msvc)
+  # Try finding MSVC
+  if(# if MSVC is not found by CMake yet,
+     NOT MSVC
+     AND # if the user has specified cl using -DCMAKE_CXX_COMPILER=cl or -DCMAKE_C_COMPILER=cl
+         ((CMAKE_CXX_COMPILER MATCHES "^cl(.exe)?$" AND CMAKE_C_COMPILER MATCHES "^cl(.exe)?$")
+          # if the user has specified cl using CC and CXX but not using -DCMAKE_CXX_COMPILER or -DCMAKE_C_COMPILER
+          OR (NOT CMAKE_CXX_COMPILER
+              AND NOT CMAKE_C_COMPILER
+              AND ($ENV{CXX} MATCHES "^cl(.exe)?$" AND $ENV{CXX} MATCHES "^cl(.exe)?$"))
+         ))
+    find_program(CL_EXECUTABLE NAMES cl)
+    if(CL_EXECUTABLE)
+      message(STATUS "Setting CMAKE_CXX_COMPILER to ${CL_EXECUTABLE}")
+      set(CMAKE_CXX_COMPILER ${CL_EXECUTABLE})
+      set(CMAKE_C_COMPILER ${CL_EXECUTABLE})
+      set(MSVC_FOUND 1)
+    else()
+      include(FetchContent)
+      FetchContent_Declare(
+        _msvc_toolchain
+        URL https://github.com/MarkSchofield/Toolchain/archive/a82ffa71f2ec44dbbb287e1822747d65b8024a33.zip)
+      FetchContent_MakeAvailable(_msvc_toolchain)
+      include(${_msvc_toolchain_SOURCE_DIR}/Windows.MSVC.toolchain.cmake)
+      set(MSVC_FOUND 1)
+    endif()
+  endif()
+endfunction()
+
 # Run vcvarsall.bat and set CMake environment variables
 function(run_vcvarsall)
+  # if msvc_found is set by find_msvc
   # if MSVC but VSCMD_VER is not set, which means vcvarsall has not run
-  if(MSVC AND "$ENV{VSCMD_VER}" STREQUAL "")
+  if(MSVC_FOUND OR (MSVC AND "$ENV{VSCMD_VER}" STREQUAL ""))
 
     # find vcvarsall.bat
     get_filename_component(MSVC_DIR ${CMAKE_CXX_COMPILER} DIRECTORY)
