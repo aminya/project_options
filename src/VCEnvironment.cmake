@@ -1,6 +1,6 @@
 include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
 
-function(find_msvc)
+macro(find_msvc)
   # Try finding MSVC
   if(# if MSVC is not found by CMake yet,
      NOT MSVC
@@ -9,28 +9,38 @@ function(find_msvc)
           # if the user has specified cl using CC and CXX but not using -DCMAKE_CXX_COMPILER or -DCMAKE_C_COMPILER
           OR (NOT CMAKE_CXX_COMPILER
               AND NOT CMAKE_C_COMPILER
-              AND ($ENV{CXX} MATCHES "^cl(.exe)?$" AND $ENV{CXX} MATCHES "^cl(.exe)?$"))
+              AND ($ENV{CXX} MATCHES "^cl(.exe)?$" AND $ENV{CC} MATCHES "^cl(.exe)?$"))
          ))
-    find_program(CL_EXECUTABLE NAMES cl)
+    find_program(
+      CL_EXECUTABLE
+      NAMES cl
+      PATHS ${CL_EXECUTABLE})
     if(CL_EXECUTABLE)
       message(STATUS "Setting CMAKE_CXX_COMPILER to ${CL_EXECUTABLE}")
       set(CMAKE_CXX_COMPILER ${CL_EXECUTABLE})
       set(CMAKE_C_COMPILER ${CL_EXECUTABLE})
-      set(MSVC_FOUND 1)
+      set(ENV{CXX} ${CMAKE_CXX_COMPILER})
+      set(ENV{CC} ${CMAKE_C_COMPILER})
     else()
+      message(STATUS "Finding MSVC cl.exe ...")
       include(FetchContent)
-      FetchContent_Declare(
-        _msvc_toolchain
-        URL https://github.com/MarkSchofield/Toolchain/archive/a82ffa71f2ec44dbbb287e1822747d65b8024a33.zip)
-      FetchContent_MakeAvailable(_msvc_toolchain)
-      include(${_msvc_toolchain_SOURCE_DIR}/Windows.MSVC.toolchain.cmake)
-      set(MSVC_FOUND 1)
+      FetchContent_Declare(_msvctoolchain URL https://github.com/aminya/Toolchain/archive/refs/tags/v0.1.1.zip)
+      FetchContent_MakeAvailable(_msvctoolchain)
+      include("${_msvctoolchain_SOURCE_DIR}/Windows.MSVC.toolchain.cmake")
+      message(STATUS "Setting CMAKE_CXX_COMPILER to ${CMAKE_CXX_COMPILER}")
+      set(ENV{CXX} ${CMAKE_CXX_COMPILER})
+      set(ENV{CC} ${CMAKE_C_COMPILER})
+      set(CL_EXECUTABLE
+          ${CMAKE_CXX_COMPILER}
+          CACHE INTERNAL "CL_EXECUTABLE")
     endif()
+    set(MSVC_FOUND TRUE)
+    run_vcvarsall()
   endif()
-endfunction()
+endmacro()
 
 # Run vcvarsall.bat and set CMake environment variables
-function(run_vcvarsall)
+macro(run_vcvarsall)
   # if msvc_found is set by find_msvc
   # if MSVC but VSCMD_VER is not set, which means vcvarsall has not run
   if(MSVC_FOUND OR (MSVC AND "$ENV{VSCMD_VER}" STREQUAL ""))
@@ -59,7 +69,9 @@ function(run_vcvarsall)
       elseif(CMAKE_SYSTEM_PROCESSOR_LOWER STREQUAL arm64 OR CMAKE_SYSTEM_PROCESSOR_LOWER STREQUAL aarch64)
         set(VCVARSALL_ARCH arm64)
       else()
-        message(WARNING "Unkown architecture: ${lowercase_CMAKE_HOST_SYSTEM_PROCESSOR}")
+        message(
+          STATUS "Unkown architecture CMAKE_SYSTEM_PROCESSOR: ${lowercase_CMAKE_HOST_SYSTEM_PROCESSOR} - using x64")
+        set(VCVARSALL_ARCH x64)
       endif()
 
       # run vcvarsall and print the environment variables
@@ -85,4 +97,4 @@ function(run_vcvarsall)
       ")
     endif()
   endif()
-endfunction()
+endmacro()
