@@ -69,9 +69,13 @@ macro(run_vcvarsall)
       elseif(CMAKE_SYSTEM_PROCESSOR_LOWER STREQUAL arm64 OR CMAKE_SYSTEM_PROCESSOR_LOWER STREQUAL aarch64)
         set(VCVARSALL_ARCH arm64)
       else()
-        message(
-          STATUS "Unkown architecture CMAKE_SYSTEM_PROCESSOR: ${lowercase_CMAKE_HOST_SYSTEM_PROCESSOR} - using x64")
-        set(VCVARSALL_ARCH x64)
+        if(CMAKE_HOST_SYSTEM_PROCESSOR)
+          set(VCVARSALL_ARCH ${CMAKE_HOST_SYSTEM_PROCESSOR})
+        else()
+          set(VCVARSALL_ARCH x64)
+        endif()
+          message(
+            STATUS "Unkown architecture CMAKE_SYSTEM_PROCESSOR: ${CMAKE_HOST_SYSTEM_PROCESSOR} - using ${VCVARSALL_ARCH}")
       endif()
 
       # run vcvarsall and print the environment variables
