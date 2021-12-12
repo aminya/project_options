@@ -17,10 +17,10 @@ cmake_minimum_required(VERSION 3.16)
 # You can later set fine-grained standards for each target using `target_compile_features`
 # set(CMAKE_CXX_STANDARD 17)
 
-# Add ProjectOptions v0.11.2
+# Add ProjectOptions v0.11.3
 # https://github.com/aminya/ProjectOptions
 include(FetchContent)
-FetchContent_Declare(projectoptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.11.2.zip)
+FetchContent_Declare(projectoptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.11.3.zip)
 FetchContent_MakeAvailable(projectoptions)
 include(${projectoptions_SOURCE_DIR}/Index.cmake)
 
@@ -28,7 +28,7 @@ include(${projectoptions_SOURCE_DIR}/Index.cmake)
 # # Setup vcpkg - should be called before defining project()
 # run_vcpkg()
 
-# Set the project name to your project name, my_project isn't very descriptive
+# Set the project name and language
 project(myproject LANGUAGES CXX)
 
 # Initialize ProjectOptions
@@ -78,7 +78,7 @@ It accepts the following named flags:
 - `WARNINGS_AS_ERRORS`: Treat the warnings as errors
 - `ENABLE_CPPCHECK`: Enable static analysis with Cppcheck
 - `ENABLE_CLANG_TIDY`: Enable static analysis with clang-tidy
-- `ENABLE_IPO`: Enable Interprocedural Optimization, aka Link Time Optimization (LTO) in the release builds
+- `ENABLE_IPO`: Enable Interprocedural Optimization (Link Time Optimization, LTO) in the release build
 - `ENABLE_INCLUDE_WHAT_YOU_USE`: Enable static analysis with include-what-you-use
 - `ENABLE_COVERAGE`: Enable coverage reporting for gcc/clang
 - `ENABLE_CACHE`: Enable cache if available
@@ -119,13 +119,13 @@ A very useful function that accepts the same arguments as `target_link_libraries
 
 ## `target_include_system_directories` function
 
-Similar to `target_include_directories`, but it suppresses the warnings. It is useful if you are including some external directories directly.
+Similar to `target_include_directories`, but it suppresses the warnings. It is useful if you want to include some external directories directly.
 
 ## Using global CMake options (⚠️ **not recommended**)
 
 ⚠️ It is highly recommended to keep the build declarative and reproducible by using the function arguments as explained above.
 
-However, if you still want to change the CMake options on the fly (e.g. to enable sanitizers inside CI), you can include the `GlobalOptions.cmake`, which adds global options for the arguments of `ProjectOptions` function.
+However, if you still want to change the CMake options on the fly (e.g., to enable sanitizers inside CI), you can include the `GlobalOptions.cmake`, which adds global options for the arguments of `ProjectOptions` function.
 
 <details>
 <summary>Click to show the example:</summary>
@@ -139,10 +139,10 @@ cmake_minimum_required(VERSION 3.16)
 # You can later set fine-grained standards for each target using `target_compile_features`
 # set(CMAKE_CXX_STANDARD 17)
 
-# Add ProjectOptions v0.11.2
+# Add ProjectOptions v0.11.3
 # https://github.com/aminya/ProjectOptions
 include(FetchContent)
-FetchContent_Declare(projectoptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.11.2.zip)
+FetchContent_Declare(projectoptions URL https://github.com/aminya/ProjectOptions/archive/refs/tags/v0.11.3.zip)
 FetchContent_MakeAvailable(projectoptions)
 include(${projectoptions_SOURCE_DIR}/Index.cmake)
 
@@ -153,7 +153,7 @@ include(${projectoptions_SOURCE_DIR}/src/GlobalOptions.cmake)
 # # Setup vcpkg - should be called before defining project()
 # run_vcpkg()
 
-# Set the project name to your project name, my_project isn't very descriptive
+# Set the project name and language
 project(myproject LANGUAGES CXX)
 
 # Initialize ProjectOptions
