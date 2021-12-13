@@ -43,8 +43,8 @@ if(NOT "${CMAKE_CXX_STANDARD}")
     set(CXX_LATEST_STANDARD 11)
   endif()
   message(
-    WARNING
-      "The default CMAKE_CXX_STANDARD used by external tools like clang-tidy and cppcheck is not set yet. Using the latest supported C++ standard that is ${CXX_LATEST_STANDARD}"
+    STATUS
+      "The default CMAKE_CXX_STANDARD used by external targets and tools is not set yet. Using the latest supported C++ standard that is ${CXX_LATEST_STANDARD}"
   )
   set(CMAKE_CXX_STANDARD ${CXX_LATEST_STANDARD})
 endif()
