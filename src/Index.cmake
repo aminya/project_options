@@ -36,8 +36,8 @@ include("${ProjectOptions_SRC_DIR}/SystemLink.cmake")
 # - GCC_WARNINGS: Override the defaults for the GCC warnings
 # - CONAN_OPTIONS: Extra Conan options
 #
-# NOTE: cmake-lint [C0103] Invalid macro name "ProjectOptions" doesn't match `[0-9A-Z_]+`
-macro(ProjectOptions)
+# NOTE: cmake-lint [C0103] Invalid macro name "project_options" doesn't match `[0-9A-Z_]+`
+macro(project_options)
   set(options
       WARNINGS_AS_ERRORS
       ENABLE_COVERAGE
@@ -61,7 +61,7 @@ macro(ProjectOptions)
   set(oneValueArgs MSVC_WARNINGS CLANG_WARNINGS GCC_WARNINGS)
   set(multiValueArgs PCH_HEADERS CONAN_OPTIONS)
   cmake_parse_arguments(
-    ProjectOptions
+    project_options
     "${options}"
     "${oneValueArgs}"
     "${multiValueArgs}"

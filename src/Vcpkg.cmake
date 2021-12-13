@@ -6,7 +6,7 @@ macro(run_vcpkg)
   # optional named VCPKG_DIR argument
   set(oneValueArgs VCPKG_DIR)
   cmake_parse_arguments(
-    ProjectOptions
+    project_options
     ""
     "${oneValueArgs}"
     ""

@@ -1,10 +1,10 @@
 parse:
   additional_commands:
-    ProjectOptions:
+    project_options:
       pargs:
         nargs: '*'
         flags: []
-      spelling: ProjectOptions
+      spelling: project_options
       kwargs:
         CLANG_WARNINGS: 1
         GCC_WARNINGS: 1

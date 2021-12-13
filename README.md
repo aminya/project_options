@@ -1,4 +1,4 @@
-# ProjectOptions
+# project_options
 
 A general-purpose CMake library that makes using CMake easier
 
@@ -15,10 +15,10 @@ cmake_minimum_required(VERSION 3.16)
 # You can later set fine-grained standards for each target using `target_compile_features`
 # set(CMAKE_CXX_STANDARD 17)
 
-# Add ProjectOptions v0.11.4
+# Add ProjectOptions v0.12.0
 # https://github.com/cpp-best-practices/ProjectOptions
 include(FetchContent)
-FetchContent_Declare(projectoptions URL https://github.com/cpp-best-practices/ProjectOptions/archive/refs/tags/v0.11.4.zip)
+FetchContent_Declare(projectoptions URL https://github.com/cpp-best-practices/ProjectOptions/archive/refs/tags/v0.12.0.zip)
 FetchContent_MakeAvailable(projectoptions)
 include(${projectoptions_SOURCE_DIR}/Index.cmake)
 
@@ -29,9 +29,9 @@ include(${projectoptions_SOURCE_DIR}/Index.cmake)
 # Set the project name and language
 project(myproject LANGUAGES CXX)
 
-# Initialize ProjectOptions
+# Initialize project_options
 # uncomment the options to enable them:
-ProjectOptions(
+project_options(
       ENABLE_CACHE
       ENABLE_CPPCHECK
       ENABLE_CLANG_TIDY
@@ -58,7 +58,7 @@ ProjectOptions(
 
 add_executable(myprogram main.cpp)
 target_compile_features(myprogram INTERFACE cxx_std_17)
-target_link_libraries(myprogram PRIVATE project_options project_warnings) # connect ProjectOptions to myprogram
+target_link_libraries(myprogram PRIVATE project_options project_warnings) # connect project_options to myprogram
 
 # find and link dependencies (assuming you have enabled vcpkg or Conan):
 find_package(fmt REQUIRED)
@@ -69,7 +69,7 @@ target_link_system_libraries(
 )
 ```
 
-## `ProjectOptions` function
+## `project_options` function
 
 It accepts the following named flags:
 
@@ -123,7 +123,7 @@ Similar to `target_include_directories`, but it suppresses the warnings. It is u
 
 ⚠️ It is highly recommended to keep the build declarative and reproducible by using the function arguments as explained above.
 
-However, if you still want to change the CMake options on the fly (e.g., to enable sanitizers inside CI), you can include the `GlobalOptions.cmake`, which adds global options for the arguments of `ProjectOptions` function.
+However, if you still want to change the CMake options on the fly (e.g., to enable sanitizers inside CI), you can include the `GlobalOptions.cmake`, which adds global options for the arguments of `project_options` function.
 
 <details>
 <summary>Click to show the example:</summary>
@@ -137,10 +137,10 @@ cmake_minimum_required(VERSION 3.16)
 # You can later set fine-grained standards for each target using `target_compile_features`
 # set(CMAKE_CXX_STANDARD 17)
 
-# Add ProjectOptions v0.11.4
+# Add ProjectOptions v0.12.0
 # https://github.com/cpp-best-practices/ProjectOptions
 include(FetchContent)
-FetchContent_Declare(projectoptions URL https://github.com/cpp-best-practices/ProjectOptions/archive/refs/tags/v0.11.4.zip)
+FetchContent_Declare(projectoptions URL https://github.com/cpp-best-practices/ProjectOptions/archive/refs/tags/v0.12.0.zip)
 FetchContent_MakeAvailable(projectoptions)
 include(${projectoptions_SOURCE_DIR}/Index.cmake)
 
@@ -154,9 +154,9 @@ include(${projectoptions_SOURCE_DIR}/src/GlobalOptions.cmake)
 # Set the project name and language
 project(myproject LANGUAGES CXX)
 
-# Initialize ProjectOptions
+# Initialize project_options
 # uncomment the options to enable them:
-ProjectOptions(
+project_options(
       ENABLE_CACHE
       ENABLE_CPPCHECK
       ENABLE_CLANG_TIDY
@@ -182,7 +182,7 @@ ProjectOptions(
 
 add_executable(myprogram main.cpp)
 target_compile_features(myprogram INTERFACE cxx_std_17)
-target_link_libraries(myprogram PRIVATE project_options project_warnings) # connect ProjectOptions to myprogram
+target_link_libraries(myprogram PRIVATE project_options project_warnings) # connect project_options to myprogram
 
 # find and link dependencies (assuming you have enabled vcpkg or Conan):
 find_package(fmt REQUIRED)

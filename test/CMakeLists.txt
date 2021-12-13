@@ -4,10 +4,10 @@ cmake_minimum_required(VERSION 3.16...3.21)
 # You can later set fine-grained standards for each target using `target_compile_features`
 set(CMAKE_CXX_STANDARD 17)
 
-### Add ProjectOptions
+### Add project_options
 # include(FetchContent)
-# FetchContent_Declare(ProjectOptions URL https://github.com/aminya/ProjectOptions/archive/refs/heads/main.zip)
-# FetchContent_MakeAvailable(ProjectOptions)
+# FetchContent_Declare(project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/heads/main.zip)
+# FetchContent_MakeAvailable(project_options)
 # include(${ProjectOptions_SOURCE_DIR}/Index.cmake)
 include(../src/Index.cmake)
 
@@ -18,9 +18,9 @@ project(
   VERSION 0.2.0
   LANGUAGES CXX)
 
-# Initialize ProjectOptions
+# Initialize project_options
 # uncomment the options to enable them
-ProjectOptions(
+project_options(
   ENABLE_CACHE
   # ENABLE_CONAN
   # WARNINGS_AS_ERRORS
@@ -42,7 +42,7 @@ ProjectOptions(
   # ENABLE_SANITIZER_MEMORY
   # CLANG_WARNINGS "-Weverything"
 )
-# NOTE: project_options and project_warnings are defined inside ProjectOptions
+# NOTE: project_options and project_warnings are defined inside project_options
 
 # add src, tests, etc here:
 add_executable(main main.cpp)
