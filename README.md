@@ -2,8 +2,6 @@
 
 A general-purpose CMake library that makes using CMake easier
 
-_NOTE_: It is planned to transfer this repository to [cpp-best-practices organization](https://github.com/cpp-best-practices/cpp_starter_project/issues/125). Stay tuned for that.
-
 ## Usage
 
 Here is a full example:
