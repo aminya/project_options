@@ -61,7 +61,7 @@ macro(project_options)
   set(oneValueArgs MSVC_WARNINGS CLANG_WARNINGS GCC_WARNINGS)
   set(multiValueArgs PCH_HEADERS CONAN_OPTIONS)
   cmake_parse_arguments(
-    project_options
+    ProjectOptions
     "${options}"
     "${oneValueArgs}"
     "${multiValueArgs}"

@@ -26,6 +26,6 @@ int main() {
     fmt::print("{}", eigen_vec);
 
     // trigger address sanitizer
-    int *p = nullptr;
-    *p = 1;
+    // int *p = nullptr;
+    // *p = 1;
 }
