@@ -6,9 +6,9 @@ set(CMAKE_CXX_STANDARD 17)
 
 ### Add project_options
 # include(FetchContent)
-# FetchContent_Declare(project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/heads/main.zip)
-# FetchContent_MakeAvailable(project_options)
-# include(${ProjectOptions_SOURCE_DIR}/Index.cmake)
+# FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/heads/main.zip)
+# FetchContent_MakeAvailable(_project_options)
+# include(${_project_options_SOURCE_DIR}/Index.cmake)
 include(../src/Index.cmake)
 
 run_vcpkg()

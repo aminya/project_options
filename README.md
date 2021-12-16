@@ -15,12 +15,12 @@ cmake_minimum_required(VERSION 3.16)
 # You can later set fine-grained standards for each target using `target_compile_features`
 # set(CMAKE_CXX_STANDARD 17)
 
-# Add ProjectOptions v0.12.0
-# https://github.com/cpp-best-practices/ProjectOptions
+# Add project_options v0.12.0
+# https://github.com/cpp-best-practices/project_options
 include(FetchContent)
-FetchContent_Declare(projectoptions URL https://github.com/cpp-best-practices/ProjectOptions/archive/refs/tags/v0.12.0.zip)
-FetchContent_MakeAvailable(projectoptions)
-include(${projectoptions_SOURCE_DIR}/Index.cmake)
+FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.12.0.zip)
+FetchContent_MakeAvailable(_project_options)
+include(${_project_options_SOURCE_DIR}/Index.cmake)
 
 # uncomment to enable vcpkg:
 # # Setup vcpkg - should be called before defining project()
@@ -137,15 +137,15 @@ cmake_minimum_required(VERSION 3.16)
 # You can later set fine-grained standards for each target using `target_compile_features`
 # set(CMAKE_CXX_STANDARD 17)
 
-# Add ProjectOptions v0.12.0
-# https://github.com/cpp-best-practices/ProjectOptions
+# Add project_options v0.12.0
+# https://github.com/cpp-best-practices/project_options
 include(FetchContent)
-FetchContent_Declare(projectoptions URL https://github.com/cpp-best-practices/ProjectOptions/archive/refs/tags/v0.12.0.zip)
-FetchContent_MakeAvailable(projectoptions)
-include(${projectoptions_SOURCE_DIR}/Index.cmake)
+FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.12.0.zip)
+FetchContent_MakeAvailable(_project_options)
+include(${_project_options_SOURCE_DIR}/Index.cmake)
 
  # ❗ Add global CMake options
-include(${projectoptions_SOURCE_DIR}/src/GlobalOptions.cmake)
+include(${_project_options_SOURCE_DIR}/src/GlobalOptions.cmake)
 
 # uncomment to enable vcpkg:
 # # Setup vcpkg - should be called before defining project()
