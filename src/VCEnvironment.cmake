@@ -46,7 +46,7 @@ macro(find_msvc)
     else()
       message(STATUS "Finding MSVC cl.exe ...")
       include(FetchContent)
-      FetchContent_Declare(_msvctoolchain URL https://github.com/aminya/Toolchain/archive/refs/tags/v0.1.1.zip)
+      FetchContent_Declare(_msvctoolchain URL https://github.com/aminya/Toolchain/archive/refs/tags/2021-dec-11.zip)
       FetchContent_MakeAvailable(_msvctoolchain)
       include("${_msvctoolchain_SOURCE_DIR}/VSWhere.cmake")
 
