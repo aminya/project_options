@@ -31,7 +31,7 @@ macro(find_msvc)
           # if the user has specified cl using CC and CXX but not using -DCMAKE_CXX_COMPILER or -DCMAKE_C_COMPILER
           OR (NOT CMAKE_CXX_COMPILER
               AND NOT CMAKE_C_COMPILER
-              AND ($ENV{CXX} MATCHES "^cl(.exe)?$" AND $ENV{CC} MATCHES "^cl(.exe)?$"))
+              AND ("$ENV{CXX}" MATCHES "^cl(.exe)?$" AND "$ENV{CC}" MATCHES "^cl(.exe)?$"))
          ))
     find_program(
       CL_EXECUTABLE
