@@ -69,7 +69,7 @@ macro(project_options)
 
   # set warning message level
   if(${ProjectOptions_WARNINGS_AS_ERRORS})
-    set(WARNINGS_AS_ERRORS ${ProjectOptions_WARNINGS_AS_ERRORS})  
+    set(WARNINGS_AS_ERRORS ${ProjectOptions_WARNINGS_AS_ERRORS})
     set(WARNING_MESSAGE SEND_ERROR)
   else()
     set(WARNING_MESSAGE WARNING)
@@ -114,7 +114,7 @@ macro(project_options)
     MSVC_WARNINGS=${ProjectOptions_MSVC_WARNINGS}
     CLANG_WARNINGS=${ProjectOptions_CLANG_WARNINGS}
     GCC_WARNINGS=${ProjectOptions_GCC_WARNINGS})
-  
+
   include("${ProjectOptions_SRC_DIR}/Tests.cmake")
   if(${ProjectOptions_ENABLE_COVERAGE})
     enable_coverage(project_options)
