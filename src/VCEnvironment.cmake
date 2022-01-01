@@ -10,6 +10,7 @@ macro(detect_architecture)
   elseif(CMAKE_SYSTEM_PROCESSOR_LOWER STREQUAL arm)
     set(VCVARSALL_ARCH arm)
   elseif(CMAKE_SYSTEM_PROCESSOR_LOWER STREQUAL arm64 OR CMAKE_SYSTEM_PROCESSOR_LOWER STREQUAL aarch64)
+  elseif(CMAKE_SYSTEM_PROCESSOR STREQUAL arm64 OR CMAKE_SYSTEM_PROCESSOR STREQUAL aarch64)
     set(VCVARSALL_ARCH arm64)
   else()
     if(CMAKE_HOST_SYSTEM_PROCESSOR)
@@ -48,74 +49,10 @@ macro(find_msvc)
       include(FetchContent)
       FetchContent_Declare(_msvctoolchain URL https://github.com/aminya/Toolchain/archive/refs/tags/2021-dec-11.zip)
       FetchContent_MakeAvailable(_msvctoolchain)
-      include("${_msvctoolchain_SOURCE_DIR}/VSWhere.cmake")
-
-      if(NOT CMAKE_VS_VERSION_RANGE)
-        set(CMAKE_VS_VERSION_RANGE OFF)
-      endif()
-
-      if(NOT CMAKE_VS_VERSION_PRERELEASE)
-        set(CMAKE_VS_VERSION_PRERELEASE OFF)
-      endif()
-
-      if(NOT CMAKE_VS_PRODUCTS)
-        set(CMAKE_VS_PRODUCTS "*")
-      endif()
-
-      if(NOT CMAKE_VS_PLATFORM_TOOLSET_HOST_ARCHITECTURE)
-        set(CMAKE_VS_PLATFORM_TOOLSET_HOST_ARCHITECTURE x64)
-      endif()
-
-      # Find Visual Studio
-      #
-      findvisualstudio(
-        VERSION
-        ${CMAKE_VS_VERSION_RANGE}
-        PRERELEASE
-        ${CMAKE_VS_VERSION_PRERELEASE}
-        PRODUCTS
-        ${CMAKE_VS_PRODUCTS}
-        PROPERTIES
-        installationVersion
-        VS_INSTALLATION_VERSION
-        installationPath
-        VS_INSTALLATION_PATH)
-
-      if(NOT VS_INSTALLATION_PATH)
-        message(STATUS "Could not find Visual Studio.")
-        return()
-      endif()
-
-      cmake_path(NORMAL_PATH VS_INSTALLATION_PATH)
-      set(VS_MSVC_PATH "${VS_INSTALLATION_PATH}/VC/Tools/MSVC")
-
-      if(NOT VS_PLATFORM_TOOLSET_VERSION)
-        file(
-          GLOB VS_TOOLSET_VERSIONS
-          RELATIVE ${VS_MSVC_PATH}
-          ${VS_MSVC_PATH}/*)
-        list(
-          SORT VS_TOOLSET_VERSIONS
-          COMPARE NATURAL
-          ORDER DESCENDING)
-        list(POP_FRONT VS_TOOLSET_VERSIONS VS_TOOLSET_VERSION)
-      endif()
-
-      set(VS_TOOLSET_PATH "${VS_INSTALLATION_PATH}/VC/Tools/MSVC/${VS_TOOLSET_VERSION}")
-
-      # detect the architecture (sets VCVARSALL_ARCH)
-      detect_architecture()
-      set(CMAKE_VS_PLATFORM_TOOLSET_ARCHITECTURE ${VCVARSALL_ARCH})
-
-      set(CMAKE_CXX_COMPILER
-          "${VS_TOOLSET_PATH}/bin/Host${CMAKE_VS_PLATFORM_TOOLSET_HOST_ARCHITECTURE}/${CMAKE_VS_PLATFORM_TOOLSET_ARCHITECTURE}/cl.exe"
-      )
-      set(CMAKE_C_COMPILER
-          "${VS_TOOLSET_PATH}/bin/Host${CMAKE_VS_PLATFORM_TOOLSET_HOST_ARCHITECTURE}/${CMAKE_VS_PLATFORM_TOOLSET_ARCHITECTURE}/cl.exe"
-      )
+      include("${_msvctoolchain_SOURCE_DIR}/Windows.MSVC.toolchain.cmake")
+      message(STATUS "Setting CMAKE_CXX_COMPILER to ${CMAKE_CXX_COMPILER}")
       set(ENV{CXX} ${CMAKE_CXX_COMPILER})
       set(ENV{CC} ${CMAKE_C_COMPILER})
-      message(STATUS "Setting CMAKE_CXX_COMPILER to ${CMAKE_CXX_COMPILER}")
       set(CL_EXECUTABLE
           ${CMAKE_CXX_COMPILER}
           CACHE INTERNAL "CL_EXECUTABLE")
@@ -162,7 +99,6 @@ macro(run_vcvarsall)
 
       # set the environment variables
       set_env_from_string("${VCVARSALL_ENV}")
-
     else()
       message(
         WARNING
