@@ -39,7 +39,7 @@ function(
     if(lib_include_dirs)
       target_include_system_directories(${target} ${scope} ${lib_include_dirs})
     else()
-      message(WARNING "${lib} library does not have the INTERFACE_INCLUDE_DIRECTORIES property.")
+      message(STATUS "${lib} library does not have the INTERFACE_INCLUDE_DIRECTORIES property.")
     endif()
   endif()
 endfunction()
