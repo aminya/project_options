@@ -120,11 +120,11 @@ A very useful function that accepts the same arguments as `target_link_libraries
 
 Similar to `target_include_directories`, but it suppresses the warnings. It is useful if you want to include some external directories directly.
 
-## Using global CMake options (⚠️ **not recommended**)
+## Changing the project_options parameters dynamically
 
-⚠️ It is highly recommended to keep the build declarative and reproducible by using the function arguments as explained above.
+It might be useful to change the test and development options on the fly (e.g., to enable sanitizers when running tests). To do this, you can include the `GlobalOptions.cmake`, which adds global options for the arguments of `project_options` function.
 
-However, if you still want to change the CMake options on the fly (e.g., to enable sanitizers inside CI), you can include the `GlobalOptions.cmake`, which adds global options for the arguments of `project_options` function.
+⚠️ It is highly recommended to keep the build declarative and reproducible by using the function arguments as explained above. The user of your code should not need to pass any special flags to build the library for normal usage. Please do not use this for anything other than test and development.
 
 <details>
 <summary>Click to show the example:</summary>
@@ -155,6 +155,15 @@ include(${_project_options_SOURCE_DIR}/src/GlobalOptions.cmake)
 # Set the project name and language
 project(myproject LANGUAGES CXX)
 
+# ❗ enable sanitizers if running the tests
+option(FEATURE_TESTS "Enable the tests" OFF)
+if(FEATURE_TESTS)
+    set(ENABLE_SANITIZER_ADDRESS ON)
+    if(NOT MSVC)
+        set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR ON)
+    endif()
+endif()
+
 # Initialize project_options variable related to this project
 # This overwrites `project_options` and sets `project_warnings`
 # uncomment the options to enable them:
@@ -174,9 +183,10 @@ project_options(
       # ENABLE_USER_LINKER
       # ENABLE_BUILD_WITH_TIME_TRACE
       # ENABLE_UNITY
-      ${ENABLE_SANITIZER_ADDRESS}   # ❗ Now, the address sanitizer is enabled through CMake options
+      # ❗ Now, the address and undefined behavior sanitizers are enabled through CMake options
+      ENABLE_SANITIZER_ADDRESS ${ENABLE_SANITIZER_ADDRESS}
+      ENABLE_SANITIZER_UNDEFINED_BEHAVIOR ${ENABLE_SANITIZER_UNDEFINED_BEHAVIOR}
       # ENABLE_SANITIZER_LEAK
-      # ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       # ENABLE_SANITIZER_THREAD
       # ENABLE_SANITIZER_MEMORY
 )
