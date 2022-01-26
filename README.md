@@ -112,6 +112,8 @@ Named String:
 - `VCPKG_DIR`: (Defaults to `~/vcpkg`). You can provide the vcpkg installation directory using this optional parameter.
   If the directory does not exist, it will automatically install vcpkg in this directory.
 
+- `VCPKG_URL`: (Defaults to `https://github.com/microsoft/vcpkg.git`). This option allows setting URL of the vcpkg repository. By default, the official vcpkg repository is used.
+
 ## `target_link_system_libraries` function
 
 A very useful function that accepts the same arguments as `target_link_libraries` while marking their include directories as "SYSTEM", which suppresses their warnings. This helps in enabling `WARNINGS_AS_ERRORS` for your own source code.
