@@ -110,10 +110,10 @@ macro(project_options)
   include("${ProjectOptions_SRC_DIR}/CompilerWarnings.cmake")
   set_project_warnings(
     project_warnings
-    WARNINGS_AS_ERRORS=${ProjectOptions_WARNINGS_AS_ERRORS}
-    MSVC_WARNINGS=${ProjectOptions_MSVC_WARNINGS}
-    CLANG_WARNINGS=${ProjectOptions_CLANG_WARNINGS}
-    GCC_WARNINGS=${ProjectOptions_GCC_WARNINGS})
+    "${ProjectOptions_WARNINGS_AS_ERRORS}"
+    "${ProjectOptions_MSVC_WARNINGS}"
+    "${ProjectOptions_CLANG_WARNINGS}"
+    "${ProjectOptions_GCC_WARNINGS}")
 
   include("${ProjectOptions_SRC_DIR}/Tests.cmake")
   if(${ProjectOptions_ENABLE_COVERAGE})
@@ -150,10 +150,7 @@ macro(project_options)
     enable_include_what_you_use()
   endif()
 
-  # Very basic PCH example
   if(${ProjectOptions_ENABLE_PCH})
-    # This sets a global PCH parameter, each project will build its own PCH, which is a good idea
-    # if any #define's change consider breaking this out per project as necessary
     if(NOT ProjectOptions_PCH_HEADERS)
       set(ProjectOptions_PCH_HEADERS
           <vector>
