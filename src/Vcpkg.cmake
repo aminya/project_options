@@ -3,8 +3,8 @@ include(FetchContent)
 macro(run_vcpkg)
   # named boolean ENABLE_VCPKG_UPDATE argument
   set(options ENABLE_VCPKG_UPDATE)
-  # optional named VCPKG_DIR argument
-  set(oneValueArgs VCPKG_DIR)
+  # optional named VCPKG_DIR and VCPKG_URL argument
+  set(oneValueArgs VCPKG_DIR VCPKG_URL)
   cmake_parse_arguments(
     project_options
     ""
@@ -36,7 +36,10 @@ macro(run_vcpkg)
   else()
     message(STATUS "Installing vcpkg at ${ProjectOptions_VCPKG_DIR}")
     # clone vcpkg from Github
-    execute_process(COMMAND "git" "clone" "https://github.com/microsoft/vcpkg" WORKING_DIRECTORY ${VCPKG_PARENT_DIR})
+    if(NOT ${ProjectOptions_VCPKG_URL})
+      set(ProjectOptions_VCPKG_URL "https://github.com/microsoft/vcpkg.git")
+    endif()
+    execute_process(COMMAND "git" "clone" "${ProjectOptions_VCPKG_URL}" WORKING_DIRECTORY ${VCPKG_PARENT_DIR})
     # Run vcpkg bootstrap
     execute_process(COMMAND "./vcpkg/bootstrap-vcpkg" WORKING_DIRECTORY "${ProjectOptions_VCPKG_DIR}")
   endif()

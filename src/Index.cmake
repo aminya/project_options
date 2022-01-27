@@ -110,7 +110,7 @@ macro(project_options)
   include("${ProjectOptions_SRC_DIR}/CompilerWarnings.cmake")
   set_project_warnings(
     project_warnings
-    "${ProjectOptions_WARNINGS_AS_ERRORS}"
+    "${WARNINGS_AS_ERRORS}"
     "${ProjectOptions_MSVC_WARNINGS}"
     "${ProjectOptions_CLANG_WARNINGS}"
     "${ProjectOptions_GCC_WARNINGS}")
