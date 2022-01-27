@@ -11,7 +11,7 @@
 
 # In developer mode, all features have options that show up in the CMake GUI tools
 
-# defaulted_options() macro enables all recommended defaults with appropriately
+# recommended_project_options() macro enables all recommended defaults with appropriately
 # applied options from the GUI which are set
 
 # Any default can be overridden
@@ -106,7 +106,7 @@ foreach(option ${options})
   endif()
 endforeach()
 
-macro(defaulted_project_options)
+macro(recommended_project_options)
   project_options(
     ${ENABLE_CONAN_VALUE}
     ${ENABLE_CACHE_VALUE}
