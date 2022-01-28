@@ -21,24 +21,30 @@
 
 option(ENABLE_DEVELOPER_MODE "Set up defaults for a developer of the project, and let developer change options" ON)
 
-if(MSVC)
-  set(UNIX_ONLY OFF)
+if((CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*") AND NOT WIN32)
+  set(GCC_OR_CLANG ON)
 else()
-  set(UNIX_ONLY ON)
+  set(GCC_OR_CLANG OFF)
+endif()
+
+if(CMAKE_GENERATOR MATCHES ".*Makefile*." OR CMAKE_GENERATOR MATCHES ".*Ninja*")
+  set(MAKEFILE_OR_NINJA ON)
+else()
+  set(MAKEFILE_OR_NINJA OFF)
 endif()
 
 include(CMakeDependentOption)
 
 # <option name>;<user mode default>;<developer mode default>;<description>
 set(options
-    "ENABLE_CACHE\;${UNIX_ONLY}\;${UNIX_ONLY}\;Enable ccache on Unix"
+    "ENABLE_CACHE\;${MAKEFILE_OR_NINJA}\;${MAKEFILE_OR_NINJA}\;Enable ccache on Unix"
     "WARNINGS_AS_ERRORS\;OFF\;ON\;Treat warnings as Errors"
-    "ENABLE_CLANG_TIDY\;OFF\;${UNIX_ONLY}\;Enable clang-tidy analysis during compilation"
+    "ENABLE_CLANG_TIDY\;OFF\;${MAKEFILE_OR_NINJA}\;Enable clang-tidy analysis during compilation"
     "ENABLE_CONAN\;ON\;ON\;Automatically integrate Conan for package management"
     "ENABLE_COVERAGE\;OFF\;OFF\;Analyze and report on coverage"
     "ENABLE_SANITIZER_ADDRESS\;OFF\;ON\;Make memory errors into hard runtime errors (windows/linux/macos)"
-    "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR\;OFF\;${UNIX_ONLY}\;Make certain types (numeric mostly) of undefined behavior into runtime errors"
-    "ENABLE_CPPCHECK\;OFF\;${UNIX_ONLY}\;Enable cppcheck analysis during compilation"
+    "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR\;OFF\;${GCC_OR_CLANG}\;Make certain types (numeric mostly) of undefined behavior into runtime errors"
+    "ENABLE_CPPCHECK\;OFF\;${MAKEFILE_OR_NINJA}\;Enable cppcheck analysis during compilation"
     "ENABLE_IPO\;OFF\;OFF\;Enable whole-program optimization"
     "ENABLE_INCLUDE_WHAT_YOU_USE\;OFF\;OFF\;Enable include-what-you-use analysis during compilation"
     "ENABLE_PCH\;ON\;OFF\;Enable pre-compiled-headers support"
