@@ -93,8 +93,9 @@ It accepts the following named flags:
 - `ENABLE_SANITIZER_THREAD`: Enable thread sanitizer
 - `ENABLE_SANITIZER_MEMORY`: Enable memory sanitizer
 
-It gets the following named parameters (each accepting multiple values):
+It gets the following named parameters that can have different values in front of them:
 
+- `DOXYGEN_THEME`: the name of the Doxygen theme to use. Supported themes: `awesome-sidebar` (default), `awesome` and `original`.
 - `PCH_HEADERS`: the list of the headers to precompile
 - `MSVC_WARNINGS`: Override the defaults for the MSVC warnings
 - `CLANG_WARNINGS`: Override the defaults for the CLANG warnings
