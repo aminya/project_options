@@ -1,9 +1,11 @@
 macro(enable_cppcheck)
   find_program(CPPCHECK cppcheck)
   if(CPPCHECK)
+    # Enable all warnings that are actionable by the user of this toolset
+    # style should enable the other 3, but we'll be explicit just in case
     set(CMAKE_CXX_CPPCHECK
         ${CPPCHECK}
-        --enable=style
+        --enable=style,performance,warning,portability
         --inline-suppr
         --inconclusive)
     if(${CMAKE_CXX_STANDARD})

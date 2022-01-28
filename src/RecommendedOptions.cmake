@@ -22,11 +22,21 @@
 option(ENABLE_DEVELOPER_MODE "Set up defaults for a developer of the project, and let developer change options" ON)
 
 if((CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*") AND NOT WIN32)
-  set(GCC_OR_CLANG ON)
+  set(SUPPORTS_UBSAN ON)
 else()
-  set(GCC_OR_CLANG OFF)
+  set(SUPPORTS_UBSAN OFF)
 endif()
 
+# ccache, clang-tidy, cppcheck are only supported with Ninja and Makefile based generators
+# note that it is possible to use Ninja with cl, so this still allows clang-tidy on Windows
+# with CL.
+#
+# We are only setting the default options here. If the user attempts to enable
+# these tools on a platform with unknown support, they are on their own.
+#
+# Also note, cppcheck has an option to be run on VCproj files, so we should investigate that
+# Further note: MSVC2022 has builtin support for clang-tidy, but I can find
+# no way to enable that via CMake
 if(CMAKE_GENERATOR MATCHES ".*Makefile*." OR CMAKE_GENERATOR MATCHES ".*Ninja*")
   set(MAKEFILE_OR_NINJA ON)
 else()
@@ -43,7 +53,7 @@ set(options
     "ENABLE_CONAN\;ON\;ON\;Automatically integrate Conan for package management"
     "ENABLE_COVERAGE\;OFF\;OFF\;Analyze and report on coverage"
     "ENABLE_SANITIZER_ADDRESS\;OFF\;ON\;Make memory errors into hard runtime errors (windows/linux/macos)"
-    "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR\;OFF\;${GCC_OR_CLANG}\;Make certain types (numeric mostly) of undefined behavior into runtime errors"
+    "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR\;OFF\;${SUPPORTS_UBSAN}\;Make certain types (numeric mostly) of undefined behavior into runtime errors"
     "ENABLE_CPPCHECK\;OFF\;${MAKEFILE_OR_NINJA}\;Enable cppcheck analysis during compilation"
     "ENABLE_IPO\;OFF\;OFF\;Enable whole-program optimization"
     "ENABLE_INCLUDE_WHAT_YOU_USE\;OFF\;OFF\;Enable include-what-you-use analysis during compilation"
