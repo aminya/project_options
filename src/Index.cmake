@@ -10,6 +10,8 @@ include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
 
 include("${ProjectOptions_SRC_DIR}/SystemLink.cmake")
 
+include("${ProjectOptions_SRC_DIR}/Cuda.cmake")
+
 #
 # Params:
 # - WARNINGS_AS_ERRORS: Treat compiler warnings as errors

@@ -122,6 +122,17 @@ A very useful function that accepts the same arguments as `target_link_libraries
 
 Similar to `target_include_directories`, but it suppresses the warnings. It is useful if you want to include some external directories directly.
 
+## `find_and_link_cuda` function
+
+A function that links Cuda to the given target. This function automatically links the compiler warnings, so do not link `project_warnings` with your target.
+
+```cmake
+add_executable(main_cuda main.cu)
+target_compile_features(main_cuda PRIVATE cxx_std_17)
+target_link_libraries(main_cuda PRIVATE project_options)
+find_and_link_cuda(main_cuda)
+```
+
 ## Changing the project_options parameters dynamically
 
 It might be useful to change the test and development options on the fly (e.g., to enable sanitizers when running tests). To do this, you can include the `GlobalOptions.cmake`, which adds global options for the arguments of `project_options` function.
