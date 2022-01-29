@@ -124,9 +124,23 @@ Similar to `target_include_directories`, but it suppresses the warnings. It is u
 
 ## Changing the project_options parameters dynamically
 
-It might be useful to change the test and development options on the fly (e.g., to enable sanitizers when running tests). To do this, you can include the `GlobalOptions.cmake`, which adds global options for the arguments of `project_options` function.
+It might be useful to change the test and development options on the fly (e.g., to enable sanitizers when running tests). To do this, you can include the `DynamicOptions.cmake`, which adds `dynamic_project_options`. `dynamic_project_options` provides a recommended set of defaults (all static analysis and runtime analysis enabled for platforms where that is possible) while also providing a high level option `ENABLE_DEVELOPER_MODE` (defaulted to `ON`) which can be turned off for easy use by non-developers.
 
-⚠️ It is highly recommended to keep the build declarative and reproducible by using the function arguments as explained above. The user of your code should not need to pass any special flags to build the library for normal usage. Please do not use this for anything other than test and development.
+The goal of the `dynamic_project_options` is to give a safe and well analyzed environment to the developer by default, while simultaneously making it easy for a user of the project to compile while not having to worry about clang-tidy, sanitizers, cppcheck, etc.
+
+The defaults presented to the user can be modified with
+
+ * `set(<featurename>_DEFAULT value)` - for user and developer builds
+ * `set(<featurename>_USER_DEFAULT value)` - for user builds
+ * `set(<featureoptionname>_DEVELOPER_DEFAULT value)` - for developer builds
+
+If you need to fix a setting for the sake of a command-line configuration, you can use:
+
+```
+cmake -DOPT_<featurename>:BOOL=value
+```
+
+
 
 <details>
 <summary>Click to show the example:</summary>
@@ -148,7 +162,7 @@ FetchContent_MakeAvailable(_project_options)
 include(${_project_options_SOURCE_DIR}/Index.cmake)
 
  # ❗ Add global CMake options
-include(${_project_options_SOURCE_DIR}/src/GlobalOptions.cmake)
+include(${_project_options_SOURCE_DIR}/src/DynamicOptions.cmake)
 
 # uncomment to enable vcpkg:
 # # Setup vcpkg - should be called before defining project()
@@ -157,43 +171,16 @@ include(${_project_options_SOURCE_DIR}/src/GlobalOptions.cmake)
 # Set the project name and language
 project(myproject LANGUAGES CXX)
 
-# ❗ enable sanitizers if running the tests
-option(FEATURE_TESTS "Enable the tests" OFF)
-if(FEATURE_TESTS)
-    if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-        set(ENABLE_SANITIZER_ADDRESS OFF)
-        set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR OFF)
-    else()
-        set(ENABLE_SANITIZER_ADDRESS "ENABLE_SANITIZER_ADDRESS")
-        set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR")
-    endif()
-endif()
+# Set PCH to be on by default for all non-Developer Mode Builds
+# (this is just intended as an example of what is possible)
+set(ENABLE_PCH_USER_DEFAULT ON)
 
 # Initialize project_options variable related to this project
 # This overwrites `project_options` and sets `project_warnings`
 # uncomment the options to enable them:
-project_options(
-      ENABLE_CACHE
-      ENABLE_CPPCHECK
-      ENABLE_CLANG_TIDY
-      # WARNINGS_AS_ERRORS
-      # ENABLE_CONAN
-      # ENABLE_IPO
-      # ENABLE_INCLUDE_WHAT_YOU_USE
-      # ENABLE_COVERAGE
-      # ENABLE_PCH
-      # PCH_HEADERS
-      # ENABLE_DOXYGEN
-      # ENABLE_IPO
-      # ENABLE_USER_LINKER
-      # ENABLE_BUILD_WITH_TIME_TRACE
-      # ENABLE_UNITY
-      # ❗ Now, the address and undefined behavior sanitizers are enabled through CMake options
-      ${ENABLE_SANITIZER_ADDRESS}
-      ${ENABLE_SANITIZER_UNDEFINED_BEHAVIOR}
-      # ENABLE_SANITIZER_LEAK
-      # ENABLE_SANITIZER_THREAD
-      # ENABLE_SANITIZER_MEMORY
+dynamic_project_options(
+  # set PCH headers you want enabled. Format can be slow, so this might be helpful
+  PCH_HEADERS <vector> <string> <fmt/format.h>
 )
 # add your executables, libraries, etc. here:
 
