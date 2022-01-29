@@ -1,9 +1,9 @@
 # ENABLE_DEVELOPER_MODE: sets defaults appropriate for developers, this is defaulted to ON
 #  * WARNINGS_AS_ERRORS: ON
 #  * ENABLE_SANITIZER_ADDRESS: ON
-#  * ENABLE_CLANG_TIDY: ON for unix
-#  * ENABLE_SANITIZER_UNDEFINED: ON for unix
-#  * ENABLE_CPPCHECK: ON for unix
+#  * ENABLE_CLANG_TIDY: ON for Ninja/Makefiles
+#  * ENABLE_SANITIZER_UNDEFINED: ON for Compilers that support it
+#  * ENABLE_CPPCHECK: ON for Ninja/Makefiles
 
 # For non-developer builds
 #  -DENABLE_DEVELOPER_MODE:BOOL=OFF
@@ -11,7 +11,7 @@
 
 # In developer mode, all features have options that show up in the CMake GUI tools
 
-# recommended_project_options() macro enables all recommended defaults with appropriately
+# dynamic_project_options() macro enables all recommended defaults with appropriately
 # applied options from the GUI which are set
 
 # Any default can be overridden
@@ -122,7 +122,7 @@ foreach(option ${options})
   endif()
 endforeach()
 
-macro(recommended_project_options)
+macro(dynamic_project_options)
   project_options(
     ${ENABLE_CONAN_VALUE}
     ${ENABLE_CACHE_VALUE}
