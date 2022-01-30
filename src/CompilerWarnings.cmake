@@ -10,7 +10,7 @@ function(
   CLANG_WARNINGS
   GCC_WARNINGS
   CUDA_WARNINGS)
-  if(NOT ${MSVC_WARNINGS})
+  if("${MSVC_WARNINGS}" STREQUAL "")
     set(MSVC_WARNINGS
         /W4 # Baseline reasonable warnings
         /w14242 # 'identifier': conversion from 'type1' to 'type1', possible loss of data
@@ -38,7 +38,7 @@ function(
     )
   endif()
 
-  if(NOT ${CLANG_WARNINGS})
+  if("${CLANG_WARNINGS}" STREQUAL "")
     set(CLANG_WARNINGS
         -Wall
         -Wextra # reasonable and standard
@@ -59,7 +59,7 @@ function(
     )
   endif()
 
-  if(NOT ${GCC_WARNINGS})
+  if("${GCC_WARNINGS}" STREQUAL "")
     set(GCC_WARNINGS
         ${CLANG_WARNINGS}
         -Wmisleading-indentation # warn if indentation implies blocks where blocks do not exist
@@ -70,7 +70,7 @@ function(
     )
   endif()
 
-  if(NOT ${CUDA_WARNINGS})
+  if("${CUDA_WARNINGS}" STREQUAL "")
     set(CUDA_WARNINGS
         -Wall
         -Wextra
@@ -103,15 +103,13 @@ function(
   set(PROJECT_WARNINGS_C "${PROJECT_WARNINGS_CXX}")
 
   set(PROJECT_WARNINGS_CUDA "${CUDA_WARNINGS}")
-  
+
   target_compile_options(
     ${project_name}
-    INTERFACE 
-              # C++ warnings
-              $<$<COMPILE_LANGUAGE:CXX>:${PROJECT_WARNINGS_CXX}> 
+    INTERFACE # C++ warnings
+              $<$<COMPILE_LANGUAGE:CXX>:${PROJECT_WARNINGS_CXX}>
               # C warnings
               $<$<COMPILE_LANGUAGE:C>:${PROJECT_WARNINGS_C}>
               # Cuda warnings
               $<$<COMPILE_LANGUAGE:CUDA>:${PROJECT_WARNINGS_CUDA}>)
-
 endfunction()
