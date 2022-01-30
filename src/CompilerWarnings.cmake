@@ -9,7 +9,7 @@ function(
   MSVC_WARNINGS
   CLANG_WARNINGS
   GCC_WARNINGS)
-  if(NOT ${MSVC_WARNINGS})
+  if("${MSVC_WARNINGS}" STREQUAL "")
     set(MSVC_WARNINGS
         /W4 # Baseline reasonable warnings
         /w14242 # 'identifier': conversion from 'type1' to 'type1', possible loss of data
@@ -37,7 +37,7 @@ function(
     )
   endif()
 
-  if(NOT ${CLANG_WARNINGS})
+  if("${CLANG_WARNINGS}" STREQUAL "")
     set(CLANG_WARNINGS
         -Wall
         -Wextra # reasonable and standard
@@ -58,7 +58,7 @@ function(
     )
   endif()
 
-  if(NOT ${GCC_WARNINGS})
+  if("${GCC_WARNINGS}" STREQUAL "")
     set(GCC_WARNINGS
         ${CLANG_WARNINGS}
         -Wmisleading-indentation # warn if indentation implies blocks where blocks do not exist
@@ -69,8 +69,8 @@ function(
     )
   endif()
 
-  if(WARNINGS_AS_ERRORS STREQUAL TRUE)
-    message(AUTHOR_WARNING "NOTE: WARNINGS_AS_ERRORS=${WARNINGS_AS_ERRORS}")
+  if(WARNINGS_AS_ERRORS)
+    message(TRACE "Warnings are treated as errors")
     list(APPEND CLANG_WARNINGS -Werror)
     list(APPEND GCC_WARNINGS -Werror)
     list(APPEND MSVC_WARNINGS /WX)
