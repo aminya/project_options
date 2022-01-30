@@ -27,6 +27,12 @@ else()
   set(SUPPORTS_UBSAN OFF)
 endif()
 
+if(CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*" AND WIN32)
+  set(SUPPORTS_ASAN OFF)
+else()
+  set(SUPPORTS_ASAN ON)
+endif()
+
 # ccache, clang-tidy, cppcheck are only supported with Ninja and Makefile based generators
 # note that it is possible to use Ninja with cl, so this still allows clang-tidy on Windows
 # with CL.
@@ -52,7 +58,7 @@ set(options
     "ENABLE_CLANG_TIDY\;OFF\;${MAKEFILE_OR_NINJA}\;Enable clang-tidy analysis during compilation"
     "ENABLE_CONAN\;ON\;ON\;Automatically integrate Conan for package management"
     "ENABLE_COVERAGE\;OFF\;OFF\;Analyze and report on coverage"
-    "ENABLE_SANITIZER_ADDRESS\;OFF\;ON\;Make memory errors into hard runtime errors (windows/linux/macos)"
+    "ENABLE_SANITIZER_ADDRESS\;OFF\;${SUPPORTS_ASAN}\;Make memory errors into hard runtime errors (windows/linux/macos)"
     "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR\;OFF\;${SUPPORTS_UBSAN}\;Make certain types (numeric mostly) of undefined behavior into runtime errors"
     "ENABLE_CPPCHECK\;OFF\;${MAKEFILE_OR_NINJA}\;Enable cppcheck analysis during compilation"
     "ENABLE_IPO\;OFF\;OFF\;Enable whole-program optimization"
