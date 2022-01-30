@@ -38,4 +38,11 @@ macro(target_link_cuda target)
     # so that the static cuda runtime can find it at runtime.
     set_property(TARGET ${target} PROPERTY BUILD_RPATH ${CMAKE_CUDA_IMPLICIT_LINK_DIRECTORIES})
   endif()
+
+  if(WIN32 AND "$ENV{VSCMD_VER}" STREQUAL "")
+    message(
+      WARNING
+        "Compiling Cuda on Windows outside the Visual Studio Commant prompt or without running `vcvarsall.bat x64` probably fails"
+    )
+  endif()
 endmacro()
