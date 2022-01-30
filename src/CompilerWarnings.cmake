@@ -88,26 +88,30 @@ function(
     list(APPEND MSVC_WARNINGS /WX)
   endif()
 
-  if(NOT MSVC
-     AND NOT
-         CMAKE_CXX_COMPILER_ID
-         MATCHES
-         ".*Clang"
-     AND NOT
-         CMAKE_CXX_COMPILER_ID
-         STREQUAL
-         "GNU")
-    message(AUTHOR_WARNING "No compiler warnings set for '${CMAKE_CXX_COMPILER_ID}' compiler.")
+  if(MSVC)
+    set(PROJECT_WARNINGS_CXX ${MSVC_WARNINGS})
+  elseif(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+    set(PROJECT_WARNINGS_CXX ${CLANG_WARNINGS})
+  elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    set(PROJECT_WARNINGS_CXX ${GCC_WARNINGS})
+  else()
+    message(AUTHOR_WARNING "No compiler warnings set for CXX compiler: '${CMAKE_CXX_COMPILER_ID}'")
+    # TODO support Intel compiler
   endif()
 
+  # use the same warning flags for C
+  set(PROJECT_WARNINGS_C "${PROJECT_WARNINGS_CXX}")
+
+  set(PROJECT_WARNINGS_CUDA "${CUDA_WARNINGS}")
+  
   target_compile_options(
     ${project_name}
-    INTERFACE $<$<COMPILE_LANG_AND_ID:CXX,Clang>:${CLANG_WARNINGS}>
-              $<$<COMPILE_LANG_AND_ID:C,Clang>:${CLANG_WARNINGS}>
-              $<$<COMPILE_LANG_AND_ID:CXX,GNU>:${GCC_WARNINGS}>
-              $<$<COMPILE_LANG_AND_ID:C,GNU>:${GCC_WARNINGS}>
-              $<$<COMPILE_LANG_AND_ID:CXX,MSVC>:${MSVC_WARNINGS}>
-              $<$<COMPILE_LANG_AND_ID:C,MSVC>:${MSVC_WARNINGS}>
-              $<$<COMPILE_LANGUAGE:CUDA>:${CUDA_WARNINGS}>)
+    INTERFACE 
+              # C++ warnings
+              $<$<COMPILE_LANGUAGE:CXX>:${PROJECT_WARNINGS_CXX}> 
+              # C warnings
+              $<$<COMPILE_LANGUAGE:C>:${PROJECT_WARNINGS_C}>
+              # Cuda warnings
+              $<$<COMPILE_LANGUAGE:CUDA>:${PROJECT_WARNINGS_CUDA}>)
 
 endfunction()
