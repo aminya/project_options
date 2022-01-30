@@ -63,7 +63,7 @@ set(options
     "ENABLE_CPPCHECK\;OFF\;${MAKEFILE_OR_NINJA}\;Enable cppcheck analysis during compilation"
     "ENABLE_IPO\;OFF\;OFF\;Enable whole-program optimization"
     "ENABLE_INCLUDE_WHAT_YOU_USE\;OFF\;OFF\;Enable include-what-you-use analysis during compilation"
-    "ENABLE_PCH\;ON\;OFF\;Enable pre-compiled-headers support"
+    "ENABLE_PCH\;OFF\;OFF\;Enable pre-compiled-headers support"
     "ENABLE_DOXYGEN\;OFF\;OFF\;Build documentation with Doxygen"
     "ENABLE_USER_LINKER\;OFF\;OFF\;Allow custom linker settings"
     "ENABLE_BUILD_WITH_TIME_TRACE\;OFF\;OFF\;Generates report of where compile-time is spent"
