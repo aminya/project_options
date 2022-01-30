@@ -9,7 +9,7 @@ function(
   MSVC_WARNINGS
   CLANG_WARNINGS
   GCC_WARNINGS)
-if(MSVC_WARNINGS STREQUAL "")
+  if("${MSVC_WARNINGS}" STREQUAL "")
     set(MSVC_WARNINGS
         /W4 # Baseline reasonable warnings
         /w14242 # 'identifier': conversion from 'type1' to 'type1', possible loss of data
@@ -37,7 +37,7 @@ if(MSVC_WARNINGS STREQUAL "")
     )
   endif()
 
-  if(CLANG_WARNINGS STREQUAL "")
+  if("${CLANG_WARNINGS}" STREQUAL "")
     set(CLANG_WARNINGS
         -Wall
         -Wextra # reasonable and standard
@@ -58,7 +58,7 @@ if(MSVC_WARNINGS STREQUAL "")
     )
   endif()
 
-  if(GCC_WARNINGS STREQUAL "")
+  if("${GCC_WARNINGS}" STREQUAL "")
     set(GCC_WARNINGS
         ${CLANG_WARNINGS}
         -Wmisleading-indentation # warn if indentation implies blocks where blocks do not exist

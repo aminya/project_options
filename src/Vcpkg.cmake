@@ -6,47 +6,50 @@ macro(run_vcpkg)
   # optional named VCPKG_DIR and VCPKG_URL argument
   set(oneValueArgs VCPKG_DIR VCPKG_URL)
   cmake_parse_arguments(
-    project_options
-    ""
+    _vcpkg_args
+    "${options}"
     "${oneValueArgs}"
     ""
     ${ARGN})
 
-  if(${ProjectOptions_VCPKG_DIR})
+  if(NOT "${_vcpkg_args_VCPKG_DIR}" STREQUAL "")
     # the installation directory is specified
-    get_filename_component(VCPKG_PARENT_DIR ${ProjectOptions_VCPKG_DIR} DIRECTORY)
+    get_filename_component(VCPKG_PARENT_DIR ${_vcpkg_args_VCPKG_DIR} DIRECTORY)
   else()
     # Default vcpkg installation directory
     if(WIN32)
       set(VCPKG_PARENT_DIR $ENV{userprofile})
-      set(ProjectOptions_VCPKG_DIR ${VCPKG_PARENT_DIR}/vcpkg)
+      set(_vcpkg_args_VCPKG_DIR ${VCPKG_PARENT_DIR}/vcpkg)
     else()
       set(VCPKG_PARENT_DIR $ENV{HOME})
-      set(ProjectOptions_VCPKG_DIR ${VCPKG_PARENT_DIR}/vcpkg)
+      set(_vcpkg_args_VCPKG_DIR ${VCPKG_PARENT_DIR}/vcpkg)
     endif()
   endif()
 
-  # check if the vcpkg is installed
-  if(EXISTS ${ProjectOptions_VCPKG_DIR})
-    message(STATUS "${ProjectOptions_VCPKG_DIR} already exists.")
-    if(${ProjectOptions_ENABLE_VCPKG_UPDATE})
+  # check if vcpkg is installed
+  if (WIN32 AND "${CMAKE_EXECUTABLE_SUFFIX}" STREQUAL "") 
+    set(CMAKE_EXECUTABLE_SUFFIX ".exe")
+  endif()
+  if(EXISTS "${_vcpkg_args_VCPKG_DIR}" AND EXISTS "${_vcpkg_args_VCPKG_DIR}/vcpkg${CMAKE_EXECUTABLE_SUFFIX}")
+    message(STATUS "vcpkg is already installed at ${_vcpkg_args_VCPKG_DIR}.")
+    if(${_vcpkg_args_ENABLE_VCPKG_UPDATE})
       message(STATUS "Updating the repository...")
-      execute_process(COMMAND "git" "pull" WORKING_DIRECTORY ${ProjectOptions_VCPKG_DIR})
+      execute_process(COMMAND "git" "pull" WORKING_DIRECTORY ${_vcpkg_args_VCPKG_DIR})
     endif()
   else()
-    message(STATUS "Installing vcpkg at ${ProjectOptions_VCPKG_DIR}")
+    message(STATUS "Installing vcpkg at ${_vcpkg_args_VCPKG_DIR}")
     # clone vcpkg from Github
-    if(NOT ${ProjectOptions_VCPKG_URL})
-      set(ProjectOptions_VCPKG_URL "https://github.com/microsoft/vcpkg.git")
+    if("${_vcpkg_args_VCPKG_URL}" STREQUAL "")
+      set(_vcpkg_args_VCPKG_URL "https://github.com/microsoft/vcpkg.git")
     endif()
-    execute_process(COMMAND "git" "clone" "${ProjectOptions_VCPKG_URL}" WORKING_DIRECTORY ${VCPKG_PARENT_DIR})
+    execute_process(COMMAND "git" "clone" "${_vcpkg_args_VCPKG_URL}" WORKING_DIRECTORY ${VCPKG_PARENT_DIR})
     # Run vcpkg bootstrap
-    execute_process(COMMAND "./vcpkg/bootstrap-vcpkg" WORKING_DIRECTORY "${ProjectOptions_VCPKG_DIR}")
+    execute_process(COMMAND "./vcpkg/bootstrap-vcpkg" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
   endif()
 
   # Setting up vcpkg toolchain
   list(APPEND VCPKG_FEATURE_FLAGS "versions")
   set(CMAKE_TOOLCHAIN_FILE
-      ${ProjectOptions_VCPKG_DIR}/scripts/buildsystems/vcpkg.cmake
-      CACHE STRING "Vcpkg toolchain file")
+      ${_vcpkg_args_VCPKG_DIR}/scripts/buildsystems/vcpkg.cmake
+      CACHE STRING "vcpkg toolchain file")
 endmacro()
