@@ -1,13 +1,13 @@
-# ! find_and_link_cuda
-# A function that links Cuda to the given target. This function automatically links the compiler warnings, so do not link `project_warnings` with your target.
+# ! target_link_cuda
+# A function that links Cuda to the given target
 #
 # # Example
 # add_executable(main_cuda main.cu)
 # target_compile_features(main_cuda PRIVATE cxx_std_17)
-# target_link_libraries(main_cuda PRIVATE project_options)
-# find_and_link_cuda(main_cuda)
+# target_link_libraries(main_cuda PRIVATE project_options project_warnings)
+# target_link_cuda(main_cuda)
 #
-macro(find_and_link_cuda target)
+macro(target_link_cuda target)
   # optional named CUDA_WARNINGS
   set(oneValueArgs CUDA_WARNINGS)
   cmake_parse_arguments(
@@ -37,15 +37,5 @@ macro(find_and_link_cuda target)
     # We need to add the path to the driver (libcuda.dylib) as an rpath,
     # so that the static cuda runtime can find it at runtime.
     set_property(TARGET ${target} PROPERTY BUILD_RPATH ${CMAKE_CUDA_IMPLICIT_LINK_DIRECTORIES})
-  endif()
-
-  if(${_cuda_args_CUDA_WARNINGS} STREQUAL "")
-    target_compile_options(
-      ${target}
-      PRIVATE -Wall
-              -Wextra
-              -Wunused
-              -Wconversion
-              -Wshadow)
   endif()
 endmacro()

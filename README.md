@@ -99,6 +99,7 @@ It gets the following named parameters (each accepting multiple values):
 - `MSVC_WARNINGS`: Override the defaults for the MSVC warnings
 - `CLANG_WARNINGS`: Override the defaults for the CLANG warnings
 - `GCC_WARNINGS`: Override the defaults for the GCC warnings
+- `CUDA_WARNINGS`: Override the defaults for the CUDA warnings
 - `CONAN_OPTIONS`: Extra Conan options
 
 ## `run_vcpkg` function
@@ -122,15 +123,15 @@ A very useful function that accepts the same arguments as `target_link_libraries
 
 Similar to `target_include_directories`, but it suppresses the warnings. It is useful if you want to include some external directories directly.
 
-## `find_and_link_cuda` function
+## `target_link_cuda` function
 
-A function that links Cuda to the given target. This function automatically links the compiler warnings, so do not link `project_warnings` with your target.
+A function that links Cuda to the given target.
 
 ```cmake
 add_executable(main_cuda main.cu)
 target_compile_features(main_cuda PRIVATE cxx_std_17)
-target_link_libraries(main_cuda PRIVATE project_options)
-find_and_link_cuda(main_cuda)
+target_link_libraries(main_cuda PRIVATE project_options project_warnings)
+target_link_cuda(main_cuda)
 ```
 
 ## Changing the project_options parameters dynamically

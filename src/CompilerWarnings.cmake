@@ -8,7 +8,8 @@ function(
   WARNINGS_AS_ERRORS
   MSVC_WARNINGS
   CLANG_WARNINGS
-  GCC_WARNINGS)
+  GCC_WARNINGS
+  CUDA_WARNINGS)
   if(NOT ${MSVC_WARNINGS})
     set(MSVC_WARNINGS
         /W4 # Baseline reasonable warnings
@@ -69,6 +70,17 @@ function(
     )
   endif()
 
+  if(NOT ${CUDA_WARNINGS})
+    set(CUDA_WARNINGS
+        -Wall
+        -Wextra
+        -Wunused
+        -Wconversion
+        -Wshadow
+        # TODO add more Cuda warnings
+    )
+  endif()
+
   if(WARNINGS_AS_ERRORS STREQUAL TRUE)
     message(AUTHOR_WARNING "NOTE: WARNINGS_AS_ERRORS=${WARNINGS_AS_ERRORS}")
     list(APPEND CLANG_WARNINGS -Werror)
@@ -76,16 +88,26 @@ function(
     list(APPEND MSVC_WARNINGS /WX)
   endif()
 
-  if(MSVC)
-    set(PROJECT_WARNINGS ${MSVC_WARNINGS})
-  elseif(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
-    set(PROJECT_WARNINGS ${CLANG_WARNINGS})
-  elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(PROJECT_WARNINGS ${GCC_WARNINGS})
-  else()
+  if(NOT MSVC
+     AND NOT
+         CMAKE_CXX_COMPILER_ID
+         MATCHES
+         ".*Clang"
+     AND NOT
+         CMAKE_CXX_COMPILER_ID
+         STREQUAL
+         "GNU")
     message(AUTHOR_WARNING "No compiler warnings set for '${CMAKE_CXX_COMPILER_ID}' compiler.")
   endif()
 
-  target_compile_options(${project_name} INTERFACE ${PROJECT_WARNINGS})
+  target_compile_options(
+    ${project_name}
+    INTERFACE $<$<COMPILE_LANG_AND_ID:CXX,Clang>:${CLANG_WARNINGS}>
+              $<$<COMPILE_LANG_AND_ID:C,Clang>:${CLANG_WARNINGS}>
+              $<$<COMPILE_LANG_AND_ID:CXX,GNU>:${GCC_WARNINGS}>
+              $<$<COMPILE_LANG_AND_ID:C,GNU>:${GCC_WARNINGS}>
+              $<$<COMPILE_LANG_AND_ID:CXX,MSVC>:${MSVC_WARNINGS}>
+              $<$<COMPILE_LANG_AND_ID:C,MSVC>:${MSVC_WARNINGS}>
+              $<$<COMPILE_LANGUAGE:CUDA>:${CUDA_WARNINGS}>)
 
 endfunction()
