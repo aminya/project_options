@@ -22,6 +22,7 @@ include("${ProjectOptions_SRC_DIR}/SystemLink.cmake")
 # - PCH_HEADERS: the list of the headers to precompile
 # - ENABLE_CONAN: Use Conan for dependency management
 # - ENABLE_DOXYGEN: Enable doxygen doc builds of source
+# - DOXYGEN_THEME: the name of the Doxygen theme to use. Supported themes: `awesome-sidebar` (default), `awesome` and `original`.
 # - ENABLE_IPO: Enable Interprocedural Optimization, aka Link Time Optimization (LTO)
 # - ENABLE_USER_LINKER: Enable a specific linker if available
 # - ENABLE_BUILD_WITH_TIME_TRACE: Enable -ftime-trace to generate time tracing .json files on clang
@@ -58,7 +59,11 @@ macro(project_options)
       ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       ENABLE_SANITIZER_THREAD
       ENABLE_SANITIZER_MEMORY)
-  set(oneValueArgs MSVC_WARNINGS CLANG_WARNINGS GCC_WARNINGS)
+  set(oneValueArgs
+      DOXYGEN_THEME
+      MSVC_WARNINGS
+      CLANG_WARNINGS
+      GCC_WARNINGS)
   set(multiValueArgs PCH_HEADERS CONAN_OPTIONS)
   cmake_parse_arguments(
     ProjectOptions
@@ -133,7 +138,7 @@ macro(project_options)
   if(${ProjectOptions_ENABLE_DOXYGEN})
     # enable doxygen
     include("${ProjectOptions_SRC_DIR}/Doxygen.cmake")
-    enable_doxygen()
+    enable_doxygen("${ProjectOptions_DOXYGEN_THEME}")
   endif()
 
   # allow for static analysis options
