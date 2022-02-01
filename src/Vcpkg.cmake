@@ -12,7 +12,10 @@ macro(run_vcpkg)
     ""
     ${ARGN})
 
-  if(NOT "${_vcpkg_args_VCPKG_DIR}" STREQUAL "")
+  if(NOT
+     "${_vcpkg_args_VCPKG_DIR}"
+     STREQUAL
+     "")
     # the installation directory is specified
     get_filename_component(VCPKG_PARENT_DIR ${_vcpkg_args_VCPKG_DIR} DIRECTORY)
   else()
@@ -27,7 +30,7 @@ macro(run_vcpkg)
   endif()
 
   # check if vcpkg is installed
-  if (WIN32 AND "${CMAKE_EXECUTABLE_SUFFIX}" STREQUAL "") 
+  if(WIN32 AND "${CMAKE_EXECUTABLE_SUFFIX}" STREQUAL "")
     set(CMAKE_EXECUTABLE_SUFFIX ".exe")
   endif()
   if(EXISTS "${_vcpkg_args_VCPKG_DIR}" AND EXISTS "${_vcpkg_args_VCPKG_DIR}/vcpkg${CMAKE_EXECUTABLE_SUFFIX}")

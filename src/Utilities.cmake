@@ -83,7 +83,6 @@ function(set_env_from_string env_string)
   endforeach()
 endfunction()
 
-
 function(get_all_targets var)
   set(targets)
   get_all_targets_recursive(targets ${CMAKE_CURRENT_SOURCE_DIR})
@@ -107,6 +106,3 @@ macro(get_all_targets_recursive targets dir)
     PROPERTY BUILDSYSTEM_TARGETS)
   list(APPEND ${targets} ${current_targets})
 endmacro()
-
-
-
