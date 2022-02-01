@@ -45,9 +45,17 @@ macro(run_vcpkg)
     if("${_vcpkg_args_VCPKG_URL}" STREQUAL "")
       set(_vcpkg_args_VCPKG_URL "https://github.com/microsoft/vcpkg.git")
     endif()
-    execute_process(COMMAND "git" "clone" "${_vcpkg_args_VCPKG_URL}" WORKING_DIRECTORY ${VCPKG_PARENT_DIR})
+    find_program(GIT_EXECUTABLE "git" REQUIRED)
+    execute_process(COMMAND "${GIT_EXECUTABLE}" "clone" "${_vcpkg_args_VCPKG_URL}"
+                    WORKING_DIRECTORY ${VCPKG_PARENT_DIR})
     # Run vcpkg bootstrap
-    execute_process(COMMAND "./vcpkg/bootstrap-vcpkg" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
+    if(WIN32)
+      execute_process(COMMAND "./vcpkg/bootstrap-vcpkg.bat" "-disableMetrics"
+                      WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
+    else()
+      execute_process(COMMAND "./vcpkg/bootstrap-vcpkg.sh" "-disableMetrics"
+                      WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
+    endif()
   endif()
 
   # Setting up vcpkg toolchain
