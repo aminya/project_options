@@ -47,14 +47,14 @@ macro(run_vcpkg)
     endif()
     find_program(GIT_EXECUTABLE "git" REQUIRED)
     execute_process(COMMAND "${GIT_EXECUTABLE}" "clone" "${_vcpkg_args_VCPKG_URL}"
-                    WORKING_DIRECTORY ${VCPKG_PARENT_DIR})
+                    WORKING_DIRECTORY ${VCPKG_PARENT_DIR} COMMAND_ERROR_IS_FATAL LAST)
     # Run vcpkg bootstrap
     if(WIN32)
-      execute_process(COMMAND "./vcpkg/bootstrap-vcpkg.bat" "-disableMetrics"
-                      WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
+      execute_process(COMMAND "bootstrap-vcpkg.bat" "-disableMetrics" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
+                                                                                          COMMAND_ERROR_IS_FATAL LAST)
     else()
-      execute_process(COMMAND "./vcpkg/bootstrap-vcpkg.sh" "-disableMetrics"
-                      WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
+      execute_process(COMMAND "./bootstrap-vcpkg.sh" "-disableMetrics" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
+                                                                                         COMMAND_ERROR_IS_FATAL LAST)
     endif()
   endif()
 
