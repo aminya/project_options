@@ -155,10 +155,7 @@ macro(project_options)
     enable_include_what_you_use()
   endif()
 
-  # Very basic PCH example
   if(${ProjectOptions_ENABLE_PCH})
-    # This sets a global PCH parameter, each project will build its own PCH, which is a good idea
-    # if any #define's change consider breaking this out per project as necessary
     if(NOT ProjectOptions_PCH_HEADERS)
       set(ProjectOptions_PCH_HEADERS
           <vector>
