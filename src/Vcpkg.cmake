@@ -12,7 +12,10 @@ macro(run_vcpkg)
     ""
     ${ARGN})
 
-  if(NOT "${_vcpkg_args_VCPKG_DIR}" STREQUAL "")
+  if(NOT
+     "${_vcpkg_args_VCPKG_DIR}"
+     STREQUAL
+     "")
     # the installation directory is specified
     get_filename_component(VCPKG_PARENT_DIR ${_vcpkg_args_VCPKG_DIR} DIRECTORY)
   else()
@@ -27,7 +30,7 @@ macro(run_vcpkg)
   endif()
 
   # check if vcpkg is installed
-  if (WIN32 AND "${CMAKE_EXECUTABLE_SUFFIX}" STREQUAL "") 
+  if(WIN32 AND "${CMAKE_EXECUTABLE_SUFFIX}" STREQUAL "")
     set(CMAKE_EXECUTABLE_SUFFIX ".exe")
   endif()
   if(EXISTS "${_vcpkg_args_VCPKG_DIR}" AND EXISTS "${_vcpkg_args_VCPKG_DIR}/vcpkg${CMAKE_EXECUTABLE_SUFFIX}")
@@ -42,9 +45,17 @@ macro(run_vcpkg)
     if("${_vcpkg_args_VCPKG_URL}" STREQUAL "")
       set(_vcpkg_args_VCPKG_URL "https://github.com/microsoft/vcpkg.git")
     endif()
-    execute_process(COMMAND "git" "clone" "${_vcpkg_args_VCPKG_URL}" WORKING_DIRECTORY ${VCPKG_PARENT_DIR})
+    find_program(GIT_EXECUTABLE "git" REQUIRED)
+    execute_process(COMMAND "${GIT_EXECUTABLE}" "clone" "${_vcpkg_args_VCPKG_URL}"
+                    WORKING_DIRECTORY ${VCPKG_PARENT_DIR} COMMAND_ERROR_IS_FATAL LAST)
     # Run vcpkg bootstrap
-    execute_process(COMMAND "./vcpkg/bootstrap-vcpkg" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
+    if(WIN32)
+      execute_process(COMMAND "bootstrap-vcpkg.bat" "-disableMetrics" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
+                                                                                          COMMAND_ERROR_IS_FATAL LAST)
+    else()
+      execute_process(COMMAND "./bootstrap-vcpkg.sh" "-disableMetrics" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
+                                                                                         COMMAND_ERROR_IS_FATAL LAST)
+    endif()
   endif()
 
   # Setting up vcpkg toolchain
