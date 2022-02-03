@@ -26,6 +26,7 @@ include("${ProjectOptions_SRC_DIR}/SystemLink.cmake")
 # - PCH_HEADERS: the list of the headers to precompile
 # - ENABLE_CONAN: Use Conan for dependency management
 # - ENABLE_DOXYGEN: Enable doxygen doc builds of source
+# - DOXYGEN_THEME: the name of the Doxygen theme to use. Supported themes: `awesome-sidebar` (default), `awesome` and `original`.
 # - ENABLE_IPO: Enable Interprocedural Optimization, aka Link Time Optimization (LTO)
 # - ENABLE_USER_LINKER: Enable a specific linker if available
 # - ENABLE_BUILD_WITH_TIME_TRACE: Enable -ftime-trace to generate time tracing .json files on clang
@@ -62,7 +63,11 @@ macro(project_options)
       ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       ENABLE_SANITIZER_THREAD
       ENABLE_SANITIZER_MEMORY)
-  set(oneValueArgs MSVC_WARNINGS CLANG_WARNINGS GCC_WARNINGS)
+  set(oneValueArgs
+      DOXYGEN_THEME
+      MSVC_WARNINGS
+      CLANG_WARNINGS
+      GCC_WARNINGS)
   set(multiValueArgs PCH_HEADERS CONAN_OPTIONS)
   cmake_parse_arguments(
     ProjectOptions
@@ -114,10 +119,10 @@ macro(project_options)
   include("${ProjectOptions_SRC_DIR}/CompilerWarnings.cmake")
   set_project_warnings(
     project_warnings
-    WARNINGS_AS_ERRORS=${ProjectOptions_WARNINGS_AS_ERRORS}
-    MSVC_WARNINGS=${ProjectOptions_MSVC_WARNINGS}
-    CLANG_WARNINGS=${ProjectOptions_CLANG_WARNINGS}
-    GCC_WARNINGS=${ProjectOptions_GCC_WARNINGS})
+    "${WARNINGS_AS_ERRORS}"
+    "${ProjectOptions_MSVC_WARNINGS}"
+    "${ProjectOptions_CLANG_WARNINGS}"
+    "${ProjectOptions_GCC_WARNINGS}")
 
   include("${ProjectOptions_SRC_DIR}/Tests.cmake")
   if(${ProjectOptions_ENABLE_COVERAGE})
@@ -137,7 +142,7 @@ macro(project_options)
   if(${ProjectOptions_ENABLE_DOXYGEN})
     # enable doxygen
     include("${ProjectOptions_SRC_DIR}/Doxygen.cmake")
-    enable_doxygen()
+    enable_doxygen("${ProjectOptions_DOXYGEN_THEME}")
   endif()
 
   # allow for static analysis options
@@ -154,10 +159,7 @@ macro(project_options)
     enable_include_what_you_use()
   endif()
 
-  # Very basic PCH example
   if(${ProjectOptions_ENABLE_PCH})
-    # This sets a global PCH parameter, each project will build its own PCH, which is a good idea
-    # if any #define's change consider breaking this out per project as necessary
     if(NOT ProjectOptions_PCH_HEADERS)
       set(ProjectOptions_PCH_HEADERS
           <vector>

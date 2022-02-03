@@ -1,10 +1,11 @@
 macro(enable_cppcheck)
   find_program(CPPCHECK cppcheck)
   if(CPPCHECK)
+    # Enable all warnings that are actionable by the user of this toolset
+    # style should enable the other 3, but we'll be explicit just in case
     set(CMAKE_CXX_CPPCHECK
         ${CPPCHECK}
-        --suppress=missingInclude
-        --enable=all
+        --enable=style,performance,warning,portability
         --inline-suppr
         --inconclusive)
     if(${CMAKE_CXX_STANDARD})
@@ -21,6 +22,16 @@ endmacro()
 macro(enable_clang_tidy)
   find_program(CLANGTIDY clang-tidy)
   if(CLANGTIDY)
+    if(NOT
+       CMAKE_CXX_COMPILER_ID
+       MATCHES
+       ".*Clang"
+       AND ${ProjectOptions_ENABLE_PCH})
+      message(
+        SEND_ERROR
+          "clang-tidy cannot be enabled with non-clang compiler and PCH, clang-tidy fails to handle gcc's PCH file")
+    endif()
+
     set(CMAKE_CXX_CLANG_TIDY ${CLANGTIDY} -extra-arg=-Wno-unknown-warning-option)
     if(${CMAKE_CXX_STANDARD})
       set(CMAKE_CXX_CLANG_TIDY ${CMAKE_CXX_CLANG_TIDY} -extra-arg=-std=c++${CMAKE_CXX_STANDARD})

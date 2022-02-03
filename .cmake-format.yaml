@@ -1,8 +1,20 @@
+format:
+  line_width: 120
+  tab_size: 2
+  max_pargs_hwrap: 3
+  separate_ctrl_name_with_space: false
+  separate_fn_name_with_space: false
+  dangle_parens: false
+  line_ending: unix
+markup:
+  bullet_char: "*"
+  enum_char: .
+  enable_markup: false
 parse:
   additional_commands:
     project_options:
       pargs:
-        nargs: '*'
+        nargs: "*"
         flags: []
       spelling: project_options
       kwargs:
@@ -12,7 +24,7 @@ parse:
         CONAN_OPTIONS: +
     catch_discover_tests:
       pargs:
-        nargs: '*'
+        nargs: "*"
         flags: []
       kwargs:
         OUTPUT_DIR: 1
@@ -22,7 +34,7 @@ parse:
         TEST_PREFIX: 1
     conan_add_remote:
       pargs:
-        nargs: '*'
+        nargs: "*"
         flags: []
       kwargs:
         INDEX: 1
@@ -30,7 +42,7 @@ parse:
         URL: 1
     conan_cmake_install:
       pargs:
-        nargs: '*'
+        nargs: "*"
         flags: []
       kwargs:
         BUILD: +
@@ -56,7 +68,7 @@ parse:
         SETTINGS_HOST: +
     cpmaddpackage:
       pargs:
-        nargs: '*'
+        nargs: "*"
         flags: []
       spelling: CPMAddPackage
       kwargs: &id001
@@ -85,19 +97,19 @@ parse:
         OPTIONS: +
     cpmfindpackage:
       pargs:
-        nargs: '*'
+        nargs: "*"
         flags: []
       spelling: CPMFindPackage
       kwargs: *id001
     cpmdeclarepackage:
       pargs:
-        nargs: '*'
+        nargs: "*"
         flags: []
       spelling: CPMDeclarePackage
       kwargs: *id001
     packageproject:
       pargs:
-        nargs: '*'
+        nargs: "*"
         flags: []
       spelling: packageProject
       kwargs:
@@ -121,15 +133,3 @@ parse:
     cpmgetpackageversion:
       pargs: 2
       spelling: CPMGetPackageVersion
-format:
-  line_width: 120
-  tab_size: 2
-  max_pargs_hwrap: 3
-  separate_ctrl_name_with_space: false
-  separate_fn_name_with_space: false
-  dangle_parens: false
-  line_ending: unix
-markup:
-  bullet_char: '*'
-  enum_char: .
-  enable_markup: false
