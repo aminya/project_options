@@ -27,4 +27,7 @@ int main() {
   // trigger address sanitizer
   // int *p = nullptr;
   // *p = 1;
+
+  // trigger compiler warnings, clang-tidy, and cppcheck
+  int a;
 }

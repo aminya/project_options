@@ -8,7 +8,10 @@ macro(enable_cppcheck)
         --enable=style,performance,warning,portability
         --inline-suppr
         --inconclusive)
-    if(${CMAKE_CXX_STANDARD})
+    if(NOT
+       "${CMAKE_CXX_STANDARD}"
+       STREQUAL
+       "")
       set(CMAKE_CXX_CPPCHECK ${CMAKE_CXX_CPPCHECK} --std=c++${CMAKE_CXX_STANDARD})
     endif()
     if(WARNINGS_AS_ERRORS)
@@ -31,11 +34,20 @@ macro(enable_clang_tidy)
         SEND_ERROR
           "clang-tidy cannot be enabled with non-clang compiler and PCH, clang-tidy fails to handle gcc's PCH file")
     endif()
-
+    # construct the clang-tidy command line
     set(CMAKE_CXX_CLANG_TIDY ${CLANGTIDY} -extra-arg=-Wno-unknown-warning-option)
-    if(${CMAKE_CXX_STANDARD})
-      set(CMAKE_CXX_CLANG_TIDY ${CMAKE_CXX_CLANG_TIDY} -extra-arg=-std=c++${CMAKE_CXX_STANDARD})
+    # set standard
+    if(NOT
+       "${CMAKE_CXX_STANDARD}"
+       STREQUAL
+       "")
+      if("${CMAKE_CXX_CLANG_TIDY_DRIVER_MODE}" STREQUAL "cl")
+        set(CMAKE_CXX_CLANG_TIDY ${CMAKE_CXX_CLANG_TIDY} -extra-arg=/std:c++${CMAKE_CXX_STANDARD})
+      else()
+        set(CMAKE_CXX_CLANG_TIDY ${CMAKE_CXX_CLANG_TIDY} -extra-arg=-std=c++${CMAKE_CXX_STANDARD})
+      endif()
     endif()
+    # set warnings as errors
     if(WARNINGS_AS_ERRORS)
       list(APPEND CMAKE_CXX_CLANG_TIDY -warnings-as-errors=*)
     endif()
