@@ -1,41 +1,19 @@
 ---
-Checks:
-'-*,
-  cert-*,-cert-err58-cpp,
-  clang-diagnostic-*,
-  clang-analyzer-*,
-  hicpp-*,-hicpp-avoid-c-arrays,-hicpp-no-array-decay,hicpp-explicit-*,-hicpp-use-equals-default,-hicpp-signed-bitwise,-hicpp-special-member-functions,-hicpp-use-equals-delete,
-  misc-*,-misc-non-private-member-variables-in-classes,
-  modernize-*,modernize-use-*,modernize-avoid-c-arrays,-modernize-use-trailing-return-type,
-  performance-*,
-  portability-*,
-  readablity-*,
-'
-WarningsAsErrors: 'clang-analyzer-*'
-HeaderFilterRegex: '.*\.hpp$'
-AnalyzeTemporaryDtors: false
-FormatStyle:     file
-User:            klein_cl
-CheckOptions:
-  - key:             google-readability-braces-around-statements.ShortStatementLines
-    value:           '1'
-  - key:             google-readability-function-size.StatementThreshold
-    value:           '800'
-  - key:             google-readability-namespace-comments.ShortNamespaceLines
-    value:           '10'
-  - key:             google-readability-namespace-comments.SpacesBeforeComments
-    value:           '2'
-  - key:             modernize-loop-convert.MaxCopySize
-    value:           '16'
-  - key:             modernize-loop-convert.MinConfidence
-    value:           reasonable
-  - key:             modernize-loop-convert.NamingStyle
-    value:           CamelCase
-  - key:             modernize-pass-by-value.IncludeStyle
-    value:           llvm
-  - key:             modernize-replace-auto-ptr.IncludeStyle
-    value:           llvm
-  - key:             modernize-use-nullptr.NullMacros
-    value:           'NULL'
-...
-
+Checks: "*,
+        -abseil-*,
+        -altera-*,
+        -android-*,
+        -fuchsia-*,
+        -google-*,
+        -llvm*,
+        -modernize-use-trailing-return-type,
+        -zircon-*,
+        -readability-else-after-return,
+        -readability-static-accessed-through-instance,
+        -readability-avoid-const-params-in-decls,
+        -cppcoreguidelines-non-private-member-variables-in-classes,
+        -misc-non-private-member-variables-in-classes,
+"
+WarningsAsErrors: ''
+HeaderFilterRegex: ''
+FormatStyle:     none
