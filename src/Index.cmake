@@ -14,6 +14,8 @@ find_msvc()
 
 include("${ProjectOptions_SRC_DIR}/SystemLink.cmake")
 
+include("${ProjectOptions_SRC_DIR}/Cuda.cmake")
+
 #
 # Params:
 # - WARNINGS_AS_ERRORS: Treat compiler warnings as errors
@@ -39,6 +41,7 @@ include("${ProjectOptions_SRC_DIR}/SystemLink.cmake")
 # - MSVC_WARNINGS: Override the defaults for the MSVC warnings
 # - CLANG_WARNINGS: Override the defaults for the CLANG warnings
 # - GCC_WARNINGS: Override the defaults for the GCC warnings
+# - CUDA_WARNINGS: Override the defaults for the CUDA warnings
 # - CONAN_OPTIONS: Extra Conan options
 #
 # NOTE: cmake-lint [C0103] Invalid macro name "project_options" doesn't match `[0-9A-Z_]+`
@@ -122,7 +125,8 @@ macro(project_options)
     "${WARNINGS_AS_ERRORS}"
     "${ProjectOptions_MSVC_WARNINGS}"
     "${ProjectOptions_CLANG_WARNINGS}"
-    "${ProjectOptions_GCC_WARNINGS}")
+    "${ProjectOptions_GCC_WARNINGS}"
+    "${ProjectOptions_CUDA_WARNINGS}")
 
   include("${ProjectOptions_SRC_DIR}/Tests.cmake")
   if(${ProjectOptions_ENABLE_COVERAGE})
