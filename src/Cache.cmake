@@ -18,13 +18,15 @@ function(enable_cache)
     )
   endif()
 
-  #XXX find_program(CACHE_BINARY ${CACHE_OPTION})
   find_program(CACHE_BINARY NAMES ${CACHE_OPTION_VALUES})
   if(CACHE_BINARY)
     message(STATUS "${CACHE_BINARY} found and enabled")
     set(CMAKE_CXX_COMPILER_LAUNCHER
         ${CACHE_BINARY}
-        CACHE FILEPATH "compiler cache used")
+        CACHE FILEPATH "CXX compiler cache used")
+    set(CMAKE_C_COMPILER_LAUNCHER
+        ${CACHE_BINARY}
+        CACHE FILEPATH "C compiler cache used")
   else()
     message(WARNING "${CACHE_OPTION} is enabled but was not found. Not using it")
   endif()
