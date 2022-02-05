@@ -7,6 +7,10 @@ macro(enable_cppcheck)
         ${CPPCHECK}
         --enable=style,performance,warning,portability
         --inline-suppr
+        # We cannot act on a bug/missing feature of cppcheck
+        --suppress=internalAstError
+        # if a file does not have an internalAstError, we get an unmatchedSuppression error
+        --suppress=unmatchedSuppression
         --inconclusive)
     if(NOT
        "${CMAKE_CXX_STANDARD}"
