@@ -120,11 +120,14 @@ Named String:
 
 ## `target_link_system_libraries` function
 
-A very useful function that accepts the same arguments as `target_link_libraries` while marking their include directories as "SYSTEM", which suppresses their warnings. This helps in enabling `WARNINGS_AS_ERRORS` for your own source code.
+A function that accepts the same arguments as `target_link_libraries`. It has the following features:
+
+- The include directories of the library are included as `SYSTEM` to suppress their warnings. This helps in enabling `WARNINGS_AS_ERRORS` for your own source code.
+- For installation of the package, the includes are considered to be at `${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}`.
 
 ## `target_include_system_directories` function
 
-Similar to `target_include_directories`, but it suppresses the warnings. It is useful if you want to include some external directories directly.
+A function that accepts the same arguments as `target_include_directories`. It has the above mentioned features of `target_link_system_libraries`
 
 ## `target_link_cuda` function
 
