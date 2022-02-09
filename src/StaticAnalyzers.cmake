@@ -65,7 +65,12 @@ macro(enable_clang_tidy)
   if(CLANGTIDY_CACHE)
     # use clang-tidy-cache if found
     set($ENV{CLANG_TIDY_CACHE_BINARY} ${CLANGTIDY_CACHE})
-    set(CLANGTIDY ${CLANGTIDY_CACHE} -p "${CMAKE_CURRENT_BINARY_DIR}")
+    set(CLANGTIDY
+        ${CLANGTIDY_CACHE}
+        -p
+        "${CMAKE_CURRENT_BINARY_DIR}"
+        --export-fixes
+        "${CMAKE_CURRENT_BINARY_DIR}/clang_tidy_fixes.yaml")
   else()
     # otherwise use clang-tidy directly
     find_program(CLANGTIDY clang-tidy)
