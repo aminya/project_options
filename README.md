@@ -83,7 +83,7 @@ It accepts the following named flags:
 - `ENABLE_IPO`: Enable Interprocedural Optimization (Link Time Optimization, LTO) in the release build
 - `ENABLE_COVERAGE`: Enable coverage reporting for gcc/clang
 - `ENABLE_DOXYGEN`: Enable Doxygen doc builds of source
-- `WARNINGS_AS_ERRORS`: Treat the warnings as errors
+- `WARNINGS_AS_ERRORS`: Treat compiler and static code analyzer warnings as errors. This also effects cmake warnings related to those.
 - `ENABLE_SANITIZER_ADDRESS`: Enable address sanitizer
 - `ENABLE_SANITIZER_LEAK`: Enable leak sanitizer
 - `ENABLE_SANITIZER_UNDEFINED_BEHAVIOR`: Enable undefined behavior sanitizer
