@@ -22,7 +22,14 @@ macro(package_project)
   set(_multiValueArgs
       # default to the project_name or the given name:
       TARGETS
-      DEPENDENCIES
+      # the names of the INTERFACE/PUBLIC dependencies that are found using `CONFIG`
+      PUBLIC_DEPENDENCIES_CONFIGED
+      # the INTERFACE/PUBLIC dependencies that are found by any means using `find_dependency`.
+      # the arguments must be specified within double quotes (e.g. "<dependency> 1.0.0 EXACT" or "<dependency> CONFIG").
+      PUBLIC_DEPENDENCIES
+      # the names of the PRIVATE dependencies that are found using `CONFIG`. Only included when BUILD_SHARED_LIBS is OFF.
+      PRIVATE_DEPENDENCIES_CONFIGED
+      # PRIVATE dependencies that are only included when BUILD_SHARED_LIBS is OFF
       PRIVATE_DEPENDENCIES
       EXTRA_PATH_VARS_SUFFIX)
 
@@ -79,6 +86,27 @@ macro(package_project)
   if(EXISTS "${_PackageProject_INCLUDE_DIR}")
     install(DIRECTORY ${_PackageProject_INCLUDE_DIR} DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
   endif()
+
+  # Append the configed public dependencies
+  if(_PackageProject_PUBLIC_DEPENDENCIES_CONFIGED)
+    set(_PUBLIC_DEPENDENCIES_CONFIG)
+    foreach(DEP ${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGED})
+      set(_PUBLIC_DEPENDENCIES_CONFIG "${_PUBLIC_DEPENDENCIES_CONFIG};${DEP} CONFIG")
+    endforeach()
+  endif()
+  set(_PackageProject_PUBLIC_DEPENDENCIES "${_PackageProject_PUBLIC_DEPENDENCIES};${_PUBLIC_DEPENDENCIES_CONFIG}")
+  # ycm arg
+  set(_PackageProject_DEPENDENCIES "${_PackageProject_PUBLIC_DEPENDENCIES}")
+
+  # Append the configed private dependencies
+  if(_PackageProject_PRIVATE_DEPENDENCIES_CONFIGED)
+    set(_PRIVATE_DEPENDENCIES_CONFIG)
+    foreach(DEP ${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGED})
+      set(_PRIVATE_DEPENDENCIES_CONFIG "${_PRIVATE_DEPENDENCIES_CONFIG};${DEP} CONFIG")
+    endforeach()
+  endif()
+  # ycm arg
+  set(_PackageProject_PRIVATE_DEPENDENCIES "${_PackageProject_PRIVATE_DEPENDENCIES};${_PRIVATE_DEPENDENCIES_CONFIG}")
 
   # Installation of package (compatible with vcpkg, etc)
   install(
