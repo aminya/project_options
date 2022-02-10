@@ -2,6 +2,7 @@
 
 macro(package_project)
   set(_options
+      # default to true
       ARCH_INDEPENDENT
       NO_EXPORT
       NO_SET_AND_CHECK_MACRO
@@ -9,19 +10,27 @@ macro(package_project)
       UPPERCASE_FILENAMES
       LOWERCASE_FILENAMES)
   set(_oneValueArgs
+      # default all of these to the project_name or the given name:
       NAME
+      NAMESPACE
       VARS_PREFIX
-      VERSION
-      COMPATIBILITY
       EXPORT
+      # default to project version:
+      VERSION
+      # default to any newer:
+      COMPATIBILITY
       EXPORT_DESTINATION
       INSTALL_DESTINATION
-      NAMESPACE
       CONFIG_TEMPLATE
       INCLUDE_FILE
       INCLUDE_CONTENT
       COMPONENT)
-  set(_multiValueArgs EXTRA_PATH_VARS_SUFFIX DEPENDENCIES PRIVATE_DEPENDENCIES)
+  set(_multiValueArgs
+      # default to the project_name or the given name:
+      TARGETS
+      EXTRA_PATH_VARS_SUFFIX
+      DEPENDENCIES
+      PRIVATE_DEPENDENCIES)
 
   cmake_parse_arguments(
     _PackageProject
@@ -37,9 +46,24 @@ macro(package_project)
     set(_PackageProject_NAME ${PROJECT_NAME})
   endif()
 
+  # default namespace to the given name or the name of the project
+  if("${_PackageProject_NAMESPACE}" STREQUAL "")
+    set(_PackageProject_NAMESPACE ${_PackageProject_NAME})
+  endif()
+
   # default VARS_PREFIX to the given name or the name of the project
   if("${_PackageProject_VARS_PREFIX}" STREQUAL "")
     set(_PackageProject_VARS_PREFIX ${_PackageProject_NAME})
+  endif()
+
+  # default export to the given name or the name of the project
+  if("${_PackageProject_EXPORT}" STREQUAL "")
+    set(_PackageProject_EXPORT ${_PackageProject_NAME})
+  endif()
+
+  # default targets to the given name or the name of the project
+  if("${_PackageProject_TARGETS}" STREQUAL "")
+    set(_PackageProject_TARGETS ${_PackageProject_NAME})
   endif()
 
   # default version to the project version
@@ -57,7 +81,19 @@ macro(package_project)
     set(_PackageProject_ARCH_INDEPENDENT ON)
   endif()
 
-  # download FowardArguments (premisive MIT license)
+  # Installation of public/interface includes
+  # install(DIRECTORY ${INCLUDE_DIR} DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+
+  # Installation of package (compatible with vcpkg, etc)
+  install(
+    TARGETS ${_PackageProject_TARGETS}
+    EXPORT ${_PackageProject_EXPORT}
+    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
+    ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT lib
+    RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
+    PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_PackageProject_NAME}" COMPONENT dev)
+
+  # download FowardArguments
   FetchContent_Declare(
     _fargs
     URL https://github.com/polysquare/cmake-forward-arguments/archive/8c50d1f956172edb34e95efa52a2d5cb1f686ed2.zip)
@@ -66,6 +102,9 @@ macro(package_project)
     FetchContent_Populate(_fargs)
   endif()
   include("${_fargs_SOURCE_DIR}/ForwardArguments.cmake")
+
+  # prepare the forward arguments for ycm
+  unset(_PackageProject_TARGETS)
 
   set(_FARGS_LIST)
   cmake_forward_arguments(
@@ -78,7 +117,7 @@ macro(package_project)
     MULTIVAR_ARGS
     "${_multiValueArgs}")
 
-  # download ycm (premisive BSD-3-Clause license)
+  # download ycm
   FetchContent_Declare(_ycm URL https://github.com/robotology/ycm/archive/refs/tags/v0.13.0.zip)
   FetchContent_GetProperties(_ycm)
   if(NOT _ycm_POPULATED)
