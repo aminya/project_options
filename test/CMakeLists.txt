@@ -62,3 +62,6 @@ target_link_system_libraries(
 # tests
 enable_testing()
 add_test(NAME main COMMAND main)
+
+# package
+package_project()

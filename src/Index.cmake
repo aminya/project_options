@@ -12,6 +12,8 @@ include("${ProjectOptions_SRC_DIR}/SystemLink.cmake")
 
 include("${ProjectOptions_SRC_DIR}/Cuda.cmake")
 
+include("${ProjectOptions_SRC_DIR}/PackageProject.cmake")
+
 #
 # Params:
 # - WARNINGS_AS_ERRORS: Treat compiler warnings as errors

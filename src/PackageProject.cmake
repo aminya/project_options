@@ -1,6 +1,6 @@
 # Uses ycm (permissive BSD-3-Clause license) and FowardArguments (permissive MIT license)
 
-function(package_project)
+macro(package_project)
   set(_options
       ARCH_INDEPENDENT
       NO_EXPORT
@@ -9,10 +9,11 @@ function(package_project)
       UPPERCASE_FILENAMES
       LOWERCASE_FILENAMES)
   set(_oneValueArgs
+      NAME
+      VARS_PREFIX
       VERSION
       COMPATIBILITY
       EXPORT
-      VARS_PREFIX
       EXPORT_DESTINATION
       INSTALL_DESTINATION
       NAMESPACE
@@ -29,6 +30,33 @@ function(package_project)
     "${_multiValueArgs}"
     "${ARGN}")
 
+  # Set default options
+
+  # default name to the name of the project
+  if("${_PackageProject_NAME}" STREQUAL "")
+    set(_PackageProject_NAME ${PROJECT_NAME})
+  endif()
+
+  # default VARS_PREFIX to the given name or the name of the project
+  if("${_PackageProject_VARS_PREFIX}" STREQUAL "")
+    set(_PackageProject_VARS_PREFIX ${_PackageProject_NAME})
+  endif()
+
+  # default version to the project version
+  if("${_PackageProject_VERSION}" STREQUAL "")
+    set(_PackageProject_VERSION ${PROJECT_VERSION})
+  endif()
+
+  # default compatibility to any newer version (since a lot of projects do not follow semver)
+  if("${_PackageProject_COMPATIBILITY}" STREQUAL "")
+    set(_PackageProject_COMPATIBILITY "AnyNewerVersion")
+  endif()
+
+  # default to arch dependant (works better with vcpkg, etc)
+  if("${_PackageProject_ARCH_INDEPENDENT}" STREQUAL "")
+    set(_PackageProject_ARCH_INDEPENDENT ON)
+  endif()
+
   # download FowardArguments (premisive MIT license)
   FetchContent_Declare(
     _fargs
@@ -39,9 +67,10 @@ function(package_project)
   endif()
   include("${_fargs_SOURCE_DIR}/ForwardArguments.cmake")
 
+  set(_FARGS_LIST)
   cmake_forward_arguments(
     _PackageProject
-    _PackageProject_ARGS_LIST
+    _FARGS_LIST
     OPTION_ARGS
     "${_options}"
     SINGLEVAR_ARGS
@@ -57,7 +86,7 @@ function(package_project)
   endif()
   include("${_ycm_SOURCE_DIR}/modules/InstallBasicPackageFiles.cmake")
 
-  install_basic_package_files("${_PackageProject_ARGS_LIST}")
+  install_basic_package_files(${_PackageProject_NAME} "${_FARGS_LIST}")
 
   include("${_ycm_SOURCE_DIR}/modules/AddUninstallTarget.cmake")
-endfunction()
+endmacro()
