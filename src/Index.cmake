@@ -62,12 +62,14 @@ macro(project_options)
       ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       ENABLE_SANITIZER_THREAD
       ENABLE_SANITIZER_MEMORY)
-  set(oneValueArgs
-      DOXYGEN_THEME
+  set(oneValueArgs DOXYGEN_THEME)
+  set(multiValueArgs
       MSVC_WARNINGS
       CLANG_WARNINGS
-      GCC_WARNINGS)
-  set(multiValueArgs PCH_HEADERS CONAN_OPTIONS)
+      GCC_WARNINGS
+      CUDA_WARNINGS
+      PCH_HEADERS
+      CONAN_OPTIONS)
   cmake_parse_arguments(
     ProjectOptions
     "${options}"
