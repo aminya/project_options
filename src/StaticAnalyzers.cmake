@@ -1,17 +1,23 @@
-macro(enable_cppcheck)
+macro(enable_cppcheck CPPCHECK_OPTIONS)
   find_program(CPPCHECK cppcheck)
   if(CPPCHECK)
-    # Enable all warnings that are actionable by the user of this toolset
-    # style should enable the other 3, but we'll be explicit just in case
-    set(CMAKE_CXX_CPPCHECK
-        ${CPPCHECK}
-        --enable=style,performance,warning,portability
-        --inline-suppr
-        # We cannot act on a bug/missing feature of cppcheck
-        --suppress=internalAstError
-        # if a file does not have an internalAstError, we get an unmatchedSuppression error
-        --suppress=unmatchedSuppression
-        --inconclusive)
+
+    if("${CPPCHECK_OPTIONS}" STREQUAL "")
+      # Enable all warnings that are actionable by the user of this toolset
+      # style should enable the other 3, but we'll be explicit just in case
+      set(CMAKE_CXX_CPPCHECK
+          ${CPPCHECK}
+          --enable=style,performance,warning,portability
+          --inline-suppr
+          # We cannot act on a bug/missing feature of cppcheck
+          --suppress=internalAstError
+          # if a file does not have an internalAstError, we get an unmatchedSuppression error
+          --suppress=unmatchedSuppression
+          --inconclusive)
+    else()
+      set(CMAKE_CXX_CPPCHECK ${CPPCHECK} ${CPPCHECK_OPTIONS})
+    endif()
+
     if(NOT
        "${CMAKE_CXX_STANDARD}"
        STREQUAL

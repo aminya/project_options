@@ -38,6 +38,7 @@ include("${ProjectOptions_SRC_DIR}/Cuda.cmake")
 # - CLANG_WARNINGS: Override the defaults for the CLANG warnings
 # - GCC_WARNINGS: Override the defaults for the GCC warnings
 # - CUDA_WARNINGS: Override the defaults for the CUDA warnings
+# - CPPCHECK_OPTIONS: Override the defaults for CppCheck settings
 # - CONAN_OPTIONS: Extra Conan options
 #
 # NOTE: cmake-lint [C0103] Invalid macro name "project_options" doesn't match `[0-9A-Z_]+`
@@ -68,6 +69,7 @@ macro(project_options)
       CLANG_WARNINGS
       GCC_WARNINGS
       CUDA_WARNINGS
+      CPPCHECK_OPTIONS
       PCH_HEADERS
       CONAN_OPTIONS)
   cmake_parse_arguments(
@@ -150,7 +152,7 @@ macro(project_options)
   # allow for static analysis options
   include("${ProjectOptions_SRC_DIR}/StaticAnalyzers.cmake")
   if(${ProjectOptions_ENABLE_CPPCHECK})
-    enable_cppcheck()
+    enable_cppcheck("${ProjectOptions_CPPCHECK_OPTIONS}")
   endif()
 
   if(${ProjectOptions_ENABLE_CLANG_TIDY})
