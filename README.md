@@ -103,6 +103,7 @@ It gets the following named parameters that can have different values in front o
 - `CLANG_WARNINGS`: Override the defaults for the CLANG warnings
 - `GCC_WARNINGS`: Override the defaults for the GCC warnings
 - `CUDA_WARNINGS`: Override the defaults for the CUDA warnings
+- `CPPCHECK_WARNINGS`: Override the defaults for the options passed to CPPCHECK
 - `CONAN_OPTIONS`: Extra Conan options
 
 ## `run_vcpkg` function
