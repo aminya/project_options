@@ -19,6 +19,8 @@ macro(package_project)
       VERSION
       # default to any newer:
       COMPATIBILITY
+      # include directory: default to include
+      INCLUDE_DIR
       EXPORT_DESTINATION
       INSTALL_DESTINATION
       CONFIG_TEMPLATE
@@ -82,7 +84,9 @@ macro(package_project)
   endif()
 
   # Installation of public/interface includes
-  # install(DIRECTORY ${INCLUDE_DIR} DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+  if(EXISTS "${_PackageProject_INCLUDE_DIR}")
+    install(DIRECTORY ${_PackageProject_INCLUDE_DIR} DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+  endif()
 
   # Installation of package (compatible with vcpkg, etc)
   install(
