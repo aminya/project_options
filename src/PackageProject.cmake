@@ -1,14 +1,8 @@
 # Uses ycm (permissive BSD-3-Clause license) and FowardArguments (permissive MIT license)
 
 macro(package_project)
-  set(_options
-      # default to true
-      ARCH_INDEPENDENT
-      NO_EXPORT
-      NO_SET_AND_CHECK_MACRO
-      NO_CHECK_REQUIRED_COMPONENTS_MACRO
-      UPPERCASE_FILENAMES
-      LOWERCASE_FILENAMES)
+  set(_options # default to true
+      ARCH_INDEPENDENT)
   set(_oneValueArgs
       # default all of these to the project_name or the given name:
       NAME
@@ -24,15 +18,13 @@ macro(package_project)
       EXPORT_DESTINATION
       INSTALL_DESTINATION
       CONFIG_TEMPLATE
-      INCLUDE_FILE
-      INCLUDE_CONTENT
       COMPONENT)
   set(_multiValueArgs
       # default to the project_name or the given name:
       TARGETS
-      EXTRA_PATH_VARS_SUFFIX
       DEPENDENCIES
-      PRIVATE_DEPENDENCIES)
+      PRIVATE_DEPENDENCIES
+      EXTRA_PATH_VARS_SUFFIX)
 
   cmake_parse_arguments(
     _PackageProject
