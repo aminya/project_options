@@ -16,7 +16,7 @@ run_vcpkg()
 project(
   main
   VERSION 0.2.0
-  LANGUAGES CXX)
+  LANGUAGES CXX C)
 
 # Initialize project_options
 # uncomment the options to enable them
