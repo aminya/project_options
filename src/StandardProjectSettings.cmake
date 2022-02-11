@@ -43,7 +43,7 @@ endif()
 # this is needed for the tools like clang-tidy, cppcheck, etc.
 # Ideally, the user should read the warning and set a default CMAKE_CXX_STANDARD for their project
 # Like not having compiler warnings on by default, this fixes another `bad` defualt for the compilers
-if(NOT "${CMAKE_CXX_STANDARD}")
+if("${CMAKE_CXX_STANDARD}" STREQUAL "")
   if(DEFINED CMAKE_CXX20_STANDARD_COMPILE_OPTION OR DEFINED CMAKE_CXX20_EXTENSION_COMPILE_OPTION)
     set(CXX_LATEST_STANDARD 20)
   elseif(DEFINED CMAKE_CXX17_STANDARD_COMPILE_OPTION OR DEFINED CMAKE_CXX17_EXTENSION_COMPILE_OPTION)
@@ -58,6 +58,16 @@ if(NOT "${CMAKE_CXX_STANDARD}")
       "The default CMAKE_CXX_STANDARD used by external targets and tools is not set yet. Using the latest supported C++ standard that is ${CXX_LATEST_STANDARD}"
   )
   set(CMAKE_CXX_STANDARD ${CXX_LATEST_STANDARD})
+endif()
+
+# strongly encouraged to enable this globally to avoid conflicts between
+# -Wpedantic being enabled and -std=c++xx and -std=gnu++xx when compiling with PCH enabled
+if("${CMAKE_CXX_EXTENSIONS}" STREQUAL "")
+  set(CMAKE_CXX_EXTENSIONS OFF)
+endif()
+
+if("${CMAKE_C_EXTENSIONS}" STREQUAL "")
+  set(CMAKE_C_EXTENSIONS OFF)
 endif()
 
 # run vcvarsall when msvc is used
