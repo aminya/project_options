@@ -10,15 +10,23 @@ function(target_include_system_directories target)
 
   foreach(scope IN ITEMS INTERFACE PUBLIC PRIVATE)
     foreach(lib_include_dirs IN LISTS ARG_${scope})
-      if(MSVC)
+      if(NOT MSVC)
         # system includes do not work in MSVC
         # awaiting https://gitlab.kitware.com/cmake/cmake/-/issues/18272#
         # awaiting https://gitlab.kitware.com/cmake/cmake/-/issues/17904
-        target_include_directories(${target} ${scope} ${lib_include_dirs})
+        set(_SYSTEM SYSTEM)
+      endif()
+      if(${scope} STREQUAL "INTERFACE" OR ${scope} STREQUAL "PUBLIC")
+        target_include_directories(
+          ${target}
+          ${_SYSTEM}
+          ${scope}
+          "$<BUILD_INTERFACE:${lib_include_dirs}>"
+          "$<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}>")
       else()
         target_include_directories(
           ${target}
-          SYSTEM
+          ${_SYSTEM}
           ${scope}
           ${lib_include_dirs})
       endif()
@@ -39,7 +47,7 @@ function(
     if(lib_include_dirs)
       target_include_system_directories(${target} ${scope} ${lib_include_dirs})
     else()
-      message(STATUS "${lib} library does not have the INTERFACE_INCLUDE_DIRECTORIES property.")
+      message(TRACE "${lib} library does not have the INTERFACE_INCLUDE_DIRECTORIES property.")
     endif()
   endif()
 endfunction()

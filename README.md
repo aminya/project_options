@@ -15,10 +15,10 @@ cmake_minimum_required(VERSION 3.16)
 # You can later set fine-grained standards for each target using `target_compile_features`
 # set(CMAKE_CXX_STANDARD 17)
 
-# Add project_options v0.14.2
+# Add project_options v0.16.0
 # https://github.com/cpp-best-practices/project_options
 include(FetchContent)
-FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.14.2.zip)
+FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.16.0.zip)
 FetchContent_MakeAvailable(_project_options)
 include(${_project_options_SOURCE_DIR}/Index.cmake)
 
@@ -83,7 +83,7 @@ It accepts the following named flags:
 - `ENABLE_IPO`: Enable Interprocedural Optimization (Link Time Optimization, LTO) in the release build
 - `ENABLE_COVERAGE`: Enable coverage reporting for gcc/clang
 - `ENABLE_DOXYGEN`: Enable Doxygen doc builds of source
-- `WARNINGS_AS_ERRORS`: Treat the warnings as errors
+- `WARNINGS_AS_ERRORS`: Treat compiler and static code analyzer warnings as errors. This also effects cmake warnings related to those.
 - `ENABLE_SANITIZER_ADDRESS`: Enable address sanitizer
 - `ENABLE_SANITIZER_LEAK`: Enable leak sanitizer
 - `ENABLE_SANITIZER_UNDEFINED_BEHAVIOR`: Enable undefined behavior sanitizer
@@ -103,6 +103,7 @@ It gets the following named parameters that can have different values in front o
 - `CLANG_WARNINGS`: Override the defaults for the CLANG warnings
 - `GCC_WARNINGS`: Override the defaults for the GCC warnings
 - `CUDA_WARNINGS`: Override the defaults for the CUDA warnings
+- `CPPCHECK_WARNINGS`: Override the defaults for the options passed to CPPCHECK
 - `CONAN_OPTIONS`: Extra Conan options
 
 ## `run_vcpkg` function
@@ -120,11 +121,14 @@ Named String:
 
 ## `target_link_system_libraries` function
 
-A very useful function that accepts the same arguments as `target_link_libraries` while marking their include directories as "SYSTEM", which suppresses their warnings. This helps in enabling `WARNINGS_AS_ERRORS` for your own source code.
+A function that accepts the same arguments as `target_link_libraries`. It has the following features:
+
+- The include directories of the library are included as `SYSTEM` to suppress their warnings. This helps in enabling `WARNINGS_AS_ERRORS` for your own source code.
+- For installation of the package, the includes are considered to be at `${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}`.
 
 ## `target_include_system_directories` function
 
-Similar to `target_include_directories`, but it suppresses the warnings. It is useful if you want to include some external directories directly.
+A function that accepts the same arguments as `target_include_directories`. It has the above mentioned features of `target_link_system_libraries`
 
 ## `target_link_cuda` function
 
@@ -169,10 +173,10 @@ cmake_minimum_required(VERSION 3.16)
 # You can later set fine-grained standards for each target using `target_compile_features`
 # set(CMAKE_CXX_STANDARD 17)
 
-# Add project_options v0.14.2
+# Add project_options v0.16.0
 # https://github.com/cpp-best-practices/project_options
 include(FetchContent)
-FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.14.2.zip)
+FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.16.0.zip)
 FetchContent_MakeAvailable(_project_options)
 include(${_project_options_SOURCE_DIR}/Index.cmake)
 
