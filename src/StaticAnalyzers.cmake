@@ -8,7 +8,6 @@ macro(enable_cppcheck CPPCHECK_OPTIONS)
       set(CPPCHECK_TEMPLATE "gcc")
     endif()
 
-
     if("${CPPCHECK_OPTIONS}" STREQUAL "")
       # Enable all warnings that are actionable by the user of this toolset
       # style should enable the other 3, but we'll be explicit just in case
@@ -23,9 +22,8 @@ macro(enable_cppcheck CPPCHECK_OPTIONS)
           --suppress=unmatchedSuppression
           --inconclusive)
     else()
-      set(CMAKE_CXX_CPPCHECK ${CPPCHECK}
-          --template=${CPPCHECK_TEMPLATE}
-          ${CPPCHECK_OPTIONS})
+      # if the user provides a CPPCHECK_OPTIONS with a template specified, it will override this template
+      set(CMAKE_CXX_CPPCHECK ${CPPCHECK} --template=${CPPCHECK_TEMPLATE} ${CPPCHECK_OPTIONS})
     endif()
 
     if(NOT
