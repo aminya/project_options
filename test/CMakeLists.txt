@@ -79,6 +79,7 @@ target_link_system_libraries(
 
 # package
 package_project(
+  TARGETS
   main
   lib
   PUBLIC_DEPENDENCIES_CONFIGED

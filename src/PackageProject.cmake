@@ -1,6 +1,6 @@
 # Uses ycm (permissive BSD-3-Clause license) and FowardArguments (permissive MIT license)
 
-macro(package_project targets)
+macro(package_project)
   set(_options ARCH_INDEPENDENT # default to false
   )
   set(_oneValueArgs
@@ -16,6 +16,8 @@ macro(package_project targets)
       # default to ${CMAKE_INSTALL_DATADIR}/cmake/${NAME} suitable for vcpkg, etc.
       CONFIG_INSTALL_DESTINATION)
   set(_multiValueArgs
+      # required
+      TARGETS
       # a list of public/interface include directories or files
       PUBLIC_INCLUDES
       # the names of the INTERFACE/PUBLIC dependencies that are found using `CONFIG`
@@ -34,6 +36,10 @@ macro(package_project targets)
     "${_oneValueArgs}"
     "${_multiValueArgs}"
     "${ARGN}")
+
+  if(NOT _PackageProject_TARGETS)
+    message(FATAL_ERROR "No targets specified in `package_project` function")
+  endif()
 
   # Set default options
 
@@ -103,12 +109,14 @@ macro(package_project targets)
 
   # Installation of package (compatible with vcpkg, etc)
   install(
-    TARGETS ${targets}
+    TARGETS ${_PackageProject_TARGETS}
     EXPORT ${_PackageProject_EXPORT}
     LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
     ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT lib
     RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
     PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_PackageProject_NAME}" COMPONENT dev)
+
+  unset(_PackageProject_TARGETS)
 
   # download FowardArguments
   FetchContent_Declare(
