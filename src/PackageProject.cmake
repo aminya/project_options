@@ -1,6 +1,8 @@
 # Uses ycm (permissive BSD-3-Clause license) and FowardArguments (permissive MIT license)
 
 function(package_project)
+  cmake_policy(SET CMP0103 NEW) # disallow multiple calls with the same NAME
+
   set(_options ARCH_INDEPENDENT # default to false
   )
   set(_oneValueArgs
