@@ -14,8 +14,7 @@ macro(package_project targets)
       # default to ${CMAKE_BINARY_DIR}
       CONFIG_EXPORT_DESTINATION
       # default to ${CMAKE_INSTALL_DATADIR}/cmake/${NAME} suitable for vcpkg, etc.
-      CONFIG_INSTALL_DESTINATION
-      CONFIG_TEMPLATE)
+      CONFIG_INSTALL_DESTINATION)
   set(_multiValueArgs
       # a list of public/interface include directories or files
       PUBLIC_INCLUDES
