@@ -77,11 +77,15 @@ target_link_system_libraries(
   fmt::fmt
   Eigen3::Eigen)
 
-# package everything
+# package everything automatically
 package_project(
-  TARGETS
-  main
-  lib
+  # NAME
+  # myproj
+  # TARGETS
+  # main
+  # lib
+  # project_warnings
+  # project_options
   PUBLIC_DEPENDENCIES_CONFIGED
   ${DEPENDENCIES_CONFIGED}
   PUBLIC_INCLUDES

@@ -91,6 +91,23 @@ function(get_all_targets var)
       PARENT_SCOPE)
 endfunction()
 
+function(get_all_installable_targets var)
+  set(targets)
+  get_all_targets(targets)
+  foreach(_target ${targets})
+    get_target_property(_target_type ${_target} TYPE)
+    if(NOT
+       ${_target_type}
+       MATCHES
+       ".*LIBRARY|EXECUTABLE")
+      list(REMOVE_ITEM targets ${_target})
+    endif()
+  endforeach()
+  set(${var}
+      ${targets}
+      PARENT_SCOPE)
+endfunction()
+
 macro(get_all_targets_recursive targets dir)
   get_property(
     subdirectories

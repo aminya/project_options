@@ -18,7 +18,7 @@ function(package_project)
       # default to ${CMAKE_INSTALL_DATADIR}/cmake/${NAME} suitable for vcpkg, etc.
       CONFIG_INSTALL_DESTINATION)
   set(_multiValueArgs
-      # required
+      # recursively found for the current folder if not specified
       TARGETS
       # a list of public/interface include directories or files
       PUBLIC_INCLUDES
@@ -39,11 +39,13 @@ function(package_project)
     "${_multiValueArgs}"
     "${ARGN}")
 
-  if(NOT _PackageProject_TARGETS)
-    message(FATAL_ERROR "No targets specified in `package_project` function")
-  endif()
-
   # Set default options
+
+  # set default packaged targets
+  if(NOT _PackageProject_TARGETS)
+    get_all_installable_targets(_PackageProject_TARGETS)
+    message(STATUS "No targets specified in `package_project` function. Considering ${_PackageProject_TARGETS}")
+  endif()
 
   # default to the name of the project or the given name
   if("${_PackageProject_NAME}" STREQUAL "")
