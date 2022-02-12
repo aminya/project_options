@@ -1,8 +1,8 @@
 # Uses ycm (permissive BSD-3-Clause license) and FowardArguments (permissive MIT license)
 
-macro(package_project)
-  set(_options # default to true
-      ARCH_INDEPENDENT)
+macro(package_project targets)
+  set(_options ARCH_INDEPENDENT # default to true
+  )
   set(_oneValueArgs
       # default to the project_name:
       NAME
@@ -16,8 +16,6 @@ macro(package_project)
       CONFIG_TEMPLATE
       COMPONENT)
   set(_multiValueArgs
-      # default to the project_name or the given name:
-      TARGETS
       # the names of the INTERFACE/PUBLIC dependencies that are found using `CONFIG`
       PUBLIC_DEPENDENCIES_CONFIGED
       # the INTERFACE/PUBLIC dependencies that are found by any means using `find_dependency`.
@@ -45,11 +43,6 @@ macro(package_project)
   set(_PackageProject_NAMESPACE ${_PackageProject_NAME})
   set(_PackageProject_VARS_PREFIX ${_PackageProject_NAME})
   set(_PackageProject_EXPORT ${_PackageProject_NAME})
-
-  # default targets to the given name or the name of the project
-  if("${_PackageProject_TARGETS}" STREQUAL "")
-    set(_PackageProject_TARGETS ${_PackageProject_NAME})
-  endif()
 
   # default version to the project version
   if("${_PackageProject_VERSION}" STREQUAL "")
@@ -94,7 +87,7 @@ macro(package_project)
 
   # Installation of package (compatible with vcpkg, etc)
   install(
-    TARGETS ${_PackageProject_TARGETS}
+    TARGETS ${targets}
     EXPORT ${_PackageProject_EXPORT}
     LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
     ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT lib
@@ -112,8 +105,6 @@ macro(package_project)
   include("${_fargs_SOURCE_DIR}/ForwardArguments.cmake")
 
   # prepare the forward arguments for ycm
-  unset(_PackageProject_TARGETS)
-
   set(_FARGS_LIST)
   cmake_forward_arguments(
     _PackageProject

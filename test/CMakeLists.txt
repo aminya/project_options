@@ -56,12 +56,11 @@ target_link_system_libraries(
   main
   PRIVATE
   fmt::fmt
-  Eigen3::Eigen
-)
+  Eigen3::Eigen)
 
 # tests
 enable_testing()
 add_test(NAME main COMMAND main)
 
 # package
-package_project()
+package_project(main)
