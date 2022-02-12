@@ -49,8 +49,12 @@ add_executable(main main.cpp)
 target_link_libraries(main PRIVATE project_options project_warnings)
 
 # dependencies
-find_package(fmt REQUIRED)
-find_package(Eigen3 CONFIG REQUIRED)
+set(DEPENDENCIES_CONFIGED fmt Eigen3)
+
+foreach(DEPENDENCY ${DEPENDENCIES_CONFIGED})
+  find_package(${DEPENDENCY} CONFIG REQUIRED)
+endforeach()
+
 target_link_system_libraries(
   main
   PRIVATE
@@ -61,5 +65,22 @@ target_link_system_libraries(
 enable_testing()
 add_test(NAME main COMMAND main)
 
+add_library(lib INTERFACE)
+set(INCLUDE_DIR "./include")
+target_include_directories(lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
+                                         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}>")
+target_link_libraries(main INTERFACE project_options project_warnings)
+target_link_system_libraries(
+  lib
+  INTERFACE
+  fmt::fmt
+  Eigen3::Eigen)
+
 # package
-package_project(main)
+package_project(
+  main
+  lib
+  PUBLIC_DEPENDENCIES_CONFIGED
+  ${DEPENDENCIES_CONFIGED}
+  PUBLIC_INCLUDES
+  ${INCLUDE_DIR})
