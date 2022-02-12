@@ -1,19 +1,21 @@
 # Uses ycm (permissive BSD-3-Clause license) and FowardArguments (permissive MIT license)
 
 macro(package_project targets)
-  set(_options ARCH_INDEPENDENT # default to true
+  set(_options ARCH_INDEPENDENT # default to false
   )
   set(_oneValueArgs
       # default to the project_name:
       NAME
+      COMPONENT
       # default to project version:
       VERSION
       # default to any newer:
       COMPATIBILITY
-      EXPORT_DESTINATION
-      INSTALL_DESTINATION
-      CONFIG_TEMPLATE
-      COMPONENT)
+      # default to ${CMAKE_BINARY_DIR}
+      CONFIG_EXPORT_DESTINATION
+      # default to ${CMAKE_INSTALL_DATADIR}/cmake/${NAME} suitable for vcpkg, etc.
+      CONFIG_INSTALL_DESTINATION
+      CONFIG_TEMPLATE)
   set(_multiValueArgs
       # a list of public/interface include directories or files
       PUBLIC_INCLUDES
@@ -25,8 +27,7 @@ macro(package_project targets)
       # the names of the PRIVATE dependencies that are found using `CONFIG`. Only included when BUILD_SHARED_LIBS is OFF.
       PRIVATE_DEPENDENCIES_CONFIGED
       # PRIVATE dependencies that are only included when BUILD_SHARED_LIBS is OFF
-      PRIVATE_DEPENDENCIES
-      EXTRA_PATH_VARS_SUFFIX)
+      PRIVATE_DEPENDENCIES)
 
   cmake_parse_arguments(
     _PackageProject
@@ -55,10 +56,13 @@ macro(package_project targets)
     set(_PackageProject_COMPATIBILITY "AnyNewerVersion")
   endif()
 
-  # default to arch dependant (works better with vcpkg, etc)
-  if("${_PackageProject_ARCH_INDEPENDENT}" STREQUAL "")
-    set(_PackageProject_ARCH_INDEPENDENT ON)
+  # use datadir (works better with vcpkg, etc)
+  if("${_PackageProject_CONFIG_INSTALL_DESTINATION}" STREQUAL "")
+    set(_PackageProject_CONFIG_INSTALL_DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${_PackageProject_NAME}")
   endif()
+  # ycm args
+  set(_PackageProject_EXPORT_DESTINATION "${_PackageProject_CONFIG_EXPORT_DESTINATION}")
+  set(_PackageProject_INSTALL_DESTINATION "${_PackageProject_CONFIG_INSTALL_DESTINATION}")
 
   # Installation of the public/interface includes
   if(NOT
