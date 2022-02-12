@@ -1,6 +1,6 @@
 # Uses ycm (permissive BSD-3-Clause license) and FowardArguments (permissive MIT license)
 
-macro(package_project)
+function(package_project)
   set(_options ARCH_INDEPENDENT # default to false
   )
   set(_oneValueArgs
@@ -150,4 +150,4 @@ macro(package_project)
   install_basic_package_files(${_PackageProject_NAME} "${_FARGS_LIST}")
 
   include("${_ycm_SOURCE_DIR}/modules/AddUninstallTarget.cmake")
-endmacro()
+endfunction()

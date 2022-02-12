@@ -14,7 +14,7 @@ include(../src/Index.cmake)
 run_vcpkg()
 
 project(
-  main
+  myproj
   VERSION 0.2.0
   LANGUAGES CXX C)
 
@@ -77,7 +77,7 @@ target_link_system_libraries(
   fmt::fmt
   Eigen3::Eigen)
 
-# package
+# package everything
 package_project(
   TARGETS
   main
@@ -86,3 +86,20 @@ package_project(
   ${DEPENDENCIES_CONFIGED}
   PUBLIC_INCLUDES
   ${INCLUDE_DIR})
+
+# package separately (for testing)
+package_project(
+  NAME
+  myproj_lib
+  TARGETS
+  lib
+  PUBLIC_DEPENDENCIES_CONFIGED
+  ${DEPENDENCIES_CONFIGED}
+  PUBLIC_INCLUDES
+  ${INCLUDE_DIR})
+
+package_project(
+  NAME
+  myproj_main
+  TARGETS
+  main)
