@@ -49,9 +49,9 @@ add_executable(main main.cpp)
 target_link_libraries(main PRIVATE project_options project_warnings)
 
 # dependencies
-set(DEPENDENCIES_CONFIGED fmt Eigen3)
+set(DEPENDENCIES_CONFIGURED fmt Eigen3)
 
-foreach(DEPENDENCY ${DEPENDENCIES_CONFIGED})
+foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
   find_package(${DEPENDENCY} CONFIG REQUIRED)
 endforeach()
 
@@ -86,8 +86,8 @@ package_project(
   # lib
   # project_warnings
   # project_options
-  PUBLIC_DEPENDENCIES_CONFIGED
-  ${DEPENDENCIES_CONFIGED}
+  PUBLIC_DEPENDENCIES_CONFIGURED
+  ${DEPENDENCIES_CONFIGURED}
   PUBLIC_INCLUDES
   ${INCLUDE_DIR})
 
@@ -97,8 +97,8 @@ package_project(
   myproj_lib
   TARGETS
   lib
-  PUBLIC_DEPENDENCIES_CONFIGED
-  ${DEPENDENCIES_CONFIGED}
+  PUBLIC_DEPENDENCIES_CONFIGURED
+  ${DEPENDENCIES_CONFIGURED}
   PUBLIC_INCLUDES
   ${INCLUDE_DIR})
 

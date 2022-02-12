@@ -1,4 +1,4 @@
-# Uses ycm (permissive BSD-3-Clause license) and FowardArguments (permissive MIT license)
+# Uses ycm (permissive BSD-3-Clause license) and ForwardArguments (permissive MIT license)
 
 function(package_project)
   cmake_policy(SET CMP0103 NEW) # disallow multiple calls with the same NAME
@@ -23,12 +23,12 @@ function(package_project)
       # a list of public/interface include directories or files
       PUBLIC_INCLUDES
       # the names of the INTERFACE/PUBLIC dependencies that are found using `CONFIG`
-      PUBLIC_DEPENDENCIES_CONFIGED
+      PUBLIC_DEPENDENCIES_CONFIGURED
       # the INTERFACE/PUBLIC dependencies that are found by any means using `find_dependency`.
       # the arguments must be specified within double quotes (e.g. "<dependency> 1.0.0 EXACT" or "<dependency> CONFIG").
       PUBLIC_DEPENDENCIES
       # the names of the PRIVATE dependencies that are found using `CONFIG`. Only included when BUILD_SHARED_LIBS is OFF.
-      PRIVATE_DEPENDENCIES_CONFIGED
+      PRIVATE_DEPENDENCIES_CONFIGURED
       # PRIVATE dependencies that are only included when BUILD_SHARED_LIBS is OFF
       PRIVATE_DEPENDENCIES)
 
@@ -44,13 +44,14 @@ function(package_project)
   # set default packaged targets
   if(NOT _PackageProject_TARGETS)
     get_all_installable_targets(_PackageProject_TARGETS)
-    message(STATUS "No targets specified in `package_project` function. Considering ${_PackageProject_TARGETS}")
+    message(STATUS "package_project: considering ${_PackageProject_TARGETS} as the exported targets")
   endif()
 
   # default to the name of the project or the given name
   if("${_PackageProject_NAME}" STREQUAL "")
     set(_PackageProject_NAME ${PROJECT_NAME})
   endif()
+  # ycm args
   set(_PackageProject_NAMESPACE "${_PackageProject_NAME}::")
   set(_PackageProject_VARS_PREFIX ${_PackageProject_NAME})
   set(_PackageProject_EXPORT ${_PackageProject_NAME})
@@ -90,10 +91,10 @@ function(package_project)
     endforeach()
   endif()
 
-  # Append the configed public dependencies
-  if(_PackageProject_PUBLIC_DEPENDENCIES_CONFIGED)
+  # Append the configured public dependencies
+  if(_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED)
     set(_PUBLIC_DEPENDENCIES_CONFIG)
-    foreach(DEP ${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGED})
+    foreach(DEP ${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED})
       list(APPEND _PUBLIC_DEPENDENCIES_CONFIG "${DEP} CONFIG")
     endforeach()
   endif()
@@ -101,13 +102,14 @@ function(package_project)
   # ycm arg
   set(_PackageProject_DEPENDENCIES ${_PackageProject_PUBLIC_DEPENDENCIES})
 
-  # Append the configed private dependencies
-  if(_PackageProject_PRIVATE_DEPENDENCIES_CONFIGED)
+  # Append the configured private dependencies
+  if(_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED)
     set(_PRIVATE_DEPENDENCIES_CONFIG)
-    foreach(DEP ${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGED})
+    foreach(DEP ${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED})
       list(APPEND _PRIVATE_DEPENDENCIES_CONFIG "${DEP} CONFIG")
     endforeach()
   endif()
+  # ycm arg
   list(APPEND _PackageProject_PRIVATE_DEPENDENCIES ${_PRIVATE_DEPENDENCIES_CONFIG})
 
   # Installation of package (compatible with vcpkg, etc)
@@ -121,7 +123,7 @@ function(package_project)
 
   unset(_PackageProject_TARGETS)
 
-  # download FowardArguments
+  # download ForwardArguments
   FetchContent_Declare(
     _fargs
     URL https://github.com/polysquare/cmake-forward-arguments/archive/8c50d1f956172edb34e95efa52a2d5cb1f686ed2.zip)
