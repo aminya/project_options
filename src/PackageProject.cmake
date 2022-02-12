@@ -90,22 +90,21 @@ macro(package_project)
   if(_PackageProject_PUBLIC_DEPENDENCIES_CONFIGED)
     set(_PUBLIC_DEPENDENCIES_CONFIG)
     foreach(DEP ${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGED})
-      set(_PUBLIC_DEPENDENCIES_CONFIG "${_PUBLIC_DEPENDENCIES_CONFIG};${DEP} CONFIG")
+      list(APPEND _PUBLIC_DEPENDENCIES_CONFIG "${DEP} CONFIG")
     endforeach()
   endif()
-  set(_PackageProject_PUBLIC_DEPENDENCIES "${_PackageProject_PUBLIC_DEPENDENCIES};${_PUBLIC_DEPENDENCIES_CONFIG}")
+  list(APPEND _PackageProject_PUBLIC_DEPENDENCIES ${_PUBLIC_DEPENDENCIES_CONFIG})
   # ycm arg
-  set(_PackageProject_DEPENDENCIES "${_PackageProject_PUBLIC_DEPENDENCIES}")
+  set(_PackageProject_DEPENDENCIES ${_PackageProject_PUBLIC_DEPENDENCIES})
 
   # Append the configed private dependencies
   if(_PackageProject_PRIVATE_DEPENDENCIES_CONFIGED)
     set(_PRIVATE_DEPENDENCIES_CONFIG)
     foreach(DEP ${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGED})
-      set(_PRIVATE_DEPENDENCIES_CONFIG "${_PRIVATE_DEPENDENCIES_CONFIG};${DEP} CONFIG")
+      list(APPEND _PRIVATE_DEPENDENCIES_CONFIG "${DEP} CONFIG")
     endforeach()
   endif()
-  # ycm arg
-  set(_PackageProject_PRIVATE_DEPENDENCIES "${_PackageProject_PRIVATE_DEPENDENCIES};${_PRIVATE_DEPENDENCIES_CONFIG}")
+  list(APPEND _PackageProject_PRIVATE_DEPENDENCIES ${_PRIVATE_DEPENDENCIES_CONFIG})
 
   # Installation of package (compatible with vcpkg, etc)
   install(
@@ -134,11 +133,11 @@ macro(package_project)
     _PackageProject
     _FARGS_LIST
     OPTION_ARGS
-    "${_options}"
+    "${_options};"
     SINGLEVAR_ARGS
-    "${_oneValueArgs}"
+    "${_oneValueArgs};EXPORT_DESTINATION;INSTALL_DESTINATION;NAMESPACE;VARS_PREFIX;EXPORT"
     MULTIVAR_ARGS
-    "${_multiValueArgs}")
+    "${_multiValueArgs};DEPENDENCIES;PRIVATE_DEPENDENCIES")
 
   # download ycm
   FetchContent_Declare(_ycm URL https://github.com/robotology/ycm/archive/refs/tags/v0.13.0.zip)
