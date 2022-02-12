@@ -4,16 +4,12 @@ macro(package_project)
   set(_options # default to true
       ARCH_INDEPENDENT)
   set(_oneValueArgs
-      # default all of these to the project_name or the given name:
+      # default to the project_name:
       NAME
-      NAMESPACE
-      VARS_PREFIX
-      EXPORT
       # default to project version:
       VERSION
       # default to any newer:
       COMPATIBILITY
-      # include directory: default to include
       INCLUDE_DIR
       EXPORT_DESTINATION
       INSTALL_DESTINATION
@@ -42,25 +38,13 @@ macro(package_project)
 
   # Set default options
 
-  # default name to the name of the project
+  # default to the name of the project or the given name
   if("${_PackageProject_NAME}" STREQUAL "")
     set(_PackageProject_NAME ${PROJECT_NAME})
   endif()
-
-  # default namespace to the given name or the name of the project
-  if("${_PackageProject_NAMESPACE}" STREQUAL "")
-    set(_PackageProject_NAMESPACE ${_PackageProject_NAME})
-  endif()
-
-  # default VARS_PREFIX to the given name or the name of the project
-  if("${_PackageProject_VARS_PREFIX}" STREQUAL "")
-    set(_PackageProject_VARS_PREFIX ${_PackageProject_NAME})
-  endif()
-
-  # default export to the given name or the name of the project
-  if("${_PackageProject_EXPORT}" STREQUAL "")
-    set(_PackageProject_EXPORT ${_PackageProject_NAME})
-  endif()
+  set(_PackageProject_NAMESPACE ${_PackageProject_NAME})
+  set(_PackageProject_VARS_PREFIX ${_PackageProject_NAME})
+  set(_PackageProject_EXPORT ${_PackageProject_NAME})
 
   # default targets to the given name or the name of the project
   if("${_PackageProject_TARGETS}" STREQUAL "")
@@ -82,7 +66,7 @@ macro(package_project)
     set(_PackageProject_ARCH_INDEPENDENT ON)
   endif()
 
-  # Installation of public/interface includes
+  # Installation of the public/interface includes
   if(EXISTS "${_PackageProject_INCLUDE_DIR}")
     install(DIRECTORY ${_PackageProject_INCLUDE_DIR} DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
   endif()
