@@ -10,12 +10,13 @@ macro(package_project targets)
       VERSION
       # default to any newer:
       COMPATIBILITY
-      INCLUDE_DIR
       EXPORT_DESTINATION
       INSTALL_DESTINATION
       CONFIG_TEMPLATE
       COMPONENT)
   set(_multiValueArgs
+      # a list of public/interface include directories or files
+      PUBLIC_INCLUDES
       # the names of the INTERFACE/PUBLIC dependencies that are found using `CONFIG`
       PUBLIC_DEPENDENCIES_CONFIGED
       # the INTERFACE/PUBLIC dependencies that are found by any means using `find_dependency`.
@@ -60,8 +61,17 @@ macro(package_project targets)
   endif()
 
   # Installation of the public/interface includes
-  if(EXISTS "${_PackageProject_INCLUDE_DIR}")
-    install(DIRECTORY ${_PackageProject_INCLUDE_DIR} DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+  if(NOT
+     "${_PackageProject_PUBLIC_INCLUDES}"
+     STREQUAL
+     "")
+    foreach(_INC ${_PackageProject_PUBLIC_INCLUDES})
+      if(IS_DIRECTORY ${_INC})
+        install(DIRECTORY ${_INC} DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+      else()
+        install(FILES ${_INC} DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+      endif()
+    endforeach()
   endif()
 
   # Append the configed public dependencies
