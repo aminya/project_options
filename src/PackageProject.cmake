@@ -47,7 +47,7 @@ macro(package_project)
   if("${_PackageProject_NAME}" STREQUAL "")
     set(_PackageProject_NAME ${PROJECT_NAME})
   endif()
-  set(_PackageProject_NAMESPACE ${_PackageProject_NAME})
+  set(_PackageProject_NAMESPACE "${_PackageProject_NAME}::")
   set(_PackageProject_VARS_PREFIX ${_PackageProject_NAME})
   set(_PackageProject_EXPORT ${_PackageProject_NAME})
 
