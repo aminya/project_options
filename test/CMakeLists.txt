@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16...3.21)
 
 # set a default CXX standard used by the external tools like clang-tidy, cppcheck, etc.
 # You can later set fine-grained standards for each target using `target_compile_features`
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 ### Add project_options
 # include(FetchContent)
@@ -46,7 +46,6 @@ project_options(
 
 # add src, tests, etc here:
 add_executable(main main.cpp)
-target_compile_features(main INTERFACE cxx_std_17)
 target_link_libraries(main PRIVATE project_options project_warnings)
 
 # dependencies

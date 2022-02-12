@@ -2,16 +2,16 @@
     "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
     "name": "cpp-starter-project",
     "version-string": "0.1.0",
-    "builtin-baseline": "b963638b5fd08bc1b20cc603bd92e0d6e3d24565",
+    "builtin-baseline": "8dbd66f5a7821ced1ed57696b50375a977006813",
     "dependencies": [
         {
             "name": "fmt",
-            "version>=": "8.0.1",
+            "version>=": "8.1.1",
             "default-features": true
         },
         {
             "name": "eigen3",
-            "version>=": "3.3.9",
+            "version>=": "3.4.0",
             "default-features": true
         }
     ]
