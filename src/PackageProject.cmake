@@ -80,13 +80,24 @@ function(package_project)
      STREQUAL
      "")
     foreach(_INC ${_PackageProject_PUBLIC_INCLUDES})
+      # make include absolute
       if(NOT IS_ABSOLUTE ${_INC})
         set(_INC "${CMAKE_CURRENT_SOURCE_DIR}/${_INC}")
       endif()
+      # install include
       if(IS_DIRECTORY ${_INC})
-        install(DIRECTORY ${_INC} DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+
+        # strip double include directories
+        if("${CMAKE_INSTALL_INCLUDEDIR}" STREQUAL "include" AND "${_INC}" MATCHES ".*[/\\]include[/\\]?")
+          message(STATUS "package_project: avoiding double nested `include` directories for PUBLIC_INCLUDES")
+          set(_CMAKE_INSTALL_INCLUDEDIR "")
+        else()
+          set(_CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}")
+        endif()
+
+        install(DIRECTORY ${_INC} DESTINATION ${CMAKE_INSTALL_PREFIX}/${_CMAKE_INSTALL_INCLUDEDIR})
       else()
-        install(FILES ${_INC} DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+        install(FILES ${_INC} DESTINATION ${CMAKE_INSTALL_PREFIX}/${_CMAKE_INSTALL_INCLUDEDIR})
       endif()
     endforeach()
   endif()

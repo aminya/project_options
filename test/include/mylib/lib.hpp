@@ -1,3 +1,5 @@
+#pragma once
+
 // test external pac
 #include <Eigen/Dense>
 #include <fmt/core.h>
