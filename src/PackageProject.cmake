@@ -11,7 +11,7 @@ function(package_project)
       COMPONENT
       # default to project version:
       VERSION
-      # default to any newer:
+      # default to semver
       COMPATIBILITY
       # default to ${CMAKE_BINARY_DIR}
       CONFIG_EXPORT_DESTINATION
@@ -61,9 +61,9 @@ function(package_project)
     set(_PackageProject_VERSION ${PROJECT_VERSION})
   endif()
 
-  # default compatibility to any newer version (since a lot of projects do not follow semver)
+  # default compatibility to SameMajorVersion
   if("${_PackageProject_COMPATIBILITY}" STREQUAL "")
-    set(_PackageProject_COMPATIBILITY "AnyNewerVersion")
+    set(_PackageProject_COMPATIBILITY "SameMajorVersion")
   endif()
 
   # use datadir (works better with vcpkg, etc)
