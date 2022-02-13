@@ -56,19 +56,65 @@ project_options(
 )
 ```
 
-```cmake
-# add your executables, libraries, etc. here:
+Then add the executables or libraries to the project:
 
+An executable:
+
+```cmake
 add_executable(myprogram main.cpp)
-target_compile_features(myprogram INTERFACE cxx_std_17)
 target_link_libraries(myprogram PRIVATE project_options project_warnings) # connect project_options to myprogram
 
-# find and link dependencies (assuming you have enabled vcpkg or Conan):
-find_package(fmt REQUIRED)
+# Find dependencies:
+set(DEPENDENCIES_CONFIGURED fmt Eigen3)
+
+foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
+  find_package(${DEPENDENCY} CONFIG REQUIRED)
+endforeach()
+
+# Link dependencies
 target_link_system_libraries(
   main
   PRIVATE
   fmt::fmt
+  Eigen3::Eigen
+)
+
+# Package the project
+package_project(TARGETS main)
+```
+
+A header-only library:
+
+```cmake
+
+add_library(mylib INTERFACE)
+target_link_libraries(mylib INTERFACE project_options project_warnings) # connect project_options to mylib
+
+# Includes
+set(INCLUDE_DIR "./include")
+target_include_directories(mylib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
+                                         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}>")
+
+# Find dependencies:
+set(DEPENDENCIES_CONFIGURED fmt Eigen3)
+
+foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
+  find_package(${DEPENDENCY} CONFIG REQUIRED)
+endforeach()
+
+# Link dependencies:
+target_link_system_libraries(
+  mylib
+  INTERFACE
+  fmt::fmt
+  Eigen3::Eigen
+)
+
+# Package the project
+package_project(
+  TARGETS mylib
+  PUBLIC_DEPENDENCIES_CONFIGURED ${DEPENDENCIES_CONFIGURED}
+  PUBLIC_INCLUDES ${INCLUDE_DIR}
 )
 ```
 
@@ -141,6 +187,36 @@ target_link_libraries(main_cuda PRIVATE project_options project_warnings)
 target_link_cuda(main_cuda)
 ```
 
+## `package_project` function
+
+A function that packages the project for external usage (e.g. from vcpkg, Conan, etc).
+
+The following arguments specify the package:
+
+- `TARGETS`: the targets you want to package. It is recursively found for the current folder if not specified
+
+- `PUBLIC_INCLUDES`: a list of public/interface include directories or files
+
+- `PUBLIC_DEPENDENCIES_CONFIGURED`: the names of the INTERFACE/PUBLIC dependencies that are found using `CONFIG`.
+
+- `PUBLIC_DEPENDENCIES`: the INTERFACE/PUBLIC dependencies that are found by any means using `find_dependency`. The arguments must be specified within quotes (e.g. `"<dependency> 1.0.0 EXACT"` or `"<dependency> CONFIG"`).
+
+- `PRIVATE_DEPENDENCIES_CONFIGURED`: the names of the PRIVATE dependencies found using `CONFIG`. Only included when `BUILD_SHARED_LIBS` is `OFF`.
+
+- `PRIVATE_DEPENDENCIES`: the PRIVATE dependencies found by any means using `find_dependency`. Only included when `BUILD_SHARED_LIBS` is `OFF`
+
+Other arguments that are automatically found and manually specifying them is not recommended:
+
+- `NAME`: the name of the package. Defaults to `${PROJECT_NAME}`.
+
+- `VERSION`: the version of the package. Defaults to `${PROJECT_VERSION}`.
+
+- `COMPATIBILITY`: the compatibility version of the package. Defaults to `SameMajorVersion`.
+
+- `CONFIG_EXPORT_DESTINATION`: the destination for exporting the configuration files. Defaults to `${CMAKE_BINARY_DIR}`
+
+- `CONFIG_INSTALL_DESTINATION`: the destination for installation of the configuration files. Defaults to `${CMAKE_INSTALL_DATADIR}/cmake/${NAME}`
+
 ## Changing the project_options dynamically
 
 During the test and development, it can be useful to change options on the fly. For example, to enable sanitizers when running tests. You can include `DynamicOptions.cmake`, which imports the `dynamic_project_options` function.
@@ -203,20 +279,6 @@ dynamic_project_options(
 )
 ```
 
-```cmake
-# add your executables, libraries, etc. here:
-
-add_executable(myprogram main.cpp)
-target_compile_features(myprogram INTERFACE cxx_std_17)
-target_link_libraries(myprogram PRIVATE project_options project_warnings) # connect project_options to myprogram
-
-# find and link dependencies (assuming you have enabled vcpkg or Conan):
-find_package(fmt REQUIRED)
-target_link_system_libraries(
-  main
-  PRIVATE
-  fmt::fmt
-)
-```
+Add your executables, etc., as described above.
 
 </details>
