@@ -24,6 +24,7 @@ function(package_project)
       TARGETS
       # a list of public/interface include directories or files
       INTERFACE_INCLUDES
+      # a list of public/interface include directories or files. Defaults to INTERFACE_INCLUDE_DIRECTORIES properties of the targets
       PUBLIC_INCLUDES
       # the names of the INTERFACE/PUBLIC dependencies that are found using `CONFIG`
       INTERFACE_DEPENDENCIES_CONFIGURED
@@ -85,6 +86,16 @@ function(package_project)
   # ycm args
   set(_PackageProject_INSTALL_DESTINATION "${_PackageProject_CONFIG_INSTALL_DESTINATION}")
 
+  # automatically find interface/public includes
+  if("${_PackageProject_PUBLIC_INCLUDES}" STREQUAL "")
+    foreach(target ${_PackageProject_TARGETS})
+      get_target_property(_INC ${target} INTERFACE_INCLUDE_DIRECTORIES)
+      if(_INC)
+        list(APPEND _PackageProject_PUBLIC_INCLUDES ${_INC})
+      endif()
+    endforeach()
+  endif()
+
   # Installation of the public/interface includes
   set(_PackageProject_PUBLIC_INCLUDES "${_PackageProject_PUBLIC_INCLUDES}" "${_PackageProject_INTERFACE_INCLUDES}")
   if(NOT
@@ -106,6 +117,15 @@ function(package_project)
     endforeach()
   endif()
 
+  # find required packages
+  include(FeatureSummary)
+  feature_summary(
+    WHAT REQUIRED_PACKAGES_FOUND
+    VAR _REQUIRED_PACKAGES
+    FATAL_ON_MISSING_REQUIRED_PACKAGES
+    DESCRIPTION ""
+    QUIET_ON_EMPTY)
+
   # Append the configured public dependencies
   set(_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}"
                                                      "${_PackageProject_INTERFACE_DEPENDENCIES_CONFIGURED}")
@@ -115,10 +135,27 @@ function(package_project)
      "")
     set(_PUBLIC_DEPENDENCIES_CONFIG)
     foreach(DEP ${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED})
-      list(APPEND _PUBLIC_DEPENDENCIES_CONFIG "${DEP} CONFIG")
+      string(FIND "${_REQUIRED_PACKAGES}" "${DEP}" _DEP_REQUIRED)
+      if(${_DEP_REQUIRED} STREQUAL "-1")
+        list(APPEND _PUBLIC_DEPENDENCIES_CONFIG "${DEP} CONFIG")
+      else()
+        list(APPEND _PUBLIC_DEPENDENCIES_CONFIG "${DEP} CONFIG REQUIRED")
+      endif()
     endforeach()
   endif()
   list(APPEND _PackageProject_PUBLIC_DEPENDENCIES ${_PUBLIC_DEPENDENCIES_CONFIG})
+
+  # find the public dependencies automatically if not given
+  if("${_PackageProject_PUBLIC_DEPENDENCIES}" STREQUAL "")
+    cmake_policy(SET CMP0022 NEW) # https://cmake.org/cmake/help/v3.23/policy/CMP0022.html#policy:CMP0022
+    foreach(target ${_PackageProject_TARGETS})
+      get_target_property(_deps ${target} INTERFACE_LINK_LIBRARIES)
+      if(_deps)
+        list(APPEND _PackageProject_PUBLIC_DEPENDENCIES ${_deps})
+      endif()
+    endforeach()
+  endif()
+
   # ycm arg
   set(_PackageProject_DEPENDENCIES ${_PackageProject_PUBLIC_DEPENDENCIES} ${_PackageProject_INTERFACE_DEPENDENCIES})
 

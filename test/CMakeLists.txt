@@ -110,8 +110,9 @@ package_project(
   # project_options
   INTERFACE_DEPENDENCIES_CONFIGURED
   ${DEPENDENCIES_CONFIGURED}
-  INTERFACE_INCLUDES
-  ${INCLUDE_DIR})
+  # INTERFACE_INCLUDES
+  # ${INCLUDE_DIR}
+)
 
 # package separately (for testing)
 package_project(
