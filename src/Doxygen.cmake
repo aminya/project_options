@@ -6,6 +6,10 @@ function(enable_doxygen DOXYGEN_THEME)
   endif()
 
   # set better defaults for doxygen
+  is_verbose(_is_verbose)
+  if(NOT ${_is_verbose})
+    set(DOXYGEN_QUIET YES)
+  endif()
   set(DOXYGEN_CALLER_GRAPH YES)
   set(DOXYGEN_CALL_GRAPH YES)
   set(DOXYGEN_EXTRACT_ALL YES)
