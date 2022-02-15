@@ -195,7 +195,8 @@ The following arguments specify the package:
 
 - `TARGETS`: the targets you want to package. It is recursively found for the current folder if not specified
 
-- `PUBLIC_INCLUDES`: a list of public/interface include directories or files
+- `PUBLIC_INCLUDES`: a list of public/interface include directories or files. 
+  _the given include directories are directly installed to the install destination. To have an `include` folder in the install destination with the content of your include directory, name your directory `include`._
 
 - `PUBLIC_DEPENDENCIES_CONFIGURED`: the names of the INTERFACE/PUBLIC dependencies that are found using `CONFIG`.
 

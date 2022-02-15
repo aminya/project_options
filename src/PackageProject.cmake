@@ -86,18 +86,10 @@ function(package_project)
       endif()
       # install include
       if(IS_DIRECTORY ${_INC})
-
-        # strip double include directories
-        if("${CMAKE_INSTALL_INCLUDEDIR}" STREQUAL "include" AND "${_INC}" MATCHES ".*[/\\]include[/\\]?")
-          message(STATUS "package_project: avoiding double nested `include` directories for PUBLIC_INCLUDES")
-          set(_CMAKE_INSTALL_INCLUDEDIR "")
-        else()
-          set(_CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}")
-        endif()
-
-        install(DIRECTORY ${_INC} DESTINATION ${CMAKE_INSTALL_PREFIX}/${_CMAKE_INSTALL_INCLUDEDIR})
+        # the include directories are directly installed to the install destination. If you want an `include` folder in the install destination, name your include directory as `include` (or install it manually using `install()` command).
+        install(DIRECTORY ${_INC} DESTINATION ${CMAKE_INSTALL_PREFIX}/)
       else()
-        install(FILES ${_INC} DESTINATION ${CMAKE_INSTALL_PREFIX}/${_CMAKE_INSTALL_INCLUDEDIR})
+        install(FILES ${_INC} DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
       endif()
     endforeach()
   endif()
