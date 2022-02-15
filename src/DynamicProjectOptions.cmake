@@ -19,7 +19,18 @@
 # set(<feature_name>_DEVELOPER_DEFAULT <value>) - set default for developer mode
 # set(<feature_name>_USER_DEFAULT <value>) - set default for user mode
 
-option(ENABLE_DEVELOPER_MODE "Set up defaults for a developer of the project, and let developer change options" ON)
+option(ENABLE_DEVELOPER_MODE "Set up defaults for a developer of the project, and let developer change options" OFF)
+if(NOT ${ENABLE_DEVELOPER_MODE})
+  message(
+    STATUS
+      "Developer mode is OFF. For developement, use `-DENABLE_DEVELOPER_MODE:BOOL=ON`. Building the project for the end-user..."
+  )
+else()
+  message(
+    STATUS
+      "Developer mode is ON. For production, use `-DENABLE_DEVELOPER_MODE:BOOL=OFF`. Building the project for the developer..."
+  )
+endif()
 
 if((CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*") AND NOT WIN32)
   set(SUPPORTS_UBSAN ON)
