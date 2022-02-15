@@ -54,4 +54,4 @@ jobs:
       - name: Test
         run: |
           task test
-          task test_release
+          sudo task test_release
