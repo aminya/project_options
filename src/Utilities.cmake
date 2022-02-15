@@ -106,3 +106,17 @@ macro(get_all_targets_recursive targets dir)
     PROPERTY BUILDSYSTEM_TARGETS)
   list(APPEND ${targets} ${current_targets})
 endmacro()
+
+function(is_verbose var)
+  if("CMAKE_MESSAGE_LOG_LEVEL" STREQUAL "VERBOSE"
+     OR "CMAKE_MESSAGE_LOG_LEVEL" STREQUAL "DEBUG"
+     OR "CMAKE_MESSAGE_LOG_LEVEL" STREQUAL "TRACE")
+    set(${var}
+        ON
+        PARENT_SCOPE)
+  else()
+    set(${var}
+        OFF
+        PARENT_SCOPE)
+  endif()
+endfunction()
