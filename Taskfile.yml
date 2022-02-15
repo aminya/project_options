@@ -8,7 +8,7 @@ tasks:
     - cd ./test/build && ctest -C Debug --verbose
 
   test_release:
-    - cmake ./test -B ./test/build -DCMAKE_BUILD_TYPE:STRING=Release -G "Ninja Multi-Config"
+    - cmake ./test -B ./test/build -DCMAKE_BUILD_TYPE:STRING=Release -G "Ninja Multi-Config" {{.CLI_ARGS}}
     - cmake --build ./test/build --config Release
     - cd ./test/build && ctest -C Release --verbose
     - cmake --install ./test/build

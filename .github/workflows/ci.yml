@@ -54,4 +54,4 @@ jobs:
       - name: Test
         run: |
           task test
-          sudo task test_release
+          task test_release -- -DCMAKE_INSTALL_PREFIX="./install"
