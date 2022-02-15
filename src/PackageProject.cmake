@@ -68,7 +68,8 @@ function(package_project)
 
   # use datadir (works better with vcpkg, etc)
   if("${_PackageProject_CONFIG_INSTALL_DESTINATION}" STREQUAL "")
-    set(_PackageProject_CONFIG_INSTALL_DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${_PackageProject_NAME}")
+    set(_PackageProject_CONFIG_INSTALL_DESTINATION
+        "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/cmake/${_PackageProject_NAME}")
   endif()
   # ycm args
   set(_PackageProject_EXPORT_DESTINATION "${_PackageProject_CONFIG_EXPORT_DESTINATION}")
