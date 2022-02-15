@@ -216,7 +216,7 @@ Other arguments that are automatically found and manually specifying them is not
 
 - `CONFIG_EXPORT_DESTINATION`: the destination for exporting the configuration files. Defaults to `${CMAKE_BINARY_DIR}`
 
-- `CONFIG_INSTALL_DESTINATION`: the destination for installation of the configuration files. Defaults to `${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/share/${NAME}`
+- `CONFIG_INSTALL_DESTINATION`: the destination for installation of the configuration files. Defaults to `${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/${NAME}`
 
 ## Changing the project_options dynamically
 
