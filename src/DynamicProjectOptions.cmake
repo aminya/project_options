@@ -23,7 +23,7 @@ option(ENABLE_DEVELOPER_MODE "Set up defaults for a developer of the project, an
 if(NOT ${ENABLE_DEVELOPER_MODE})
   message(
     STATUS
-      "Developer mode is off. For developement, use `-DENABLE_DEVELOPER_MODE:BOOL=ON`. Building the project for the end-user..."
+      "Developer mode is OFF. For developement, use `-DENABLE_DEVELOPER_MODE:BOOL=ON`. Building the project for the end-user..."
   )
 else()
   message(
