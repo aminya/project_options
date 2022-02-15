@@ -15,7 +15,7 @@ function(package_project)
       COMPATIBILITY
       # default to ${CMAKE_BINARY_DIR}
       CONFIG_EXPORT_DESTINATION
-      # default to ${CMAKE_INSTALL_DATADIR}/cmake/${NAME} suitable for vcpkg, etc.
+      # default to ${CMAKE_INSTALL_DATADIR}/share/${NAME} suitable for vcpkg, etc.
       CONFIG_INSTALL_DESTINATION)
   set(_multiValueArgs
       # recursively found for the current folder if not specified
@@ -69,7 +69,7 @@ function(package_project)
   # use datadir (works better with vcpkg, etc)
   if("${_PackageProject_CONFIG_INSTALL_DESTINATION}" STREQUAL "")
     set(_PackageProject_CONFIG_INSTALL_DESTINATION
-        "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/cmake/${_PackageProject_NAME}")
+        "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/share/${_PackageProject_NAME}")
   endif()
   # ycm args
   set(_PackageProject_EXPORT_DESTINATION "${_PackageProject_CONFIG_EXPORT_DESTINATION}")
