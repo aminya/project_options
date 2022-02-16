@@ -37,8 +37,14 @@ project_options(
 add_executable(another_main another_main.cpp)
 target_link_libraries(another_main PRIVATE project_options project_warnings)
 
-find_package(myproj CONFIG REQUIRED)
-target_link_libraries(another_main PRIVATE myproj::lib)
+## dependencies
+set(DEPENDENCIES_CONFIGURED myproj)
+
+foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
+  find_package(${DEPENDENCY} CONFIG REQUIRED)
+endforeach()
+
+target_link_libraries(another_main PRIVATE myproj::lib myproj::lib2)
 
 # tests
 enable_testing()

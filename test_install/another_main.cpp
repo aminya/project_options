@@ -1,5 +1,7 @@
 #include <mylib/lib.hpp>
+#include <mylib2/lib.hpp>
 
 int main() {
-    return some_fun();
+    some_fun2();
+    return some_fun2();
 }

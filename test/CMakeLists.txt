@@ -44,11 +44,11 @@ project_options(
 )
 # NOTE: project_options and project_warnings are defined inside project_options
 
-# add src, tests, etc here:
-add_executable(main main.cpp)
+# Executable
+add_executable(main ./src/main/main.cpp)
 target_link_libraries(main PRIVATE project_options project_warnings)
 
-# dependencies
+## dependencies
 set(DEPENDENCIES_CONFIGURED fmt Eigen3)
 
 foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
@@ -61,19 +61,31 @@ target_link_system_libraries(
   fmt::fmt
   Eigen3::Eigen)
 
-# tests
+## tests
 enable_testing()
 add_test(NAME main COMMAND main)
 
+# Header-only library
 add_library(lib INTERFACE)
 set(INCLUDE_DIR "./include")
-# TODO are these generator expressions needed? If so, refactor this to a function
 target_include_directories(lib INTERFACE "$<BUILD_INTERFACE:./${INCLUDE_DIR}>"
-                                         "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>")
+                                         "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
 target_link_libraries(lib INTERFACE project_options project_warnings)
 target_link_system_libraries(
   lib
   INTERFACE
+  fmt::fmt
+  Eigen3::Eigen)
+
+# Library
+add_library(lib2 "./src/mylib2/lib.cpp")
+set(INCLUDE_DIR2 "./include")
+target_include_directories(lib2 INTERFACE "$<BUILD_INTERFACE:./${INCLUDE_DIR2}>"
+                                          "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
+target_link_libraries(lib2 INTERFACE project_options project_warnings)
+target_link_system_libraries(
+  lib2
+  PRIVATE
   fmt::fmt
   Eigen3::Eigen)
 
@@ -94,13 +106,21 @@ package_project(
 # package separately (for testing)
 package_project(
   NAME
-  myproj_lib
+  myproj_header_only_lib
   TARGETS
   lib
   PUBLIC_DEPENDENCIES_CONFIGURED
   ${DEPENDENCIES_CONFIGURED}
   PUBLIC_INCLUDES
   ${INCLUDE_DIR})
+
+package_project(
+  NAME
+  myproj_lib
+  TARGETS
+  lib2
+  PUBLIC_INCLUDES
+  ${INCLUDE_DIR2})
 
 package_project(
   NAME

@@ -24,7 +24,7 @@ tasks:
           sh: git rev-parse --show-toplevel
 
   format:
-    - clang-format -i ./test/*.cpp ./test/include/mylib/*.hpp ./test_install/*.cpp
+    - clang-format -i ./test/src/*/*.cpp ./test/include/*/*.hpp ./test_install/*.cpp
     - cmake-format --in-place ./Index.cmake ./src/*.cmake ./test/CMakeLists.txt ./test_install/CMakeLists.txt
 
   lint: cmake-lint ./Index.cmake ./src/*.cmake

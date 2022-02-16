@@ -86,14 +86,13 @@ package_project(TARGETS main)
 A header-only library:
 
 ```cmake
-
-add_library(mylib INTERFACE)
-target_link_libraries(mylib INTERFACE project_options project_warnings) # connect project_options to mylib
+add_library(my_header_only_lib INTERFACE)
+target_link_libraries(my_header_only_lib INTERFACE project_options project_warnings) # connect project_options to my_header_only_lib
 
 # Includes
 set(INCLUDE_DIR "./include")
-target_include_directories(lib INTERFACE "$<BUILD_INTERFACE:./${INCLUDE_DIR}>"
-                                         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
+target_include_directories(my_header_only_lib INTERFACE "$<BUILD_INTERFACE:./${INCLUDE_DIR}>"
+                                          "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 
 # Find dependencies:
 set(DEPENDENCIES_CONFIGURED fmt Eigen3)
@@ -104,7 +103,7 @@ endforeach()
 
 # Link dependencies:
 target_link_system_libraries(
-  mylib
+  my_header_only_lib
   INTERFACE
   fmt::fmt
   Eigen3::Eigen
@@ -112,8 +111,41 @@ target_link_system_libraries(
 
 # Package the project
 package_project(
-  TARGETS mylib
+  TARGETS my_header_only_lib
   PUBLIC_DEPENDENCIES_CONFIGURED ${DEPENDENCIES_CONFIGURED}
+  PUBLIC_INCLUDES ${INCLUDE_DIR}
+)
+```
+
+A library with separate header and source files
+
+```cmake
+add_library(my_lib "./src/my_lib/lib.cpp")
+target_link_libraries(my_lib INTERFACE project_options project_warnings) # connect project_options to my_lib
+
+# Includes
+set(INCLUDE_DIR "./include")
+target_include_directories(my_lib INTERFACE "$<BUILD_INTERFACE:./${INCLUDE_DIR}>"
+                                            "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>")
+
+# Find dependencies:
+set(DEPENDENCIES_CONFIGURED fmt Eigen3)
+
+foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
+  find_package(${DEPENDENCY} CONFIG REQUIRED)
+endforeach()
+
+# Link dependencies:
+target_link_system_libraries(
+  my_lib
+  PRIVATE
+  fmt::fmt
+  Eigen3::Eigen
+)
+
+# Package the project
+package_project(
+  TARGETS my_lib
   PUBLIC_INCLUDES ${INCLUDE_DIR}
 )
 ```
