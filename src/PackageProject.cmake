@@ -75,8 +75,7 @@ function(package_project)
 
   # use datadir (works better with vcpkg, etc)
   if("${_PackageProject_CONFIG_INSTALL_DESTINATION}" STREQUAL "")
-    set(_PackageProject_CONFIG_INSTALL_DESTINATION
-        "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/${_PackageProject_NAME}")
+    set(_PackageProject_CONFIG_INSTALL_DESTINATION "${CMAKE_INSTALL_DATADIR}/${_PackageProject_NAME}")
   endif()
   # ycm args
   set(_PackageProject_INSTALL_DESTINATION "${_PackageProject_CONFIG_INSTALL_DESTINATION}")
@@ -94,9 +93,9 @@ function(package_project)
       # install include
       if(IS_DIRECTORY ${_INC})
         # the include directories are directly installed to the install destination. If you want an `include` folder in the install destination, name your include directory as `include` (or install it manually using `install()` command).
-        install(DIRECTORY ${_INC} DESTINATION ${CMAKE_INSTALL_PREFIX}/)
+        install(DIRECTORY ${_INC} DESTINATION "./")
       else()
-        install(FILES ${_INC} DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+        install(FILES ${_INC} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
       endif()
     endforeach()
   endif()

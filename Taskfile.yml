@@ -14,7 +14,7 @@ tasks:
 
   test_install:
     - task: test_release
-    - cmake --install ./test/build --config Release
+    - cmake --install ./test/build --config Release --prefix ./install
     - cmake ./test_install -B ./test_install/build -DCMAKE_BUILD_TYPE:STRING=Release -G "Ninja Multi-Config"
     - cmake --build ./test_install/build --config Release
     - cd ./test_install/build && ctest -C Release --verbose

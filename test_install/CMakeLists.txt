@@ -31,15 +31,14 @@ project_options(
   # ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
   # ENABLE_SANITIZER_THREAD
   # ENABLE_SANITIZER_MEMORY
-  # CLANG_WARNINGS "-Weverything"
 )
 
 # add src, tests, etc here:
 add_executable(another_main another_main.cpp)
 target_link_libraries(another_main PRIVATE project_options project_warnings)
 
-find_package(myproject CONFIG REQUIRED)
-target_link_libraries(another_main PRIVATE myproject::mylib)
+find_package(myproj CONFIG REQUIRED)
+target_link_libraries(another_main PRIVATE myproj::mylib)
 
 # tests
 enable_testing()
