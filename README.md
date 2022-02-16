@@ -92,8 +92,8 @@ target_link_libraries(mylib INTERFACE project_options project_warnings) # connec
 
 # Includes
 set(INCLUDE_DIR "./include")
-target_include_directories(mylib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
-                                         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}>")
+target_include_directories(lib INTERFACE "$<BUILD_INTERFACE:./${INCLUDE_DIR}>"
+                                         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 
 # Find dependencies:
 set(DEPENDENCIES_CONFIGURED fmt Eigen3)
@@ -129,7 +129,7 @@ It accepts the following named flags:
 - `ENABLE_IPO`: Enable Interprocedural Optimization (Link Time Optimization, LTO) in the release build
 - `ENABLE_COVERAGE`: Enable coverage reporting for gcc/clang
 - `ENABLE_DOXYGEN`: Enable Doxygen doc builds of source
-- `WARNINGS_AS_ERRORS`: Treat compiler and static code analyzer warnings as errors. This also effects cmake warnings related to those.
+- `WARNINGS_AS_ERRORS`: Treat compiler and static code analyzer warnings as errors. This also affects CMake warnings related to those.
 - `ENABLE_SANITIZER_ADDRESS`: Enable address sanitizer
 - `ENABLE_SANITIZER_LEAK`: Enable leak sanitizer
 - `ENABLE_SANITIZER_UNDEFINED_BEHAVIOR`: Enable undefined behavior sanitizer
@@ -149,7 +149,7 @@ It gets the following named parameters that can have different values in front o
 - `CLANG_WARNINGS`: Override the defaults for the CLANG warnings
 - `GCC_WARNINGS`: Override the defaults for the GCC warnings
 - `CUDA_WARNINGS`: Override the defaults for the CUDA warnings
-- `CPPCHECK_WARNINGS`: Override the defaults for the options passed to CPPCHECK
+- `CPPCHECK_WARNINGS`: Override the defaults for the options passed to cppcheck
 - `CONAN_OPTIONS`: Extra Conan options
 
 ## `run_vcpkg` function

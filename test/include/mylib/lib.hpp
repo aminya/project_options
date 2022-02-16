@@ -26,10 +26,5 @@ int some_fun() {
     // print the vector
     fmt::print("{}", eigen_vec);
 
-    // trigger address sanitizer
-    // int *p = nullptr;
-    // *p = 1;
-
-    // trigger compiler warnings, clang-tidy, and cppcheck
-    int a;
+    return 0;
 }
