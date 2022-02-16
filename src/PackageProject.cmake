@@ -67,13 +67,18 @@ function(package_project)
     set(_PackageProject_COMPATIBILITY "SameMajorVersion")
   endif()
 
+  # default to the build directory
+  if("${_PackageProject_CONFIG_EXPORT_DESTINATION}" STREQUAL "")
+    set(_PackageProject_CONFIG_EXPORT_DESTINATION "${CMAKE_BINARY_DIR}")
+  endif()
+  set(_PackageProject_EXPORT_DESTINATION "${_PackageProject_CONFIG_EXPORT_DESTINATION}")
+
   # use datadir (works better with vcpkg, etc)
   if("${_PackageProject_CONFIG_INSTALL_DESTINATION}" STREQUAL "")
     set(_PackageProject_CONFIG_INSTALL_DESTINATION
         "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/${_PackageProject_NAME}")
   endif()
   # ycm args
-  set(_PackageProject_EXPORT_DESTINATION "${_PackageProject_CONFIG_EXPORT_DESTINATION}")
   set(_PackageProject_INSTALL_DESTINATION "${_PackageProject_CONFIG_INSTALL_DESTINATION}")
 
   # Installation of the public/interface includes
@@ -125,6 +130,22 @@ function(package_project)
     ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT lib
     RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
     PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_PackageProject_NAME}" COMPONENT dev)
+
+  # install the usage file
+  set(_targets_str "")
+  foreach(_target ${_PackageProject_TARGETS})
+    set(_targets_str "${_targets_str} ${_PackageProject_NAMESPACE}${_target}")
+  endforeach()
+  set(USAGE_FILE_CONTENT
+      "The package ${_PackageProject_NAME} provides CMake targets:
+
+    find_package(${_PackageProject_NAME} CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE ${_targets_str})
+  ")
+  install(CODE "MESSAGE(STATUS \"${USAGE_FILE_CONTENT}\")")
+  file(WRITE "${_PackageProject_EXPORT_DESTINATION}/usage" "${USAGE_FILE_CONTENT}")
+  install(FILES "${_PackageProject_EXPORT_DESTINATION}/usage"
+          DESTINATION "${_PackageProject_CONFIG_INSTALL_DESTINATION}")
 
   unset(_PackageProject_TARGETS)
 
