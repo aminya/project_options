@@ -1,0 +1,46 @@
+cmake_minimum_required(VERSION 3.16...3.21)
+
+### Add project_options
+include(../src/Index.cmake)
+
+run_vcpkg()
+
+project(
+  anotherproj
+  VERSION 0.1.0
+  LANGUAGES CXX C)
+
+# Initialize project_options
+project_options(
+  ENABLE_CACHE
+  # ENABLE_CONAN
+  # WARNINGS_AS_ERRORS
+  ENABLE_CPPCHECK
+  ENABLE_CLANG_TIDY
+  # ENABLE_INCLUDE_WHAT_YOU_USE
+  # ENABLE_COVERAGE
+  # ENABLE_PCH
+  # PCH_HEADERS <Eigen/Dense> <fmt/core.h> <vector> <utility> <string> <string_view>
+  # ENABLE_DOXYGEN
+  # ENABLE_IPO
+  # ENABLE_USER_LINKER
+  # ENABLE_BUILD_WITH_TIME_TRACE
+  # ENABLE_UNITY
+  # ENABLE_SANITIZER_ADDRESS
+  # ENABLE_SANITIZER_LEAK
+  # ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+  # ENABLE_SANITIZER_THREAD
+  # ENABLE_SANITIZER_MEMORY
+  # CLANG_WARNINGS "-Weverything"
+)
+
+# add src, tests, etc here:
+add_executable(another_main another_main.cpp)
+target_link_libraries(another_main PRIVATE project_options project_warnings)
+
+find_package(myproject CONFIG REQUIRED)
+target_link_libraries(another_main PRIVATE myproject::mylib)
+
+# tests
+enable_testing()
+add_test(NAME another_main COMMAND another_main)

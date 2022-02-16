@@ -57,4 +57,5 @@ jobs:
       - name: Test
         run: |
           task test
-          task test_release -- -DCMAKE_INSTALL_PREFIX="./install"
+          task test_release
+          task test_install

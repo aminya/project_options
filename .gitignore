@@ -1,3 +1,4 @@
 test/build
 .cache
 install/
+test_install/build/

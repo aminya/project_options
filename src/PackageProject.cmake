@@ -102,7 +102,10 @@ function(package_project)
   endif()
 
   # Append the configured public dependencies
-  if(_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED)
+  if(NOT
+     "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}"
+     STREQUAL
+     "")
     set(_PUBLIC_DEPENDENCIES_CONFIG)
     foreach(DEP ${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED})
       list(APPEND _PUBLIC_DEPENDENCIES_CONFIG "${DEP} CONFIG")
@@ -113,7 +116,10 @@ function(package_project)
   set(_PackageProject_DEPENDENCIES ${_PackageProject_PUBLIC_DEPENDENCIES})
 
   # Append the configured private dependencies
-  if(_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED)
+  if(NOT
+     "${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED}"
+     STREQUAL
+     "")
     set(_PRIVATE_DEPENDENCIES_CONFIG)
     foreach(DEP ${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED})
       list(APPEND _PRIVATE_DEPENDENCIES_CONFIG "${DEP} CONFIG")

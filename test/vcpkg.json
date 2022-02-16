@@ -1,6 +1,6 @@
 {
     "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
-    "name": "cpp-starter-project",
+    "name": "myproject",
     "version-string": "0.1.0",
     "builtin-baseline": "8dbd66f5a7821ced1ed57696b50375a977006813",
     "dependencies": [

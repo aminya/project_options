@@ -8,15 +8,26 @@ tasks:
     - cd ./test/build && ctest -C Debug --verbose
 
   test_release:
-    - cmake ./test -B ./test/build -DCMAKE_BUILD_TYPE:STRING=Release -G "Ninja Multi-Config" {{.CLI_ARGS}}
+    - cmake ./test -B ./test/build -DCMAKE_BUILD_TYPE:STRING=Release -G "Ninja Multi-Config"
     - cmake --build ./test/build --config Release
     - cd ./test/build && ctest -C Release --verbose
-    - cmake --install ./test/build
+
+  test_install:
+    - task: test_release
+    - cmake --install ./test/build --config Release
+    - cmake ./test_install -B ./test_install/build -DCMAKE_BUILD_TYPE:STRING=Release -G "Ninja Multi-Config"
+    - cmake --build ./test_install/build --config Release
+    - cd ./test_install/build && ctest -C Release --verbose
 
   format:
-    - clang-format -i ./test/*.cpp
-    - cmake-format --in-place ./Index.cmake ./src/*.cmake
+    - clang-format -i ./test/*.cpp ./test/include/mylib/*.hpp ./test_install/*.cpp
+    - cmake-format --in-place ./Index.cmake ./src/*.cmake ./test/CMakeLists.txt ./test_install/CMakeLists.txt
 
   lint: cmake-lint ./Index.cmake ./src/*.cmake
 
-  clean: 'cd test && {{if eq OS "windows"}} cmd /c "if exist build ( rmdir /s/q build )" {{else}} rm -rf build {{end}}'
+  clean: |
+    {{if eq OS "windows"}} 
+      powershell -c 'function rmrf($path) { if (test-path $path) { rm -r -force $path }}; rmrf ./test/build; rmrf ./test_install/build/; rmrf ./install'
+    {{else}} 
+      rm -rf ./test/build ./test_install/build/ ./install
+    {{end}}
