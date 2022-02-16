@@ -13,11 +13,15 @@ tasks:
     - cd ./test/build && ctest -C Release --verbose
 
   test_install:
-    - task: test_release
-    - cmake --install ./test/build --config Release --prefix ./install
-    - cmake ./test_install -B ./test_install/build -DCMAKE_BUILD_TYPE:STRING=Release -G "Ninja Multi-Config"
-    - cmake --build ./test_install/build --config Release
-    - cd ./test_install/build && ctest -C Release --verbose
+      cmds:
+      - task: test_release
+      - cmake --install ./test/build --config Release --prefix ./install
+      - cmake ./test_install -B ./test_install/build -DCMAKE_BUILD_TYPE:STRING=Release -G "Ninja Multi-Config" -DCMAKE_PREFIX_PATH:STRING={{.CWD}}/install;
+      - cmake --build ./test_install/build --config Release
+      - cd ./test_install/build && ctest -C Release --verbose
+      vars:
+        CWD:
+          sh: git rev-parse --show-toplevel
 
   format:
     - clang-format -i ./test/*.cpp ./test/include/mylib/*.hpp ./test_install/*.cpp

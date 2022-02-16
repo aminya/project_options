@@ -38,7 +38,7 @@ add_executable(another_main another_main.cpp)
 target_link_libraries(another_main PRIVATE project_options project_warnings)
 
 find_package(myproj CONFIG REQUIRED)
-target_link_libraries(another_main PRIVATE myproj::mylib)
+target_link_libraries(another_main PRIVATE myproj::lib)
 
 # tests
 enable_testing()

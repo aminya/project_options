@@ -170,7 +170,7 @@ Named String:
 A function that accepts the same arguments as `target_link_libraries`. It has the following features:
 
 - The include directories of the library are included as `SYSTEM` to suppress their warnings. This helps in enabling `WARNINGS_AS_ERRORS` for your own source code.
-- For installation of the package, the includes are considered to be at `${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}`.
+- For installation of the package, the includes are considered to be at `${CMAKE_INSTALL_INCLUDEDIR}`.
 
 ## `target_include_system_directories` function
 
@@ -216,7 +216,7 @@ Other arguments that are automatically found and manually specifying them is not
 
 - `CONFIG_EXPORT_DESTINATION`: the destination for exporting the configuration files. Defaults to `${CMAKE_BINARY_DIR}`
 
-- `CONFIG_INSTALL_DESTINATION`: the destination for installation of the configuration files. Defaults to `${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/${NAME}`
+- `CONFIG_INSTALL_DESTINATION`: the destination for installation of the configuration files. Defaults to `${CMAKE_INSTALL_DATADIR}/${NAME}`
 
 ## Changing the project_options dynamically
 
