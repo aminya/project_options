@@ -67,7 +67,7 @@ set(options
     "ENABLE_CACHE\;${MAKEFILE_OR_NINJA}\;${MAKEFILE_OR_NINJA}\;Enable ccache on Unix"
     "WARNINGS_AS_ERRORS\;OFF\;ON\;Treat warnings as Errors"
     "ENABLE_CLANG_TIDY\;OFF\;${MAKEFILE_OR_NINJA}\;Enable clang-tidy analysis during compilation"
-    "ENABLE_CONAN\;ON\;ON\;Automatically integrate Conan for package management"
+    "ENABLE_CONAN\;OFF\;OFF\;Automatically integrate Conan for package management"
     "ENABLE_COVERAGE\;OFF\;OFF\;Analyze and report on coverage"
     "ENABLE_SANITIZER_ADDRESS\;OFF\;${SUPPORTS_ASAN}\;Make memory errors into hard runtime errors (windows/linux/macos)"
     "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR\;OFF\;${SUPPORTS_UBSAN}\;Make certain types (numeric mostly) of undefined behavior into runtime errors"
