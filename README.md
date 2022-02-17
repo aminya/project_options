@@ -1,6 +1,8 @@
 # project_options
 
-A general-purpose CMake library that makes using CMake easier
+A general-purpose CMake library that provides functions that improve the CMake experience.
+
+It provdes different functions such as `project_options`, `package_project`, `dynamic_project_options`, `run_vcpkg`, `target_link_system_libraries`, etc.
 
 ## Usage
 
@@ -9,21 +11,18 @@ Here is a full example:
 ```cmake
 cmake_minimum_required(VERSION 3.16)
 
-# uncomment to set a default CXX standard for the external tools like clang-tidy and cppcheck
-# and the targets that do not specify a standard.
-# If not set, the latest supported standard for your compiler is used
-# You can later set fine-grained standards for each target using `target_compile_features`
-# set(CMAKE_CXX_STANDARD 17)
+# set a default CXX standard for the tools and targets that do not specify them. 
+# If commented, the latest supported standard for your compiler is automatically set.
+# set(CMAKE_CXX_STANDARD 20)
 
-# Add project_options v0.16.0
+# Add project_options v0.17.0
 # https://github.com/cpp-best-practices/project_options
 include(FetchContent)
-FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.16.0.zip)
+FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.17.0.zip)
 FetchContent_MakeAvailable(_project_options)
 include(${_project_options_SOURCE_DIR}/Index.cmake)
 
-# uncomment to enable vcpkg:
-# # Setup vcpkg - should be called before defining project()
+# install vcpkg dependencies: - should be called before defining project()
 # run_vcpkg()
 
 # Set the project name and language
@@ -31,7 +30,7 @@ project(myproject LANGUAGES CXX C)
 
 # Initialize project_options variable related to this project
 # This overwrites `project_options` and sets `project_warnings`
-# uncomment the options to enable them:
+# uncomment to enable the options. Some of them accept one or more inputs:
 project_options(
       ENABLE_CACHE
       ENABLE_CPPCHECK
@@ -40,15 +39,15 @@ project_options(
       # ENABLE_IPO
       # ENABLE_DOXYGEN
       # ENABLE_COVERAGE
-      # WARNINGS_AS_ERRORS
       # ENABLE_SANITIZER_ADDRESS
       # ENABLE_SANITIZER_LEAK
       # ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       # ENABLE_SANITIZER_THREAD
       # ENABLE_SANITIZER_MEMORY
-      # ENABLE_INCLUDE_WHAT_YOU_USE
       # ENABLE_PCH
       # PCH_HEADERS
+      # WARNINGS_AS_ERRORS
+      # ENABLE_INCLUDE_WHAT_YOU_USE
       # ENABLE_USER_LINKER
       # ENABLE_BUILD_WITH_TIME_TRACE
       # ENABLE_UNITY
@@ -160,7 +159,7 @@ It accepts the following named flags:
 - `ENABLE_CONAN`: Use Conan for dependency management
 - `ENABLE_IPO`: Enable Interprocedural Optimization (Link Time Optimization, LTO) in the release build
 - `ENABLE_COVERAGE`: Enable coverage reporting for gcc/clang
-- `ENABLE_DOXYGEN`: Enable Doxygen doc builds of source
+- `ENABLE_DOXYGEN`: Enable Doxygen documentation. The added `doxygen-docs` target can be built via `cmake --build ./build --target doxygen-docs`.
 - `WARNINGS_AS_ERRORS`: Treat compiler and static code analyzer warnings as errors. This also affects CMake warnings related to those.
 - `ENABLE_SANITIZER_ADDRESS`: Enable address sanitizer
 - `ENABLE_SANITIZER_LEAK`: Enable leak sanitizer
@@ -228,7 +227,8 @@ The following arguments specify the package:
 - `TARGETS`: the targets you want to package. It is recursively found for the current folder if not specified
 
 - `PUBLIC_INCLUDES`: a list of public/interface include directories or files. 
-  _the given include directories are directly installed to the install destination. To have an `include` folder in the install destination with the content of your include directory, name your directory `include`._
+
+  <sub>NOTE: The given include directories are directly installed to the install destination. To have an `include` folder in the install destination with the content of your include directory, name your directory `include`.</sub>
 
 - `PUBLIC_DEPENDENCIES_CONFIGURED`: the names of the INTERFACE/PUBLIC dependencies that are found using `CONFIG`.
 
@@ -276,39 +276,35 @@ cmake -DOPT_<featurename>:BOOL=value
 ```cmake
 cmake_minimum_required(VERSION 3.16)
 
-# uncomment to set a default CXX standard for the external tools like clang-tidy and cppcheck
-# and the targets that do not specify a standard.
-# If not set, the latest supported standard for your compiler is used
-# You can later set fine-grained standards for each target using `target_compile_features`
-# set(CMAKE_CXX_STANDARD 17)
+# set a default CXX standard for the tools and targets that do not specify them. 
+# If commented, the latest supported standard for your compiler is automatically set.
+# set(CMAKE_CXX_STANDARD 20)
 
-# Add project_options v0.16.0
+# Add project_options v0.17.0
 # https://github.com/cpp-best-practices/project_options
 include(FetchContent)
-FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.16.0.zip)
+FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.17.0.zip)
 FetchContent_MakeAvailable(_project_options)
 include(${_project_options_SOURCE_DIR}/Index.cmake)
 
  # ❗ Add dynamic CMake options
 include(${_project_options_SOURCE_DIR}/src/DynamicOptions.cmake)
 
-# uncomment to enable vcpkg:
-# # Setup vcpkg - should be called before defining project()
+# install vcpkg dependencies: - should be called before defining project()
 # run_vcpkg()
 
 # Set the project name and language
 project(myproject LANGUAGES CXX C)
 
 # Set PCH to be on by default for all non-Developer Mode Builds
-# (this is just intended as an example of what is possible)
 set(ENABLE_PCH_USER_DEFAULT ON)
 
 # Initialize project_options variable related to this project
 # This overwrites `project_options` and sets `project_warnings`
-# uncomment the options to enable them:
+# This also accepts the same arguments as `project_options`.
 dynamic_project_options(
-  # set PCH headers you want enabled. Format can be slow, so this might be helpful
-  PCH_HEADERS <vector> <string> <fmt/format.h>
+  # set the common headers you want to precompile
+  PCH_HEADERS <vector> <string> <fmt/format.h> <Eigen/Dense>
 )
 ```
 
