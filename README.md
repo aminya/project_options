@@ -89,7 +89,7 @@ add_library(my_header_only_lib INTERFACE)
 target_link_libraries(my_header_only_lib INTERFACE project_options project_warnings) # connect project_options to my_header_only_lib
 
 # Includes
-set(INCLUDE_DIR "include")
+set(INCLUDE_DIR "include") # must be relative paths
 target_include_directories(my_header_only_lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
                                           "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 
@@ -123,7 +123,7 @@ add_library(my_lib "./src/my_lib/lib.cpp")
 target_link_libraries(my_lib INTERFACE project_options project_warnings) # connect project_options to my_lib
 
 # Includes
-set(INCLUDE_DIR "include")
+set(INCLUDE_DIR "include") # must be relative paths
 target_include_directories(my_lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
                                             "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>")
 
