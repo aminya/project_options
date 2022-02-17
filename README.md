@@ -299,6 +299,9 @@ project(myproject LANGUAGES CXX C)
 # Set PCH to be on by default for all non-Developer Mode Builds
 set(ENABLE_PCH_USER_DEFAULT ON)
 
+# enable Conan
+set(ENABLE_CONAN_DEFAULT ON)
+
 # Initialize project_options variable related to this project
 # This overwrites `project_options` and sets `project_warnings`
 # This also accepts the same arguments as `project_options`.
