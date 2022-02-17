@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16...3.21)
 
 # set a default CXX standard used by the external tools like clang-tidy, cppcheck, etc.
 # You can later set fine-grained standards for each target using `target_compile_features`
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 ### Add project_options
 # include(FetchContent)
@@ -14,7 +14,7 @@ include(../src/Index.cmake)
 run_vcpkg()
 
 project(
-  main
+  myproj
   VERSION 0.2.0
   LANGUAGES CXX C)
 
@@ -44,21 +44,86 @@ project_options(
 )
 # NOTE: project_options and project_warnings are defined inside project_options
 
-# add src, tests, etc here:
-add_executable(main main.cpp)
-target_compile_features(main INTERFACE cxx_std_17)
+# Executable
+add_executable(main ./src/main/main.cpp)
 target_link_libraries(main PRIVATE project_options project_warnings)
 
-# dependencies
-find_package(fmt REQUIRED)
-find_package(Eigen3 CONFIG REQUIRED)
+## dependencies
+set(DEPENDENCIES_CONFIGURED fmt Eigen3)
+
+foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
+  find_package(${DEPENDENCY} CONFIG REQUIRED)
+endforeach()
+
 target_link_system_libraries(
   main
   PRIVATE
   fmt::fmt
-  Eigen3::Eigen
-)
+  Eigen3::Eigen)
 
-# tests
+## tests
 enable_testing()
 add_test(NAME main COMMAND main)
+
+# Header-only library
+add_library(lib INTERFACE)
+set(INCLUDE_DIR "include")
+target_include_directories(lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
+                                         "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
+target_link_libraries(lib INTERFACE project_options project_warnings)
+target_link_system_libraries(
+  lib
+  INTERFACE
+  fmt::fmt
+  Eigen3::Eigen)
+
+# Library
+add_library(lib2 "./src/mylib2/lib.cpp")
+set(INCLUDE_DIR2 "include")
+target_include_directories(lib2 INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR2}>"
+                                          "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
+target_link_libraries(lib2 INTERFACE project_options project_warnings)
+target_link_system_libraries(
+  lib2
+  PRIVATE
+  fmt::fmt
+  Eigen3::Eigen)
+
+# package everything automatically
+package_project(
+  # NAME
+  # myproj
+  # TARGETS
+  # main
+  # lib
+  # project_warnings
+  # project_options
+  PUBLIC_DEPENDENCIES_CONFIGURED
+  ${DEPENDENCIES_CONFIGURED}
+  PUBLIC_INCLUDES
+  ${INCLUDE_DIR})
+
+# package separately (for testing)
+package_project(
+  NAME
+  myproj_header_only_lib
+  TARGETS
+  lib
+  PUBLIC_DEPENDENCIES_CONFIGURED
+  ${DEPENDENCIES_CONFIGURED}
+  PUBLIC_INCLUDES
+  ${INCLUDE_DIR})
+
+package_project(
+  NAME
+  myproj_lib
+  TARGETS
+  lib2
+  PUBLIC_INCLUDES
+  ${INCLUDE_DIR2})
+
+package_project(
+  NAME
+  myproj_main
+  TARGETS
+  main)
