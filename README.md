@@ -61,7 +61,7 @@ An executable:
 
 ```cmake
 add_executable(myprogram main.cpp)
-target_link_libraries(myprogram PRIVATE project_options project_warnings) # connect project_options to myprogram
+target_link_libraries(myprogram PRIVATE project_options project_warnings) # link project_options/warnings
 
 # Find dependencies:
 set(DEPENDENCIES_CONFIGURED fmt Eigen3)
@@ -86,7 +86,7 @@ A header-only library:
 
 ```cmake
 add_library(my_header_only_lib INTERFACE)
-target_link_libraries(my_header_only_lib INTERFACE project_options project_warnings) # connect project_options to my_header_only_lib
+target_link_libraries(my_header_only_lib INTERFACE project_options project_warnings) # link project_options/warnings
 
 # Includes
 set(INCLUDE_DIR "include") # must be relative paths
@@ -110,9 +110,9 @@ target_link_system_libraries(
 
 # Package the project
 package_project(
-  TARGETS my_header_only_lib
-  PUBLIC_DEPENDENCIES_CONFIGURED ${DEPENDENCIES_CONFIGURED}
-  PUBLIC_INCLUDES ${INCLUDE_DIR}
+  TARGETS my_header_only_lib project_options project_warnings
+  INTERFACE_DEPENDENCIES_CONFIGURED ${DEPENDENCIES_CONFIGURED}
+  INTERFACE_INCLUDES ${INCLUDE_DIR}
 )
 ```
 
@@ -120,7 +120,7 @@ A library with separate header and source files
 
 ```cmake
 add_library(my_lib "./src/my_lib/lib.cpp")
-target_link_libraries(my_lib INTERFACE project_options project_warnings) # connect project_options to my_lib
+target_link_libraries(my_lib PRIVATE project_options project_warnings) # link project_options/warnings
 
 # Includes
 set(INCLUDE_DIR "include") # must be relative paths
@@ -145,7 +145,7 @@ target_link_system_libraries(
 # Package the project
 package_project(
   TARGETS my_lib
-  PUBLIC_INCLUDES ${INCLUDE_DIR}
+  INTERFACE_INCLUDES ${INCLUDE_DIR}
 )
 ```
 
@@ -226,13 +226,13 @@ The following arguments specify the package:
 
 - `TARGETS`: the targets you want to package. It is recursively found for the current folder if not specified
 
-- `PUBLIC_INCLUDES`: a list of public/interface include directories or files. 
+- `INTERFACE_INCLUDES` or `PUBLIC_INCLUDES`: a list of interface/public include directories or files.
 
   <sub>NOTE: The given include directories are directly installed to the install destination. To have an `include` folder in the install destination with the content of your include directory, name your directory `include`.</sub>
 
-- `PUBLIC_DEPENDENCIES_CONFIGURED`: the names of the INTERFACE/PUBLIC dependencies that are found using `CONFIG`.
+- `INTERFACE_DEPENDENCIES_CONFIGURED` or `PUBLIC_DEPENDENCIES_CONFIGURED`: the names of the interface/public dependencies that are found using `CONFIG`.
 
-- `PUBLIC_DEPENDENCIES`: the INTERFACE/PUBLIC dependencies that are found by any means using `find_dependency`. The arguments must be specified within quotes (e.g. `"<dependency> 1.0.0 EXACT"` or `"<dependency> CONFIG"`).
+- `INTERFACE_DEPENDENCIES` or `PUBLIC_DEPENDENCIES`: the interface/public dependencies that will be found by any means using `find_dependency`. The arguments must be specified within quotes (e.g.`"<dependency> 1.0.0 EXACT"` or `"<dependency> CONFIG"`).
 
 - `PRIVATE_DEPENDENCIES_CONFIGURED`: the names of the PRIVATE dependencies found using `CONFIG`. Only included when `BUILD_SHARED_LIBS` is `OFF`.
 

@@ -21,11 +21,14 @@ function(package_project)
       # recursively found for the current folder if not specified
       TARGETS
       # a list of public/interface include directories or files
+      INTERFACE_INCLUDES
       PUBLIC_INCLUDES
       # the names of the INTERFACE/PUBLIC dependencies that are found using `CONFIG`
+      INTERFACE_DEPENDENCIES_CONFIGURED
       PUBLIC_DEPENDENCIES_CONFIGURED
       # the INTERFACE/PUBLIC dependencies that are found by any means using `find_dependency`.
       # the arguments must be specified within double quotes (e.g. "<dependency> 1.0.0 EXACT" or "<dependency> CONFIG").
+      INTERFACE_DEPENDENCIES
       PUBLIC_DEPENDENCIES
       # the names of the PRIVATE dependencies that are found using `CONFIG`. Only included when BUILD_SHARED_LIBS is OFF.
       PRIVATE_DEPENDENCIES_CONFIGURED
@@ -81,6 +84,7 @@ function(package_project)
   set(_PackageProject_INSTALL_DESTINATION "${_PackageProject_CONFIG_INSTALL_DESTINATION}")
 
   # Installation of the public/interface includes
+  set(_PackageProject_PUBLIC_INCLUDES "${_PackageProject_PUBLIC_INCLUDES}" "${_PackageProject_INTERFACE_INCLUDES}")
   if(NOT
      "${_PackageProject_PUBLIC_INCLUDES}"
      STREQUAL
@@ -101,6 +105,8 @@ function(package_project)
   endif()
 
   # Append the configured public dependencies
+  set(_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}"
+                                                     "${_PackageProject_INTERFACE_DEPENDENCIES_CONFIGURED}")
   if(NOT
      "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}"
      STREQUAL
@@ -112,7 +118,7 @@ function(package_project)
   endif()
   list(APPEND _PackageProject_PUBLIC_DEPENDENCIES ${_PUBLIC_DEPENDENCIES_CONFIG})
   # ycm arg
-  set(_PackageProject_DEPENDENCIES ${_PackageProject_PUBLIC_DEPENDENCIES})
+  set(_PackageProject_DEPENDENCIES ${_PackageProject_PUBLIC_DEPENDENCIES} ${_PackageProject_INTERFACE_DEPENDENCIES})
 
   # Append the configured private dependencies
   if(NOT
