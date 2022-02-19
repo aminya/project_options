@@ -67,6 +67,7 @@ set(options
     "ENABLE_CACHE\;${MAKEFILE_OR_NINJA}\;${MAKEFILE_OR_NINJA}\;Enable ccache on Unix"
     "WARNINGS_AS_ERRORS\;OFF\;ON\;Treat warnings as Errors"
     "ENABLE_CLANG_TIDY\;OFF\;${MAKEFILE_OR_NINJA}\;Enable clang-tidy analysis during compilation"
+    "ENABLE_VS_ANALYSIS\;ON\;ON\;Enable Visual Studio IDE code analysis if the generator is Visual Studio."
     "ENABLE_CONAN\;OFF\;OFF\;Automatically integrate Conan for package management"
     "ENABLE_COVERAGE\;OFF\;OFF\;Analyze and report on coverage"
     "ENABLE_SANITIZER_ADDRESS\;OFF\;${SUPPORTS_ASAN}\;Make memory errors into hard runtime errors (windows/linux/macos)"

@@ -74,6 +74,34 @@ macro(enable_clang_tidy)
   endif()
 endmacro()
 
+macro(enable_vs_analysis VS_ANALYSIS_RULESET)
+  if("${VS_ANALYSIS_RULESET}" STREQUAL "")
+    # See for other rulesets: C:\Program Files (x86)\Microsoft Visual Studio\20xx\xx\Team Tools\Static Analysis Tools\Rule Sets\
+    set(VS_ANALYSIS_RULESET "AllRules.ruleset")
+  endif()
+  if(NOT
+     "${CMAKE_CXX_CLANG_TIDY}"
+     STREQUAL
+     "")
+    set(_VS_CLANG_TIDY "true")
+  else()
+    set(_VS_CLANG_TIDY "false")
+  endif()
+  if(CMAKE_GENERATOR MATCHES "Visual Studio")
+    get_all_targets(_targets_list)
+    foreach(target IN LISTS ${_targets_list})
+      set_target_properties(
+        ${target}
+        PROPERTIES
+          VS_GLOBAL_EnableMicrosoftCodeAnalysis true
+          VS_GLOBAL_CodeAnalysisRuleSet "${VS_ANALYSIS_RULESET}"
+          VS_GLOBAL_EnableClangTidyCodeAnalysis "${_VS_CLANG_TIDY}"
+          # This is set to false deliberately. The compiler warnings are already given in the CompilerWarnings.cmake file
+          VS_GLOBAL_RunCodeAnalysis false)
+    endforeach()
+  endif()
+endmacro()
+
 macro(enable_include_what_you_use)
   find_program(INCLUDE_WHAT_YOU_USE include-what-you-use)
   if(INCLUDE_WHAT_YOU_USE)
