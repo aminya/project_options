@@ -31,7 +31,7 @@ project_options(
   # ENABLE_PCH
   # PCH_HEADERS <Eigen/Dense> <fmt/core.h> <vector> <utility> <string> <string_view>
   ENABLE_DOXYGEN
-  # ENABLE_IPO
+  # ENABLE_INTERPROCEDURAL_OPTIMIZATION
   # ENABLE_USER_LINKER
   # ENABLE_BUILD_WITH_TIME_TRACE
   # ENABLE_UNITY
