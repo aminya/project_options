@@ -26,15 +26,27 @@ macro(enable_cppcheck CPPCHECK_OPTIONS)
       set(CMAKE_CXX_CPPCHECK ${CPPCHECK} --template=${CPPCHECK_TEMPLATE} ${CPPCHECK_OPTIONS})
     endif()
 
+    if(WARNINGS_AS_ERRORS)
+      list(APPEND CMAKE_CXX_CPPCHECK --error-exitcode=2)
+    endif()
+
+    # C cppcheck
+    set(CMAKE_C_CPPCHECK ${CMAKE_CXX_CPPCHECK})
+
     if(NOT
        "${CMAKE_CXX_STANDARD}"
        STREQUAL
        "")
       set(CMAKE_CXX_CPPCHECK ${CMAKE_CXX_CPPCHECK} --std=c++${CMAKE_CXX_STANDARD})
     endif()
-    if(WARNINGS_AS_ERRORS)
-      list(APPEND CMAKE_CXX_CPPCHECK --error-exitcode=2)
+
+    if(NOT
+       "${CMAKE_C_STANDARD}"
+       STREQUAL
+       "")
+      set(CMAKE_C_CPPCHECK ${CMAKE_C_CPPCHECK} --std=c${CMAKE_C_STANDARD})
     endif()
+
   else()
     message(${WARNING_MESSAGE} "cppcheck requested but executable not found")
   endif()
