@@ -134,31 +134,15 @@ function(package_project)
   list(APPEND _PackageProject_PRIVATE_DEPENDENCIES ${_PRIVATE_DEPENDENCIES_CONFIG})
 
   # Installation of package (compatible with vcpkg, etc)
+  set(_targets_list ${_PackageProject_TARGETS})
+  unset(_PackageProject_TARGETS) # to avoid ycm conflict
   install(
-    TARGETS ${_PackageProject_TARGETS}
+    TARGETS ${_targets_list}
     EXPORT ${_PackageProject_EXPORT}
     LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
     ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT lib
     RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
     PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_PackageProject_NAME}" COMPONENT dev)
-
-  # install the usage file
-  set(_targets_str "")
-  foreach(_target ${_PackageProject_TARGETS})
-    set(_targets_str "${_targets_str} ${_PackageProject_NAMESPACE}${_target}")
-  endforeach()
-  set(USAGE_FILE_CONTENT
-      "The package ${_PackageProject_NAME} provides CMake targets:
-
-    find_package(${_PackageProject_NAME} CONFIG REQUIRED)
-    target_link_libraries(main PRIVATE ${_targets_str})
-  ")
-  install(CODE "MESSAGE(STATUS \"${USAGE_FILE_CONTENT}\")")
-  file(WRITE "${_PackageProject_EXPORT_DESTINATION}/usage" "${USAGE_FILE_CONTENT}")
-  install(FILES "${_PackageProject_EXPORT_DESTINATION}/usage"
-          DESTINATION "${_PackageProject_CONFIG_INSTALL_DESTINATION}")
-
-  unset(_PackageProject_TARGETS)
 
   # download ForwardArguments
   FetchContent_Declare(
@@ -191,6 +175,22 @@ function(package_project)
   include("${_ycm_SOURCE_DIR}/modules/InstallBasicPackageFiles.cmake")
 
   install_basic_package_files(${_PackageProject_NAME} "${_FARGS_LIST}")
+
+  # install the usage file
+  set(_targets_str "")
+  foreach(_target ${_targets_list})
+    set(_targets_str "${_targets_str} ${_PackageProject_NAMESPACE}${_target}")
+  endforeach()
+  set(USAGE_FILE_CONTENT
+      "# The package ${_PackageProject_NAME} provides the following CMake targets:
+
+    find_package(${_PackageProject_NAME} CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE ${_targets_str})
+  ")
+  file(WRITE "${_PackageProject_EXPORT_DESTINATION}/usage" "${USAGE_FILE_CONTENT}")
+  install(FILES "${_PackageProject_EXPORT_DESTINATION}/usage"
+          DESTINATION "${_PackageProject_CONFIG_INSTALL_DESTINATION}")
+  install(CODE "MESSAGE(STATUS \"${USAGE_FILE_CONTENT}\")")
 
   include("${_ycm_SOURCE_DIR}/modules/AddUninstallTarget.cmake")
 endfunction()
