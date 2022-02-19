@@ -98,9 +98,9 @@ package_project(
   # lib
   # project_warnings
   # project_options
-  PUBLIC_DEPENDENCIES_CONFIGURED
+  INTERFACE_DEPENDENCIES_CONFIGURED
   ${DEPENDENCIES_CONFIGURED}
-  PUBLIC_INCLUDES
+  INTERFACE_INCLUDES
   ${INCLUDE_DIR})
 
 # package separately (for testing)
@@ -109,9 +109,9 @@ package_project(
   myproj_header_only_lib
   TARGETS
   lib
-  PUBLIC_DEPENDENCIES_CONFIGURED
+  INTERFACE_DEPENDENCIES_CONFIGURED
   ${DEPENDENCIES_CONFIGURED}
-  PUBLIC_INCLUDES
+  INTERFACE_INCLUDES
   ${INCLUDE_DIR})
 
 package_project(
@@ -119,7 +119,7 @@ package_project(
   myproj_lib
   TARGETS
   lib2
-  PUBLIC_INCLUDES
+  INTERFACE_INCLUDES
   ${INCLUDE_DIR2})
 
 package_project(
