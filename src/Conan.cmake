@@ -32,6 +32,11 @@ macro(run_conan)
     set(LIST_OF_BUILD_TYPES ${CMAKE_CONFIGURATION_TYPES})
   endif()
 
+  is_verbose(_is_verbose)
+  if(NOT ${_is_verbose})
+    set(CONAN_QUIET YES)
+  endif()
+
   foreach(TYPE ${LIST_OF_BUILD_TYPES})
     message(STATUS "Running Conan for build type '${TYPE}'")
 
@@ -48,7 +53,7 @@ macro(run_conan)
       OPTIONS ${ProjectOptions_CONAN_OPTIONS}
       # Pass CMake compilers to Conan
       ENV "CC=${CMAKE_C_COMPILER}" "CXX=${CMAKE_CXX_COMPILER}"
-      SETTINGS ${settings})
+      SETTINGS ${settings} OUTPUT_QUIET ${CONAN_QUIET})
   endforeach()
 
 endmacro()
