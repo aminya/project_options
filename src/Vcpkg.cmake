@@ -51,7 +51,7 @@ macro(run_vcpkg)
     # Run vcpkg bootstrap
     if(WIN32)
       execute_process(COMMAND "bootstrap-vcpkg.bat" "-disableMetrics" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
-                                                                                          COMMAND_ERROR_IS_FATAL LAST)
+                                                                                        COMMAND_ERROR_IS_FATAL LAST)
     else()
       execute_process(COMMAND "./bootstrap-vcpkg.sh" "-disableMetrics" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
                                                                                          COMMAND_ERROR_IS_FATAL LAST)

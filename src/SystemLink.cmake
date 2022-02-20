@@ -22,7 +22,7 @@ function(target_include_system_directories target)
           ${_SYSTEM}
           ${scope}
           "$<BUILD_INTERFACE:${lib_include_dirs}>"
-          "$<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}>")
+          "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
       else()
         target_include_directories(
           ${target}

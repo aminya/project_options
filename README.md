@@ -1,6 +1,8 @@
 # project_options
 
-A general-purpose CMake library that makes using CMake easier
+A general-purpose CMake library that provides functions that improve the CMake experience.
+
+It provdes different functions such as `project_options`, `package_project`, `dynamic_project_options`, `run_vcpkg`, `target_link_system_libraries`, etc.
 
 ## Usage
 
@@ -9,21 +11,18 @@ Here is a full example:
 ```cmake
 cmake_minimum_required(VERSION 3.16)
 
-# uncomment to set a default CXX standard for the external tools like clang-tidy and cppcheck
-# and the targets that do not specify a standard.
-# If not set, the latest supported standard for your compiler is used
-# You can later set fine-grained standards for each target using `target_compile_features`
-# set(CMAKE_CXX_STANDARD 17)
+# set a default CXX standard for the tools and targets that do not specify them. 
+# If commented, the latest supported standard for your compiler is automatically set.
+# set(CMAKE_CXX_STANDARD 20)
 
-# Add project_options v0.16.0
+# Add project_options v0.17.0
 # https://github.com/cpp-best-practices/project_options
 include(FetchContent)
-FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.16.0.zip)
+FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.17.0.zip)
 FetchContent_MakeAvailable(_project_options)
 include(${_project_options_SOURCE_DIR}/Index.cmake)
 
-# uncomment to enable vcpkg:
-# # Setup vcpkg - should be called before defining project()
+# install vcpkg dependencies: - should be called before defining project()
 # run_vcpkg()
 
 # Set the project name and language
@@ -31,7 +30,7 @@ project(myproject LANGUAGES CXX C)
 
 # Initialize project_options variable related to this project
 # This overwrites `project_options` and sets `project_warnings`
-# uncomment the options to enable them:
+# uncomment to enable the options. Some of them accept one or more inputs:
 project_options(
       ENABLE_CACHE
       ENABLE_CPPCHECK
@@ -40,15 +39,15 @@ project_options(
       # ENABLE_IPO
       # ENABLE_DOXYGEN
       # ENABLE_COVERAGE
-      # WARNINGS_AS_ERRORS
       # ENABLE_SANITIZER_ADDRESS
       # ENABLE_SANITIZER_LEAK
       # ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       # ENABLE_SANITIZER_THREAD
       # ENABLE_SANITIZER_MEMORY
-      # ENABLE_INCLUDE_WHAT_YOU_USE
       # ENABLE_PCH
       # PCH_HEADERS
+      # WARNINGS_AS_ERRORS
+      # ENABLE_INCLUDE_WHAT_YOU_USE
       # ENABLE_USER_LINKER
       # ENABLE_BUILD_WITH_TIME_TRACE
       # ENABLE_UNITY
@@ -56,19 +55,97 @@ project_options(
 )
 ```
 
+Then add the executables or libraries to the project:
+
+An executable:
+
 ```cmake
-# add your executables, libraries, etc. here:
-
 add_executable(myprogram main.cpp)
-target_compile_features(myprogram INTERFACE cxx_std_17)
-target_link_libraries(myprogram PRIVATE project_options project_warnings) # connect project_options to myprogram
+target_link_libraries(myprogram PRIVATE project_options project_warnings) # link project_options/warnings
 
-# find and link dependencies (assuming you have enabled vcpkg or Conan):
-find_package(fmt REQUIRED)
+# Find dependencies:
+set(DEPENDENCIES_CONFIGURED fmt Eigen3)
+
+foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
+  find_package(${DEPENDENCY} CONFIG REQUIRED)
+endforeach()
+
+# Link dependencies
 target_link_system_libraries(
   main
   PRIVATE
   fmt::fmt
+  Eigen3::Eigen
+)
+
+# Package the project
+package_project(TARGETS main)
+```
+
+A header-only library:
+
+```cmake
+add_library(my_header_only_lib INTERFACE)
+target_link_libraries(my_header_only_lib INTERFACE project_options project_warnings) # link project_options/warnings
+
+# Includes
+set(INCLUDE_DIR "include") # must be relative paths
+target_include_directories(my_header_only_lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
+                                          "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
+
+# Find dependencies:
+set(DEPENDENCIES_CONFIGURED fmt Eigen3)
+
+foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
+  find_package(${DEPENDENCY} CONFIG REQUIRED)
+endforeach()
+
+# Link dependencies:
+target_link_system_libraries(
+  my_header_only_lib
+  INTERFACE
+  fmt::fmt
+  Eigen3::Eigen
+)
+
+# Package the project
+package_project(
+  TARGETS my_header_only_lib project_options project_warnings
+  INTERFACE_DEPENDENCIES_CONFIGURED ${DEPENDENCIES_CONFIGURED}
+  INTERFACE_INCLUDES ${INCLUDE_DIR}
+)
+```
+
+A library with separate header and source files
+
+```cmake
+add_library(my_lib "./src/my_lib/lib.cpp")
+target_link_libraries(my_lib PRIVATE project_options project_warnings) # link project_options/warnings
+
+# Includes
+set(INCLUDE_DIR "include") # must be relative paths
+target_include_directories(my_lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
+                                            "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>")
+
+# Find dependencies:
+set(DEPENDENCIES_CONFIGURED fmt Eigen3)
+
+foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
+  find_package(${DEPENDENCY} CONFIG REQUIRED)
+endforeach()
+
+# Link dependencies:
+target_link_system_libraries(
+  my_lib
+  PRIVATE
+  fmt::fmt
+  Eigen3::Eigen
+)
+
+# Package the project
+package_project(
+  TARGETS my_lib
+  INTERFACE_INCLUDES ${INCLUDE_DIR}
 )
 ```
 
@@ -82,8 +159,8 @@ It accepts the following named flags:
 - `ENABLE_CONAN`: Use Conan for dependency management
 - `ENABLE_IPO`: Enable Interprocedural Optimization (Link Time Optimization, LTO) in the release build
 - `ENABLE_COVERAGE`: Enable coverage reporting for gcc/clang
-- `ENABLE_DOXYGEN`: Enable Doxygen doc builds of source
-- `WARNINGS_AS_ERRORS`: Treat compiler and static code analyzer warnings as errors. This also effects cmake warnings related to those.
+- `ENABLE_DOXYGEN`: Enable Doxygen documentation. The added `doxygen-docs` target can be built via `cmake --build ./build --target doxygen-docs`.
+- `WARNINGS_AS_ERRORS`: Treat compiler and static code analyzer warnings as errors. This also affects CMake warnings related to those.
 - `ENABLE_SANITIZER_ADDRESS`: Enable address sanitizer
 - `ENABLE_SANITIZER_LEAK`: Enable leak sanitizer
 - `ENABLE_SANITIZER_UNDEFINED_BEHAVIOR`: Enable undefined behavior sanitizer
@@ -103,7 +180,7 @@ It gets the following named parameters that can have different values in front o
 - `CLANG_WARNINGS`: Override the defaults for the CLANG warnings
 - `GCC_WARNINGS`: Override the defaults for the GCC warnings
 - `CUDA_WARNINGS`: Override the defaults for the CUDA warnings
-- `CPPCHECK_WARNINGS`: Override the defaults for the options passed to CPPCHECK
+- `CPPCHECK_WARNINGS`: Override the defaults for the options passed to cppcheck
 - `CONAN_OPTIONS`: Extra Conan options
 
 ## `run_vcpkg` function
@@ -124,7 +201,7 @@ Named String:
 A function that accepts the same arguments as `target_link_libraries`. It has the following features:
 
 - The include directories of the library are included as `SYSTEM` to suppress their warnings. This helps in enabling `WARNINGS_AS_ERRORS` for your own source code.
-- For installation of the package, the includes are considered to be at `${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}`.
+- For installation of the package, the includes are considered to be at `${CMAKE_INSTALL_INCLUDEDIR}`.
 
 ## `target_include_system_directories` function
 
@@ -140,6 +217,38 @@ target_compile_features(main_cuda PRIVATE cxx_std_17)
 target_link_libraries(main_cuda PRIVATE project_options project_warnings)
 target_link_cuda(main_cuda)
 ```
+
+## `package_project` function
+
+A function that packages the project for external usage (e.g. from vcpkg, Conan, etc).
+
+The following arguments specify the package:
+
+- `TARGETS`: the targets you want to package. It is recursively found for the current folder if not specified
+
+- `INTERFACE_INCLUDES` or `PUBLIC_INCLUDES`: a list of interface/public include directories or files.
+
+  <sub>NOTE: The given include directories are directly installed to the install destination. To have an `include` folder in the install destination with the content of your include directory, name your directory `include`.</sub>
+
+- `INTERFACE_DEPENDENCIES_CONFIGURED` or `PUBLIC_DEPENDENCIES_CONFIGURED`: the names of the interface/public dependencies that are found using `CONFIG`.
+
+- `INTERFACE_DEPENDENCIES` or `PUBLIC_DEPENDENCIES`: the interface/public dependencies that will be found by any means using `find_dependency`. The arguments must be specified within quotes (e.g.`"<dependency> 1.0.0 EXACT"` or `"<dependency> CONFIG"`).
+
+- `PRIVATE_DEPENDENCIES_CONFIGURED`: the names of the PRIVATE dependencies found using `CONFIG`. Only included when `BUILD_SHARED_LIBS` is `OFF`.
+
+- `PRIVATE_DEPENDENCIES`: the PRIVATE dependencies found by any means using `find_dependency`. Only included when `BUILD_SHARED_LIBS` is `OFF`
+
+Other arguments that are automatically found and manually specifying them is not recommended:
+
+- `NAME`: the name of the package. Defaults to `${PROJECT_NAME}`.
+
+- `VERSION`: the version of the package. Defaults to `${PROJECT_VERSION}`.
+
+- `COMPATIBILITY`: the compatibility version of the package. Defaults to `SameMajorVersion`.
+
+- `CONFIG_EXPORT_DESTINATION`: the destination for exporting the configuration files. Defaults to `${CMAKE_BINARY_DIR}`
+
+- `CONFIG_INSTALL_DESTINATION`: the destination for installation of the configuration files. Defaults to `${CMAKE_INSTALL_DATADIR}/${NAME}`
 
 ## Changing the project_options dynamically
 
@@ -167,56 +276,41 @@ cmake -DOPT_<featurename>:BOOL=value
 ```cmake
 cmake_minimum_required(VERSION 3.16)
 
-# uncomment to set a default CXX standard for the external tools like clang-tidy and cppcheck
-# and the targets that do not specify a standard.
-# If not set, the latest supported standard for your compiler is used
-# You can later set fine-grained standards for each target using `target_compile_features`
-# set(CMAKE_CXX_STANDARD 17)
+# set a default CXX standard for the tools and targets that do not specify them. 
+# If commented, the latest supported standard for your compiler is automatically set.
+# set(CMAKE_CXX_STANDARD 20)
 
-# Add project_options v0.16.0
+# Add project_options v0.17.0
 # https://github.com/cpp-best-practices/project_options
 include(FetchContent)
-FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.16.0.zip)
+FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.17.0.zip)
 FetchContent_MakeAvailable(_project_options)
 include(${_project_options_SOURCE_DIR}/Index.cmake)
 
  # ❗ Add dynamic CMake options
 include(${_project_options_SOURCE_DIR}/src/DynamicOptions.cmake)
 
-# uncomment to enable vcpkg:
-# # Setup vcpkg - should be called before defining project()
+# install vcpkg dependencies: - should be called before defining project()
 # run_vcpkg()
 
 # Set the project name and language
 project(myproject LANGUAGES CXX C)
 
 # Set PCH to be on by default for all non-Developer Mode Builds
-# (this is just intended as an example of what is possible)
 set(ENABLE_PCH_USER_DEFAULT ON)
+
+# enable Conan
+set(ENABLE_CONAN_DEFAULT ON)
 
 # Initialize project_options variable related to this project
 # This overwrites `project_options` and sets `project_warnings`
-# uncomment the options to enable them:
+# This also accepts the same arguments as `project_options`.
 dynamic_project_options(
-  # set PCH headers you want enabled. Format can be slow, so this might be helpful
-  PCH_HEADERS <vector> <string> <fmt/format.h>
+  # set the common headers you want to precompile
+  PCH_HEADERS <vector> <string> <fmt/format.h> <Eigen/Dense>
 )
 ```
 
-```cmake
-# add your executables, libraries, etc. here:
-
-add_executable(myprogram main.cpp)
-target_compile_features(myprogram INTERFACE cxx_std_17)
-target_link_libraries(myprogram PRIVATE project_options project_warnings) # connect project_options to myprogram
-
-# find and link dependencies (assuming you have enabled vcpkg or Conan):
-find_package(fmt REQUIRED)
-target_link_system_libraries(
-  main
-  PRIVATE
-  fmt::fmt
-)
-```
+Add your executables, etc., as described above.
 
 </details>
