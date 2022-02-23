@@ -314,3 +314,7 @@ dynamic_project_options(
 Add your executables, etc., as described above.
 
 </details>
+
+# License
+
+This project can be used under the terms of either the [MIT license](./LICENSE.txt) or the [Unlicense](./Unlicense.txt) depending on your choice (as you wish). Both are permissive open-source licenses that allow any usage, commercial or non-commercial, copying, distribution, publishing, modification, etc. Feel free to choose whichever is more suitable for you.
