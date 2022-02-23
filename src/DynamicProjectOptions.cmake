@@ -72,7 +72,8 @@ set(options
     "ENABLE_SANITIZER_ADDRESS\;OFF\;${SUPPORTS_ASAN}\;Make memory errors into hard runtime errors (windows/linux/macos)"
     "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR\;OFF\;${SUPPORTS_UBSAN}\;Make certain types (numeric mostly) of undefined behavior into runtime errors"
     "ENABLE_CPPCHECK\;OFF\;${MAKEFILE_OR_NINJA}\;Enable cppcheck analysis during compilation"
-    "ENABLE_IPO\;OFF\;OFF\;Enable whole-program optimization"
+    "ENABLE_INTERPROCEDURAL_OPTIMIZATION\;OFF\;OFF\;Enable whole-program optimization (e.g. LTO)"
+    "ENABLE_NATIVE_OPTIMIZATION\;OFF\;OFF\;Enable the optimizations specific to the build machine (e.g. SSE4_1, AVX2, etc.)."
     "ENABLE_INCLUDE_WHAT_YOU_USE\;OFF\;OFF\;Enable include-what-you-use analysis during compilation"
     "ENABLE_PCH\;OFF\;OFF\;Enable pre-compiled-headers support"
     "ENABLE_DOXYGEN\;OFF\;OFF\;Build documentation with Doxygen"
@@ -147,7 +148,8 @@ macro(dynamic_project_options)
     ${ENABLE_CPPCHECK_VALUE}
     ${ENABLE_CLANG_TIDY_VALUE}
     ${ENABLE_COVERAGE_VALUE}
-    ${ENABLE_IPO_VALUE}
+    ${ENABLE_INTERPROCEDURAL_OPTIMIZATION_VALUE}
+    ${ENABLE_NATIVE_OPTIMIZATION_VALUE}
     ${ENABLE_INCLUDE_WHAT_YOU_USE_VALUE}
     ${ENABLE_PCH_VALUE}
     ${ENABLE_DOXYGEN_VALUE}

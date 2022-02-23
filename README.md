@@ -36,7 +36,8 @@ project_options(
       ENABLE_CPPCHECK
       ENABLE_CLANG_TIDY
       # ENABLE_CONAN
-      # ENABLE_IPO
+      # ENABLE_INTERPROCEDURAL_OPTIMIZATION
+      # ENABLE_NATIVE_OPTIMIZATION
       # ENABLE_DOXYGEN
       # ENABLE_COVERAGE
       # ENABLE_SANITIZER_ADDRESS
@@ -157,7 +158,8 @@ It accepts the following named flags:
 - `ENABLE_CPPCHECK`: Enable static analysis with Cppcheck
 - `ENABLE_CLANG_TIDY`: Enable static analysis with clang-tidy
 - `ENABLE_CONAN`: Use Conan for dependency management
-- `ENABLE_IPO`: Enable Interprocedural Optimization (Link Time Optimization, LTO) in the release build
+- `ENABLE_INTERPROCEDURAL_OPTIMIZATION`: Enable Interprocedural Optimization (Link Time Optimization, LTO) in the release build
+- `ENABLE_NATIVE_OPTIMIZATION`: Enable the optimizations specific to the build machine (e.g. SSE4_1, AVX2, etc.).
 - `ENABLE_COVERAGE`: Enable coverage reporting for gcc/clang
 - `ENABLE_DOXYGEN`: Enable Doxygen documentation. The added `doxygen-docs` target can be built via `cmake --build ./build --target doxygen-docs`.
 - `WARNINGS_AS_ERRORS`: Treat compiler and static code analyzer warnings as errors. This also affects CMake warnings related to those.
