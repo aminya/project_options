@@ -126,8 +126,8 @@ target_link_libraries(my_lib PRIVATE project_options project_warnings) # link pr
 
 # Includes
 set(INCLUDE_DIR "include") # must be relative paths
-target_include_directories(my_lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
-                                            "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>")
+target_include_directories(my_lib PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
+                                         "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>")
 
 # Find dependencies:
 set(DEPENDENCIES_CONFIGURED fmt Eigen3)
@@ -147,7 +147,7 @@ target_link_system_libraries(
 # Package the project
 package_project(
   TARGETS my_lib
-  INTERFACE_INCLUDES ${INCLUDE_DIR}
+  PUBLIC_INCLUDES ${INCLUDE_DIR}
 )
 ```
 

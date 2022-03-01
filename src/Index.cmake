@@ -95,11 +95,11 @@ macro(project_options)
   include("${ProjectOptions_SRC_DIR}/Optimization.cmake")
 
   if(NOT
-     "${ProjectOptions_IPO}"
+     "${ProjectOptions_ENABLE_IPO}"
      STREQUAL
      "")
     message(WARNING "Deprecation: Use ENABLE_INTERPROCEDURAL_OPTIMIZATION instead of ENABLE_IPO")
-    set(ProjectOptions_ENABLE_INTERPROCEDURAL_OPTIMIZATION ${ProjectOptions_IPO})
+    set(ProjectOptions_ENABLE_INTERPROCEDURAL_OPTIMIZATION ${ProjectOptions_ENABLE_IPO})
   endif()
   if(${ProjectOptions_ENABLE_INTERPROCEDURAL_OPTIMIZATION})
     enable_interprocedural_optimization()
