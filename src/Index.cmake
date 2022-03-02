@@ -94,6 +94,9 @@ macro(project_options)
   include("${ProjectOptions_SRC_DIR}/StandardProjectSettings.cmake")
   include("${ProjectOptions_SRC_DIR}/Optimization.cmake")
 
+  # Link this 'library' to set the c++ standard / compile-time options requested
+  add_library(project_options INTERFACE)
+
   if(NOT
      "${ProjectOptions_ENABLE_IPO}"
      STREQUAL
@@ -106,11 +109,8 @@ macro(project_options)
   endif()
 
   if(${ProjectOptions_ENABLE_NATIVE_OPTIMIZATION})
-    enable_native_optimization()
+    enable_native_optimization(project_options)
   endif()
-
-  # Link this 'library' to set the c++ standard / compile-time options requested
-  add_library(project_options INTERFACE)
 
   if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
     if(ProjectOptions_ENABLE_BUILD_WITH_TIME_TRACE)
