@@ -2,7 +2,7 @@
 
 A general-purpose CMake library that provides functions that improve the CMake experience.
 
-It provdes different functions such as `project_options`, `package_project`, `dynamic_project_options`, `run_vcpkg`, `target_link_system_libraries`, etc.
+It provides different functions such as `project_options`, `package_project`, `dynamic_project_options`, `run_vcpkg`, `target_link_system_libraries`, etc.
 
 ## Usage
 
