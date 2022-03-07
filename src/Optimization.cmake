@@ -1,20 +1,31 @@
-macro(enable_interprocedural_optimization)
+macro(enable_interprocedural_optimization project_name)
   if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
     include(CheckIPOSupported)
     check_ipo_supported(RESULT result OUTPUT output)
     if(result)
+      # If a static library of this project is used in another project that does not have `CMAKE_INTERPROCEDURAL_OPTIMIZATION` enabled, a linker error might happen.
+      # TODO set this option in `package_project` function.
+      message(
+        STATUS
+          "Interprocedural optimization is enabled. In other projects, linking with the compiled libraries of this project might require `set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)`"
+      )
       set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+      set_target_properties(${project_name} PROPERTIES INTERPROCEDURAL_OPTIMIZATION ON)
     else()
-      message(SEND_ERROR "IPO is not supported: ${output}")
+      message(WARNING "Interprocedural Optimization is not supported. Not using it. Here is the error log: ${output}")
     endif()
   endif()
 endmacro()
 
-macro(enable_native_optimization)
-  message(STATUS "Enabling the optimizations specific to the current build machine (less portable)")
-  if(MSVC)
-    target_compile_options(${project_name} PRIVATE /arch:native)
-  else()
-    target_compile_options(${project_name} PRIVATE -march=native)
+macro(enable_native_optimization project_name)
+  detect_architecture(_arch)
+  if("${_arch}" STREQUAL "x64")
+    message(STATUS "Enabling the optimizations specific to the current build machine (less portable)")
+    if(MSVC)
+      # TODO It seems it only accepts the exact instruction set like AVX https://docs.microsoft.com/en-us/cpp/build/reference/arch-x64
+      # target_compile_options(${project_name} INTERFACE /arch:native)
+    else()
+      target_compile_options(${project_name} INTERFACE -march=native)
+    endif()
   endif()
 endmacro()
