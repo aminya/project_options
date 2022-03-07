@@ -105,7 +105,7 @@ macro(project_options)
     set(ProjectOptions_ENABLE_INTERPROCEDURAL_OPTIMIZATION ${ProjectOptions_ENABLE_IPO})
   endif()
   if(${ProjectOptions_ENABLE_INTERPROCEDURAL_OPTIMIZATION})
-    enable_interprocedural_optimization()
+    enable_interprocedural_optimization(project_options)
   endif()
 
   if(${ProjectOptions_ENABLE_NATIVE_OPTIMIZATION})
