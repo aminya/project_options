@@ -137,3 +137,47 @@ function(is_verbose var)
         PARENT_SCOPE)
   endif()
 endfunction()
+
+# detect the architecture of the target build system or the host system as a fallback
+function(detect_architecture arch)
+  # if the target processor is not known, fallback to the host processor
+  if("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL ""
+     AND NOT
+         "${CMAKE_HOST_SYSTEM_PROCESSOR}"
+         STREQUAL
+         "")
+    set(_arch "${CMAKE_HOST_SYSTEM_PROCESSOR}")
+  else()
+    set(_arch "${CMAKE_SYSTEM_PROCESSOR}")
+  endif()
+
+  # make it lowercase for comparison
+  string(TOLOWER "${_arch}" _arch)
+
+  if(_arch STREQUAL x86 OR _arch MATCHES "^i[3456]86$")
+    set(${arch}
+        x86
+        PARENT_SCOPE)
+  elseif(
+    _arch STREQUAL x64
+    OR _arch STREQUAL x86_64
+    OR _arch STREQUAL amd64)
+    set(${arch}
+        x64
+        PARENT_SCOPE)
+  elseif(_arch STREQUAL arm)
+    set(${arch}
+        arm
+        PARENT_SCOPE)
+  elseif(_arch STREQUAL arm64 OR _arch STREQUAL aarch64)
+    set(${arch}
+        arm64
+        PARENT_SCOPE)
+  else()
+    # fallback to the most common architecture
+    message(STATUS "Unknown architecture ${_arch} - using x64")
+    set(${arch}
+        x64
+        PARENT_SCOPE)
+  endif()
+endfunction()

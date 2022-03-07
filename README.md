@@ -2,7 +2,7 @@
 
 A general-purpose CMake library that provides functions that improve the CMake experience.
 
-It provdes different functions such as `project_options`, `package_project`, `dynamic_project_options`, `run_vcpkg`, `target_link_system_libraries`, etc.
+It provides different functions such as `project_options`, `package_project`, `dynamic_project_options`, `run_vcpkg`, `target_link_system_libraries`, etc.
 
 ## Usage
 
@@ -15,10 +15,11 @@ cmake_minimum_required(VERSION 3.16)
 # If commented, the latest supported standard for your compiler is automatically set.
 # set(CMAKE_CXX_STANDARD 20)
 
-# Add project_options v0.17.0
+# Add project_options v0.18.1
 # https://github.com/cpp-best-practices/project_options
+# Change the version in the following URL to update the package (watch the releases of the repository for future updates)
 include(FetchContent)
-FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.17.0.zip)
+FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.18.1.zip)
 FetchContent_MakeAvailable(_project_options)
 include(${_project_options_SOURCE_DIR}/Index.cmake)
 
@@ -36,7 +37,8 @@ project_options(
       ENABLE_CPPCHECK
       ENABLE_CLANG_TIDY
       # ENABLE_CONAN
-      # ENABLE_IPO
+      # ENABLE_INTERPROCEDURAL_OPTIMIZATION
+      # ENABLE_NATIVE_OPTIMIZATION
       # ENABLE_DOXYGEN
       # ENABLE_COVERAGE
       # ENABLE_SANITIZER_ADDRESS
@@ -124,8 +126,8 @@ target_link_libraries(my_lib PRIVATE project_options project_warnings) # link pr
 
 # Includes
 set(INCLUDE_DIR "include") # must be relative paths
-target_include_directories(my_lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
-                                            "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>")
+target_include_directories(my_lib PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
+                                         "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>")
 
 # Find dependencies:
 set(DEPENDENCIES_CONFIGURED fmt Eigen3)
@@ -145,7 +147,7 @@ target_link_system_libraries(
 # Package the project
 package_project(
   TARGETS my_lib
-  INTERFACE_INCLUDES ${INCLUDE_DIR}
+  PUBLIC_INCLUDES ${INCLUDE_DIR}
 )
 ```
 
@@ -157,7 +159,8 @@ It accepts the following named flags:
 - `ENABLE_CPPCHECK`: Enable static analysis with Cppcheck
 - `ENABLE_CLANG_TIDY`: Enable static analysis with clang-tidy
 - `ENABLE_CONAN`: Use Conan for dependency management
-- `ENABLE_IPO`: Enable Interprocedural Optimization (Link Time Optimization, LTO) in the release build
+- `ENABLE_INTERPROCEDURAL_OPTIMIZATION`: Enable Interprocedural Optimization (Link Time Optimization, LTO) in the release build
+- `ENABLE_NATIVE_OPTIMIZATION`: Enable the optimizations specific to the build machine (e.g. SSE4_1, AVX2, etc.).
 - `ENABLE_COVERAGE`: Enable coverage reporting for gcc/clang
 - `ENABLE_DOXYGEN`: Enable Doxygen documentation. The added `doxygen-docs` target can be built via `cmake --build ./build --target doxygen-docs`.
 - `WARNINGS_AS_ERRORS`: Treat compiler and static code analyzer warnings as errors. This also affects CMake warnings related to those.
@@ -280,10 +283,11 @@ cmake_minimum_required(VERSION 3.16)
 # If commented, the latest supported standard for your compiler is automatically set.
 # set(CMAKE_CXX_STANDARD 20)
 
-# Add project_options v0.17.0
+# Add project_options v0.18.1
 # https://github.com/cpp-best-practices/project_options
+# Change the version in the following URL to update the package (watch the releases of the repository for future updates)
 include(FetchContent)
-FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.17.0.zip)
+FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.18.1.zip)
 FetchContent_MakeAvailable(_project_options)
 include(${_project_options_SOURCE_DIR}/Index.cmake)
 
@@ -314,3 +318,7 @@ dynamic_project_options(
 Add your executables, etc., as described above.
 
 </details>
+
+# License
+
+This project can be used under the terms of either the [MIT license](./LICENSE.txt) or the [Unlicense](./Unlicense.txt) depending on your choice (as you wish). Both are permissive open-source licenses that allow any usage, commercial or non-commercial, copying, distribution, publishing, modification, etc. Feel free to choose whichever is more suitable for you.

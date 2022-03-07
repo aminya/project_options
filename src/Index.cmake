@@ -31,7 +31,8 @@ include("${ProjectOptions_SRC_DIR}/PackageProject.cmake")
 # - ENABLE_CONAN: Use Conan for dependency management
 # - ENABLE_DOXYGEN: Enable doxygen doc builds of source
 # - DOXYGEN_THEME: the name of the Doxygen theme to use. Supported themes: `awesome-sidebar` (default), `awesome` and `original`.
-# - ENABLE_IPO: Enable Interprocedural Optimization, aka Link Time Optimization (LTO)
+# - ENABLE_INTERPROCEDURAL_OPTIMIZATION: Enable Interprocedural Optimization, aka Link Time Optimization (LTO)
+# - ENABLE_NATIVE_OPTIMIZATION: Enable the optimizations specific to the build machine (e.g. SSE4_1, AVX2, etc.).
 # - ENABLE_USER_LINKER: Enable a specific linker if available
 # - ENABLE_BUILD_WITH_TIME_TRACE: Enable -ftime-trace to generate time tracing .json files on clang
 # - ENABLE_UNITY: Enable Unity builds of projects
@@ -60,7 +61,8 @@ macro(project_options)
       ENABLE_CONAN
       ENABLE_VCPKG
       ENABLE_DOXYGEN
-      ENABLE_IPO
+      ENABLE_INTERPROCEDURAL_OPTIMIZATION
+      ENABLE_NATIVE_OPTIMIZATION
       ENABLE_USER_LINKER
       ENABLE_BUILD_WITH_TIME_TRACE
       ENABLE_UNITY
@@ -94,14 +96,25 @@ macro(project_options)
   endif()
 
   include("${ProjectOptions_SRC_DIR}/StandardProjectSettings.cmake")
-
-  if(${ProjectOptions_ENABLE_IPO})
-    include("${ProjectOptions_SRC_DIR}/InterproceduralOptimization.cmake")
-    enable_ipo()
-  endif()
+  include("${ProjectOptions_SRC_DIR}/Optimization.cmake")
 
   # Link this 'library' to set the c++ standard / compile-time options requested
   add_library(project_options INTERFACE)
+
+  if(NOT
+     "${ProjectOptions_ENABLE_IPO}"
+     STREQUAL
+     "")
+    message(WARNING "Deprecation: Use ENABLE_INTERPROCEDURAL_OPTIMIZATION instead of ENABLE_IPO")
+    set(ProjectOptions_ENABLE_INTERPROCEDURAL_OPTIMIZATION ${ProjectOptions_ENABLE_IPO})
+  endif()
+  if(${ProjectOptions_ENABLE_INTERPROCEDURAL_OPTIMIZATION})
+    enable_interprocedural_optimization(project_options)
+  endif()
+
+  if(${ProjectOptions_ENABLE_NATIVE_OPTIMIZATION})
+    enable_native_optimization(project_options)
+  endif()
 
   if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
     if(ProjectOptions_ENABLE_BUILD_WITH_TIME_TRACE)

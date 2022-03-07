@@ -1,29 +1,5 @@
 include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
 
-macro(detect_architecture)
-  # detect the architecture
-  string(TOLOWER "${CMAKE_SYSTEM_PROCESSOR}" CMAKE_SYSTEM_PROCESSOR_LOWER)
-  if(CMAKE_SYSTEM_PROCESSOR_LOWER STREQUAL x86 OR CMAKE_SYSTEM_PROCESSOR_LOWER MATCHES "^i[3456]86$")
-    set(VCVARSALL_ARCH x86)
-  elseif(
-    CMAKE_SYSTEM_PROCESSOR_LOWER STREQUAL x64
-    OR CMAKE_SYSTEM_PROCESSOR_LOWER STREQUAL x86_64
-    OR CMAKE_SYSTEM_PROCESSOR_LOWER STREQUAL amd64)
-    set(VCVARSALL_ARCH x64)
-  elseif(CMAKE_SYSTEM_PROCESSOR_LOWER STREQUAL arm)
-    set(VCVARSALL_ARCH arm)
-  elseif(CMAKE_SYSTEM_PROCESSOR_LOWER STREQUAL arm64 OR CMAKE_SYSTEM_PROCESSOR_LOWER STREQUAL aarch64)
-    set(VCVARSALL_ARCH arm64)
-  else()
-    if(CMAKE_HOST_SYSTEM_PROCESSOR)
-      set(VCVARSALL_ARCH ${CMAKE_HOST_SYSTEM_PROCESSOR})
-    else()
-      set(VCVARSALL_ARCH x64)
-      message(STATUS "Unkown architecture CMAKE_SYSTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR_LOWER} - using x64")
-    endif()
-  endif()
-endmacro()
-
 macro(find_msvc)
   # Try finding MSVC
   if(# if MSVC is not found by CMake yet,
@@ -67,8 +43,8 @@ macro(run_vcvarsall)
       PATH_SUFFIXES "VC/Auxiliary/Build" "Common7/Tools" "Tools")
 
     if(EXISTS ${VCVARSALL_FILE})
-      # detect the architecture (sets VCVARSALL_ARCH)
-      detect_architecture()
+      # detect the architecture
+      detect_architecture(VCVARSALL_ARCH)
 
       # run vcvarsall and print the environment variables
       message(STATUS "Running `${VCVARSALL_FILE} ${VCVARSALL_ARCH}` to set up the MSVC environment")
