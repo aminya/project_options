@@ -22,7 +22,7 @@ project(
 # uncomment the options to enable them
 project_options(
   ENABLE_CACHE
-  # ENABLE_CONAN
+  ENABLE_CONAN
   # WARNINGS_AS_ERRORS
   ENABLE_CPPCHECK
   ENABLE_CLANG_TIDY
@@ -50,7 +50,7 @@ add_executable(main ./src/main/main.cpp)
 target_link_libraries(main PRIVATE project_options project_warnings)
 
 ## dependencies
-set(DEPENDENCIES_CONFIGURED fmt Eigen3)
+set(DEPENDENCIES_CONFIGURED fmt Eigen3 docopt)
 
 foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
   find_package(${DEPENDENCY} CONFIG REQUIRED)

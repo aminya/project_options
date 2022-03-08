@@ -13,7 +13,7 @@ project(
 # Initialize project_options
 project_options(
   ENABLE_CACHE
-  # ENABLE_CONAN
+  ENABLE_CONAN
   # WARNINGS_AS_ERRORS
   ENABLE_CPPCHECK
   ENABLE_CLANG_TIDY

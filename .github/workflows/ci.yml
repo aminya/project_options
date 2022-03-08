@@ -50,6 +50,7 @@ jobs:
           cmake: true
           ninja: true
           vcpkg: true
+          conan: true
           cppcheck: true
           clangtidy: true
           task: true
