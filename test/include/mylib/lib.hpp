@@ -18,13 +18,13 @@
 #include <cstring>
 
 int some_fun() {
-    fmt::print("Hello from fmt{}", "!");
+  fmt::print("Hello from fmt{}", "!");
 
-    // populate an Eigen vector with the values
-    auto eigen_vec = Eigen::VectorXd::LinSpaced(10, 0, 1);
+  // populate an Eigen vector with the values
+  auto eigen_vec = Eigen::VectorXd::LinSpaced(10, 0, 1);
 
-    // print the vector
-    fmt::print("{}", eigen_vec);
+  // print the vector
+  fmt::print("{}", eigen_vec);
 
-    return 0;
+  return 0;
 }
