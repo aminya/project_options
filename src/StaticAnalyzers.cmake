@@ -69,8 +69,10 @@ macro(enable_clang_tidy)
        )
        AND ${ProjectOptions_ENABLE_PCH})
       message(
-        SEND_ERROR
-          "clang-tidy cannot be enabled with non-clang compiler and PCH, clang-tidy fails to handle gcc's PCH file")
+        ${WARNING_MESSAGE}
+        "clang-tidy cannot be enabled with non-clang compiler and PCH, clang-tidy fails to handle gcc's PCH file. Disabling PCH..."
+      )
+      set(ProjectOptions_ENABLE_PCH OFF)
     endif()
 
     # construct the clang-tidy command line

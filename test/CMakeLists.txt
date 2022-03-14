@@ -18,6 +18,14 @@ project(
   VERSION 0.2.0
   LANGUAGES CXX C)
 
+set(PCH_HEADERS
+    <Eigen/Dense>
+    <fmt/core.h>
+    <vector>
+    <utility>
+    <string>
+    <string_view>)
+
 # Initialize project_options
 # uncomment the options to enable them
 project_options(
@@ -28,8 +36,9 @@ project_options(
   ENABLE_CLANG_TIDY
   # ENABLE_INCLUDE_WHAT_YOU_USE
   ENABLE_COVERAGE
-  # ENABLE_PCH
-  # PCH_HEADERS <Eigen/Dense> <fmt/core.h> <vector> <utility> <string> <string_view>
+  ENABLE_PCH
+  PCH_HEADERS
+  ${PCH_HEADERS}
   ENABLE_DOXYGEN
   ENABLE_INTERPROCEDURAL_OPTIMIZATION
   ENABLE_NATIVE_OPTIMIZATION
