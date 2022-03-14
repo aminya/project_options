@@ -1,3 +1,4 @@
+# Set the default copmiler standards if not specified
 macro(set_standards)
 
   # if the default CMAKE_CXX_STANDARD is not set, detect the latest CXX standard supported by the compiler and use it.

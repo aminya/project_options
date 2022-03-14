@@ -1,5 +1,6 @@
 include(FetchContent)
 
+# Install vcpkg and vcpkg dependencies: - should be called before defining project()
 macro(run_vcpkg)
   # named boolean ENABLE_VCPKG_UPDATE argument
   set(options ENABLE_VCPKG_UPDATE)
