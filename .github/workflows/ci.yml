@@ -61,3 +61,11 @@ jobs:
           task test
           task test_release
           task test_install
+
+      - name: Lint
+        if: ${{ matrix.os == 'ubuntu-20.04' && matrix.compiler == 'gcc' }}
+        run: |
+          # TODO add to setup-cpp
+          python3 -m pip install --user cmakelint cmake-format
+
+          task lint
