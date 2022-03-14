@@ -42,12 +42,14 @@ macro(run_vcpkg)
   else()
     message(STATUS "Installing vcpkg at ${_vcpkg_args_VCPKG_DIR}")
     # clone vcpkg from Github
-    if("${_vcpkg_args_VCPKG_URL}" STREQUAL "")
-      set(_vcpkg_args_VCPKG_URL "https://github.com/microsoft/vcpkg.git")
+    if(NOT EXISTS "${_vcpkg_args_VCPKG_DIR}")
+      if("${_vcpkg_args_VCPKG_URL}" STREQUAL "")
+        set(_vcpkg_args_VCPKG_URL "https://github.com/microsoft/vcpkg.git")
+      endif()
+      find_program(GIT_EXECUTABLE "git" REQUIRED)
+      execute_process(COMMAND "${GIT_EXECUTABLE}" "clone" "${_vcpkg_args_VCPKG_URL}"
+                      WORKING_DIRECTORY ${VCPKG_PARENT_DIR} COMMAND_ERROR_IS_FATAL LAST)
     endif()
-    find_program(GIT_EXECUTABLE "git" REQUIRED)
-    execute_process(COMMAND "${GIT_EXECUTABLE}" "clone" "${_vcpkg_args_VCPKG_URL}"
-                    WORKING_DIRECTORY ${VCPKG_PARENT_DIR} COMMAND_ERROR_IS_FATAL LAST)
     # Run vcpkg bootstrap
     if(WIN32)
       execute_process(COMMAND "bootstrap-vcpkg.bat" "-disableMetrics" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
