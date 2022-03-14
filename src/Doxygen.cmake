@@ -29,9 +29,9 @@ function(enable_doxygen DOXYGEN_THEME)
 
   if("${DOXYGEN_THEME}" STREQUAL "awesome" OR "${DOXYGEN_THEME}" STREQUAL "awesome-sidebar")
     # use a modern doxygen theme
-    # https://github.com/jothepro/doxygen-awesome-css v2.0.0
+    # https://github.com/jothepro/doxygen-awesome-css v2.0.2
     FetchContent_Declare(_doxygen_theme
-                         URL https://github.com/jothepro/doxygen-awesome-css/archive/refs/tags/v2.0.0.zip)
+                         URL https://github.com/jothepro/doxygen-awesome-css/archive/refs/tags/v2.0.2.zip)
     FetchContent_MakeAvailable(_doxygen_theme)
     if("${DOXYGEN_THEME}" STREQUAL "awesome" OR "${DOXYGEN_THEME}" STREQUAL "awesome-sidebar")
       set(DOXYGEN_HTML_EXTRA_STYLESHEET "${_doxygen_theme_SOURCE_DIR}/doxygen-awesome.css")
