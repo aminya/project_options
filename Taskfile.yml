@@ -13,21 +13,31 @@ tasks:
     - cd ./test/build && ctest -C Release --verbose
 
   test_install:
-      cmds:
+    cmds:
       - task: test_release
       - cmake --install ./test/build --config Release --prefix ./install
       - cmake ./test_install -B ./test_install/build -DCMAKE_BUILD_TYPE:STRING=Release -G "Ninja Multi-Config" -DCMAKE_PREFIX_PATH:STRING={{.CWD}}/install;
       - cmake --build ./test_install/build --config Release
       - cd ./test_install/build && ctest -C Release --verbose
-      vars:
-        CWD:
-          sh: git rev-parse --show-toplevel
+    vars:
+      CWD:
+        sh: git rev-parse --show-toplevel
 
-  format:
-    - clang-format -i ./test/src/*/*.cpp ./test/include/*/*.hpp ./test_install/*.cpp
-    - cmake-format --in-place ./Index.cmake ./src/*.cmake ./test/CMakeLists.txt ./test_install/CMakeLists.txt
+  lint:
+    - |
+      {{if eq OS "windows"}} 
+        powershell -c '$files=(git ls-files --exclude-standard); foreach ($file in $files) { if ((get-item $file).Extension -in ".cpp", ".hpp", ".c", ".cc", ".cxx", ".hxx", ".ixx") { clang-format -i -style=file $file } }' 
+      {{else}} 
+        git ls-files --exclude-standard | grep -E '\.(cpp|hpp|c|cc|cxx|hxx|ixx)$' | xargs clang-format -i -style=file 
+      {{end}}
+    - |
+      {{if eq OS "windows"}} 
+      powershell -c '$files=(git ls-files --exclude-standard); foreach ($file in $files) { $item=(get-item $file); if (($item.Name -eq "CMakeLists.txt") -or ($item.Extension -in ".cmake")) { cmake-format --in-place $file; cmake-lint $file --disabled-codes C0103 C0301 R0912 R0915 R0913 --suppress-decorations } }'
+      {{else}}
+        git ls-files --exclude-standard | grep -E '(CMakeLists\.txt)|(\.(cmake))$' | xargs cmake-format --in-place | xargs cmake-lint --disabled-codes C0103 C0301 R0912 R0915 R0913 --suppress-decorations
+      {{end}}
 
-  lint: cmake-lint ./Index.cmake ./src/*.cmake
+    - ~/vcpkg/vcpkg format-manifest ./test/vcpkg.json ./test_install/vcpkg.json
 
   clean: |
     {{if eq OS "windows"}} 
