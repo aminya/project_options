@@ -1,3 +1,4 @@
+# Enable static analysis with Cppcheck
 macro(enable_cppcheck CPPCHECK_OPTIONS)
   find_program(CPPCHECK cppcheck)
   if(CPPCHECK)
@@ -52,6 +53,7 @@ macro(enable_cppcheck CPPCHECK_OPTIONS)
   endif()
 endmacro()
 
+# Enable static analysis with clang-tidy
 macro(enable_clang_tidy)
   find_program(CLANGTIDY clang-tidy)
   if(CLANGTIDY)
@@ -69,8 +71,10 @@ macro(enable_clang_tidy)
        )
        AND ${ProjectOptions_ENABLE_PCH})
       message(
-        SEND_ERROR
-          "clang-tidy cannot be enabled with non-clang compiler and PCH, clang-tidy fails to handle gcc's PCH file")
+        ${WARNING_MESSAGE}
+        "clang-tidy cannot be enabled with non-clang compiler and PCH, clang-tidy fails to handle gcc's PCH file. Disabling PCH..."
+      )
+      set(ProjectOptions_ENABLE_PCH OFF)
     endif()
 
     # construct the clang-tidy command line
@@ -113,6 +117,7 @@ macro(enable_clang_tidy)
   endif()
 endmacro()
 
+# Enable static analysis with include-what-you-use
 macro(enable_include_what_you_use)
   find_program(INCLUDE_WHAT_YOU_USE include-what-you-use)
   if(INCLUDE_WHAT_YOU_USE)
