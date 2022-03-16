@@ -1,5 +1,7 @@
 # Uses ycm (permissive BSD-3-Clause license) and ForwardArguments (permissive MIT license)
 
+# A function that packages the project for external usage (e.g. from vcpkg, Conan, etc).
+# See the [README.md] for more details
 function(package_project)
   cmake_policy(SET CMP0103 NEW) # disallow multiple calls with the same NAME
 

@@ -95,23 +95,23 @@ macro(project_options)
   include("${ProjectOptions_SRC_DIR}/StandardProjectSettings.cmake")
   include("${ProjectOptions_SRC_DIR}/Optimization.cmake")
 
+  # Link this 'library' to set the c++ standard / compile-time options requested
+  add_library(project_options INTERFACE)
+
   if(NOT
-     "${ProjectOptions_IPO}"
+     "${ProjectOptions_ENABLE_IPO}"
      STREQUAL
      "")
     message(WARNING "Deprecation: Use ENABLE_INTERPROCEDURAL_OPTIMIZATION instead of ENABLE_IPO")
-    set(ProjectOptions_ENABLE_INTERPROCEDURAL_OPTIMIZATION ${ProjectOptions_IPO})
+    set(ProjectOptions_ENABLE_INTERPROCEDURAL_OPTIMIZATION ${ProjectOptions_ENABLE_IPO})
   endif()
   if(${ProjectOptions_ENABLE_INTERPROCEDURAL_OPTIMIZATION})
-    enable_interprocedural_optimization()
+    enable_interprocedural_optimization(project_options)
   endif()
 
   if(${ProjectOptions_ENABLE_NATIVE_OPTIMIZATION})
-    enable_native_optimization()
+    enable_native_optimization(project_options)
   endif()
-
-  # Link this 'library' to set the c++ standard / compile-time options requested
-  add_library(project_options INTERFACE)
 
   if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
     if(ProjectOptions_ENABLE_BUILD_WITH_TIME_TRACE)

@@ -1,0 +1,7 @@
+# Docs at https://docs.conan.io/en/latest/reference/conanfile_txt.html
+
+[requires]
+docopt.cpp/0.6.3
+
+[generators]
+cmake_find_package_multi

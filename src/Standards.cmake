@@ -1,3 +1,4 @@
+# Set the default copmiler standards if not specified
 macro(set_standards)
 
   # if the default CMAKE_CXX_STANDARD is not set, detect the latest CXX standard supported by the compiler and use it.
@@ -21,7 +22,7 @@ macro(set_standards)
     set(CMAKE_CXX_STANDARD ${CXX_LATEST_STANDARD})
   endif()
 
-  if("{CMAKE_C_STANDARD}" STREQUAL "")
+  if("${CMAKE_C_STANDARD}" STREQUAL "")
     if(NOT
        ${ProjectOptions_ENABLE_CPPCHECK} # cppcheck doesn't support C17 https://sourceforge.net/p/cppcheck/discussion/general/thread/19ea152bba/
        AND DEFINED CMAKE_C17_STANDARD_COMPILE_OPTION
