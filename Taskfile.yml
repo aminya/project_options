@@ -38,6 +38,7 @@ tasks:
       {{end}}
 
     - ~/vcpkg/vcpkg format-manifest ./test/vcpkg.json ./test_install/vcpkg.json
+    - npx -y cspell lint --no-progress --show-suggestions
 
   clean: |
     {{if eq OS "windows"}} 
