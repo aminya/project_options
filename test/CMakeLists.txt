@@ -11,6 +11,9 @@ set(CMAKE_CXX_STANDARD 20)
 # include(${_project_options_SOURCE_DIR}/Index.cmake)
 include(../src/Index.cmake)
 
+### to get CMAKE_INSTALL_INCLUDEDIR
+include(GNUInstallDirs)
+
 run_vcpkg()
 
 project(
@@ -77,9 +80,9 @@ add_test(NAME main COMMAND main)
 
 # Header-only library
 add_library(lib INTERFACE)
-set(lib_INCLUDE_DIR "include")
-target_include_directories(lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${lib_INCLUDE_DIR}>"
-                                         "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
+set(INCLUDE_DIR "include")
+target_include_directories(lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
+                                         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
 target_link_libraries(lib INTERFACE project_options project_warnings)
 target_link_system_libraries(
   lib
@@ -89,10 +92,10 @@ target_link_system_libraries(
 
 # Library
 add_library(lib2 "./src/mylib2/lib.cpp")
-set(lib2_INCLUDE_DIR2 "include")
-target_include_directories(lib2 PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${lib2_INCLUDE_DIR2}>"
-                                       "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
-target_link_libraries(lib2 PRIVATE project_options project_warnings)
+set(INCLUDE_DIR2 "include")
+target_include_directories(lib2 INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR2}>"
+                                          "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
+target_link_libraries(lib2 INTERFACE project_options project_warnings)
 target_link_system_libraries(
   lib2
   PRIVATE
