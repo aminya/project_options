@@ -62,8 +62,8 @@ Then add the executables or libraries to the project:
 An executable:
 
 ```cmake
-add_executable(myprogram main.cpp)
-target_link_libraries(myprogram PRIVATE project_options project_warnings) # link project_options/warnings
+add_executable(main main.cpp)
+target_link_libraries(main PRIVATE project_options project_warnings) # link project_options/warnings
 
 # Find dependencies:
 set(DEPENDENCIES_CONFIGURED fmt Eigen3)
