@@ -51,6 +51,7 @@ macro(project_options)
       ENABLE_COVERAGE
       ENABLE_CPPCHECK
       ENABLE_CLANG_TIDY
+      ENABLE_VS_ANALYSIS
       ENABLE_INCLUDE_WHAT_YOU_USE
       ENABLE_CACHE
       ENABLE_PCH
@@ -67,7 +68,7 @@ macro(project_options)
       ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       ENABLE_SANITIZER_THREAD
       ENABLE_SANITIZER_MEMORY)
-  set(oneValueArgs DOXYGEN_THEME)
+  set(oneValueArgs DOXYGEN_THEME VS_ANALYSIS_RULESET)
   set(multiValueArgs
       MSVC_WARNINGS
       CLANG_WARNINGS
@@ -172,6 +173,10 @@ macro(project_options)
 
   if(${ProjectOptions_ENABLE_CLANG_TIDY})
     enable_clang_tidy()
+  endif()
+
+  if(${ProjectOptions_ENABLE_VS_ANALYSIS})
+    enable_vs_analysis("${ProjectOptions_VS_ANALYSIS_RULESET}")
   endif()
 
   if(${ProjectOptions_ENABLE_INCLUDE_WHAT_YOU_USE})

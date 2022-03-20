@@ -68,6 +68,7 @@ macro(dynamic_project_options)
       "ENABLE_CACHE\;${MAKEFILE_OR_NINJA}\;${MAKEFILE_OR_NINJA}\;Enable ccache on Unix"
       "WARNINGS_AS_ERRORS\;OFF\;ON\;Treat warnings as Errors"
       "ENABLE_CLANG_TIDY\;OFF\;${MAKEFILE_OR_NINJA}\;Enable clang-tidy analysis during compilation"
+      "ENABLE_VS_ANALYSIS\;ON\;ON\;Enable Visual Studio IDE code analysis if the generator is Visual Studio."
       "ENABLE_CONAN\;OFF\;OFF\;Automatically integrate Conan for package management"
       "ENABLE_COVERAGE\;OFF\;OFF\;Analyze and report on coverage"
       "ENABLE_SANITIZER_ADDRESS\;OFF\;${SUPPORTS_ASAN}\;Make memory errors into hard runtime errors (windows/linux/macos)"
@@ -147,6 +148,7 @@ macro(dynamic_project_options)
     ${WARNINGS_AS_ERRORS_VALUE}
     ${ENABLE_CPPCHECK_VALUE}
     ${ENABLE_CLANG_TIDY_VALUE}
+    ${ENABLE_VS_ANALYSIS_VALUE}
     ${ENABLE_COVERAGE_VALUE}
     ${ENABLE_INTERPROCEDURAL_OPTIMIZATION_VALUE}
     ${ENABLE_NATIVE_OPTIMIZATION_VALUE}

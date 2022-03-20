@@ -38,6 +38,7 @@ project_options(
       ENABLE_CACHE
       ENABLE_CPPCHECK
       ENABLE_CLANG_TIDY
+      ENABLE_VS_ANALYSIS
       # ENABLE_CONAN
       # ENABLE_INTERPROCEDURAL_OPTIMIZATION
       # ENABLE_NATIVE_OPTIMIZATION
@@ -55,7 +56,6 @@ project_options(
       # ENABLE_USER_LINKER
       # ENABLE_BUILD_WITH_TIME_TRACE
       # ENABLE_UNITY
-      # CONAN_OPTIONS
 )
 ```
 
@@ -160,6 +160,7 @@ It accepts the following named flags:
 - `ENABLE_CACHE`: Enable cache if available
 - `ENABLE_CPPCHECK`: Enable static analysis with Cppcheck
 - `ENABLE_CLANG_TIDY`: Enable static analysis with clang-tidy
+- `ENABLE_VS_ANALYSIS`: Enable Visual Studio IDE code analysis if the generator is Visual Studio.
 - `ENABLE_CONAN`: Use Conan for dependency management
 - `ENABLE_INTERPROCEDURAL_OPTIMIZATION`: Enable Interprocedural Optimization (Link Time Optimization, LTO) in the release build
 - `ENABLE_NATIVE_OPTIMIZATION`: Enable the optimizations specific to the build machine (e.g. SSE4_1, AVX2, etc.).
@@ -186,6 +187,7 @@ It gets the following named parameters that can have different values in front o
 - `GCC_WARNINGS`: Override the defaults for the GCC warnings
 - `CUDA_WARNINGS`: Override the defaults for the CUDA warnings
 - `CPPCHECK_WARNINGS`: Override the defaults for the options passed to cppcheck
+- `VS_ANALYSIS_RULESET`: Override the defaults for the code analysis rule set in Visual Studio.
 - `CONAN_OPTIONS`: Extra Conan options
 
 ## `run_vcpkg` function
