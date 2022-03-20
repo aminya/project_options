@@ -40,6 +40,13 @@ macro(run_conan)
     set(LIST_OF_BUILD_TYPES ${CMAKE_CONFIGURATION_TYPES})
   endif()
 
+  is_verbose(_is_verbose)
+  if(NOT ${_is_verbose})
+    set(OUTPUT_QUIET "OUTPUT_QUIET")
+  else()
+    set(OUTPUT_QUIET OFF)
+  endif()
+
   foreach(TYPE ${LIST_OF_BUILD_TYPES})
     message(STATUS "Running Conan for build type '${TYPE}'")
 
@@ -62,7 +69,8 @@ macro(run_conan)
       "CC=${CMAKE_C_COMPILER}"
       "CXX=${CMAKE_CXX_COMPILER}"
       SETTINGS
-      ${settings})
+      ${settings}
+      ${OUTPUT_QUIET})
   endforeach()
 
 endmacro()
