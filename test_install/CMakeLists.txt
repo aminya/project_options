@@ -44,14 +44,14 @@ add_executable(another_main "./src/another_main.cpp")
 
 ## dependencies
 #XXX set(DEPENDENCIES_CONFIGURED myproj)
-set(DEPENDENCIES_CONFIGURED myproj_header_only_lib myproj)
+set(DEPENDENCIES_CONFIGURED myproj_header_only_lib)
 
 foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
   find_package(${DEPENDENCY} CONFIG REQUIRED)
 endforeach()
 
 #XXX target_link_libraries(another_main PRIVATE myproj::lib myproj::lib2)
-target_link_libraries(another_main PRIVATE myproj_header_only_lib::lib myproj::lib2)
+target_link_libraries(another_main PRIVATE myproj_header_only_lib::lib)
 
 # tests
 enable_testing()
