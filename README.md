@@ -61,7 +61,7 @@ project_options(
 
 Then add the executables or libraries to the project:
 
-An executable:
+[An executable](https://github.com/cpp-best-practices/cpp_vcpkg_project/tree/main/my_exe):
 
 ```cmake
 add_executable(main main.cpp)
@@ -86,15 +86,15 @@ target_link_system_libraries(
 package_project(TARGETS main)
 ```
 
-A header-only library:
+[A header-only library](https://github.com/cpp-best-practices/cpp_vcpkg_project/tree/main/my_header_lib):
 
 ```cmake
-add_library(my_header_only_lib INTERFACE)
-target_link_libraries(my_header_only_lib INTERFACE project_options project_warnings) # link project_options/warnings
+add_library(my_header_lib INTERFACE)
+target_link_libraries(my_header_lib INTERFACE project_options project_warnings) # link project_options/warnings
 
 # Includes
 set(INCLUDE_DIR "include") # must be relative paths
-target_include_directories(my_header_only_lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
+target_include_directories(my_header_lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
                                           "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 
 # Find dependencies:
@@ -106,7 +106,7 @@ endforeach()
 
 # Link dependencies:
 target_link_system_libraries(
-  my_header_only_lib
+  my_header_lib
   INTERFACE
   fmt::fmt
   Eigen3::Eigen
@@ -114,13 +114,13 @@ target_link_system_libraries(
 
 # Package the project
 package_project(
-  TARGETS my_header_only_lib project_options project_warnings
+  TARGETS my_header_lib project_options project_warnings
   INTERFACE_DEPENDENCIES_CONFIGURED ${DEPENDENCIES_CONFIGURED}
   INTERFACE_INCLUDES ${INCLUDE_DIR}
 )
 ```
 
-A library with separate header and source files
+[A library with separate header and source files](https://github.com/cpp-best-practices/cpp_vcpkg_project/tree/main/my_lib)
 
 ```cmake
 add_library(my_lib "./src/my_lib/lib.cpp")
