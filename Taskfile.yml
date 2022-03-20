@@ -47,7 +47,7 @@ tasks:
 
   clean: |
     {{if eq OS "windows"}}
-      powershell -c 'function rmrf($path) { if (test-path $path) { rm -r -force $path }}; rmrf ./test/build; rmrf ./test_install/build
+      powershell -c 'function rmrf($path) { if (test-path $path) { rm -r -force $path }}; rmrf ./test/build; rmrf ./test_install/build'
     {{else}}
       rm -rf ./test/build ./test_install/build
     {{end}}
