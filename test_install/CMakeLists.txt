@@ -7,8 +7,8 @@ run_vcpkg()
 
 project(
   anotherproj
-  VERSION 0.1.0
-  LANGUAGES CXX C)
+  VERSION 0.2.0
+  LANGUAGES CXX)
 
 # Initialize project_options
 project_options(
@@ -42,14 +42,14 @@ add_executable(another_main "./src/another_main.cpp")
 
 ## dependencies
 #XXX set(DEPENDENCIES_CONFIGURED myproj)
-set(DEPENDENCIES_CONFIGURED myproj_header_only_lib)
+set(DEPENDENCIES_CONFIGURED myproj_header_only_lib myproj)
 
 foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
   find_package(${DEPENDENCY} CONFIG REQUIRED)
 endforeach()
 
 #XXX target_link_libraries(another_main PRIVATE myproj::lib myproj::lib2)
-target_link_libraries(another_main PRIVATE myproj_header_only_lib::lib)
+target_link_libraries(another_main PRIVATE myproj_header_only_lib::lib myproj::lib2)
 
 # tests
 enable_testing()

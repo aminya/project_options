@@ -19,7 +19,7 @@ run_vcpkg()
 project(
   myproj
   VERSION 0.2.0
-  LANGUAGES CXX C)
+  LANGUAGES CXX)
 
 set(PCH_HEADERS
     <Eigen/Dense>
@@ -39,7 +39,7 @@ project_options(
   ENABLE_CLANG_TIDY
   # ENABLE_INCLUDE_WHAT_YOU_USE
   ENABLE_COVERAGE
-  #XXX ENABLE_PCH
+  # TBD: ENABLE_PCH
   PCH_HEADERS
   ${PCH_HEADERS}
   ENABLE_DOXYGEN
@@ -83,7 +83,7 @@ add_library(lib INTERFACE)
 set(INCLUDE_DIR "include")
 target_include_directories(lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
                                          "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
-target_link_libraries(lib INTERFACE project_options project_warnings)
+# TODO(CK): NO! target_link_libraries(lib INTERFACE project_options project_warnings)
 target_link_system_libraries(
   lib
   INTERFACE
