@@ -92,7 +92,7 @@ add_library(lib2 "./src/mylib2/lib.cpp")
 set(lib2_INCLUDE_DIR2 "include")
 target_include_directories(lib2 PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${lib2_INCLUDE_DIR2}>"
                                        "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
-target_link_libraries(lib2 PUBLIC project_options project_warnings)
+target_link_libraries(lib2 PRIVATE project_options project_warnings)
 target_link_system_libraries(
   lib2
   PRIVATE
@@ -121,6 +121,8 @@ package_project(
   myproj_header_only_lib
   TARGETS
   lib
+  project_options
+  project_warnings
   INTERFACE_DEPENDENCIES_CONFIGURED
   ${DEPENDENCIES_CONFIGURED}
   INTERFACE_INCLUDES
@@ -131,6 +133,8 @@ package_project(
   myproj_lib
   TARGETS
   lib2
+  project_options
+  project_warnings
   PUBLIC_INCLUDES
   ${lib2_INCLUDE_DIR22})
 
