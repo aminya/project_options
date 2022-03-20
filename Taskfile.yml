@@ -12,10 +12,15 @@ tasks:
     - cmake --build ./test/build --config Release
     - cd ./test/build && ctest -C Release --verbose
 
-  test_install:
+  install_release:
     cmds:
       - task: test_release
       - cmake --install ./test/build --config Release --prefix ./install
+      - task: clean
+
+  test_install:
+    cmds:
+      - task: install_release
       - cmake ./test_install -B ./test_install/build -DCMAKE_BUILD_TYPE:STRING=Release -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' -DCMAKE_PREFIX_PATH:STRING={{.CWD}}/install;
       - cmake --build ./test_install/build --config Release
       - cd ./test_install/build && ctest -C Release --verbose
@@ -25,13 +30,13 @@ tasks:
 
   lint:
     - |
-      {{if eq OS "windows"}} 
-        powershell -c '$files=(git ls-files --exclude-standard); foreach ($file in $files) { if ((get-item $file).Extension -in ".cpp", ".hpp", ".c", ".cc", ".cxx", ".hxx", ".ixx") { clang-format -i -style=file $file } }' 
-      {{else}} 
-        git ls-files --exclude-standard | grep -E '\.(cpp|hpp|c|cc|cxx|hxx|ixx)$' | xargs clang-format -i -style=file 
+      {{if eq OS "windows"}}
+        powershell -c '$files=(git ls-files --exclude-standard); foreach ($file in $files) { if ((get-item $file).Extension -in ".cpp", ".hpp", ".c", ".cc", ".cxx", ".hxx", ".ixx") { clang-format -i -style=file $file } }'
+      {{else}}
+        git ls-files --exclude-standard | grep -E '\.(cpp|hpp|c|cc|cxx|hxx|ixx)$' | xargs clang-format -i -style=file
       {{end}}
     - |
-      {{if eq OS "windows"}} 
+      {{if eq OS "windows"}}
       powershell -c '$files=(git ls-files --exclude-standard); foreach ($file in $files) { $item=(get-item $file); if (($item.Name -eq "CMakeLists.txt") -or ($item.Extension -in ".cmake")) { cmake-format --in-place $file; cmake-lint $file --disabled-codes C0103 C0301 R0912 R0915 R0913 --suppress-decorations } }'
       {{else}}
         git ls-files --exclude-standard | grep -E '(CMakeLists\.txt)|(\.(cmake))$' | xargs cmake-format --in-place | xargs cmake-lint --disabled-codes C0103 C0301 R0912 R0915 R0913 --suppress-decorations
@@ -41,8 +46,8 @@ tasks:
     - npx -y cspell lint --no-progress --show-suggestions
 
   clean: |
-    {{if eq OS "windows"}} 
-      powershell -c 'function rmrf($path) { if (test-path $path) { rm -r -force $path }}; rmrf ./test/build; rmrf ./test_install/build/; rmrf ./install'
-    {{else}} 
-      rm -rf ./test/build ./test_install/build/ ./install
+    {{if eq OS "windows"}}
+      powershell -c 'function rmrf($path) { if (test-path $path) { rm -r -force $path }}; rmrf ./test/build; rmrf ./test_install/build/
+    {{else}}
+      rm -rf ./test/build ./test_install/build/
     {{end}}

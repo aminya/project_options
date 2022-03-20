@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16...3.21)
+cmake_minimum_required(VERSION 3.16...3.22)
 
 ### Add project_options
 include(../src/Index.cmake)
@@ -38,16 +38,18 @@ project_options(
 
 # add src, tests, etc here:
 add_executable(another_main "./src/another_main.cpp")
-target_link_libraries(another_main PRIVATE project_options project_warnings)
+#XXX target_link_libraries(another_main PRIVATE project_options project_warnings)
 
 ## dependencies
-set(DEPENDENCIES_CONFIGURED myproj)
+#XXX set(DEPENDENCIES_CONFIGURED myproj)
+set(DEPENDENCIES_CONFIGURED myproj_header_only_lib)
 
 foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
   find_package(${DEPENDENCY} CONFIG REQUIRED)
 endforeach()
 
-target_link_libraries(another_main PRIVATE myproj::lib myproj::lib2)
+#XXX target_link_libraries(another_main PRIVATE myproj::lib myproj::lib2)
+target_link_libraries(another_main PRIVATE myproj_header_only_lib::lib)
 
 # tests
 enable_testing()

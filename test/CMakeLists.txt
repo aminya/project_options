@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16...3.21)
+cmake_minimum_required(VERSION 3.16...3.22)
 
 # set a default CXX standard used by the external tools like clang-tidy, cppcheck, etc.
 # You can later set fine-grained standards for each target using `target_compile_features`
@@ -39,7 +39,7 @@ project_options(
   ENABLE_CLANG_TIDY
   # ENABLE_INCLUDE_WHAT_YOU_USE
   ENABLE_COVERAGE
-  ENABLE_PCH
+  #XXX ENABLE_PCH
   PCH_HEADERS
   ${PCH_HEADERS}
   ENABLE_DOXYGEN
@@ -93,12 +93,12 @@ target_link_system_libraries(
 # Library
 add_library(lib2 "./src/mylib2/lib.cpp")
 set(INCLUDE_DIR2 "include")
-target_include_directories(lib2 INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR2}>"
-                                          "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
-target_link_libraries(lib2 INTERFACE project_options project_warnings)
+target_include_directories(lib2 PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR2}>"
+                                       "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
+target_link_libraries(lib2 PRIVATE project_options project_warnings)
 target_link_system_libraries(
   lib2
-  PRIVATE
+  PUBLIC
   fmt::fmt
   Eigen3::Eigen)
 
