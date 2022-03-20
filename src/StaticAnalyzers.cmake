@@ -140,8 +140,9 @@ macro(enable_vs_analysis VS_ANALYSIS_RULESET)
           VS_GLOBAL_EnableMicrosoftCodeAnalysis true
           VS_GLOBAL_CodeAnalysisRuleSet "${VS_ANALYSIS_RULESET}"
           VS_GLOBAL_EnableClangTidyCodeAnalysis "${_VS_CLANG_TIDY}"
-          # This is set to false deliberately. The compiler warnings are already given in the CompilerWarnings.cmake file
-          VS_GLOBAL_RunCodeAnalysis false)
+          # TODO(disabled) This is set to false deliberately. The compiler warnings are already given in the CompilerWarnings.cmake file
+          # VS_GLOBAL_RunCodeAnalysis false
+      )
     endforeach()
   endif()
 endmacro()
