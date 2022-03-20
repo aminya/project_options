@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.16...3.22)
 
+set(CMAKE_CXX_STANDARD 20)
+
 ### Add project_options
 include(../src/Index.cmake)
 
@@ -8,7 +10,7 @@ run_vcpkg()
 project(
   anotherproj
   VERSION 0.2.0
-  LANGUAGES CXX)
+  LANGUAGES CXX C)
 
 # Initialize project_options
 project_options(
