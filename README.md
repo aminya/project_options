@@ -6,6 +6,8 @@ It provides different functions such as `project_options`, `package_project`, `d
 
 ## Usage
 
+See `project_options()` in action in [this template repository](https://github.com/cpp-best-practices/cpp_vcpkg_project).
+
 Here is a full example:
 
 ```cmake
@@ -272,6 +274,8 @@ If you need to fix a setting for the sake of a command-line configuration, you c
 ```shell
 cmake -DOPT_<featurename>:BOOL=value
 ```
+
+See `dynamic_project_options()` in action in [this template repository](https://github.com/cpp-best-practices/cpp_boilerplate_project).
 
 <details>
 <summary> 👉 Click to show the example:</summary>
