@@ -79,8 +79,8 @@ add_test(NAME main COMMAND main)
 
 # Header-only library
 add_library(lib INTERFACE)
-set(INCLUDE_DIR "include")
-target_include_directories(lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
+set(lib_INCLUDE_DIR "include")
+target_include_directories(lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${lib_INCLUDE_DIR}>"
                                          "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
 # FIXME(CK: Not for INTERFACE libs!) target_link_libraries(lib INTERFACE project_options project_warnings)
 target_link_system_libraries(
@@ -91,8 +91,8 @@ target_link_system_libraries(
 
 # Library
 add_library(lib2 "./src/mylib2/lib.cpp")
-set(INCLUDE_DIR2 "include")
-target_include_directories(lib2 PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR2}>"
+set(lib2_INCLUDE_DIR "include")
+target_include_directories(lib2 PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${lib2_INCLUDE_DIR}>"
                                        "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
 target_link_libraries(lib2 PRIVATE project_options project_warnings)
 target_link_system_libraries(
@@ -113,9 +113,9 @@ package_project(
   INTERFACE_DEPENDENCIES_CONFIGURED
   ${DEPENDENCIES_CONFIGURED}
   INTERFACE_INCLUDES
-  ${INCLUDE_DIR2}
+  ${lib2_INCLUDE_DIR}
   PUBLIC_INCLUDES
-  ${INCLUDE_DIR2})
+  ${lib2_INCLUDE_DIR})
 
 # package separately (for testing)
 package_project(
@@ -128,7 +128,7 @@ package_project(
   INTERFACE_DEPENDENCIES_CONFIGURED
   ${DEPENDENCIES_CONFIGURED}
   INTERFACE_INCLUDES
-  ${INCLUDE_DIR})
+  ${lib_INCLUDE_DIR})
 
 package_project(
   NAME
@@ -138,7 +138,7 @@ package_project(
   project_options
   project_warnings
   PUBLIC_INCLUDES
-  ${INCLUDE_DIR2})
+  ${lib2_INCLUDE_DIR})
 
 package_project(
   NAME
