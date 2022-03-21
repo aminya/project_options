@@ -253,7 +253,7 @@ Other arguments that are automatically found and manually specifying them is not
 
 - `COMPATIBILITY`: the compatibility version of the package. Defaults to `SameMajorVersion`.
 
-- `CONFIG_EXPORT_DESTINATION`: the destination for exporting the configuration files. Defaults to `${CMAKE_BINARY_DIR}`
+- `CONFIG_EXPORT_DESTINATION`: the destination for exporting the configuration files. Defaults to `${CMAKE_BINARY_DIR}/${NAME}`
 
 - `CONFIG_INSTALL_DESTINATION`: the destination for installation of the configuration files. Defaults to `${CMAKE_INSTALL_DATADIR}/${NAME}`
 
