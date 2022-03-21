@@ -1,3 +1,5 @@
+include_guard()
+
 include(FetchContent)
 
 # Install vcpkg and vcpkg dependencies: - should be called before defining project()

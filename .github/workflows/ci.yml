@@ -20,12 +20,20 @@ jobs:
         compiler:
           - llvm
           - gcc
+        cmake:
+          - true
         include:
           - os: "windows-2022"
             compiler: "msvc"
+            cmake: true
+          - os: "windows-2022"
+            compiler: "msvc"
+            cmake: 3.18.0
+            cmake_generator: "Ninja"
         exclude:
           - os: "windows-2022"
             compiler: "gcc"
+            cmake: true
     steps:
       - uses: actions/checkout@v2
       - name: Cache
@@ -38,16 +46,16 @@ jobs:
             ${{ env.XDG_CACHE_HOME }}/vcpkg/archives
             ${{ env.LOCALAPPDATA }}\vcpkg\archives
             ${{ env.APPDATA }}\vcpkg\archives
-          key: ${{ runner.os }}-${{ matrix.compiler }}-${{ env.BUILD_TYPE }}-${{ hashFiles('**/CMakeLists.txt') }}-${{ hashFiles('./vcpkg.json')}}
+          key: ${{ runner.os }}-${{ matrix.compiler }}-${{ env.BUILD_TYPE }}-${{ hashFiles('**/CMakeLists.txt') }}-${{ hashFiles('./vcpkg.json')}}-${{ matrix.cmake }}
           restore-keys: |
-            ${{ runner.os }}-${{ env.BUILD_TYPE }}
+            ${{ runner.os }}-${{ env.BUILD_TYPE }}-
 
       - name: Setup Cpp
         uses: aminya/setup-cpp@v1
         with:
           compiler: ${{ matrix.compiler }}
           vcvarsall: ${{ contains(matrix.os, 'windows') }}
-          cmake: true
+          cmake: ${{ matrix.cmake }}
           ninja: true
           vcpkg: true
           conan: true
@@ -61,6 +69,8 @@ jobs:
           task test
           task test_release
           task test_install
+        env:
+          CMAKE_GENERATOR: ${{ matrix.cmake_generator }}
 
       - name: Lint
         if: ${{ matrix.os == 'ubuntu-20.04' && matrix.compiler == 'gcc' }}

@@ -1,9 +1,19 @@
+include_guard()
+
 # Uses ycm (permissive BSD-3-Clause license) and ForwardArguments (permissive MIT license)
 
 # A function that packages the project for external usage (e.g. from vcpkg, Conan, etc).
 # See the [README.md] for more details
 function(package_project)
-  cmake_policy(SET CMP0103 NEW) # disallow multiple calls with the same NAME
+  if(${CMAKE_VERSION} VERSION_LESS "3.18.0")
+    message(
+      WARNING
+        "Consider upgrading CMake to the latest version. CMake ${CMAKE_VERSION} does not support checking for policy CMP0103."
+    )
+  else()
+    cmake_minimum_required(VERSION 3.18)
+    cmake_policy(SET CMP0103 NEW) # disallow multiple calls with the same NAME
+  endif()
 
   set(_options ARCH_INDEPENDENT # default to false
   )

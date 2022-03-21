@@ -1,3 +1,5 @@
+include_guard()
+
 # Set the compiler warnings
 #
 # https://clang.llvm.org/docs/DiagnosticsReference.html

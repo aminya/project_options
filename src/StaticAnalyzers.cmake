@@ -1,3 +1,5 @@
+include_guard()
+
 # Enable static analysis with Cppcheck
 macro(enable_cppcheck CPPCHECK_OPTIONS)
   find_program(CPPCHECK cppcheck)

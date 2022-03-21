@@ -1,3 +1,5 @@
+include_guard()
+
 # Include a system directory (which suppresses its warnings).
 function(target_include_system_directories target)
   set(multiValueArgs INTERFACE PUBLIC PRIVATE)

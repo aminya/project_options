@@ -1,3 +1,5 @@
+include_guard()
+
 # ENABLE_DEVELOPER_MODE: sets defaults appropriate for developers, this is defaulted to ON
 #  * WARNINGS_AS_ERRORS: ON
 #  * ENABLE_SANITIZER_ADDRESS: ON

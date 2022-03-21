@@ -1,3 +1,5 @@
+include_guard()
+
 # find a subtring from a string by a given prefix such as VCVARSALL_ENV_START
 function(
   find_substring_by_prefix

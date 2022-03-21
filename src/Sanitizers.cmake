@@ -1,3 +1,5 @@
+include_guard()
+
 function(
   enable_sanitizers
   project_name

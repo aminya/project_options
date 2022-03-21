@@ -1,3 +1,5 @@
+include_guard()
+
 include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
 
 # Run vcvarsall.bat and set CMake environment variables

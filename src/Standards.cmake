@@ -1,3 +1,5 @@
+include_guard()
+
 # Set the default copmiler standards if not specified
 macro(set_standards)
 
