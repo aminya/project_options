@@ -28,7 +28,7 @@ jobs:
             cmake: true
           - os: "windows-2022"
             compiler: "msvc"
-            cmake: 3.16.0
+            cmake: 3.18.0
             cmake_generator: "Ninja"
         exclude:
           - os: "windows-2022"
