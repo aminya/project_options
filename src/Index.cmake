@@ -6,13 +6,23 @@ set(ProjectOptions_SRC_DIR
     ${CMAKE_CURRENT_LIST_DIR}
     CACHE FILEPATH "")
 
+# include the files to allow calling individual functions (including the files does not run any code.)
+include("${ProjectOptions_SRC_DIR}/Common.cmake")
+include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
 include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
-
 include("${ProjectOptions_SRC_DIR}/SystemLink.cmake")
-
 include("${ProjectOptions_SRC_DIR}/Cuda.cmake")
-
 include("${ProjectOptions_SRC_DIR}/PackageProject.cmake")
+include("${ProjectOptions_SRC_DIR}/Optimization.cmake")
+include("${ProjectOptions_SRC_DIR}/Cache.cmake")
+include("${ProjectOptions_SRC_DIR}/Linker.cmake")
+include("${ProjectOptions_SRC_DIR}/CompilerWarnings.cmake")
+include("${ProjectOptions_SRC_DIR}/Tests.cmake")
+include("${ProjectOptions_SRC_DIR}/Sanitizers.cmake")
+include("${ProjectOptions_SRC_DIR}/Doxygen.cmake")
+include("${ProjectOptions_SRC_DIR}/StaticAnalyzers.cmake")
+include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
+include("${ProjectOptions_SRC_DIR}/Conan.cmake")
 
 #
 # Params:
@@ -92,10 +102,7 @@ macro(project_options)
     set(WARNING_MESSAGE WARNING)
   endif()
 
-  include("${ProjectOptions_SRC_DIR}/Common.cmake")
   common_project_options()
-
-  include("${ProjectOptions_SRC_DIR}/Optimization.cmake")
 
   # Link this 'library' to set the c++ standard / compile-time options requested
   add_library(project_options INTERFACE)
@@ -126,18 +133,15 @@ macro(project_options)
 
   if(${ProjectOptions_ENABLE_CACHE})
     # enable cache system
-    include("${ProjectOptions_SRC_DIR}/Cache.cmake")
     enable_cache()
   endif()
 
   if(${ProjectOptions_ENABLE_USER_LINKER})
     # Add linker configuration
-    include("${ProjectOptions_SRC_DIR}/Linker.cmake")
     configure_linker(project_options)
   endif()
 
   # standard compiler warnings
-  include("${ProjectOptions_SRC_DIR}/CompilerWarnings.cmake")
   set_project_warnings(
     project_warnings
     "${WARNINGS_AS_ERRORS}"
@@ -146,13 +150,11 @@ macro(project_options)
     "${ProjectOptions_GCC_WARNINGS}"
     "${ProjectOptions_CUDA_WARNINGS}")
 
-  include("${ProjectOptions_SRC_DIR}/Tests.cmake")
   if(${ProjectOptions_ENABLE_COVERAGE})
     enable_coverage(project_options)
   endif()
 
   # sanitizer options if supported by compiler
-  include("${ProjectOptions_SRC_DIR}/Sanitizers.cmake")
   enable_sanitizers(
     project_options
     ${ProjectOptions_ENABLE_SANITIZER_ADDRESS}
@@ -163,12 +165,10 @@ macro(project_options)
 
   if(${ProjectOptions_ENABLE_DOXYGEN})
     # enable doxygen
-    include("${ProjectOptions_SRC_DIR}/Doxygen.cmake")
     enable_doxygen("${ProjectOptions_DOXYGEN_THEME}")
   endif()
 
   # allow for static analysis options
-  include("${ProjectOptions_SRC_DIR}/StaticAnalyzers.cmake")
   if(${ProjectOptions_ENABLE_CPPCHECK})
     enable_cppcheck("${ProjectOptions_CPPCHECK_OPTIONS}")
   endif()
@@ -197,12 +197,10 @@ macro(project_options)
   endif()
 
   if(${ProjectOptions_ENABLE_VCPKG})
-    include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
     run_vcpkg()
   endif()
 
   if(${ProjectOptions_ENABLE_CONAN})
-    include("${ProjectOptions_SRC_DIR}/Conan.cmake")
     run_conan()
   endif()
 
