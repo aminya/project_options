@@ -4,8 +4,6 @@ set(ProjectOptions_SRC_DIR
     ${CMAKE_CURRENT_LIST_DIR}
     CACHE FILEPATH "")
 
-include("${ProjectOptions_SRC_DIR}/PreventInSourceBuilds.cmake")
-
 include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
 
 include("${ProjectOptions_SRC_DIR}/SystemLink.cmake")
@@ -92,7 +90,9 @@ macro(project_options)
     set(WARNING_MESSAGE WARNING)
   endif()
 
-  include("${ProjectOptions_SRC_DIR}/StandardProjectSettings.cmake")
+  include("${ProjectOptions_SRC_DIR}/Common.cmake")
+  common_project_options()
+
   include("${ProjectOptions_SRC_DIR}/Optimization.cmake")
 
   # Link this 'library' to set the c++ standard / compile-time options requested
