@@ -113,9 +113,9 @@ package_project(
   INTERFACE_DEPENDENCIES_CONFIGURED
   ${DEPENDENCIES_CONFIGURED}
   INTERFACE_INCLUDES
-  ${lib_INCLUDE_DIR2}
+  ${INCLUDE_DIR2}
   PUBLIC_INCLUDES
-  ${lib2_INCLUDE_DIR2})
+  ${INCLUDE_DIR2})
 
 # package separately (for testing)
 package_project(
@@ -128,7 +128,7 @@ package_project(
   INTERFACE_DEPENDENCIES_CONFIGURED
   ${DEPENDENCIES_CONFIGURED}
   INTERFACE_INCLUDES
-  ${lib_INCLUDE_DIR})
+  ${INCLUDE_DIR})
 
 package_project(
   NAME
@@ -138,7 +138,7 @@ package_project(
   project_options
   project_warnings
   PUBLIC_INCLUDES
-  ${lib2_INCLUDE_DIR22})
+  ${INCLUDE_DIR2})
 
 package_project(
   NAME
