@@ -82,7 +82,8 @@ add_library(lib INTERFACE)
 set(lib_INCLUDE_DIR "include")
 target_include_directories(lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${lib_INCLUDE_DIR}>"
                                          "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
-# FIXME(CK: Not for INTERFACE libs!) target_link_libraries(lib INTERFACE project_options project_warnings)
+# FIXME(CK: This should not done for INTERFACE libs!)
+target_link_libraries(lib INTERFACE project_options project_warnings)
 target_link_system_libraries(
   lib
   INTERFACE
