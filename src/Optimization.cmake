@@ -12,7 +12,14 @@ macro(enable_interprocedural_optimization project_name)
           "Interprocedural optimization is enabled. In other projects, linking with the compiled libraries of this project might require `set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)`"
       )
       set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
-      set_target_properties(${project_name} PROPERTIES INTERPROCEDURAL_OPTIMIZATION ON)
+      if(${CMAKE_VERSION} VERSION_GREATER "3.18.0")
+        set_target_properties(${project_name} PROPERTIES INTERPROCEDURAL_OPTIMIZATION ON)
+      else()
+        message(
+          WARNING
+            "Consider upgrading CMake to the latest version. CMake ${CMAKE_VERSION} does not support setting INTERPROCEDURAL_OPTIMIZATION property for interface libraries."
+        )
+      endif()
     else()
       message(WARNING "Interprocedural Optimization is not supported. Not using it. Here is the error log: ${output}")
     endif()

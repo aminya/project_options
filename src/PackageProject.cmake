@@ -7,7 +7,7 @@ include_guard()
 function(package_project)
   if(${CMAKE_VERSION} VERSION_LESS "3.18.0")
     message(
-      STATUS
+      WARNING
         "Consider upgrading CMake to the latest version. CMake ${CMAKE_VERSION} does not support checking for policy CMP0103."
     )
   else()
