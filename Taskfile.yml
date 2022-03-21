@@ -3,12 +3,12 @@ version: 3
 
 tasks:
   test:
-    - cmake ./test -B ./test/build -DCMAKE_BUILD_TYPE:STRING=Debug -G "Ninja Multi-Config"
+    - cmake ./test -B ./test/build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}'
     - cmake --build ./test/build --config Debug
     - cd ./test/build && ctest -C Debug --verbose
 
   test_release:
-    - cmake ./test -B ./test/build -DCMAKE_BUILD_TYPE:STRING=Release -G "Ninja Multi-Config"
+    - cmake ./test -B ./test/build -DCMAKE_BUILD_TYPE:STRING=Release -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}'
     - cmake --build ./test/build --config Release
     - cd ./test/build && ctest -C Release --verbose
 
@@ -16,7 +16,7 @@ tasks:
     cmds:
       - task: test_release
       - cmake --install ./test/build --config Release --prefix ./install
-      - cmake ./test_install -B ./test_install/build -DCMAKE_BUILD_TYPE:STRING=Release -G "Ninja Multi-Config" -DCMAKE_PREFIX_PATH:STRING={{.CWD}}/install;
+      - cmake ./test_install -B ./test_install/build -DCMAKE_BUILD_TYPE:STRING=Release -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' -DCMAKE_PREFIX_PATH:STRING={{.CWD}}/install;
       - cmake --build ./test_install/build --config Release
       - cd ./test_install/build && ctest -C Release --verbose
     vars:
