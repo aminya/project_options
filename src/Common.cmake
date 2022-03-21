@@ -1,3 +1,5 @@
+include_guard()
+
 # Common project settings run by default for all the projects that call `project_options()`
 macro(common_project_options)
   include("${ProjectOptions_SRC_DIR}/PreventInSourceBuilds.cmake")

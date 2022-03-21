@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
+include_guard()
+
 set(ProjectOptions_SRC_DIR
     ${CMAKE_CURRENT_LIST_DIR}
     CACHE FILEPATH "")

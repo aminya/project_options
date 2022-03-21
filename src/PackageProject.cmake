@@ -1,3 +1,5 @@
+include_guard()
+
 # Uses ycm (permissive BSD-3-Clause license) and ForwardArguments (permissive MIT license)
 
 # A function that packages the project for external usage (e.g. from vcpkg, Conan, etc).

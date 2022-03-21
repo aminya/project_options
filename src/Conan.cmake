@@ -1,3 +1,5 @@
+include_guard()
+
 # Run Conan for dependency management
 macro(run_conan)
   # Download automatically, you can also just copy the conan.cmake file

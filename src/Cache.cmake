@@ -1,3 +1,5 @@
+include_guard()
+
 # Enable cache if available
 function(enable_cache)
   set(CACHE_OPTION

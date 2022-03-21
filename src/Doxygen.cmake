@@ -1,3 +1,5 @@
+include_guard()
+
 # Enable doxygen doc builds of source
 function(enable_doxygen DOXYGEN_THEME)
   # If not specified, use the top readme file as the first page

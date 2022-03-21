@@ -1,3 +1,5 @@
+include_guard()
+
 macro(enable_interprocedural_optimization project_name)
   if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
     include(CheckIPOSupported)

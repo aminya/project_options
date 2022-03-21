@@ -1,3 +1,5 @@
+include_guard()
+
 # TODO use function arguments instead of CMake cache variables and options
 
 # Set the linker to use for the linking phase
