@@ -1,4 +1,12 @@
-cmake_minimum_required(VERSION 3.16)
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.18.0")
+  cmake_minimum_required(VERSION 3.18)
+else()
+  cmake_minimum_required(VERSION 3.16)
+  message(
+    WARNING
+      "Consider upgrading CMake to the latest version. CMake ${CMAKE_VERSION} might fail in the linking stage because of missing references."
+  )
+endif()
 
 include_guard()
 
