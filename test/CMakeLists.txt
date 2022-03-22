@@ -11,9 +11,6 @@ set(CMAKE_CXX_STANDARD 20)
 # include(${_project_options_SOURCE_DIR}/Index.cmake)
 include(../src/Index.cmake)
 
-### to get CMAKE_INSTALL_INCLUDEDIR
-include(GNUInstallDirs)
-
 run_vcpkg()
 
 project(
@@ -76,6 +73,10 @@ target_link_system_libraries(
 ## tests
 enable_testing()
 add_test(NAME main COMMAND main)
+
+### to get CMAKE_INSTALL_INCLUDEDIR
+# NOTE: enable at least one language before including GNUInstallDirs.
+include(GNUInstallDirs)
 
 # Header-only library
 add_library(lib INTERFACE)
