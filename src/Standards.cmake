@@ -6,7 +6,7 @@ macro(set_standards)
   # if the default CMAKE_CXX_STANDARD is not set, detect the latest CXX standard supported by the compiler and use it.
   # This is needed for the tools like clang-tidy, cppcheck, etc.
   # Like not having compiler warnings on by default, this fixes another `bad` default for the compilers
-  # Ideally, the user should set a default CMAKE_CXX_STANDARD for their project.
+  # If someone needs an older standard like c++11 although their compiler supports c++20, they can override this by passing -D CMAKE_CXX_STANDARD=11.
   if("${CMAKE_CXX_STANDARD}" STREQUAL "")
     if(DEFINED CMAKE_CXX20_STANDARD_COMPILE_OPTION OR DEFINED CMAKE_CXX20_EXTENSION_COMPILE_OPTION)
       set(CXX_LATEST_STANDARD 20)
