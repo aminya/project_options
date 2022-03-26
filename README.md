@@ -6,7 +6,7 @@ It provides different functions such as `project_options`, `package_project`, `d
 
 ## Usage
 
-See `project_options()` in action in [this template repository](https://github.com/cpp-best-practices/cpp_vcpkg_project).
+See `project_options()` in action in [this template repository](https://github.com/aminya/cpp_vcpkg_project).
 
 Here is a full example:
 
@@ -18,10 +18,10 @@ cmake_minimum_required(VERSION 3.16)
 # set(CMAKE_CXX_STANDARD 20)
 
 # Add project_options v0.19.0
-# https://github.com/cpp-best-practices/project_options
+# https://github.com/aminya/project_options
 # Change the version in the following URL to update the package (watch the releases of the repository for future updates)
 include(FetchContent)
-FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.19.0.zip)
+FetchContent_Declare(_project_options URL https://github.com/aminya/project_options/archive/refs/tags/v0.19.0.zip)
 FetchContent_MakeAvailable(_project_options)
 include(${_project_options_SOURCE_DIR}/Index.cmake)
 
@@ -61,7 +61,7 @@ project_options(
 
 Then add the executables or libraries to the project:
 
-[An executable](https://github.com/cpp-best-practices/cpp_vcpkg_project/tree/main/my_exe):
+[An executable](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe):
 
 ```cmake
 add_executable(main main.cpp)
@@ -86,7 +86,7 @@ target_link_system_libraries(
 package_project(TARGETS main)
 ```
 
-[A header-only library](https://github.com/cpp-best-practices/cpp_vcpkg_project/tree/main/my_header_lib):
+[A header-only library](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib):
 
 ```cmake
 add_library(my_header_lib INTERFACE)
@@ -120,7 +120,7 @@ package_project(
 )
 ```
 
-[A library with separate header and source files](https://github.com/cpp-best-practices/cpp_vcpkg_project/tree/main/my_lib)
+[A library with separate header and source files](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib)
 
 ```cmake
 add_library(my_lib "./src/my_lib/lib.cpp")
@@ -277,7 +277,7 @@ If you need to fix a setting for the sake of a command-line configuration, you c
 cmake -DOPT_<featurename>:BOOL=value
 ```
 
-See `dynamic_project_options()` in action in [this template repository](https://github.com/cpp-best-practices/cpp_boilerplate_project).
+See `dynamic_project_options()` in action in [this template repository](https://github.com/aminya/cpp_boilerplate_project).
 
 <details>
 <summary> 👉 Click to show the example:</summary>
@@ -290,10 +290,10 @@ cmake_minimum_required(VERSION 3.16)
 # set(CMAKE_CXX_STANDARD 20)
 
 # Add project_options v0.19.0
-# https://github.com/cpp-best-practices/project_options
+# https://github.com/aminya/project_options
 # Change the version in the following URL to update the package (watch the releases of the repository for future updates)
 include(FetchContent)
-FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/tags/v0.19.0.zip)
+FetchContent_Declare(_project_options URL https://github.com/aminya/project_options/archive/refs/tags/v0.19.0.zip)
 FetchContent_MakeAvailable(_project_options)
 include(${_project_options_SOURCE_DIR}/Index.cmake)
 
