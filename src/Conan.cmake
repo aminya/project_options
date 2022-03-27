@@ -52,8 +52,16 @@ macro(run_conan)
   foreach(TYPE ${LIST_OF_BUILD_TYPES})
     message(STATUS "Running Conan for build type '${TYPE}'")
 
-    # Detects current build settings to pass into conan
-    conan_cmake_autodetect(settings BUILD_TYPE ${TYPE})
+    if(${ProjectOptions_CONAN_PROFILE} STREQUAL "")
+      # Detects current build settings to pass into conan
+      conan_cmake_autodetect(settings BUILD_TYPE ${TYPE})
+      set(CONAN_SETTINGS SETTINGS ${settings})
+      set(CONAN_ENV ENV "CC=${CMAKE_C_COMPILER}" "CXX=${CMAKE_CXX_COMPILER}")
+    else()
+      # Derive all conan settings from a conan profile
+      set(CONAN_SETTINGS PROFILE ${ProjectOptions_CONAN_PROFILE})
+      # CONAN_ENV should be redundant, since the profile can set CC & CXX
+    endif()
 
     # PATH_OR_REFERENCE ${CMAKE_SOURCE_DIR} is used to tell conan to process
     # the external "conanfile.py" provided with the project
@@ -67,11 +75,8 @@ macro(run_conan)
       OPTIONS
       ${ProjectOptions_CONAN_OPTIONS}
       # Pass CMake compilers to Conan
-      ENV
-      "CC=${CMAKE_C_COMPILER}"
-      "CXX=${CMAKE_CXX_COMPILER}"
-      SETTINGS
-      ${settings}
+      ${CONAN_ENV}
+      ${CONAN_SETTINGS}
       ${OUTPUT_QUIET})
   endforeach()
 
