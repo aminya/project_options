@@ -52,7 +52,7 @@ macro(run_conan)
   foreach(TYPE ${LIST_OF_BUILD_TYPES})
     message(STATUS "Running Conan for build type '${TYPE}'")
 
-    if(${ProjectOptions_CONAN_PROFILE} STREQUAL "")
+    if("${ProjectOptions_CONAN_PROFILE}" STREQUAL "")
       # Detects current build settings to pass into conan
       conan_cmake_autodetect(settings BUILD_TYPE ${TYPE})
       set(CONAN_SETTINGS SETTINGS ${settings})
