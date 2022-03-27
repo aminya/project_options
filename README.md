@@ -31,21 +31,55 @@ include(${_project_options_SOURCE_DIR}/Index.cmake)
 # Set the project name and language
 project(myproject LANGUAGES CXX C)
 
+# Build Features
+option(FEATURE_TESTS "Enable the tests" OFF)
+if(FEATURE_TESTS)
+  list(APPEND VCPKG_MANIFEST_FEATURES "tests")
+endif()
+
+option(FEATURE_DOCS "Enable the docs" OFF)
+
+# Enable sanitizers and static analyzers when running the tests
+set(ENABLE_CLANG_TIDY OFF)
+set(ENABLE_CPPCHECK OFF)
+set(ENABLE_SANITIZER_ADDRESS OFF)
+
+if(FEATURE_TESTS)
+  set(ENABLE_CLANG_TIDY "ENABLE_CLANG_TIDY")
+  set(ENABLE_CPPCHECK "ENABLE_CPPCHECK")
+
+  string(FIND "$ENV{PATH}" "$ENV{VSINSTALLDIR}" index_of_vs_install_dir)
+  if(# not windows
+     NOT
+     "${CMAKE_SYSTEM_NAME}"
+     STREQUAL
+     "Windows"
+     # or is MSVC and has run vcvarsall
+     OR (MSVC AND "${index_of_vs_install_dir}" STREQUAL "-1"))
+    set(ENABLE_SANITIZER_ADDRESS "ENABLE_SANITIZER_ADDRESS")
+  endif()
+endif()
+
+if(FEATURE_DOCS)
+  set(ENABLE_DOXYGEN "ENABLE_DOXYGEN")
+else()
+  set(ENABLE_DOXYGEN OFF)
+endif()
+
 # Initialize project_options variable related to this project
 # This overwrites `project_options` and sets `project_warnings`
 # uncomment to enable the options. Some of them accept one or more inputs:
 project_options(
       ENABLE_CACHE
-      ENABLE_CPPCHECK
-      ENABLE_CLANG_TIDY
+      ${ENABLE_CPPCHECK}
+      ${ENABLE_CLANG_TIDY}
       ENABLE_VS_ANALYSIS
       # ENABLE_CONAN
       # ENABLE_INTERPROCEDURAL_OPTIMIZATION
       # ENABLE_NATIVE_OPTIMIZATION
-      # ENABLE_DOXYGEN
+      ${ENABLE_DOXYGEN}
       # ENABLE_COVERAGE
-      # ENABLE_SANITIZER_ADDRESS
-      # ENABLE_SANITIZER_LEAK
+      ${ENABLE_SANITIZER_ADDRESS}
       # ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       # ENABLE_SANITIZER_THREAD
       # ENABLE_SANITIZER_MEMORY
