@@ -26,7 +26,7 @@ FetchContent_MakeAvailable(_project_options)
 include(${_project_options_SOURCE_DIR}/Index.cmake)
 
 # install vcpkg dependencies: - should be called before defining project()
-# run_vcpkg()
+run_vcpkg()
 
 # Set the project name and language
 project(myproject LANGUAGES CXX C)
