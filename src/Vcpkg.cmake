@@ -63,6 +63,15 @@ macro(run_vcpkg)
     endif()
   endif()
 
+  # Define CMAKE_MAP_IMPORTED_CONFIG_RELWITHDEBINFO for ROS packages (Amnet, Colcon)
+  if(NOT
+     "${AMENT_PREFIX_PATH}"
+     STREQUAL
+     ""
+     OR "$ENV{COLCON}" STREQUAL "1")
+    set(CMAKE_MAP_IMPORTED_CONFIG_RELWITHDEBINFO "RelWithDebInfo;Release;None")
+  endif()
+
   # Setting up vcpkg toolchain
   list(APPEND VCPKG_FEATURE_FLAGS "versions")
   set(CMAKE_TOOLCHAIN_FILE
