@@ -47,7 +47,7 @@ function(enable_doxygen DOXYGEN_THEME)
   else()
     # use custom doxygen theme
 
-    # if any of the custom theme files are not found, the theme is reveretd to original
+    # if any of the custom theme files are not found, the theme is reverted to original
     set(OLD_DOXYGEN_HTML_EXTRA_STYLESHEET ${DOXYGEN_HTML_EXTRA_STYLESHEET})
     foreach(file ${DOXYGEN_THEME})
       if(NOT EXISTS ${file})
