@@ -4,6 +4,13 @@ include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
 
 # Run vcvarsall.bat and set CMake environment variables
 function(run_vcvarsall)
+  # If MSVC is being used, and ASAN is enabled, we need to set the debugger environment
+  # so that it behaves well with MSVC's debugger, and we can run the target from visual studio
+  if(MSVC)
+    get_all_targets(all_targets)
+    set_target_properties(${all_targets} PROPERTIES VS_DEBUGGER_ENVIRONMENT "PATH=$(VC_ExecutablePath_x64);%PATH%")
+  endif()
+
   # if MSVC but VSCMD_VER is not set, which means vcvarsall has not run
   if(MSVC AND "$ENV{VSCMD_VER}" STREQUAL "")
 
