@@ -214,7 +214,11 @@ It accepts the following named flags:
 
 It gets the following named parameters that can have different values in front of them:
 
-- `DOXYGEN_THEME`: the name of the Doxygen theme to use. Supported themes: `awesome-sidebar` (default), `awesome` and `original`.
+- `DOXYGEN_THEME`: the name of the Doxygen theme to use. Supported themes:
+  - `awesome-sidebar` (default)
+  - `awesome`
+  - `original`
+  - Alternatively you can supply a list of css files to be added to [DOXYGEN_HTML_EXTRA_STYLESHEET](https://www.doxygen.nl/manual/config.html#cfg_html_extra_stylesheet)
 - `PCH_HEADERS`: the list of the headers to precompile
 - `MSVC_WARNINGS`: Override the defaults for the MSVC warnings
 - `CLANG_WARNINGS`: Override the defaults for the CLANG warnings
