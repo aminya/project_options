@@ -43,6 +43,16 @@ macro(common_project_options)
     endif()
   endif()
 
+  # Fix for Amnet/Colcon
+  if(NOT
+     "${AMENT_PREFIX_PATH}"
+     STREQUAL
+     ""
+     OR "$ENV{COLCON}" STREQUAL "1")
+    # these are used in order:
+    set(CMAKE_MAP_IMPORTED_CONFIG_RELWITHDEBINFO "RelWithDebInfo;Release;None;NoConfig")
+  endif()
+
   # Generate compile_commands.json to make it easier to work with clang based tools
   set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
