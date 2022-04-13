@@ -17,16 +17,16 @@ cmake_minimum_required(VERSION 3.16)
 # If commented, the latest supported standard for your compiler is automatically set.
 # set(CMAKE_CXX_STANDARD 20)
 
-# Add project_options v0.19.0
+# Add project_options v0.21.0
 # https://github.com/aminya/project_options
 # Change the version in the following URL to update the package (watch the releases of the repository for future updates)
 include(FetchContent)
-FetchContent_Declare(_project_options URL https://github.com/aminya/project_options/archive/refs/tags/v0.19.0.zip)
+FetchContent_Declare(_project_options URL https://github.com/aminya/project_options/archive/refs/tags/v0.21.0.zip)
 FetchContent_MakeAvailable(_project_options)
 include(${_project_options_SOURCE_DIR}/Index.cmake)
 
 # install vcpkg dependencies: - should be called before defining project()
-# run_vcpkg()
+run_vcpkg()
 
 # Set the project name and language
 project(myproject LANGUAGES CXX C)
@@ -215,7 +215,11 @@ It accepts the following named flags:
 
 It gets the following named parameters that can have different values in front of them:
 
-- `DOXYGEN_THEME`: the name of the Doxygen theme to use. Supported themes: `awesome-sidebar` (default), `awesome` and `original`.
+- `DOXYGEN_THEME`: the name of the Doxygen theme to use. Supported themes:
+  - `awesome-sidebar` (default)
+  - `awesome`
+  - `original`
+  - Alternatively you can supply a list of css files to be added to [DOXYGEN_HTML_EXTRA_STYLESHEET](https://www.doxygen.nl/manual/config.html#cfg_html_extra_stylesheet)
 - `PCH_HEADERS`: the list of the headers to precompile
 - `MSVC_WARNINGS`: Override the defaults for the MSVC warnings
 - `CLANG_WARNINGS`: Override the defaults for the CLANG warnings
@@ -288,7 +292,7 @@ Other arguments that are automatically found and manually specifying them is not
 
 - `COMPATIBILITY`: the compatibility version of the package. Defaults to `SameMajorVersion`.
 
-- `CONFIG_EXPORT_DESTINATION`: the destination for exporting the configuration files. Defaults to `${CMAKE_BINARY_DIR}`
+- `CONFIG_EXPORT_DESTINATION`: the destination for exporting the configuration files. Defaults to `${CMAKE_BINARY_DIR}/${NAME}`
 
 - `CONFIG_INSTALL_DESTINATION`: the destination for installation of the configuration files. Defaults to `${CMAKE_INSTALL_DATADIR}/${NAME}`
 
@@ -324,11 +328,11 @@ cmake_minimum_required(VERSION 3.16)
 # If commented, the latest supported standard for your compiler is automatically set.
 # set(CMAKE_CXX_STANDARD 20)
 
-# Add project_options v0.19.0
+# Add project_options v0.21.0
 # https://github.com/aminya/project_options
 # Change the version in the following URL to update the package (watch the releases of the repository for future updates)
 include(FetchContent)
-FetchContent_Declare(_project_options URL https://github.com/aminya/project_options/archive/refs/tags/v0.19.0.zip)
+FetchContent_Declare(_project_options URL https://github.com/aminya/project_options/archive/refs/tags/v0.21.0.zip)
 FetchContent_MakeAvailable(_project_options)
 include(${_project_options_SOURCE_DIR}/Index.cmake)
 

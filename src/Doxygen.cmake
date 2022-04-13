@@ -42,8 +42,22 @@ function(enable_doxygen DOXYGEN_THEME)
       set(DOXYGEN_HTML_EXTRA_STYLESHEET ${DOXYGEN_HTML_EXTRA_STYLESHEET}
                                         "${_doxygen_theme_SOURCE_DIR}/doxygen-awesome-sidebar-only.css")
     endif()
-  else()
+  elseif("${DOXYGEN_THEME}" STREQUAL "original")
     # use the original doxygen theme
+  else()
+    # use custom doxygen theme
+
+    # if any of the custom theme files are not found, the theme is reverted to original
+    set(OLD_DOXYGEN_HTML_EXTRA_STYLESHEET ${DOXYGEN_HTML_EXTRA_STYLESHEET})
+    foreach(file ${DOXYGEN_THEME})
+      if(NOT EXISTS ${file})
+        message(WARNING "Could not find doxygen theme file '${file}'. Using original theme.")
+        set(DOXYGEN_HTML_EXTRA_STYLESHEET ${OLD_DOXYGEN_HTML_EXTRA_STYLESHEET})
+        break()
+      else()
+        set(DOXYGEN_HTML_EXTRA_STYLESHEET ${DOXYGEN_HTML_EXTRA_STYLESHEET} "${file}")
+      endif()
+    endforeach()
   endif()
 
   # find doxygen and dot if available

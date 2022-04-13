@@ -25,7 +25,7 @@ function(package_project)
       VERSION
       # default to semver
       COMPATIBILITY
-      # default to ${CMAKE_BINARY_DIR}
+      # default to ${CMAKE_BINARY_DIR}/${NAME}
       CONFIG_EXPORT_DESTINATION
       # default to ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/${NAME} suitable for vcpkg, etc.
       CONFIG_INSTALL_DESTINATION)
@@ -82,9 +82,9 @@ function(package_project)
     set(_PackageProject_COMPATIBILITY "SameMajorVersion")
   endif()
 
-  # default to the build directory
+  # default to the build_directory/project_name 
   if("${_PackageProject_CONFIG_EXPORT_DESTINATION}" STREQUAL "")
-    set(_PackageProject_CONFIG_EXPORT_DESTINATION "${CMAKE_BINARY_DIR}")
+    set(_PackageProject_CONFIG_EXPORT_DESTINATION "${CMAKE_BINARY_DIR}/${_PackageProject_NAME}")
   endif()
   set(_PackageProject_EXPORT_DESTINATION "${_PackageProject_CONFIG_EXPORT_DESTINATION}")
 
