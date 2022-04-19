@@ -36,7 +36,7 @@ macro(run_conan)
   if(CONAN_EXPORTED)
     #standard conan installation, deps will be defined in conanfile and not necessary 
     # to call conan again, conan is alreay running.
-    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+    include(${CMAKE_BINARY_DIR}/../conanbuildinfo.cmake)
     conan_basic_setup()
   else()
     # For multi configuration generators, like VS and XCode
