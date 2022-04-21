@@ -34,8 +34,7 @@ macro(run_conan)
     https://bincrafters.jfrog.io/artifactory/api/conan/public-conan)
 
   if(CONAN_EXPORTED)
-    #standard conan installation, deps will be defined in conanfile and not necessary 
-    # to call conan again, conan is alreay running.
+    # standard conan installation, in which deps will be defined in conanfile. It is not necessary to call conan again, as it is already running.
     include(${CMAKE_BINARY_DIR}/../conanbuildinfo.cmake)
     conan_basic_setup()
   else()
