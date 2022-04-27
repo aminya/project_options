@@ -35,7 +35,11 @@ macro(run_conan)
 
   if(CONAN_EXPORTED)
     # standard conan installation, in which deps will be defined in conanfile. It is not necessary to call conan again, as it is already running.
-    include(${CMAKE_BINARY_DIR}/../conanbuildinfo.cmake)
+    if (EXISTS "${CMAKE_BINARY_DIR}/../conanbuildinfo.cmake")
+      include(${CMAKE_BINARY_DIR}/../conanbuildinfo.cmake)
+    else()
+       message(FATAL_ERROR "Could not set up conan because \"${CMAKE_BINARY_DIR}/../conanbuildinfo.cmake\" does not exist")
+    endif()
     conan_basic_setup()
   else()
     # For multi configuration generators, like VS and XCode
