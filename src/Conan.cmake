@@ -33,46 +33,56 @@ macro(run_conan)
     URL
     https://bincrafters.jfrog.io/artifactory/api/conan/public-conan)
 
-  # For multi configuration generators, like VS and XCode
-  if(NOT CMAKE_CONFIGURATION_TYPES)
-    message(STATUS "Single configuration build!")
-    set(LIST_OF_BUILD_TYPES ${CMAKE_BUILD_TYPE})
+  if(CONAN_EXPORTED)
+    # standard conan installation, in which deps will be defined in conanfile. It is not necessary to call conan again, as it is already running.
+    if (EXISTS "${CMAKE_BINARY_DIR}/../conanbuildinfo.cmake")
+      include(${CMAKE_BINARY_DIR}/../conanbuildinfo.cmake)
+    else()
+       message(FATAL_ERROR "Could not set up conan because \"${CMAKE_BINARY_DIR}/../conanbuildinfo.cmake\" does not exist")
+    endif()
+    conan_basic_setup()
   else()
-    message(STATUS "Multi-configuration build: '${CMAKE_CONFIGURATION_TYPES}'!")
-    set(LIST_OF_BUILD_TYPES ${CMAKE_CONFIGURATION_TYPES})
+    # For multi configuration generators, like VS and XCode
+    if(NOT CMAKE_CONFIGURATION_TYPES)
+      message(STATUS "Single configuration build!")
+      set(LIST_OF_BUILD_TYPES ${CMAKE_BUILD_TYPE})
+    else()
+      message(STATUS "Multi-configuration build: '${CMAKE_CONFIGURATION_TYPES}'!")
+      set(LIST_OF_BUILD_TYPES ${CMAKE_CONFIGURATION_TYPES})
+    endif()
+
+    is_verbose(_is_verbose)
+    if(NOT ${_is_verbose})
+      set(OUTPUT_QUIET "OUTPUT_QUIET")
+    else()
+      set(OUTPUT_QUIET OFF)
+    endif()
+
+    foreach(TYPE ${LIST_OF_BUILD_TYPES})
+      message(STATUS "Running Conan for build type '${TYPE}'")
+
+      # Detects current build settings to pass into conan
+      conan_cmake_autodetect(settings BUILD_TYPE ${TYPE})
+
+      # PATH_OR_REFERENCE ${CMAKE_SOURCE_DIR} is used to tell conan to process
+      # the external "conanfile.py" provided with the project
+      # Alternatively a conanfile.txt could be used
+      conan_cmake_install(
+        PATH_OR_REFERENCE
+        ${CMAKE_SOURCE_DIR}
+        BUILD
+        missing
+        # Pass compile-time configured options into conan
+        OPTIONS
+        ${ProjectOptions_CONAN_OPTIONS}
+        # Pass CMake compilers to Conan
+        ENV
+        "CC=${CMAKE_C_COMPILER}"
+        "CXX=${CMAKE_CXX_COMPILER}"
+        SETTINGS
+        ${settings}
+        ${OUTPUT_QUIET})
+    endforeach()
   endif()
-
-  is_verbose(_is_verbose)
-  if(NOT ${_is_verbose})
-    set(OUTPUT_QUIET "OUTPUT_QUIET")
-  else()
-    set(OUTPUT_QUIET OFF)
-  endif()
-
-  foreach(TYPE ${LIST_OF_BUILD_TYPES})
-    message(STATUS "Running Conan for build type '${TYPE}'")
-
-    # Detects current build settings to pass into conan
-    conan_cmake_autodetect(settings BUILD_TYPE ${TYPE})
-
-    # PATH_OR_REFERENCE ${CMAKE_SOURCE_DIR} is used to tell conan to process
-    # the external "conanfile.py" provided with the project
-    # Alternatively a conanfile.txt could be used
-    conan_cmake_install(
-      PATH_OR_REFERENCE
-      ${CMAKE_SOURCE_DIR}
-      BUILD
-      missing
-      # Pass compile-time configured options into conan
-      OPTIONS
-      ${ProjectOptions_CONAN_OPTIONS}
-      # Pass CMake compilers to Conan
-      ENV
-      "CC=${CMAKE_C_COMPILER}"
-      "CXX=${CMAKE_CXX_COMPILER}"
-      SETTINGS
-      ${settings}
-      ${OUTPUT_QUIET})
-  endforeach()
 
 endmacro()
