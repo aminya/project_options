@@ -74,6 +74,7 @@ words:
   - shlib
   - suppr
   - TOLOWER
+  - TOUPPER
   - ubsan
   - vcpkg
   - vcvarsall
