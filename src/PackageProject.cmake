@@ -82,7 +82,7 @@ function(package_project)
     set(_PackageProject_COMPATIBILITY "SameMajorVersion")
   endif()
 
-  # default to the build_directory/project_name 
+  # default to the build_directory/project_name
   if("${_PackageProject_CONFIG_EXPORT_DESTINATION}" STREQUAL "")
     set(_PackageProject_CONFIG_EXPORT_DESTINATION "${CMAKE_BINARY_DIR}/${_PackageProject_NAME}")
   endif()

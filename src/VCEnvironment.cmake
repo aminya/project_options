@@ -4,11 +4,17 @@ include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
 
 # Run vcvarsall.bat and set CMake environment variables
 function(run_vcvarsall)
+  # detect the architecture
+  detect_architecture(VCVARSALL_ARCH)
+
   # If MSVC is being used, and ASAN is enabled, we need to set the debugger environment
   # so that it behaves well with MSVC's debugger, and we can run the target from visual studio
   if(MSVC)
+    string(TOUPPER "${VCVARSALL_ARCH}" VCVARSALL_ARCH_UPPER)
+    set(VS_DEBUGGER_ENVIRONMENT "PATH=\$(VC_ExecutablePath_${VCVARSALL_ARCH_UPPER});%PATH%")
+
     get_all_targets(all_targets)
-    set_target_properties(${all_targets} PROPERTIES VS_DEBUGGER_ENVIRONMENT "PATH=$(VC_ExecutablePath_x64);%PATH%")
+    set_target_properties(${all_targets} PROPERTIES VS_DEBUGGER_ENVIRONMENT "${VS_DEBUGGER_ENVIRONMENT}")
   endif()
 
   # if MSVC but VSCMD_VER is not set, which means vcvarsall has not run
@@ -27,9 +33,6 @@ function(run_vcvarsall)
       PATH_SUFFIXES "VC/Auxiliary/Build" "Common7/Tools" "Tools")
 
     if(EXISTS ${VCVARSALL_FILE})
-      # detect the architecture
-      detect_architecture(VCVARSALL_ARCH)
-
       # run vcvarsall and print the environment variables
       message(STATUS "Running `${VCVARSALL_FILE} ${VCVARSALL_ARCH}` to set up the MSVC environment")
       execute_process(
