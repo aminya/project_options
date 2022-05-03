@@ -1,3 +1,6 @@
+include_guard()
+
+# Enable static analysis with Cppcheck
 macro(enable_cppcheck CPPCHECK_OPTIONS)
   find_program(CPPCHECK cppcheck)
   if(CPPCHECK)
@@ -52,6 +55,7 @@ macro(enable_cppcheck CPPCHECK_OPTIONS)
   endif()
 endmacro()
 
+# Enable static analysis with clang-tidy
 macro(enable_clang_tidy)
   find_program(CLANGTIDY clang-tidy)
   if(CLANGTIDY)
@@ -69,8 +73,10 @@ macro(enable_clang_tidy)
        )
        AND ${ProjectOptions_ENABLE_PCH})
       message(
-        SEND_ERROR
-          "clang-tidy cannot be enabled with non-clang compiler and PCH, clang-tidy fails to handle gcc's PCH file")
+        ${WARNING_MESSAGE}
+        "clang-tidy cannot be enabled with non-clang compiler and PCH, clang-tidy fails to handle gcc's PCH file. Disabling PCH..."
+      )
+      set(ProjectOptions_ENABLE_PCH OFF)
     endif()
 
     # construct the clang-tidy command line
@@ -113,6 +119,37 @@ macro(enable_clang_tidy)
   endif()
 endmacro()
 
+# Enable static analysis inside Visual Studio IDE
+macro(enable_vs_analysis VS_ANALYSIS_RULESET)
+  if("${VS_ANALYSIS_RULESET}" STREQUAL "")
+    # See for other rulesets: C:\Program Files (x86)\Microsoft Visual Studio\20xx\xx\Team Tools\Static Analysis Tools\Rule Sets\
+    set(VS_ANALYSIS_RULESET "AllRules.ruleset")
+  endif()
+  if(NOT
+     "${CMAKE_CXX_CLANG_TIDY}"
+     STREQUAL
+     "")
+    set(_VS_CLANG_TIDY "true")
+  else()
+    set(_VS_CLANG_TIDY "false")
+  endif()
+  if(CMAKE_GENERATOR MATCHES "Visual Studio")
+    get_all_targets(_targets_list)
+    foreach(target IN LISTS ${_targets_list})
+      set_target_properties(
+        ${target}
+        PROPERTIES
+          VS_GLOBAL_EnableMicrosoftCodeAnalysis true
+          VS_GLOBAL_CodeAnalysisRuleSet "${VS_ANALYSIS_RULESET}"
+          VS_GLOBAL_EnableClangTidyCodeAnalysis "${_VS_CLANG_TIDY}"
+          # TODO(disabled) This is set to false deliberately. The compiler warnings are already given in the CompilerWarnings.cmake file
+          # VS_GLOBAL_RunCodeAnalysis false
+      )
+    endforeach()
+  endif()
+endmacro()
+
+# Enable static analysis with include-what-you-use
 macro(enable_include_what_you_use)
   find_program(INCLUDE_WHAT_YOU_USE include-what-you-use)
   if(INCLUDE_WHAT_YOU_USE)

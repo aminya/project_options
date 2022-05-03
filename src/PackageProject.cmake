@@ -1,7 +1,19 @@
+include_guard()
+
 # Uses ycm (permissive BSD-3-Clause license) and ForwardArguments (permissive MIT license)
 
+# A function that packages the project for external usage (e.g. from vcpkg, Conan, etc).
+# See the [README.md] for more details
 function(package_project)
-  cmake_policy(SET CMP0103 NEW) # disallow multiple calls with the same NAME
+  if(${CMAKE_VERSION} VERSION_LESS "3.18.0")
+    message(
+      WARNING
+        "Consider upgrading CMake to the latest version. CMake ${CMAKE_VERSION} does not support checking for policy CMP0103."
+    )
+  else()
+    cmake_minimum_required(VERSION 3.18)
+    cmake_policy(SET CMP0103 NEW) # disallow multiple calls with the same NAME
+  endif()
 
   set(_options ARCH_INDEPENDENT # default to false
   )
@@ -13,7 +25,7 @@ function(package_project)
       VERSION
       # default to semver
       COMPATIBILITY
-      # default to ${CMAKE_BINARY_DIR}
+      # default to ${CMAKE_BINARY_DIR}/${NAME}
       CONFIG_EXPORT_DESTINATION
       # default to ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/${NAME} suitable for vcpkg, etc.
       CONFIG_INSTALL_DESTINATION)
@@ -70,9 +82,9 @@ function(package_project)
     set(_PackageProject_COMPATIBILITY "SameMajorVersion")
   endif()
 
-  # default to the build directory
+  # default to the build_directory/project_name
   if("${_PackageProject_CONFIG_EXPORT_DESTINATION}" STREQUAL "")
-    set(_PackageProject_CONFIG_EXPORT_DESTINATION "${CMAKE_BINARY_DIR}")
+    set(_PackageProject_CONFIG_EXPORT_DESTINATION "${CMAKE_BINARY_DIR}/${_PackageProject_NAME}")
   endif()
   set(_PackageProject_EXPORT_DESTINATION "${_PackageProject_CONFIG_EXPORT_DESTINATION}")
 

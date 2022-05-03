@@ -1,3 +1,5 @@
+include_guard()
+
 # find a subtring from a string by a given prefix such as VCVARSALL_ENV_START
 function(
   find_substring_by_prefix
@@ -83,6 +85,7 @@ function(set_env_from_string env_string)
   endforeach()
 endfunction()
 
+# Get all the CMake targets
 function(get_all_targets var)
   set(targets)
   get_all_targets_recursive(targets ${CMAKE_CURRENT_SOURCE_DIR})
@@ -91,6 +94,7 @@ function(get_all_targets var)
       PARENT_SCOPE)
 endfunction()
 
+# Get all the installable CMake targets
 function(get_all_installable_targets var)
   set(targets)
   get_all_targets(targets)
@@ -108,6 +112,7 @@ function(get_all_installable_targets var)
       PARENT_SCOPE)
 endfunction()
 
+# Get all the CMake targets in the given directory
 macro(get_all_targets_recursive targets dir)
   get_property(
     subdirectories
@@ -124,6 +129,7 @@ macro(get_all_targets_recursive targets dir)
   list(APPEND ${targets} ${current_targets})
 endmacro()
 
+# Is CMake verbose?
 function(is_verbose var)
   if("CMAKE_MESSAGE_LOG_LEVEL" STREQUAL "VERBOSE"
      OR "CMAKE_MESSAGE_LOG_LEVEL" STREQUAL "DEBUG"

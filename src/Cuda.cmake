@@ -1,3 +1,5 @@
+include_guard()
+
 # ! target_link_cuda
 # A function that links Cuda to the given target
 #

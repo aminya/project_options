@@ -1,22 +1,36 @@
-cmake_minimum_required(VERSION 3.16)
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.18.0")
+  cmake_minimum_required(VERSION 3.18)
+else()
+  cmake_minimum_required(VERSION 3.16)
+  message(
+    WARNING
+      "Consider upgrading CMake to the latest version. CMake ${CMAKE_VERSION} might fail in the linking stage because of missing references."
+  )
+endif()
+
+include_guard()
 
 set(ProjectOptions_SRC_DIR
     ${CMAKE_CURRENT_LIST_DIR}
     CACHE FILEPATH "")
 
-include("${ProjectOptions_SRC_DIR}/PreventInSourceBuilds.cmake")
-
+# include the files to allow calling individual functions (including the files does not run any code.)
+include("${ProjectOptions_SRC_DIR}/Common.cmake")
+include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
 include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
-
-include("${ProjectOptions_SRC_DIR}/VCEnvironment.cmake")
-# find msvc if required
-find_msvc()
-
 include("${ProjectOptions_SRC_DIR}/SystemLink.cmake")
-
 include("${ProjectOptions_SRC_DIR}/Cuda.cmake")
-
 include("${ProjectOptions_SRC_DIR}/PackageProject.cmake")
+include("${ProjectOptions_SRC_DIR}/Optimization.cmake")
+include("${ProjectOptions_SRC_DIR}/Cache.cmake")
+include("${ProjectOptions_SRC_DIR}/Linker.cmake")
+include("${ProjectOptions_SRC_DIR}/CompilerWarnings.cmake")
+include("${ProjectOptions_SRC_DIR}/Tests.cmake")
+include("${ProjectOptions_SRC_DIR}/Sanitizers.cmake")
+include("${ProjectOptions_SRC_DIR}/Doxygen.cmake")
+include("${ProjectOptions_SRC_DIR}/StaticAnalyzers.cmake")
+include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
+include("${ProjectOptions_SRC_DIR}/Conan.cmake")
 
 #
 # Params:
@@ -55,6 +69,7 @@ macro(project_options)
       ENABLE_COVERAGE
       ENABLE_CPPCHECK
       ENABLE_CLANG_TIDY
+      ENABLE_VS_ANALYSIS
       ENABLE_INCLUDE_WHAT_YOU_USE
       ENABLE_CACHE
       ENABLE_PCH
@@ -71,8 +86,9 @@ macro(project_options)
       ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       ENABLE_SANITIZER_THREAD
       ENABLE_SANITIZER_MEMORY)
-  set(oneValueArgs DOXYGEN_THEME)
+  set(oneValueArgs VS_ANALYSIS_RULESET CONAN_PROFILE)
   set(multiValueArgs
+      DOXYGEN_THEME
       MSVC_WARNINGS
       CLANG_WARNINGS
       GCC_WARNINGS
@@ -95,8 +111,7 @@ macro(project_options)
     set(WARNING_MESSAGE WARNING)
   endif()
 
-  include("${ProjectOptions_SRC_DIR}/StandardProjectSettings.cmake")
-  include("${ProjectOptions_SRC_DIR}/Optimization.cmake")
+  common_project_options()
 
   # Link this 'library' to set the c++ standard / compile-time options requested
   add_library(project_options INTERFACE)
@@ -127,18 +142,15 @@ macro(project_options)
 
   if(${ProjectOptions_ENABLE_CACHE})
     # enable cache system
-    include("${ProjectOptions_SRC_DIR}/Cache.cmake")
     enable_cache()
   endif()
 
   if(${ProjectOptions_ENABLE_USER_LINKER})
     # Add linker configuration
-    include("${ProjectOptions_SRC_DIR}/Linker.cmake")
     configure_linker(project_options)
   endif()
 
   # standard compiler warnings
-  include("${ProjectOptions_SRC_DIR}/CompilerWarnings.cmake")
   set_project_warnings(
     project_warnings
     "${WARNINGS_AS_ERRORS}"
@@ -147,13 +159,11 @@ macro(project_options)
     "${ProjectOptions_GCC_WARNINGS}"
     "${ProjectOptions_CUDA_WARNINGS}")
 
-  include("${ProjectOptions_SRC_DIR}/Tests.cmake")
   if(${ProjectOptions_ENABLE_COVERAGE})
     enable_coverage(project_options)
   endif()
 
   # sanitizer options if supported by compiler
-  include("${ProjectOptions_SRC_DIR}/Sanitizers.cmake")
   enable_sanitizers(
     project_options
     ${ProjectOptions_ENABLE_SANITIZER_ADDRESS}
@@ -164,18 +174,20 @@ macro(project_options)
 
   if(${ProjectOptions_ENABLE_DOXYGEN})
     # enable doxygen
-    include("${ProjectOptions_SRC_DIR}/Doxygen.cmake")
     enable_doxygen("${ProjectOptions_DOXYGEN_THEME}")
   endif()
 
   # allow for static analysis options
-  include("${ProjectOptions_SRC_DIR}/StaticAnalyzers.cmake")
   if(${ProjectOptions_ENABLE_CPPCHECK})
     enable_cppcheck("${ProjectOptions_CPPCHECK_OPTIONS}")
   endif()
 
   if(${ProjectOptions_ENABLE_CLANG_TIDY})
     enable_clang_tidy()
+  endif()
+
+  if(${ProjectOptions_ENABLE_VS_ANALYSIS})
+    enable_vs_analysis("${ProjectOptions_VS_ANALYSIS_RULESET}")
   endif()
 
   if(${ProjectOptions_ENABLE_INCLUDE_WHAT_YOU_USE})
@@ -194,12 +206,10 @@ macro(project_options)
   endif()
 
   if(${ProjectOptions_ENABLE_VCPKG})
-    include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
     run_vcpkg()
   endif()
 
   if(${ProjectOptions_ENABLE_CONAN})
-    include("${ProjectOptions_SRC_DIR}/Conan.cmake")
     run_conan()
   endif()
 

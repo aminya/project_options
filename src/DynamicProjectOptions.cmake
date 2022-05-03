@@ -1,24 +1,26 @@
+include_guard()
+
 # ENABLE_DEVELOPER_MODE: sets defaults appropriate for developers, this is defaulted to ON
 #  * WARNINGS_AS_ERRORS: ON
 #  * ENABLE_SANITIZER_ADDRESS: ON
 #  * ENABLE_CLANG_TIDY: ON for Ninja/Makefiles
 #  * ENABLE_SANITIZER_UNDEFINED: ON for Compilers that support it
 #  * ENABLE_CPPCHECK: ON for Ninja/Makefiles
-
+#
 # For non-developer builds
 #  -DENABLE_DEVELOPER_MODE:BOOL=OFF
 # Is recommended
-
+#
 # In developer mode, all features have options that show up in the CMake GUI tools
-
+#
 # dynamic_project_options() macro enables all recommended defaults with appropriately
 # applied options from the GUI which are set
-
+#
 # Any default can be overridden
 # set(<feature_name>_DEFAULT <value>) - set default for both user and developer modes
 # set(<feature_name>_DEVELOPER_DEFAULT <value>) - set default for developer mode
 # set(<feature_name>_USER_DEFAULT <value>) - set default for user mode
-
+#
 macro(dynamic_project_options)
   option(ENABLE_DEVELOPER_MODE "Set up defaults for a developer of the project, and let developer change options" OFF)
   if(NOT ${ENABLE_DEVELOPER_MODE})
@@ -68,6 +70,7 @@ macro(dynamic_project_options)
       "ENABLE_CACHE\;${MAKEFILE_OR_NINJA}\;${MAKEFILE_OR_NINJA}\;Enable ccache on Unix"
       "WARNINGS_AS_ERRORS\;OFF\;ON\;Treat warnings as Errors"
       "ENABLE_CLANG_TIDY\;OFF\;${MAKEFILE_OR_NINJA}\;Enable clang-tidy analysis during compilation"
+      "ENABLE_VS_ANALYSIS\;ON\;ON\;Enable Visual Studio IDE code analysis if the generator is Visual Studio."
       "ENABLE_CONAN\;OFF\;OFF\;Automatically integrate Conan for package management"
       "ENABLE_COVERAGE\;OFF\;OFF\;Analyze and report on coverage"
       "ENABLE_SANITIZER_ADDRESS\;OFF\;${SUPPORTS_ASAN}\;Make memory errors into hard runtime errors (windows/linux/macos)"
@@ -147,6 +150,7 @@ macro(dynamic_project_options)
     ${WARNINGS_AS_ERRORS_VALUE}
     ${ENABLE_CPPCHECK_VALUE}
     ${ENABLE_CLANG_TIDY_VALUE}
+    ${ENABLE_VS_ANALYSIS_VALUE}
     ${ENABLE_COVERAGE_VALUE}
     ${ENABLE_INTERPROCEDURAL_OPTIMIZATION_VALUE}
     ${ENABLE_NATIVE_OPTIMIZATION_VALUE}

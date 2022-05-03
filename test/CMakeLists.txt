@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 ### Add project_options
 # include(FetchContent)
-# FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/heads/main.zip)
+# FetchContent_Declare(_project_options URL https://github.com/aminya/project_options/archive/refs/heads/main.zip)
 # FetchContent_MakeAvailable(_project_options)
 # include(${_project_options_SOURCE_DIR}/Index.cmake)
 include(../src/Index.cmake)
@@ -18,21 +18,33 @@ project(
   VERSION 0.2.0
   LANGUAGES CXX C)
 
+set(PCH_HEADERS
+    <Eigen/Dense>
+    <fmt/core.h>
+    <vector>
+    <utility>
+    <string>
+    <string_view>)
+
 # Initialize project_options
 # uncomment the options to enable them
 project_options(
   ENABLE_CACHE
-  # ENABLE_CONAN
+  ENABLE_CONAN
   # WARNINGS_AS_ERRORS
   ENABLE_CPPCHECK
   ENABLE_CLANG_TIDY
   # ENABLE_INCLUDE_WHAT_YOU_USE
   ENABLE_COVERAGE
-  # ENABLE_PCH
-  # PCH_HEADERS <Eigen/Dense> <fmt/core.h> <vector> <utility> <string> <string_view>
+  ENABLE_PCH
+  PCH_HEADERS
+  ${PCH_HEADERS}
   ENABLE_DOXYGEN
   ENABLE_INTERPROCEDURAL_OPTIMIZATION
   ENABLE_NATIVE_OPTIMIZATION
+  DOXYGEN_THEME
+  "${CMAKE_SOURCE_DIR}css/my_custom_theme.css"
+  "${CMAKE_SOURCE_DIR}css/my_custom_theme_extra.css"
   # ENABLE_USER_LINKER
   # ENABLE_BUILD_WITH_TIME_TRACE
   # ENABLE_UNITY
@@ -50,7 +62,7 @@ add_executable(main ./src/main/main.cpp)
 target_link_libraries(main PRIVATE project_options project_warnings)
 
 ## dependencies
-set(DEPENDENCIES_CONFIGURED fmt Eigen3)
+set(DEPENDENCIES_CONFIGURED fmt Eigen3 docopt)
 
 foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
   find_package(${DEPENDENCY} CONFIG REQUIRED)
@@ -68,8 +80,8 @@ add_test(NAME main COMMAND main)
 
 # Header-only library
 add_library(lib INTERFACE)
-set(INCLUDE_DIR "include")
-target_include_directories(lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
+set(lib_INCLUDE_DIR "include")
+target_include_directories(lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${lib_INCLUDE_DIR}>"
                                          "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
 target_link_libraries(lib INTERFACE project_options project_warnings)
 target_link_system_libraries(
@@ -80,10 +92,10 @@ target_link_system_libraries(
 
 # Library
 add_library(lib2 "./src/mylib2/lib.cpp")
-set(INCLUDE_DIR2 "include")
-target_include_directories(lib2 INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR2}>"
-                                          "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
-target_link_libraries(lib2 INTERFACE project_options project_warnings)
+set(lib2_INCLUDE_DIR2 "include")
+target_include_directories(lib2 PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${lib2_INCLUDE_DIR2}>"
+                                       "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
+target_link_libraries(lib2 PRIVATE project_options project_warnings)
 target_link_system_libraries(
   lib2
   PRIVATE
@@ -102,7 +114,9 @@ package_project(
   INTERFACE_DEPENDENCIES_CONFIGURED
   ${DEPENDENCIES_CONFIGURED}
   INTERFACE_INCLUDES
-  ${INCLUDE_DIR})
+  ${lib_INCLUDE_DIR2}
+  PUBLIC_INCLUDES
+  ${lib2_INCLUDE_DIR2})
 
 # package separately (for testing)
 package_project(
@@ -110,18 +124,22 @@ package_project(
   myproj_header_only_lib
   TARGETS
   lib
+  project_options
+  project_warnings
   INTERFACE_DEPENDENCIES_CONFIGURED
   ${DEPENDENCIES_CONFIGURED}
   INTERFACE_INCLUDES
-  ${INCLUDE_DIR})
+  ${lib_INCLUDE_DIR})
 
 package_project(
   NAME
   myproj_lib
   TARGETS
   lib2
-  INTERFACE_INCLUDES
-  ${INCLUDE_DIR2})
+  project_options
+  project_warnings
+  PUBLIC_INCLUDES
+  ${lib2_INCLUDE_DIR22})
 
 package_project(
   NAME

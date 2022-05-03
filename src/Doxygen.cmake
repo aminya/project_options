@@ -1,3 +1,5 @@
+include_guard()
+
 # Enable doxygen doc builds of source
 function(enable_doxygen DOXYGEN_THEME)
   # If not specified, use the top readme file as the first page
@@ -29,9 +31,9 @@ function(enable_doxygen DOXYGEN_THEME)
 
   if("${DOXYGEN_THEME}" STREQUAL "awesome" OR "${DOXYGEN_THEME}" STREQUAL "awesome-sidebar")
     # use a modern doxygen theme
-    # https://github.com/jothepro/doxygen-awesome-css v1.6.1
+    # https://github.com/jothepro/doxygen-awesome-css v2.0.2
     FetchContent_Declare(_doxygen_theme
-                         URL https://github.com/jothepro/doxygen-awesome-css/archive/refs/tags/v1.6.1.zip)
+                         URL https://github.com/jothepro/doxygen-awesome-css/archive/refs/tags/v2.0.2.zip)
     FetchContent_MakeAvailable(_doxygen_theme)
     if("${DOXYGEN_THEME}" STREQUAL "awesome" OR "${DOXYGEN_THEME}" STREQUAL "awesome-sidebar")
       set(DOXYGEN_HTML_EXTRA_STYLESHEET "${_doxygen_theme_SOURCE_DIR}/doxygen-awesome.css")
@@ -40,8 +42,22 @@ function(enable_doxygen DOXYGEN_THEME)
       set(DOXYGEN_HTML_EXTRA_STYLESHEET ${DOXYGEN_HTML_EXTRA_STYLESHEET}
                                         "${_doxygen_theme_SOURCE_DIR}/doxygen-awesome-sidebar-only.css")
     endif()
-  else()
+  elseif("${DOXYGEN_THEME}" STREQUAL "original")
     # use the original doxygen theme
+  else()
+    # use custom doxygen theme
+
+    # if any of the custom theme files are not found, the theme is reverted to original
+    set(OLD_DOXYGEN_HTML_EXTRA_STYLESHEET ${DOXYGEN_HTML_EXTRA_STYLESHEET})
+    foreach(file ${DOXYGEN_THEME})
+      if(NOT EXISTS ${file})
+        message(WARNING "Could not find doxygen theme file '${file}'. Using original theme.")
+        set(DOXYGEN_HTML_EXTRA_STYLESHEET ${OLD_DOXYGEN_HTML_EXTRA_STYLESHEET})
+        break()
+      else()
+        set(DOXYGEN_HTML_EXTRA_STYLESHEET ${DOXYGEN_HTML_EXTRA_STYLESHEET} "${file}")
+      endif()
+    endforeach()
   endif()
 
   # find doxygen and dot if available
