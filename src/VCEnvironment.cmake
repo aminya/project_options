@@ -15,9 +15,11 @@ macro(find_msvc)
          ))
     message(STATUS "Finding MSVC cl.exe ...")
     include(FetchContent)
-    FetchContent_Declare(_msvctoolchain URL "https://github.com/MarkSchofield/Toolchain/archive/cc3855512b884e7a2a52cab086abab3f357e2460.zip")
-    FetchContent_MakeAvailable(_msvctoolchain)
-    include("${_msvctoolchain_SOURCE_DIR}/Windows.MSVC.toolchain.cmake")
+    FetchContent_Declare(
+      _msvc_toolchain
+      URL "https://github.com/MarkSchofield/Toolchain/archive/cc3855512b884e7a2a52cab086abab3f357e2460.zip")
+    FetchContent_MakeAvailable(_msvc_toolchain)
+    include("${_msvc_toolchain_SOURCE_DIR}/Windows.MSVC.toolchain.cmake")
     message(STATUS "Setting CMAKE_CXX_COMPILER to ${CMAKE_CXX_COMPILER}")
     set(ENV{CXX} ${CMAKE_CXX_COMPILER})
     set(ENV{CC} ${CMAKE_C_COMPILER})
@@ -27,7 +29,7 @@ macro(find_msvc)
 endmacro()
 
 # Run vcvarsall.bat and set CMake environment variables
-function(run_vcvarsall)
+macro(run_vcvarsall)
   # detect the architecture
   detect_architecture(VCVARSALL_ARCH)
 
@@ -41,7 +43,7 @@ function(run_vcvarsall)
     set_target_properties(${all_targets} PROPERTIES VS_DEBUGGER_ENVIRONMENT "${VS_DEBUGGER_ENVIRONMENT}")
   endif()
 
-  # if msvc_found is set by find_msvc 
+  # if msvc_found is set by find_msvc
   # or if MSVC but VSCMD_VER is not set, which means vcvarsall has not run
   if(MSVC_FOUND OR (MSVC AND "$ENV{VSCMD_VER}" STREQUAL ""))
 

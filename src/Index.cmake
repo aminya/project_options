@@ -29,8 +29,13 @@ include("${ProjectOptions_SRC_DIR}/Tests.cmake")
 include("${ProjectOptions_SRC_DIR}/Sanitizers.cmake")
 include("${ProjectOptions_SRC_DIR}/Doxygen.cmake")
 include("${ProjectOptions_SRC_DIR}/StaticAnalyzers.cmake")
-include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
+include("${ProjectOptions_SRC_DIR}/VCEnvironment.cmake")
+
+# find msvc on windows if required. Should be called before run_vcpkg and run_conan to be effective
+find_msvc()
+
 include("${ProjectOptions_SRC_DIR}/Conan.cmake")
+include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
 
 #
 # Params:
