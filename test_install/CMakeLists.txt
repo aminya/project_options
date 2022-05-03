@@ -21,7 +21,10 @@ project_options(
   # ENABLE_COVERAGE
   # ENABLE_PCH
   # PCH_HEADERS <Eigen/Dense> <fmt/core.h> <vector> <utility> <string> <string_view>
-  # ENABLE_DOXYGEN
+  ENABLE_DOXYGEN
+  DOXYGEN_THEME
+  "${CMAKE_CURRENT_LIST_DIR}/css/my_custom_theme.css"
+  "${CMAKE_CURRENT_LIST_DIR}/css/my_custom_theme_extra.css"
   ENABLE_INTERPROCEDURAL_OPTIMIZATION
   # ENABLE_USER_LINKER
   # ENABLE_BUILD_WITH_TIME_TRACE
@@ -34,7 +37,7 @@ project_options(
 )
 
 # add src, tests, etc here:
-add_executable(another_main another_main.cpp)
+add_executable(another_main "./src/another_main.cpp")
 target_link_libraries(another_main PRIVATE project_options project_warnings)
 
 ## dependencies
