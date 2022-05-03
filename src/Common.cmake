@@ -82,6 +82,5 @@ macro(common_project_options)
   set_standards()
 
   # run vcvarsall when msvc is used
-  include("${ProjectOptions_SRC_DIR}/VCEnvironment.cmake")
   run_vcvarsall()
 endmacro()
