@@ -17,7 +17,7 @@ macro(find_msvc)
     include(FetchContent)
     FetchContent_Declare(
       _msvc_toolchain
-      URL "https://github.com/MarkSchofield/Toolchain/archive/cc3855512b884e7a2a52cab086abab3f357e2460.zip")
+      URL "https://github.com/MarkSchofield/Toolchain/archive/19f5de7a9f4474b694661d459ff046c8694a587a.zip")
     FetchContent_MakeAvailable(_msvc_toolchain)
     include("${_msvc_toolchain_SOURCE_DIR}/Windows.MSVC.toolchain.cmake")
     message(STATUS "Setting CMAKE_CXX_COMPILER to ${CMAKE_CXX_COMPILER}")
