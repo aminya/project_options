@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16...3.22)
+cmake_minimum_required(VERSION 3.16...3.23)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -23,11 +23,11 @@ project_options(
   # ENABLE_COVERAGE
   # ENABLE_PCH
   # PCH_HEADERS <Eigen/Dense> <fmt/core.h> <vector> <utility> <string> <string_view>
-  ENABLE_DOXYGEN
+  # XXX ENABLE_DOXYGEN
   DOXYGEN_THEME
   "${CMAKE_CURRENT_LIST_DIR}/css/my_custom_theme.css"
   "${CMAKE_CURRENT_LIST_DIR}/css/my_custom_theme_extra.css"
-  ENABLE_INTERPROCEDURAL_OPTIMIZATION
+  # ENABLE_INTERPROCEDURAL_OPTIMIZATION
   # ENABLE_USER_LINKER
   # ENABLE_BUILD_WITH_TIME_TRACE
   # ENABLE_UNITY

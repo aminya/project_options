@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16...3.22)
+cmake_minimum_required(VERSION 3.16...3.23)
 
 # set a default CXX standard used by the external tools like clang-tidy, cppcheck, etc.
 # You can later set fine-grained standards for each target using `target_compile_features`
@@ -38,7 +38,7 @@ project_options(
   # TODO(CK: should not installed with this option!) ENABLE_COVERAGE
   # TBD: ENABLE_PCH
   # TBD: PCH_HEADERS ${PCH_HEADERS}
-  ENABLE_DOXYGEN
+  # NO(CK)! To slow! ENABLE_DOXYGEN
   # ENABLE_INTERPROCEDURAL_OPTIMIZATION
   # ENABLE_NATIVE_OPTIMIZATION
   # ENABLE_USER_LINKER
@@ -74,9 +74,10 @@ target_link_system_libraries(
 enable_testing()
 add_test(NAME main COMMAND main)
 
-### to get CMAKE_INSTALL_INCLUDEDIR
-# NOTE: enable at least one language before including GNUInstallDirs.
-include(GNUInstallDirs)
+if(NOT DEFINED CMAKE_INSTALL_INCLUDEDIR)
+  # NOTE: enable at least one language before including GNUInstallDirs.
+  include(GNUInstallDirs)
+endif()
 
 # Header-only library
 add_library(lib INTERFACE)
