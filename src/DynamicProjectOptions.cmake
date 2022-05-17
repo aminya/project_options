@@ -81,7 +81,6 @@ macro(dynamic_project_options)
       "ENABLE_INCLUDE_WHAT_YOU_USE\;OFF\;OFF\;Enable include-what-you-use analysis during compilation"
       "ENABLE_PCH\;OFF\;OFF\;Enable pre-compiled-headers support"
       "ENABLE_DOXYGEN\;OFF\;OFF\;Build documentation with Doxygen"
-      "ENABLE_USER_LINKER\;OFF\;OFF\;Allow custom linker settings"
       "ENABLE_BUILD_WITH_TIME_TRACE\;OFF\;OFF\;Generates report of where compile-time is spent"
       "ENABLE_UNITY\;OFF\;OFF\;Merge C++ files into larger C++ files, can speed up compilation sometimes"
       "ENABLE_SANITIZER_LEAK\;OFF\;OFF\;Make memory leaks into hard runtime errors"
@@ -157,7 +156,6 @@ macro(dynamic_project_options)
     ${ENABLE_INCLUDE_WHAT_YOU_USE_VALUE}
     ${ENABLE_PCH_VALUE}
     ${ENABLE_DOXYGEN_VALUE}
-    ${ENABLE_USER_LINKER_VALUE}
     ${ENABLE_BUILD_WITH_TIME_TRACE_VALUE}
     ${ENABLE_UNITY_VALUE}
     ${ENABLE_SANITIZER_ADDRESS_VALUE}
