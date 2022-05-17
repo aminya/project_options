@@ -4,8 +4,9 @@ include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
 
 macro(find_msvc)
   # Try finding MSVC
-  if(# if MSVC is not found by CMake yet,
+  if(# if MSVC not found by cmake and generator is ninja
      NOT MSVC
+     AND CMAKE_GENERATOR MATCHES "Ninja*"
      AND # if the user has specified cl using -DCMAKE_CXX_COMPILER=cl or -DCMAKE_C_COMPILER=cl
          ((CMAKE_CXX_COMPILER MATCHES "^cl(.exe)?$" AND CMAKE_C_COMPILER MATCHES "^cl(.exe)?$")
           # if the user has specified cl using CC and CXX but not using -DCMAKE_CXX_COMPILER or -DCMAKE_C_COMPILER
