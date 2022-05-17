@@ -4,8 +4,9 @@ include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
 
 macro(find_msvc)
   # Try finding MSVC
-  if(# if MSVC is not found by CMake yet,
+  if(# if MSVC not found by cmake and generator is ninja
      NOT MSVC
+     AND CMAKE_GENERATOR MATCHES "Ninja*"
      AND # if the user has specified cl using -DCMAKE_CXX_COMPILER=cl or -DCMAKE_C_COMPILER=cl
          ((CMAKE_CXX_COMPILER MATCHES "^cl(.exe)?$" AND CMAKE_C_COMPILER MATCHES "^cl(.exe)?$")
           # if the user has specified cl using CC and CXX but not using -DCMAKE_CXX_COMPILER or -DCMAKE_C_COMPILER
@@ -17,7 +18,7 @@ macro(find_msvc)
     include(FetchContent)
     FetchContent_Declare(
       _msvc_toolchain
-      URL "https://github.com/MarkSchofield/Toolchain/archive/5fdd24e609cfb860c06ada86c9e64f43062e0866.zip")
+      URL "https://github.com/aminya/Toolchain/archive/3994a752ea395120ffa3cc1c6b1a4cab80527e54.zip")
     FetchContent_MakeAvailable(_msvc_toolchain)
     include("${_msvc_toolchain_SOURCE_DIR}/Windows.MSVC.toolchain.cmake")
     message(STATUS "Setting CMAKE_CXX_COMPILER to ${CMAKE_CXX_COMPILER}")
