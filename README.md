@@ -13,7 +13,7 @@ Here is a full example:
 ```cmake
 cmake_minimum_required(VERSION 3.16)
 
-# set a default CXX standard for the tools and targets that do not specify them. 
+# set a default CXX standard for the tools and targets that do not specify them.
 # If commented, the latest supported standard for your compiler is automatically set.
 # set(CMAKE_CXX_STANDARD 20)
 
@@ -220,6 +220,7 @@ It gets the following named parameters that can have different values in front o
   - `awesome`
   - `original`
   - Alternatively you can supply a list of css files to be added to [DOXYGEN_HTML_EXTRA_STYLESHEET](https://www.doxygen.nl/manual/config.html#cfg_html_extra_stylesheet)
+- `LINKER`: choose a specific linker (e.g. lld, gold, bfd). If set to OFF (default), the linker is automatically chosen.
 - `PCH_HEADERS`: the list of the headers to precompile
 - `MSVC_WARNINGS`: Override the defaults for the MSVC warnings
 - `CLANG_WARNINGS`: Override the defaults for the CLANG warnings
@@ -324,7 +325,7 @@ See `dynamic_project_options()` in action in [this template repository](https://
 ```cmake
 cmake_minimum_required(VERSION 3.16)
 
-# set a default CXX standard for the tools and targets that do not specify them. 
+# set a default CXX standard for the tools and targets that do not specify them.
 # If commented, the latest supported standard for your compiler is automatically set.
 # set(CMAKE_CXX_STANDARD 20)
 

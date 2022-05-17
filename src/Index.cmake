@@ -60,6 +60,7 @@ include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
 # - ENABLE_SANITIZER_UNDEFINED_BEHAVIOR: Enable undefined behavior sanitizer
 # - ENABLE_SANITIZER_THREAD: Enable thread sanitizer
 # - ENABLE_SANITIZER_MEMORY: Enable memory sanitizer
+# - LINKER: choose a specific linker (e.g. lld, gold, bfd). If set to OFF (default), the linker is automatically chosen.
 # - MSVC_WARNINGS: Override the defaults for the MSVC warnings
 # - CLANG_WARNINGS: Override the defaults for the CLANG warnings
 # - GCC_WARNINGS: Override the defaults for the GCC warnings
@@ -91,7 +92,7 @@ macro(project_options)
       ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       ENABLE_SANITIZER_THREAD
       ENABLE_SANITIZER_MEMORY)
-  set(oneValueArgs VS_ANALYSIS_RULESET CONAN_PROFILE)
+  set(oneValueArgs LINKER VS_ANALYSIS_RULESET CONAN_PROFILE)
   set(multiValueArgs
       DOXYGEN_THEME
       MSVC_WARNINGS
@@ -150,10 +151,8 @@ macro(project_options)
     enable_cache()
   endif()
 
-  if(${ProjectOptions_ENABLE_USER_LINKER})
-    # Add linker configuration
-    configure_linker(project_options)
-  endif()
+  # use the linker
+  configure_linker(project_options "${ProjectOptions_LINKER}")
 
   # standard compiler warnings
   set_project_warnings(
