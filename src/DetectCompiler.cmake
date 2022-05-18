@@ -13,12 +13,12 @@ set(cache_variables
     CMAKE_SYSTEM_PROCESSOR
     CMAKE_HOST_SYSTEM_PROCESSOR)
 foreach(cache_var ${cache_variables})
-  file(STRINGS "${CMAKE_CURRENT_BINARY_DIR}/detect_compiler/CMakeCache.txt" "${DETECTED_cache_var}"
+  file(STRINGS "${CMAKE_CURRENT_BINARY_DIR}/detect_compiler/CMakeCache.txt" "DETECTED_${cache_var}"
        REGEX "^${cache_var}:STRING=(.*)$")
   string(
     REGEX
     REPLACE "^${cache_var}:STRING=(.*)$"
             "\\1"
             "DETECTED_${cache_var}"
-            "${${DETECTED_cache_var}}")
+            "${DETECTED_${cache_var}}")
 endforeach()
