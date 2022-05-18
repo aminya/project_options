@@ -41,3 +41,12 @@ macro(configure_mingw_vcpkg)
     )
   endif()
 endmacro()
+
+# fix unicode and main function entry on mingw
+macro(mingw_unicode target)
+  is_mingw(_is_mingw)
+  if(${_is_mingw})
+    target_compile_definitions(${target} INTERFACE "UNICODE" "_UNICODE")
+    target_link_options(${target} INTERFACE "-municode")
+  endif()
+endmacro()

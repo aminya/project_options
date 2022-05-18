@@ -123,6 +123,9 @@ macro(project_options)
   # Link this 'library' to set the c++ standard / compile-time options requested
   add_library(project_options INTERFACE)
 
+  # fix mingw
+  mingw_unicode(project_options)
+
   if(NOT
      "${ProjectOptions_ENABLE_IPO}"
      STREQUAL
