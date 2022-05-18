@@ -16,9 +16,8 @@ macro(find_msvc)
          ))
     message(STATUS "Finding MSVC cl.exe ...")
     include(FetchContent)
-    FetchContent_Declare(
-      _msvc_toolchain
-      URL "https://github.com/aminya/Toolchain/archive/3994a752ea395120ffa3cc1c6b1a4cab80527e54.zip")
+    FetchContent_Declare(_msvc_toolchain
+                         URL "https://github.com/aminya/Toolchain/archive/3994a752ea395120ffa3cc1c6b1a4cab80527e54.zip")
     FetchContent_MakeAvailable(_msvc_toolchain)
     include("${_msvc_toolchain_SOURCE_DIR}/Windows.MSVC.toolchain.cmake")
     message(STATUS "Setting CMAKE_CXX_COMPILER to ${CMAKE_CXX_COMPILER}")
