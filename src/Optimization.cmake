@@ -5,7 +5,8 @@ macro(enable_interprocedural_optimization project_name)
     if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
       include(CheckIPOSupported)
       check_ipo_supported(RESULT result OUTPUT output)
-      if(result)
+      is_mingw(_is_mingw)
+      if(result AND NOT ${_is_mingw})
         # If a static library of this project is used in another project that does not have `CMAKE_INTERPROCEDURAL_OPTIMIZATION` enabled, a linker error might happen.
         # TODO set this option in `package_project` function.
         message(
