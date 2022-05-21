@@ -1,4 +1,4 @@
-test/build
-.cache
+.cache/
+test/build/
 install/
 test_install/build/

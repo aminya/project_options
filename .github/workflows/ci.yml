@@ -43,11 +43,6 @@ jobs:
             compiler: "msvc"
             cmake: 3.18.0
             vcvarsall: false
-        exclude:
-          - os: "windows-2022"
-            compiler: "gcc"
-            cmake: true
-            vcvarsall: true
     steps:
       - uses: actions/checkout@v2
       - name: Cache

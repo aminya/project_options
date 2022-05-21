@@ -57,6 +57,7 @@ words:
   - msvc
   - msys
   - multilib
+  - municode
   - mylib
   - myprogram
   - myproj
@@ -103,3 +104,9 @@ words:
   - Wuseless
   - xcrun
   - Yahyaabadi
+  - "ARGN"
+  - "CMAKE"
+  - "fargs"
+  - "shlib"
+  - "vcpkg"
+  - cppdbg

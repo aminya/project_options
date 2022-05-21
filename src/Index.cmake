@@ -30,6 +30,7 @@ include("${ProjectOptions_SRC_DIR}/Sanitizers.cmake")
 include("${ProjectOptions_SRC_DIR}/Doxygen.cmake")
 include("${ProjectOptions_SRC_DIR}/StaticAnalyzers.cmake")
 include("${ProjectOptions_SRC_DIR}/VCEnvironment.cmake")
+include("${ProjectOptions_SRC_DIR}/MinGW.cmake")
 
 # find msvc on windows if required. Should be called before run_vcpkg and run_conan to be effective
 find_msvc()
@@ -121,6 +122,9 @@ macro(project_options)
 
   # Link this 'library' to set the c++ standard / compile-time options requested
   add_library(project_options INTERFACE)
+
+  # fix mingw
+  mingw_unicode(project_options)
 
   if(NOT
      "${ProjectOptions_ENABLE_IPO}"
