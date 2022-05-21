@@ -19,7 +19,7 @@ int some_fun2() {
     fmt::print("Hello from fmt{}", "!");
 
     // populate an Eigen vector with the values
-    auto eigen_vec = Eigen::VectorXd::LinSpaced(10, 0, 1);
+    Eigen::VectorXd eigen_vec = Eigen::VectorXd::LinSpaced(10, 0, 1);
 
     // print the vector
     fmt::print("{}", eigen_vec);
