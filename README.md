@@ -43,20 +43,24 @@ option(FEATURE_DOCS "Enable the docs" OFF)
 set(ENABLE_CLANG_TIDY OFF)
 set(ENABLE_CPPCHECK OFF)
 set(ENABLE_SANITIZER_ADDRESS OFF)
+set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR OFF)
 
 if(FEATURE_TESTS)
   set(ENABLE_CLANG_TIDY "ENABLE_CLANG_TIDY")
   set(ENABLE_CPPCHECK "ENABLE_CPPCHECK")
 
-  string(FIND "$ENV{PATH}" "$ENV{VSINSTALLDIR}" index_of_vs_install_dir)
-  if(# not windows
-     NOT
-     "${CMAKE_SYSTEM_NAME}"
-     STREQUAL
-     "Windows"
-     # or is MSVC and has run vcvarsall
-     OR (MSVC AND "${index_of_vs_install_dir}" STREQUAL "-1"))
+  if(NOT
+    "${CMAKE_SYSTEM_NAME}"
+    STREQUAL
+    "Windows")
     set(ENABLE_SANITIZER_ADDRESS "ENABLE_SANITIZER_ADDRESS")
+    set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR")
+  else()
+    # or it is MSVC and has run vcvarsall
+    string(FIND "$ENV{PATH}" "$ENV{VSINSTALLDIR}" index_of_vs_install_dir)
+    if(MSVC AND "${index_of_vs_install_dir}" STREQUAL "-1")
+      set(ENABLE_SANITIZER_ADDRESS "ENABLE_SANITIZER_ADDRESS")
+    endif()
   endif()
 endif()
 
