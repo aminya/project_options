@@ -70,4 +70,6 @@ macro(run_vcpkg)
   set(CMAKE_TOOLCHAIN_FILE
       ${_vcpkg_args_VCPKG_DIR}/scripts/buildsystems/vcpkg.cmake
       CACHE STRING "vcpkg toolchain file")
+
+  configure_mingw_vcpkg_after()
 endmacro()

@@ -22,24 +22,61 @@ macro(configure_mingw_vcpkg)
     detect_architecture(_arch)
     string(TOLOWER "${_arch}" _arch)
 
-    # Based on this issue, vcpkg uses MINGW variable https://github.com/microsoft/vcpkg/issues/23607#issuecomment-1071966853
+    # https://github.com/microsoft/vcpkg/blob/4b766c1cd17205e1b768c4fadfd5f867c1d0510e/scripts/buildsystems/vcpkg.cmake#L340
     set(MINGW TRUE)
+
+    # https://github.com/microsoft/vcpkg/blob/7aa1a14c5f5707373b73e909ed6aa12b7bae8ee7/scripts/cmake/vcpkg_common_definitions.cmake#L54
+    set(VCPKG_CMAKE_SYSTEM_NAME
+        "MinGW"
+        CACHE STRING "")
+    set(VCPKG_TARGET_IS_MINGW
+        TRUE
+        CACHE STRING "")
+
+    # choose between static or dynamic
+    set(MINGW_LINKAGE)
+    if(BUILD_SHARED_LIBS)
+      set(MINGW_LINKAGE "dynamic")
+      message(
+        STATUS
+          "Enabled dynamic toolchain for mingw. Make sure that the mingw64/bin directory is on the PATH when running the final executables."
+      )
+    else()
+      set(MINGW_LINKAGE "static")
+    endif()
+
+    set(VCPKG_LIBRARY_LINKAGE
+        ${MINGW_LINKAGE}
+        CACHE STRING "")
+    set(VCPKG_CRT_LINKAGE
+        ${MINGW_LINKAGE}
+        CACHE STRING "")
 
     # Based on the docs https://github.com/microsoft/vcpkg/blob/master/docs/users/mingw.md (but it doesn't work!)
     set(VCPKG_DEFAULT_TRIPLET
-        "${_arch}-mingw-dynamic"
-        CACHE STRING "Default triplet for vcpkg" FORCE)
+        "${_arch}-mingw-${MINGW_LINKAGE}"
+        CACHE STRING "Default triplet for vcpkg")
     set(VCPKG_DEFAULT_HOST_TRIPLET
-        "${_arch}-mingw-dynamic"
-        CACHE STRING "Default target triplet for vcpkg" FORCE)
-    set($ENV{VCPKG_DEFAULT_TRIPLET} "${_arch}-mingw-dynamic")
-    set($ENV{VCPKG_DEFAULT_HOST_TRIPLET} "${_arch}-mingw-dynamic")
-
-    message(
-      STATUS
-        "Enabled mingw dynamic toolchain for vcpkg. Make sure that the mingw64/bin directory is on the PATH when running the final executables."
-    )
+        "${_arch}-mingw-${MINGW_LINKAGE}"
+        CACHE STRING "Default target triplet for vcpkg")
+    set($ENV{VCPKG_DEFAULT_TRIPLET} "${_arch}-mingw-${MINGW_LINKAGE}")
+    set($ENV{VCPKG_DEFAULT_HOST_TRIPLET} "${_arch}-mingw-${MINGW_LINKAGE}")
   endif()
+endmacro()
+
+# corrects the mingw toolchain type after including the vcpkg toolchain
+# Requires to be called in the same scope as configure_mingw_vcpkg()
+macro(configure_mingw_vcpkg_after)
+  set(Z_VCPKG_TARGET_TRIPLET_PLAT mingw-${MINGW_LINKAGE})
+
+  include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
+  detect_architecture(_arch)
+  string(TOLOWER "${_arch}" _arch)
+  set(Z_VCPKG_TARGET_TRIPLET_ARCH ${_arch})
+
+  set(VCPKG_TARGET_TRIPLET
+      "${Z_VCPKG_TARGET_TRIPLET_ARCH}-${Z_VCPKG_TARGET_TRIPLET_PLAT}"
+      CACHE STRING "Vcpkg target triplet (ex. x86-windows)" FORCE)
 endmacro()
 
 # fix unicode and main function entry on mingw
