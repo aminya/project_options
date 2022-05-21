@@ -104,3 +104,9 @@ words:
   - Wuseless
   - xcrun
   - Yahyaabadi
+  - "ARGN"
+  - "CMAKE"
+  - "fargs"
+  - "shlib"
+  - "vcpkg"
+  - cppdbg
