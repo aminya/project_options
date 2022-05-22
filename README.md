@@ -6,7 +6,7 @@ It provides different functions such as `project_options`, `package_project`, `d
 
 ## Usage
 
-See `project_options()` in action in [this template repository](https://github.com/aminya/cpp_vcpkg_project).
+See `project_options()` in action in [this template repository](https://github.com/aminya/cpp_vcpkg_project). [cpp_vcpkg_project](https://github.com/aminya/cpp_vcpkg_project) has prepared all the best practices for a production-ready C++ project.
 
 Here is a full example:
 
@@ -44,15 +44,17 @@ set(ENABLE_CLANG_TIDY OFF)
 set(ENABLE_CPPCHECK OFF)
 set(ENABLE_SANITIZER_ADDRESS OFF)
 set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR OFF)
+set(ENABLE_COVERAGE OFF)
 
 if(FEATURE_TESTS)
   set(ENABLE_CLANG_TIDY "ENABLE_CLANG_TIDY")
   set(ENABLE_CPPCHECK "ENABLE_CPPCHECK")
+  set(ENABLE_COVERAGE "ENABLE_COVERAGE")
 
   if(NOT
-    "${CMAKE_SYSTEM_NAME}"
-    STREQUAL
-    "Windows")
+     "${CMAKE_SYSTEM_NAME}"
+     STREQUAL
+     "Windows")
     set(ENABLE_SANITIZER_ADDRESS "ENABLE_SANITIZER_ADDRESS")
     set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR")
   else()
@@ -82,7 +84,7 @@ project_options(
       # ENABLE_INTERPROCEDURAL_OPTIMIZATION
       # ENABLE_NATIVE_OPTIMIZATION
       ${ENABLE_DOXYGEN}
-      # ENABLE_COVERAGE
+      ${ENABLE_COVERAGE}
       ${ENABLE_SANITIZER_ADDRESS}
       # ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       # ENABLE_SANITIZER_THREAD
