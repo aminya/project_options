@@ -31,6 +31,7 @@ include("${ProjectOptions_SRC_DIR}/Doxygen.cmake")
 include("${ProjectOptions_SRC_DIR}/StaticAnalyzers.cmake")
 include("${ProjectOptions_SRC_DIR}/VCEnvironment.cmake")
 include("${ProjectOptions_SRC_DIR}/MinGW.cmake")
+include("${ProjectOptions_SRC_DIR}/DetectCompiler.cmake")
 
 # find msvc on windows if required. Should be called before run_vcpkg and run_conan to be effective
 find_msvc()

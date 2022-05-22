@@ -23,6 +23,7 @@ macro(configure_mingw_vcpkg)
        STREQUAL
        "True")
       include("${ProjectOptions_SRC_DIR}/DetectCompiler.cmake")
+      detect_compiler()
     endif()
 
     is_mingw(_is_mingw)
