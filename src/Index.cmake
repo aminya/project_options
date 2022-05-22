@@ -125,7 +125,7 @@ macro(project_options)
   add_library(project_options INTERFACE)
 
   # fix mingw
-  mingw_unicode(project_options)
+  mingw_unicode()
 
   if(NOT
      "${ProjectOptions_ENABLE_IPO}"
