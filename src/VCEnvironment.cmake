@@ -2,29 +2,80 @@ include_guard()
 
 include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
 
-macro(find_msvc)
-  # Try finding MSVC
-  if(# if MSVC not found by cmake and generator is ninja
-     NOT MSVC
-     AND CMAKE_GENERATOR MATCHES "Ninja*"
-     AND # if the user has specified cl using -DCMAKE_CXX_COMPILER=cl or -DCMAKE_C_COMPILER=cl
-         ((CMAKE_CXX_COMPILER MATCHES "^cl(.exe)?$" AND CMAKE_C_COMPILER MATCHES "^cl(.exe)?$")
-          # if the user has specified cl using CC and CXX but not using -DCMAKE_CXX_COMPILER or -DCMAKE_C_COMPILER
-          OR (NOT CMAKE_CXX_COMPILER
-              AND NOT CMAKE_C_COMPILER
-              AND ("$ENV{CXX}" MATCHES "^cl(.exe)?$" AND "$ENV{CC}" MATCHES "^cl(.exe)?$"))
-         ))
-    message(STATUS "Finding MSVC cl.exe ...")
-    include(FetchContent)
-    FetchContent_Declare(_msvc_toolchain
-                         URL "https://github.com/aminya/Toolchain/archive/3994a752ea395120ffa3cc1c6b1a4cab80527e54.zip")
-    FetchContent_MakeAvailable(_msvc_toolchain)
-    include("${_msvc_toolchain_SOURCE_DIR}/Windows.MSVC.toolchain.cmake")
-    message(STATUS "Setting CMAKE_CXX_COMPILER to ${CMAKE_CXX_COMPILER}")
-    set(ENV{CXX} ${CMAKE_CXX_COMPILER})
-    set(ENV{CC} ${CMAKE_C_COMPILER})
-    set(MSVC_FOUND TRUE)
-    run_vcvarsall()
+# detect if the compiler is msvc
+function(is_msvc value)
+  if(NOT WIN32)
+    set(${value}
+        OFF
+        PARENT_SCOPE)
+    return()
+  endif()
+
+  if(MSVC
+     # if cl specified using -DCMAKE_CXX_COMPILER=cl and -DCMAKE_C_COMPILER=cl
+     OR (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND CMAKE_C_COMPILER_ID STREQUAL "MSVC")
+     OR (CMAKE_CXX_COMPILER MATCHES "^cl(.exe)?$" AND CMAKE_C_COMPILER MATCHES "^cl(.exe)?$"))
+
+    set(${value}
+        ON
+        PARENT_SCOPE)
+    return()
+  endif()
+
+  # if the copmiler is unknown by CMake
+  if(NOT CMAKE_CXX_COMPILER
+     AND NOT CMAKE_C_COMPILER
+     AND NOT CMAKE_CXX_COMPILER_ID
+     AND NOT CMAKE_C_COMPILER_ID)
+
+    # if cl specified using CC and CXX
+    if("$ENV{CXX}" MATCHES "^cl(.exe)?$" AND "$ENV{CC}" MATCHES "^cl(.exe)?$")
+      set(${value}
+          ON
+          PARENT_SCOPE)
+      return()
+    endif()
+
+    # if cl is inferred by cmake later
+    include("${ProjectOptions_SRC_DIR}/DetectCompiler.cmake")
+    detect_compiler()
+
+    if((DETECTED_CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND DETECTED_CMAKE_C_COMPILER_ID STREQUAL "MSVC"))
+      set(${value}
+          ON
+          PARENT_SCOPE)
+      return()
+    endif()
+  endif()
+
+  set(${value}
+      OFF
+      PARENT_SCOPE)
+endfunction()
+
+# Include msvc toolchain on windows if the generator is not visual studio. Should be called before run_vcpkg and run_conan to be effective
+macro(msvc_toolchain)
+  if(# if on windows and the generator is not Visual Studio
+     WIN32
+     AND NOT
+         CMAKE_GENERATOR
+         MATCHES
+         "Visual Studio*")
+    is_msvc(_is_msvc)
+    if(${_is_msvc})
+      # if msvc
+      message(STATUS "Using Windows MSVC toolchain")
+      include(FetchContent)
+      FetchContent_Declare(
+        _msvc_toolchain URL "https://github.com/aminya/Toolchain/archive/95891a1e28a406ffb22e572f3ef24a7a8ad27ec0.zip")
+      FetchContent_MakeAvailable(_msvc_toolchain)
+      include("${_msvc_toolchain_SOURCE_DIR}/Windows.MSVC.toolchain.cmake")
+      message(STATUS "Setting CXX/C compiler to ${CMAKE_CXX_COMPILER}")
+      set(ENV{CXX} ${CMAKE_CXX_COMPILER})
+      set(ENV{CC} ${CMAKE_C_COMPILER})
+      set(MSVC_FOUND TRUE)
+      run_vcvarsall()
+    endif()
   endif()
 endmacro()
 
@@ -43,7 +94,7 @@ macro(run_vcvarsall)
     set_target_properties(${all_targets} PROPERTIES VS_DEBUGGER_ENVIRONMENT "${VS_DEBUGGER_ENVIRONMENT}")
   endif()
 
-  # if msvc_found is set by find_msvc
+  # if msvc_found is set by msvc_toolchain
   # or if MSVC but VSCMD_VER is not set, which means vcvarsall has not run
   if(MSVC_FOUND OR (MSVC AND "$ENV{VSCMD_VER}" STREQUAL ""))
 

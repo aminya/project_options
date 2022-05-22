@@ -33,8 +33,8 @@ include("${ProjectOptions_SRC_DIR}/VCEnvironment.cmake")
 include("${ProjectOptions_SRC_DIR}/MinGW.cmake")
 include("${ProjectOptions_SRC_DIR}/DetectCompiler.cmake")
 
-# find msvc on windows if required. Should be called before run_vcpkg and run_conan to be effective
-find_msvc()
+# Include msvc toolchain on windows if the generator is not visual studio. Should be called before run_vcpkg and run_conan to be effective
+msvc_toolchain()
 
 include("${ProjectOptions_SRC_DIR}/Conan.cmake")
 include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
