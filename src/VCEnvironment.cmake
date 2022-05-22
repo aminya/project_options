@@ -3,27 +3,40 @@ include_guard()
 include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
 
 function(is_msvc value)
-  if(# if the user has specified cl using -DCMAKE_CXX_COMPILER=cl and -DCMAKE_C_COMPILER=cl
+  if(# if cl specified using -DCMAKE_CXX_COMPILER=cl and -DCMAKE_C_COMPILER=cl
      (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND CMAKE_C_COMPILER_ID STREQUAL "MSVC")
-     OR (CMAKE_CXX_COMPILER MATCHES "^cl(.exe)?$" AND CMAKE_C_COMPILER MATCHES "^cl(.exe)?$")
-        # if the user has specified cl using CC and CXX but not using -DCMAKE_CXX_COMPILER and -DCMAKE_C_COMPILER
-     OR (NOT CMAKE_CXX_COMPILER
-         AND NOT CMAKE_C_COMPILER
-         AND ("$ENV{CXX}" MATCHES "^cl(.exe)?$" AND "$ENV{CC}" MATCHES "^cl(.exe)?$")))
+     OR (CMAKE_CXX_COMPILER MATCHES "^cl(.exe)?$" AND CMAKE_C_COMPILER MATCHES "^cl(.exe)?$"))
+
     set(${value}
         ON
         PARENT_SCOPE)
     return()
   endif()
 
-  include("${ProjectOptions_SRC_DIR}/DetectCompiler.cmake")
-  detect_compiler()
+  # if the copmiler is unknown by CMake
+  if(NOT CMAKE_CXX_COMPILER
+     AND NOT CMAKE_C_COMPILER
+     AND NOT CMAKE_CXX_COMPILER_ID
+     AND NOT CMAKE_C_COMPILER_ID)
 
-  if((DETECTED_CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND DETECTED_CMAKE_C_COMPILER_ID STREQUAL "MSVC"))
-    set(${value}
-        ON
-        PARENT_SCOPE)
-    return()
+    # if cl specified using CC and CXX
+    if("$ENV{CXX}" MATCHES "^cl(.exe)?$" AND "$ENV{CC}" MATCHES "^cl(.exe)?$")
+      set(${value}
+          ON
+          PARENT_SCOPE)
+      return()
+    endif()
+
+    # if cl is inferred by cmake later
+    include("${ProjectOptions_SRC_DIR}/DetectCompiler.cmake")
+    detect_compiler()
+
+    if((DETECTED_CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND DETECTED_CMAKE_C_COMPILER_ID STREQUAL "MSVC"))
+      set(${value}
+          ON
+          PARENT_SCOPE)
+      return()
+    endif()
   endif()
 
   set(${value}
