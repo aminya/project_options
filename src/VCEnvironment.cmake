@@ -2,6 +2,35 @@ include_guard()
 
 include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
 
+function(is_msvc value)
+  if(# if the user has specified cl using -DCMAKE_CXX_COMPILER=cl and -DCMAKE_C_COMPILER=cl
+     (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND CMAKE_C_COMPILER_ID STREQUAL "MSVC")
+     OR (CMAKE_CXX_COMPILER MATCHES "^cl(.exe)?$" AND CMAKE_C_COMPILER MATCHES "^cl(.exe)?$")
+        # if the user has specified cl using CC and CXX but not using -DCMAKE_CXX_COMPILER and -DCMAKE_C_COMPILER
+     OR (NOT CMAKE_CXX_COMPILER
+         AND NOT CMAKE_C_COMPILER
+         AND ("$ENV{CXX}" MATCHES "^cl(.exe)?$" AND "$ENV{CC}" MATCHES "^cl(.exe)?$")))
+    set(${value}
+        ON
+        PARENT_SCOPE)
+    return()
+  endif()
+
+  include("${ProjectOptions_SRC_DIR}/DetectCompiler.cmake")
+  detect_compiler()
+
+  if((DETECTED_CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND DETECTED_CMAKE_C_COMPILER_ID STREQUAL "MSVC"))
+    set(${value}
+        ON
+        PARENT_SCOPE)
+    return()
+  endif()
+
+  set(${value}
+      OFF
+      PARENT_SCOPE)
+endfunction()
+
 # Include msvc toolchain on windows if the generator is not visual studio. Should be called before run_vcpkg and run_conan to be effective
 macro(msvc_toolchain)
   if(# if on windows and the generator is not Visual Studio
@@ -9,25 +38,22 @@ macro(msvc_toolchain)
      AND NOT
          CMAKE_GENERATOR
          MATCHES
-         "Visual Studio*"
-     AND # if the user has specified cl using -DCMAKE_CXX_COMPILER=cl or -DCMAKE_C_COMPILER=cl
-         ((CMAKE_CXX_COMPILER MATCHES "^cl(.exe)?$" AND CMAKE_C_COMPILER MATCHES "^cl(.exe)?$")
-          # if the user has specified cl using CC and CXX but not using -DCMAKE_CXX_COMPILER or -DCMAKE_C_COMPILER
-          OR (NOT CMAKE_CXX_COMPILER
-              AND NOT CMAKE_C_COMPILER
-              AND ("$ENV{CXX}" MATCHES "^cl(.exe)?$" AND "$ENV{CC}" MATCHES "^cl(.exe)?$"))
-         ))
-    message(STATUS "Using Windows MSVC toolchain")
-    include(FetchContent)
-    FetchContent_Declare(_msvc_toolchain
-                         URL "https://github.com/aminya/Toolchain/archive/95891a1e28a406ffb22e572f3ef24a7a8ad27ec0.zip")
-    FetchContent_MakeAvailable(_msvc_toolchain)
-    include("${_msvc_toolchain_SOURCE_DIR}/Windows.MSVC.toolchain.cmake")
-    message(STATUS "Setting CXX/C compiler to ${CMAKE_CXX_COMPILER}")
-    set(ENV{CXX} ${CMAKE_CXX_COMPILER})
-    set(ENV{CC} ${CMAKE_C_COMPILER})
-    set(MSVC_FOUND TRUE)
-    run_vcvarsall()
+         "Visual Studio*")
+    is_msvc(_is_msvc)
+    if(${_is_msvc})
+      # if msvc
+      message(STATUS "Using Windows MSVC toolchain")
+      include(FetchContent)
+      FetchContent_Declare(
+        _msvc_toolchain URL "https://github.com/aminya/Toolchain/archive/95891a1e28a406ffb22e572f3ef24a7a8ad27ec0.zip")
+      FetchContent_MakeAvailable(_msvc_toolchain)
+      include("${_msvc_toolchain_SOURCE_DIR}/Windows.MSVC.toolchain.cmake")
+      message(STATUS "Setting CXX/C compiler to ${CMAKE_CXX_COMPILER}")
+      set(ENV{CXX} ${CMAKE_CXX_COMPILER})
+      set(ENV{CC} ${CMAKE_C_COMPILER})
+      set(MSVC_FOUND TRUE)
+      run_vcvarsall()
+    endif()
   endif()
 endmacro()
 
