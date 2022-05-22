@@ -161,7 +161,7 @@ function(detect_architecture arch)
     set(_arch "${CMAKE_SYSTEM_PROCESSOR}")
   elseif(
     NOT
-    "${DETECTED_CMAKE_SYSTEM_PROCESSOR}" # set by DetectCompiler.cmake
+    "${DETECTED_CMAKE_SYSTEM_PROCESSOR}" # set by detect_compiler()
     STREQUAL
     "")
     set(_arch "${DETECTED_CMAKE_SYSTEM_PROCESSOR}")
