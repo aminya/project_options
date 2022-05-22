@@ -2,9 +2,18 @@ include_guard()
 
 include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
 
+# detect if the compiler is msvc
 function(is_msvc value)
-  if(# if cl specified using -DCMAKE_CXX_COMPILER=cl and -DCMAKE_C_COMPILER=cl
-     (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND CMAKE_C_COMPILER_ID STREQUAL "MSVC")
+  if(NOT WIN32)
+    set(${value}
+        OFF
+        PARENT_SCOPE)
+    return()
+  endif()
+
+  if(MSVC
+     # if cl specified using -DCMAKE_CXX_COMPILER=cl and -DCMAKE_C_COMPILER=cl
+     OR (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND CMAKE_C_COMPILER_ID STREQUAL "MSVC")
      OR (CMAKE_CXX_COMPILER MATCHES "^cl(.exe)?$" AND CMAKE_C_COMPILER MATCHES "^cl(.exe)?$"))
 
     set(${value}
