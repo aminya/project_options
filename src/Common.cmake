@@ -51,7 +51,7 @@ macro(common_project_options)
      OR "$ENV{COLCON}" STREQUAL "1")
     # these are used in order:
     set(CMAKE_MAP_IMPORTED_CONFIG_RELWITHDEBINFO
-        "RelWithDebInfo;Release;None;NoConfig"
+        "RelWithDebInfo;Release;None;NoConfig;"
         CACHE STRING "Fallbacks for the RelWithDebInfo build type")
   endif()
 
