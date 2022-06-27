@@ -81,6 +81,7 @@ set(DEPENDENCIES_CONFIGURED fmt Eigen3 docopt)
 foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
   find_package(${DEPENDENCY} CONFIG REQUIRED)
 endforeach()
+target_disable_static_analysis(Eigen3::Eigen)
 
 target_link_system_libraries(
   main
