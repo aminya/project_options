@@ -162,14 +162,20 @@ endmacro()
 
 # Disable clang-tidy for target
 macro(target_disable_clang_tidy TARGET)
-  set_target_properties(${TARGET} PROPERTIES C_CLANG_TIDY "")
-  set_target_properties(${TARGET} PROPERTIES CXX_CLANG_TIDY "")
+  find_program(CLANGTIDY clang-tidy)
+  if(CLANGTIDY)
+    set_target_properties(${TARGET} PROPERTIES C_CLANG_TIDY "")
+    set_target_properties(${TARGET} PROPERTIES CXX_CLANG_TIDY "")
+  endif()
 endmacro()
 
 # Disable cppcheck for target
 macro(target_disable_cpp_check TARGET)
-  set_target_properties(${TARGET} PROPERTIES C_CPPCHECK "")
-  set_target_properties(${TARGET} PROPERTIES CXX_CPPCHECK "")
+  find_program(CPPCHECK cppcheck)
+  if(CPPCHECK)
+    set_target_properties(${TARGET} PROPERTIES C_CPPCHECK "")
+    set_target_properties(${TARGET} PROPERTIES CXX_CPPCHECK "")
+  endif()
 endmacro()
 
 # Disable vs analysis for target
@@ -187,7 +193,9 @@ endmacro()
 
 # Disable static analysis for target
 macro(target_disable_static_analysis TARGET)
-  target_disable_clang_tidy(${TARGET})
-  target_disable_cpp_check(${TARGET})
+  if(NOT CMAKE_GENERATOR MATCHES "Visual Studio")
+    target_disable_clang_tidy(${TARGET})
+    target_disable_cpp_check(${TARGET})
+  endif()
   target_disable_vs_analysis(${TARGET})
 endmacro()
