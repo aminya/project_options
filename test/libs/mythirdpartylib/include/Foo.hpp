@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 #include "mythirdpartylib_export.h"
 
@@ -15,7 +16,7 @@ public:
     int a() const { return m_a; }
 
     void update(bool b, bool c, bool d);
-    void bad(std::vector<string>& v);
+    void bad(std::vector<std::string>& v);
 
 private:
     int m_a;
