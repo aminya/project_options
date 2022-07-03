@@ -11,7 +11,7 @@ class MYTHIRDPARTYLIB_EXPORT Foo {
 public:
     Foo() = default;
 
-    /*implicit*/ Foo(int a) m_a(a) {}
+    /*implicit*/ Foo(int a) : m_a(a) {}
 
     int a() const { return m_a; }
 
