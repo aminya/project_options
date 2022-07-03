@@ -1,4 +1,4 @@
-#include "Foo.h"
+#include "Foo.hpp"
 
 namespace mythirdpartylib {
 
