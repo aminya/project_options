@@ -88,6 +88,8 @@ target_link_system_libraries(
   fmt::fmt
   Eigen3::Eigen)
 
+add_subdirectory(libs)
+
 ## tests
 enable_testing()
 add_test(NAME main COMMAND main)
@@ -115,6 +117,10 @@ target_link_system_libraries(
   PRIVATE
   fmt::fmt
   Eigen3::Eigen)
+target_link_system_libraries(
+  lib2
+  PRIVATE 
+  mythirdpartylib)
 
 # package everything automatically
 package_project(

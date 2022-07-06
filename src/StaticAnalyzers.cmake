@@ -158,3 +158,44 @@ macro(enable_include_what_you_use)
     message(${WARNING_MESSAGE} "include-what-you-use requested but executable not found")
   endif()
 endmacro()
+
+
+# Disable clang-tidy for target
+macro(target_disable_clang_tidy TARGET)
+  find_program(CLANGTIDY clang-tidy)
+  if(CLANGTIDY)
+    set_target_properties(${TARGET} PROPERTIES C_CLANG_TIDY "")
+    set_target_properties(${TARGET} PROPERTIES CXX_CLANG_TIDY "")
+  endif()
+endmacro()
+
+# Disable cppcheck for target
+macro(target_disable_cpp_check TARGET)
+  find_program(CPPCHECK cppcheck)
+  if(CPPCHECK)
+    set_target_properties(${TARGET} PROPERTIES C_CPPCHECK "")
+    set_target_properties(${TARGET} PROPERTIES CXX_CPPCHECK "")
+  endif()
+endmacro()
+
+# Disable vs analysis for target
+macro(target_disable_vs_analysis TARGET)
+  if(CMAKE_GENERATOR MATCHES "Visual Studio")
+    set_target_properties(
+      ${TARGET}
+      PROPERTIES
+        VS_GLOBAL_EnableMicrosoftCodeAnalysis false
+        VS_GLOBAL_CodeAnalysisRuleSet ""
+        VS_GLOBAL_EnableClangTidyCodeAnalysis ""
+    )
+  endif()
+endmacro()
+
+# Disable static analysis for target
+macro(target_disable_static_analysis TARGET)
+  if(NOT CMAKE_GENERATOR MATCHES "Visual Studio")
+    target_disable_clang_tidy(${TARGET})
+    target_disable_cpp_check(${TARGET})
+  endif()
+  target_disable_vs_analysis(${TARGET})
+endmacro()

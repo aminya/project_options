@@ -1,0 +1,4 @@
+include(GenerateExportHeader)
+
+add_subdirectory(mythirdpartylib)
+target_disable_static_analysis(mythirdpartylib)
