@@ -96,7 +96,7 @@ macro(run_vcvarsall)
 
   # if msvc_found is set by msvc_toolchain
   # or if MSVC but VSCMD_VER is not set, which means vcvarsall has not run
-  if(MSVC_FOUND OR (MSVC AND "$ENV{VSCMD_VER}" STREQUAL ""))
+  if((MSVC_FOUND OR MSVC) AND "$ENV{VSCMD_VER}" STREQUAL "")
 
     # find vcvarsall.bat
     get_filename_component(MSVC_DIR ${CMAKE_CXX_COMPILER} DIRECTORY)
