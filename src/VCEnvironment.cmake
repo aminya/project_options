@@ -119,13 +119,20 @@ macro(run_vcvarsall)
           "&&" "call" "echo" "VCVARSALL_ENV_START" #
           "&" "set" #
         OUTPUT_VARIABLE VCVARSALL_OUTPUT
+        ERROR_VARIABLE VCVARSALL_ERROR
         OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-      # parse the output and get the environment variables string
-      find_substring_by_prefix(VCVARSALL_ENV "VCVARSALL_ENV_START" "${VCVARSALL_OUTPUT}")
+      if("${VCVARSALL_ERROR}" STREQUAL "")
+        # parse the output and get the environment variables string
+        find_substring_by_prefix(VCVARSALL_ENV "VCVARSALL_ENV_START" "${VCVARSALL_OUTPUT}")
 
-      # set the environment variables
-      set_env_from_string("${VCVARSALL_ENV}")
+        # set the environment variables
+        set_env_from_string("${VCVARSALL_ENV}")
+      else()
+        message(WARNING "Failed to parse the vcvarsall output. ${VCVARSALL_ERROR}.\nIgnoring this error")
+
+      endif()
+
     else()
       message(
         WARNING
