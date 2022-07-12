@@ -115,7 +115,7 @@ macro(run_vcvarsall)
       message(STATUS "Running `${VCVARSALL_FILE} ${VCVARSALL_ARCH}` to set up the MSVC environment")
       execute_process(
         COMMAND
-          "cmd" "/c" ${VCVARSALL_FILE} ${VCVARSALL_ARCH} #
+          "cmd" "/c" "${VCVARSALL_FILE}" "${VCVARSALL_ARCH}" "1>NUL" #
           "&&" "call" "echo" "VCVARSALL_ENV_START" #
           "&" "set" #
         OUTPUT_VARIABLE VCVARSALL_OUTPUT
