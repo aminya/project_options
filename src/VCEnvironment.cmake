@@ -115,12 +115,13 @@ macro(run_vcvarsall)
       message(STATUS "Running `${VCVARSALL_FILE} ${VCVARSALL_ARCH}` to set up the MSVC environment")
       execute_process(
         COMMAND
+          "set" "VSCMD_DEBUG=0" "&&" # make vcvarsall quiet
           "cmd" "/c" "${VCVARSALL_FILE}" "${VCVARSALL_ARCH}" "1>NUL" #
-          "&&" "call" "echo" "VCVARSALL_ENV_START" #
-          "&" "set" #
+          "&&" "call" "echo" "VCVARSALL_ENV_START" # a starting point
+          "&" "set" # print the environment variables
         OUTPUT_VARIABLE VCVARSALL_OUTPUT
         ERROR_VARIABLE VCVARSALL_ERROR
-        OUTPUT_STRIP_TRAILING_WHITESPACE)
+        OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_STRIP_TRAILING_WHITESPACE)
 
       if("${VCVARSALL_ERROR}" STREQUAL "")
         # parse the output and get the environment variables string
