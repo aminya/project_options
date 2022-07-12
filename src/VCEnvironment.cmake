@@ -130,6 +130,11 @@ macro(run_vcvarsall)
       # recover VSCMD_DEBUG variable
       set($ENV{VSCMD_DEBUG} "${VSCMD_DEBUG}")
 
+      if("${VCVARSALL_ERROR}" STREQUAL ""
+         AND NOT
+             "${VCVARSALL_OUTPUT}"
+             STREQUAL
+             "")
         # parse the output and get the environment variables string
         find_substring_by_prefix(VCVARSALL_ENV "VCVARSALL_ENV_START" "${VCVARSALL_OUTPUT}")
 
