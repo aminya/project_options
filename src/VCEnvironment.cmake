@@ -96,7 +96,7 @@ macro(run_vcvarsall)
 
   # if msvc_found is set by msvc_toolchain
   # or if MSVC but VSCMD_VER is not set, which means vcvarsall has not run
-  if(MSVC_FOUND OR (MSVC AND "$ENV{VSCMD_VER}" STREQUAL ""))
+  if((MSVC_FOUND OR MSVC) AND "$ENV{VSCMD_VER}" STREQUAL "")
 
     # find vcvarsall.bat
     get_filename_component(MSVC_DIR ${CMAKE_CXX_COMPILER} DIRECTORY)
@@ -113,19 +113,38 @@ macro(run_vcvarsall)
     if(EXISTS ${VCVARSALL_FILE})
       # run vcvarsall and print the environment variables
       message(STATUS "Running `${VCVARSALL_FILE} ${VCVARSALL_ARCH}` to set up the MSVC environment")
+
+      # make vcvarsall quiet
+      set(VSCMD_DEBUG "$ENV{VSCMD_DEBUG}")
+      set($ENV{VSCMD_DEBUG} 0)
+
       execute_process(
         COMMAND
-          "cmd" "/c" ${VCVARSALL_FILE} ${VCVARSALL_ARCH} #
-          "&&" "call" "echo" "VCVARSALL_ENV_START" #
-          "&" "set" #
+          "cmd" "/c" "${VCVARSALL_FILE}" "${VCVARSALL_ARCH}" "1>NUL" #
+          "&&" "call" "echo" "VCVARSALL_ENV_START" # a starting point
+          "&" "set" # print the environment variables
         OUTPUT_VARIABLE VCVARSALL_OUTPUT
-        OUTPUT_STRIP_TRAILING_WHITESPACE)
+        ERROR_VARIABLE VCVARSALL_ERROR
+        OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_STRIP_TRAILING_WHITESPACE)
 
-      # parse the output and get the environment variables string
-      find_substring_by_prefix(VCVARSALL_ENV "VCVARSALL_ENV_START" "${VCVARSALL_OUTPUT}")
+      # recover VSCMD_DEBUG variable
+      set($ENV{VSCMD_DEBUG} "${VSCMD_DEBUG}")
 
-      # set the environment variables
-      set_env_from_string("${VCVARSALL_ENV}")
+      if("${VCVARSALL_ERROR}" STREQUAL ""
+         AND NOT
+             "${VCVARSALL_OUTPUT}"
+             STREQUAL
+             "")
+        # parse the output and get the environment variables string
+        find_substring_by_prefix(VCVARSALL_ENV "VCVARSALL_ENV_START" "${VCVARSALL_OUTPUT}")
+
+        # set the environment variables
+        set_env_from_string("${VCVARSALL_ENV}")
+      else()
+        message(WARNING "Failed to parse the vcvarsall output. ${VCVARSALL_ERROR}.\nIgnoring this error")
+
+      endif()
+
     else()
       message(
         WARNING
