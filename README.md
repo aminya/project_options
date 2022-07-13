@@ -303,6 +303,21 @@ Other arguments that are automatically found and manually specifying them is not
 
 - `CONFIG_INSTALL_DESTINATION`: the destination for installation of the configuration files. Defaults to `${CMAKE_INSTALL_DATADIR}/${NAME}`
 
+## Disabling static analysis for external targets:
+
+This function disables static analysis for the given target:
+
+```cmake
+target_disable_static_analysis(some_external_target)
+```
+
+There is also individual functions to disable a specific analysis for the target:
+
+- `target_disable_cpp_check(target)`
+- `target_disable_vs_analysis(target)`
+- `target_disable_clang_tidy(target)`
+
+
 ## Changing the project_options dynamically
 
 During the test and development, it can be useful to change options on the fly. For example, to enable sanitizers when running tests. You can include `DynamicOptions.cmake`, which imports the `dynamic_project_options` function.
