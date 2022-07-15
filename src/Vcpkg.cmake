@@ -4,10 +4,10 @@ include(FetchContent)
 
 # Install vcpkg and vcpkg dependencies: - should be called before defining project()
 macro(run_vcpkg)
-  # named boolean ENABLE_VCPKG_UPDATE argument
+  # named boolean ENABLE_VCPKG_UPDATE arguments
   set(options ENABLE_VCPKG_UPDATE)
-  # optional named VCPKG_DIR and VCPKG_URL argument
-  set(oneValueArgs VCPKG_DIR VCPKG_URL)
+  # optional named VCPKG_DIR, VCPKG_URL, and VCPKG_REV arguments
+  set(oneValueArgs VCPKG_DIR VCPKG_URL VCPKG_REV)
   cmake_parse_arguments(
     _vcpkg_args
     "${options}"
@@ -20,15 +20,15 @@ macro(run_vcpkg)
      STREQUAL
      "")
     # the installation directory is specified
-    get_filename_component(VCPKG_PARENT_DIR ${_vcpkg_args_VCPKG_DIR} DIRECTORY)
+    get_filename_component(VCPKG_PARENT_DIR "${_vcpkg_args_VCPKG_DIR}" DIRECTORY)
   else()
     # Default vcpkg installation directory
     if(WIN32)
       set(VCPKG_PARENT_DIR $ENV{userprofile})
-      set(_vcpkg_args_VCPKG_DIR ${VCPKG_PARENT_DIR}/vcpkg)
+      set(_vcpkg_args_VCPKG_DIR "${VCPKG_PARENT_DIR}/vcpkg")
     else()
       set(VCPKG_PARENT_DIR $ENV{HOME})
-      set(_vcpkg_args_VCPKG_DIR ${VCPKG_PARENT_DIR}/vcpkg)
+      set(_vcpkg_args_VCPKG_DIR "${VCPKG_PARENT_DIR}/vcpkg")
     endif()
   endif()
 
@@ -40,7 +40,7 @@ macro(run_vcpkg)
     message(STATUS "vcpkg is already installed at ${_vcpkg_args_VCPKG_DIR}.")
     if(${_vcpkg_args_ENABLE_VCPKG_UPDATE})
       message(STATUS "Updating the repository...")
-      execute_process(COMMAND "git" "pull" WORKING_DIRECTORY ${_vcpkg_args_VCPKG_DIR})
+      execute_process(COMMAND "git" "pull" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
     endif()
   else()
     message(STATUS "Installing vcpkg at ${_vcpkg_args_VCPKG_DIR}")
@@ -51,7 +51,7 @@ macro(run_vcpkg)
       endif()
       find_program(GIT_EXECUTABLE "git" REQUIRED)
       execute_process(COMMAND "${GIT_EXECUTABLE}" "clone" "${_vcpkg_args_VCPKG_URL}"
-                      WORKING_DIRECTORY ${VCPKG_PARENT_DIR} COMMAND_ERROR_IS_FATAL LAST)
+                      WORKING_DIRECTORY "${VCPKG_PARENT_DIR}" COMMAND_ERROR_IS_FATAL LAST)
     endif()
     # Run vcpkg bootstrap
     if(WIN32)
@@ -61,6 +61,15 @@ macro(run_vcpkg)
       execute_process(COMMAND "./bootstrap-vcpkg.sh" "-disableMetrics" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
                                                                                          COMMAND_ERROR_IS_FATAL LAST)
     endif()
+  endif()
+
+  if(NOT
+     "${_vcpkg_args_VCPKG_REV}"
+     STREQUAL
+     "")
+    find_program(GIT_EXECUTABLE "git" REQUIRED)
+    execute_process(COMMAND "${GIT_EXECUTABLE}" "checkout" "${_vcpkg_args_VCPKG_REV}"
+                    WORKING_DIRECTORY "${VCPKG_PARENT_DIR}/vcpkg" COMMAND_ERROR_IS_FATAL LAST)
   endif()
 
   configure_mingw_vcpkg()
