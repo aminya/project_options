@@ -4,10 +4,10 @@ include(FetchContent)
 
 # Install vcpkg and vcpkg dependencies: - should be called before defining project()
 macro(run_vcpkg)
-  # named boolean ENABLE_VCPKG_UPDATE argument
+  # named boolean ENABLE_VCPKG_UPDATE arguments
   set(options ENABLE_VCPKG_UPDATE)
-  # optional named VCPKG_DIR and VCPKG_URL argument
-  set(oneValueArgs VCPKG_DIR VCPKG_URL)
+  # optional named VCPKG_DIR, VCPKG_URL, and VCPKG_REV arguments
+  set(oneValueArgs VCPKG_DIR VCPKG_URL VCPKG_REV)
   cmake_parse_arguments(
     _vcpkg_args
     "${options}"
@@ -61,6 +61,15 @@ macro(run_vcpkg)
       execute_process(COMMAND "./bootstrap-vcpkg.sh" "-disableMetrics" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
                                                                                          COMMAND_ERROR_IS_FATAL LAST)
     endif()
+  endif()
+
+  if(NOT
+     "_vcpkg_args_VCPKG_REV"
+     STREQUAL
+     "")
+    find_program(GIT_EXECUTABLE "git" REQUIRED)
+    execute_process(COMMAND "${GIT_EXECUTABLE}" "checkout" "${_vcpkg_args_VCPKG_REV}"
+                    WORKING_DIRECTORY ${VCPKG_PARENT_DIR} COMMAND_ERROR_IS_FATAL LAST)
   endif()
 
   configure_mingw_vcpkg()

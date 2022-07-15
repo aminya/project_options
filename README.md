@@ -241,6 +241,7 @@ It gets the following named parameters that can have different values in front o
 Named Option:
 
 - `ENABLE_VCPKG_UPDATE`: (Disabled by default). If enabled, the vcpkg registry is updated before building (using `git pull`). As a result, if some of your vcpkg dependencies have been updated in the registry, they will be rebuilt.
+Not that If `VCPKG_REV` is specified, updating the vcpkg registry will not trigger rebuilds.
 
 Named String:
 
@@ -248,6 +249,9 @@ Named String:
   If the directory does not exist, it will automatically install vcpkg in this directory.
 
 - `VCPKG_URL`: (Defaults to `https://github.com/microsoft/vcpkg.git`). This option allows setting the URL of the vcpkg repository. By default, the official vcpkg repository is used.
+
+- `VCPKG_REV`: This option allows checking out a specific branch name or a commit sha.
+If `VCPKG_REV` is set to a specific commit sha, the builds will become reproducible because that exact commit is always used for the builds.
 
 ## `target_link_system_libraries` function
 
