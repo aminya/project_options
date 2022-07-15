@@ -119,7 +119,7 @@ target_link_system_libraries(
   Eigen3::Eigen)
 target_link_system_libraries(
   lib2
-  PRIVATE 
+  PRIVATE
   mythirdpartylib)
 
 # package everything automatically
