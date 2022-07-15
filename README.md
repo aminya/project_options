@@ -253,8 +253,10 @@ run_vcpkg(
 
 Named Option:
 
-- `ENABLE_VCPKG_UPDATE`: (Disabled by default). If enabled, the vcpkg registry is updated before building (using `git pull`). As a result, if some of your vcpkg dependencies have been updated in the registry, they will be rebuilt.
-Not that If `VCPKG_REV` is checked out after pulling the vcpkg repository.
+- `ENABLE_VCPKG_UPDATE`: (Disabled by default). If enabled, the vcpkg registry is updated before building (using `git pull`).
+
+  If `VCPKG_REV` is set to a specific commit sha, no rebuilds are triggered.
+  If `VCPKG_REV` is not specified or is a branch, enabling `ENABLE_VCPKG_UPDATE` will rebuild your updated vcpkg dependencies.
 
 Named String:
 

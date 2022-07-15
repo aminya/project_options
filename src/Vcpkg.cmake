@@ -64,7 +64,7 @@ macro(run_vcpkg)
   endif()
 
   if(NOT
-     "_vcpkg_args_VCPKG_REV"
+     "${_vcpkg_args_VCPKG_REV}"
      STREQUAL
      "")
     find_program(GIT_EXECUTABLE "git" REQUIRED)
