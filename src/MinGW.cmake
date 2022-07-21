@@ -18,7 +18,7 @@ function(is_mingw value)
     return()
   endif()
 
-  # if the copmiler is unknown by CMake
+  # if the compiler is unknown by CMake
   if(NOT CMAKE_CXX_COMPILER
      AND NOT CMAKE_C_COMPILER
      AND NOT CMAKE_CXX_COMPILER_ID
