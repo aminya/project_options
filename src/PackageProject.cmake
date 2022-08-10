@@ -148,15 +148,22 @@ function(package_project)
   # Installation of package (compatible with vcpkg, etc)
   set(_targets_list ${_PackageProject_TARGETS})
   unset(_PackageProject_TARGETS) # to avoid ycm conflict
+
+  if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.23.0")
+    # required in CMake 3.23 and more
+    set(FILE_SET_ARGS "FILE_SET" "HEADERS")
+  endif()
+
   install(
     TARGETS ${_targets_list}
     EXPORT ${_PackageProject_EXPORT}
     LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
     ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT lib
     RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
-    PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_PackageProject_NAME}" COMPONENT dev
-    FILE_SET HEADERS # NOTE: required from CMake to install the FILE_SET HEADERS too!
-  )
+    PUBLIC_HEADER
+      DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_PackageProject_NAME}"
+      COMPONENT dev
+      ${FILE_SET_ARGS})
 
   # download ForwardArguments
   FetchContent_Declare(
