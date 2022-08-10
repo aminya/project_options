@@ -155,7 +155,7 @@ function(package_project)
     ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT lib
     RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
     PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_PackageProject_NAME}" COMPONENT dev
-    FILE_SET HEADERS # NOTE: requierd from CMake to install the FILE_SET HEADERS too!
+    FILE_SET HEADERS # NOTE: required from CMake to install the FILE_SET HEADERS too!
   )
 
   # download ForwardArguments
