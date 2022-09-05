@@ -221,6 +221,7 @@ It accepts the following named flags:
 
 It gets the following named parameters that can have different values in front of them:
 
+- `PREFIX`: the optional prefix that is used to define `${PREFIX}_project_options` and `${PREFIX}_project_warnings` targets when the function is used in a multi-project fashion.
 - `DOXYGEN_THEME`: the name of the Doxygen theme to use. Supported themes:
   - `awesome-sidebar` (default)
   - `awesome`

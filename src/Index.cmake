@@ -41,6 +41,7 @@ include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
 
 #
 # Params:
+# - PREFIX: the optional prefix to be prepended to the `project_options` and `project_warnings` targets when the function is used in a multi-project fashion.
 # - WARNINGS_AS_ERRORS: Treat compiler warnings as errors
 # - ENABLE_CPPCHECK: Enable static analysis with cppcheck
 # - ENABLE_CLANG_TIDY: Enable static analysis with clang-tidy
@@ -94,7 +95,11 @@ macro(project_options)
       ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       ENABLE_SANITIZER_THREAD
       ENABLE_SANITIZER_MEMORY)
-  set(oneValueArgs LINKER VS_ANALYSIS_RULESET CONAN_PROFILE)
+  set(oneValueArgs
+      PREFIX
+      LINKER
+      VS_ANALYSIS_RULESET
+      CONAN_PROFILE)
   set(multiValueArgs
       DOXYGEN_THEME
       MSVC_WARNINGS
@@ -121,8 +126,26 @@ macro(project_options)
 
   common_project_options()
 
-  # Link this 'library' to set the c++ standard / compile-time options requested
-  add_library(project_options INTERFACE)
+  # Add an interface library for the options
+  set(_options_target project_options)
+  set(_warnings_target project_warnings)
+  if(NOT
+     "${ProjectOptions_PREFIX}"
+     STREQUAL
+     "")
+    set(_options_target "${ProjectOptions_PREFIX}_project_options")
+    set(_warnings_target "${ProjectOptions_PREFIX}_project_warnings")
+  else()
+    if(TARGET project_options)
+      message(
+        FATAL
+        "Multiple calls to `project_options` in the same `project` detected, but the argument `PREFIX` that is prepended to `project_options` and `project_warnings` is not set."
+      )
+    endif()
+  endif()
+
+  add_library(${_options_target} INTERFACE)
+  add_library(${_warnings_target} INTERFACE)
 
   # fix mingw
   mingw_unicode()
@@ -135,21 +158,18 @@ macro(project_options)
     set(ProjectOptions_ENABLE_INTERPROCEDURAL_OPTIMIZATION ${ProjectOptions_ENABLE_IPO})
   endif()
   if(${ProjectOptions_ENABLE_INTERPROCEDURAL_OPTIMIZATION})
-    enable_interprocedural_optimization(project_options)
+    enable_interprocedural_optimization(${_options_target})
   endif()
 
   if(${ProjectOptions_ENABLE_NATIVE_OPTIMIZATION})
-    enable_native_optimization(project_options)
+    enable_native_optimization(${_options_target})
   endif()
 
   if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
     if(ProjectOptions_ENABLE_BUILD_WITH_TIME_TRACE)
-      target_compile_options(project_options INTERFACE -ftime-trace)
+      target_compile_options(${_options_target} INTERFACE -ftime-trace)
     endif()
   endif()
-
-  # Link this 'library' to use the warnings specified in CompilerWarnings.cmake
-  add_library(project_warnings INTERFACE)
 
   if(${ProjectOptions_ENABLE_CACHE})
     # enable cache system
@@ -157,11 +177,11 @@ macro(project_options)
   endif()
 
   # use the linker
-  configure_linker(project_options "${ProjectOptions_LINKER}")
+  configure_linker(${_options_target} "${ProjectOptions_LINKER}")
 
   # standard compiler warnings
   set_project_warnings(
-    project_warnings
+    ${_warnings_target}
     "${WARNINGS_AS_ERRORS}"
     "${ProjectOptions_MSVC_WARNINGS}"
     "${ProjectOptions_CLANG_WARNINGS}"
@@ -169,12 +189,12 @@ macro(project_options)
     "${ProjectOptions_CUDA_WARNINGS}")
 
   if(${ProjectOptions_ENABLE_COVERAGE})
-    enable_coverage(project_options)
+    enable_coverage(${_options_target})
   endif()
 
   # sanitizer options if supported by compiler
   enable_sanitizers(
-    project_options
+    ${_options_target}
     ${ProjectOptions_ENABLE_SANITIZER_ADDRESS}
     ${ProjectOptions_ENABLE_SANITIZER_LEAK}
     ${ProjectOptions_ENABLE_SANITIZER_UNDEFINED_BEHAVIOR}
@@ -211,7 +231,7 @@ macro(project_options)
           <map>
           <utility>)
     endif()
-    target_precompile_headers(project_options INTERFACE ${ProjectOptions_PCH_HEADERS})
+    target_precompile_headers(${_options_target} INTERFACE ${ProjectOptions_PCH_HEADERS})
   endif()
 
   if(${ProjectOptions_ENABLE_VCPKG})
@@ -224,7 +244,7 @@ macro(project_options)
 
   if(${ProjectOptions_ENABLE_UNITY})
     # Add for any project you want to apply unity builds for
-    set_target_properties(project_options PROPERTIES UNITY_BUILD ON)
+    set_target_properties(${_options_target} PROPERTIES UNITY_BUILD ON)
   endif()
 
 endmacro()
