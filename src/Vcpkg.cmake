@@ -15,6 +15,8 @@ macro(run_vcpkg)
     ""
     ${ARGN})
 
+  find_program(GIT_EXECUTABLE "git" REQUIRED)
+
   if(NOT
      "${_vcpkg_args_VCPKG_DIR}"
      STREQUAL
@@ -47,18 +49,18 @@ macro(run_vcpkg)
         # detect if the head is detached, if so, switch back before calling git pull on a detached head
         set(GIT_STATUS "")
         execute_process(
-          COMMAND "git" "rev-parse" "--abbrev-ref" "--symbolic-full-name" "HEAD"
+          COMMAND "${GIT_EXECUTABLE}" "rev-parse" "--abbrev-ref" "--symbolic-full-name" "HEAD"
           OUTPUT_VARIABLE GIT_STATUS
           WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
           OUTPUT_STRIP_TRAILING_WHITESPACE)
         if("${GIT_STATUS}" STREQUAL "HEAD")
           message(STATUS "Switching back before updating")
-          execute_process(COMMAND "git" "switch" "-" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
+          execute_process(COMMAND "${GIT_EXECUTABLE}" "switch" "-" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
         endif()
       endif()
 
       message(STATUS "Updating the repository...")
-      execute_process(COMMAND "git" "pull" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
+      execute_process(COMMAND "${GIT_EXECUTABLE}" "pull" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
     endif()
   else()
     message(STATUS "Installing vcpkg at ${_vcpkg_args_VCPKG_DIR}")
@@ -67,7 +69,6 @@ macro(run_vcpkg)
       if("${_vcpkg_args_VCPKG_URL}" STREQUAL "")
         set(_vcpkg_args_VCPKG_URL "https://github.com/microsoft/vcpkg.git")
       endif()
-      find_program(GIT_EXECUTABLE "git" REQUIRED)
       execute_process(COMMAND "${GIT_EXECUTABLE}" "clone" "${_vcpkg_args_VCPKG_URL}"
                       WORKING_DIRECTORY "${VCPKG_PARENT_DIR}" COMMAND_ERROR_IS_FATAL LAST)
     endif()
@@ -85,7 +86,6 @@ macro(run_vcpkg)
      "${_vcpkg_args_VCPKG_REV}"
      STREQUAL
      "")
-    find_program(GIT_EXECUTABLE "git" REQUIRED)
     execute_process(COMMAND "${GIT_EXECUTABLE}" "checkout" "${_vcpkg_args_VCPKG_REV}"
                     WORKING_DIRECTORY "${VCPKG_PARENT_DIR}/vcpkg" COMMAND_ERROR_IS_FATAL LAST)
   endif()
