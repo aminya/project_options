@@ -39,6 +39,24 @@ macro(run_vcpkg)
   if(EXISTS "${_vcpkg_args_VCPKG_DIR}" AND EXISTS "${_vcpkg_args_VCPKG_DIR}/vcpkg${CMAKE_EXECUTABLE_SUFFIX}")
     message(STATUS "vcpkg is already installed at ${_vcpkg_args_VCPKG_DIR}.")
     if(${_vcpkg_args_ENABLE_VCPKG_UPDATE})
+
+      if(NOT
+         "${_vcpkg_args_VCPKG_REV}"
+         STREQUAL
+         "")
+        # detect if the head is detached, if so, switch back before calling git pull on a detached head
+        set(GIT_STATUS "")
+        execute_process(
+          COMMAND "git" "rev-parse" "--abbrev-ref" "--symbolic-full-name" "HEAD"
+          OUTPUT_VARIABLE GIT_STATUS
+          WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
+          OUTPUT_STRIP_TRAILING_WHITESPACE)
+        if("${GIT_STATUS}" STREQUAL "HEAD")
+          message(STATUS "Switching back before updating")
+          execute_process(COMMAND "git" "switch" "-" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
+        endif()
+      endif()
+
       message(STATUS "Updating the repository...")
       execute_process(COMMAND "git" "pull" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
     endif()
