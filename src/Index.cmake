@@ -18,7 +18,7 @@ set(ProjectOptions_SOURCE_DIR
 # include the files to allow calling individual functions (including the files does not run any code.)
 include("${CMAKE_CURRENT_LIST_DIR}/Common.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/Utilities.cmake")
-include("${CMAKE_CURRENT_LIST_DIR}/Vcpkg.cmake")
+# see below! include("${CMAKE_CURRENT_LIST_DIR}/Vcpkg.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/SystemLink.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/Cuda.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/PackageProject.cmake")
