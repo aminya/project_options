@@ -10,34 +10,35 @@ endif()
 
 include_guard()
 
-set(ProjectOptions_SRC_DIR
+set(ProjectOptions_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
+set(ProjectOptions_SOURCE_DIR
     ${CMAKE_CURRENT_LIST_DIR}
-    CACHE FILEPATH "")
+    PARENT_SCOPE)
 
 # include the files to allow calling individual functions (including the files does not run any code.)
-include("${ProjectOptions_SRC_DIR}/Common.cmake")
-include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
-include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
-include("${ProjectOptions_SRC_DIR}/SystemLink.cmake")
-include("${ProjectOptions_SRC_DIR}/Cuda.cmake")
-include("${ProjectOptions_SRC_DIR}/PackageProject.cmake")
-include("${ProjectOptions_SRC_DIR}/Optimization.cmake")
-include("${ProjectOptions_SRC_DIR}/Cache.cmake")
-include("${ProjectOptions_SRC_DIR}/Linker.cmake")
-include("${ProjectOptions_SRC_DIR}/CompilerWarnings.cmake")
-include("${ProjectOptions_SRC_DIR}/Tests.cmake")
-include("${ProjectOptions_SRC_DIR}/Sanitizers.cmake")
-include("${ProjectOptions_SRC_DIR}/Doxygen.cmake")
-include("${ProjectOptions_SRC_DIR}/StaticAnalyzers.cmake")
-include("${ProjectOptions_SRC_DIR}/VCEnvironment.cmake")
-include("${ProjectOptions_SRC_DIR}/MinGW.cmake")
-include("${ProjectOptions_SRC_DIR}/DetectCompiler.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Common.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Utilities.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Vcpkg.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/SystemLink.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Cuda.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/PackageProject.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Optimization.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Cache.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Linker.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/CompilerWarnings.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Tests.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Sanitizers.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Doxygen.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/StaticAnalyzers.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/VCEnvironment.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/MinGW.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/DetectCompiler.cmake")
 
 # Include msvc toolchain on windows if the generator is not visual studio. Should be called before run_vcpkg and run_conan to be effective
 msvc_toolchain()
 
-include("${ProjectOptions_SRC_DIR}/Conan.cmake")
-include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Conan.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Vcpkg.cmake")
 
 #
 # Params:
