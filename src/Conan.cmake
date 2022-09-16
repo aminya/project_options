@@ -69,7 +69,11 @@ macro(run_conan)
         set(CONAN_ENV ENV "CC=${CMAKE_C_COMPILER}" "CXX=${CMAKE_CXX_COMPILER}")
       else()
         # Derive all conan settings from a conan profile
-        set(CONAN_SETTINGS PROFILE ${ProjectOptions_CONAN_PROFILE} SETTINGS "build_type=${TYPE}")
+        set(CONAN_SETTINGS
+            PROFILE
+            ${ProjectOptions_CONAN_PROFILE}
+            SETTINGS
+            "build_type=${TYPE}")
         # CONAN_ENV should be redundant, since the profile can set CC & CXX
       endif()
 

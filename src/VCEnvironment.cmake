@@ -1,6 +1,6 @@
 include_guard()
 
-include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Utilities.cmake")
 
 # detect if the compiler is msvc
 function(is_msvc value)
