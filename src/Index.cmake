@@ -10,15 +10,13 @@ endif()
 
 include_guard()
 
-set(ProjectOptions_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
-set(ProjectOptions_SOURCE_DIR
+set(ProjectOptions_SRC_DIR
     ${CMAKE_CURRENT_LIST_DIR}
     PARENT_SCOPE)
 
 # include the files to allow calling individual functions (including the files does not run any code.)
 include("${CMAKE_CURRENT_LIST_DIR}/Common.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/Utilities.cmake")
-# see below! include("${CMAKE_CURRENT_LIST_DIR}/Vcpkg.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/SystemLink.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/Cuda.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/PackageProject.cmake")
