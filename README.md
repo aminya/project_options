@@ -233,7 +233,7 @@ It gets the following named parameters that can have different values in front o
 - `CLANG_WARNINGS`: Override the defaults for the CLANG warnings
 - `GCC_WARNINGS`: Override the defaults for the GCC warnings
 - `CUDA_WARNINGS`: Override the defaults for the CUDA warnings
-- `CPPCHECK_WARNINGS`: Override the defaults for the options passed to cppcheck
+- `CPPCHECK_OPTIONS`: Override the defaults for the options passed to cppcheck
 - `VS_ANALYSIS_RULESET`: Override the defaults for the code analysis rule set in Visual Studio.
 - `CONAN_OPTIONS`: Extra Conan options
 
