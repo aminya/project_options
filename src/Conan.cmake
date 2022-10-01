@@ -56,7 +56,7 @@ macro(run_conan)
     if(NOT ${_is_verbose})
       set(OUTPUT_QUIET "OUTPUT_QUIET")
     else()
-      set(OUTPUT_QUIET OFF)
+      set(OUTPUT_QUIET)
     endif()
 
     foreach(TYPE ${LIST_OF_BUILD_TYPES})
