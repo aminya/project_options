@@ -1,7 +1,17 @@
 include_guard()
 
+# This function sets ProjectOptions_SRC_DIR using the current lists path
+macro(set_project_options_src_dir)
+  get_directory_property(LISTFILE_STACK LISTFILE_STACK)
+  list(POP_BACK LISTFILE_STACK _LIST_FILE)
+  cmake_path(GET _LIST_FILE PARENT_PATH ProjectOptions_SRC_DIR)
+endmacro()
+
 # Common project settings run by default for all the projects that call `project_options()`
 macro(common_project_options)
+  set_project_options_src_dir()
+  message(DEBUG "${ProjectOptions_SRC_DIR}")
+
   include("${ProjectOptions_SRC_DIR}/PreventInSourceBuilds.cmake")
   assure_out_of_source_builds()
 
