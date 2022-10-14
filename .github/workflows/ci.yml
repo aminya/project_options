@@ -31,17 +31,14 @@ jobs:
             vcvarsall: true
           - os: "windows-2022"
             compiler: "msvc"
-            cmake: 3.18.0
             cmake_generator: "Ninja"
             vcvarsall: true
           - os: "windows-2022"
             compiler: "msvc"
-            cmake: 3.18.0
             cmake_generator: "Ninja"
             vcvarsall: false
           - os: "windows-2022"
             compiler: "msvc"
-            cmake: 3.18.0
             vcvarsall: false
     steps:
       - uses: actions/checkout@v2
