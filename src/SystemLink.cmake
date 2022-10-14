@@ -12,7 +12,8 @@ function(target_include_system_directories target)
 
   foreach(scope IN ITEMS INTERFACE PUBLIC PRIVATE)
     foreach(lib_include_dirs IN LISTS ARG_${scope})
-      if(NOT MSVC OR (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0" AND CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL "19.29.30036.3"))
+      if(NOT MSVC OR (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0" AND CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL
+                                                                       "19.29.30036.3"))
         # system includes do not work prior to CMake 3.24.0 and MSVC 19.29.30036.3
         set(_SYSTEM SYSTEM)
       endif()
