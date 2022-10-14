@@ -117,10 +117,7 @@ target_link_system_libraries(
   PRIVATE
   fmt::fmt
   Eigen3::Eigen)
-target_link_system_libraries(
-  lib2
-  PRIVATE
-  mythirdpartylib)
+target_link_system_libraries(lib2 PRIVATE mythirdpartylib)
 
 # package everything automatically
 package_project(
