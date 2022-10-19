@@ -64,10 +64,10 @@ macro(msvc_toolchain)
     is_msvc(_is_msvc)
     if(${_is_msvc})
       # if msvc
-      message(STATUS "Using Windows MSVC toolchain")
+      message(STATUS "Using Windows Windows toolchain")
       include(FetchContent)
       FetchContent_Declare(
-        _msvc_toolchain URL "https://github.com/aminya/Toolchain/archive/95891a1e28a406ffb22e572f3ef24a7a8ad27ec0.zip")
+        _msvc_toolchain URL "https://github.com/MarkSchofield/WindowsToolchain/archive/refs/tags/v0.5.1.zip")
       FetchContent_MakeAvailable(_msvc_toolchain)
       include("${_msvc_toolchain_SOURCE_DIR}/Windows.MSVC.toolchain.cmake")
       message(STATUS "Setting CXX/C compiler to ${CMAKE_CXX_COMPILER}")
