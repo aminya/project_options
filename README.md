@@ -13,7 +13,7 @@ See `project_options()` in action in [this template repository](https://github.c
 Here is a full example:
 
 ```cmake
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.20)
 
 # set a default CXX standard for the tools and targets that do not specify them.
 # If commented, the latest supported standard for your compiler is automatically set.
@@ -366,7 +366,7 @@ See `dynamic_project_options()` in action in [this template repository](https://
 <summary> 👉 Click to show the example:</summary>
 
 ```cmake
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.20)
 
 # set a default CXX standard for the tools and targets that do not specify them.
 # If commented, the latest supported standard for your compiler is automatically set.
