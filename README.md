@@ -4,22 +4,22 @@ A general-purpose CMake library that provides functions that improve the CMake e
 
 ## Features
 
-- `project_options`: 
-  -  compiler warnings, 
-  -  compiler optimizations (interprocedureal, native), 
-  -  caching (ccache), 
-  -  sanitizers, 
-  -  static code analyzers (clang-tidy, cppcheck, visual studio, iwwu), 
-  -  document generation (doxygen), 
-  -  test coverage analysis,
-  -  precopmiled headers, 
-  -  build time measurement, 
-  -  unity builds
-  -  using custom linkers (e.g. lld)
--  `package_project`: automatic packaging/installation of the project for seamless usage via find_package/target_link through CMake's FetchContent, vcpkg, etc. 
+- `project_options`:
+  - compiler warnings,
+  - compiler optimizations (intraprocedural, native),
+  - caching (ccache),
+  - sanitizers,
+  - static code analyzers (clang-tidy, cppcheck, visual studio, iwwu),
+  - document generation (doxygen),
+  - test coverage analysis,
+  - precompiled headers,
+  - build time measurement,
+  - unity builds
+  - using custom linkers (e.g. lld)
+- `package_project`: automatic packaging/installation of the project for seamless usage via find_package/target_link through CMake's FetchContent, vcpkg, etc.
 - `run_vcpkg`: automatic installation of vcpkg and the project dependencies
 - `ENABLE_CONAN` in `project_options`: automatic installation of Conan and the project dependencies
-- `dynamic_project_options`: a wrapper around `project_options` to change the options on the fly dynamically 
+- `dynamic_project_options`: a wrapper around `project_options` to change the options on the fly dynamically
 - `target_link_system_libraries` and `target_include_system_directories`: linking/including external dependencies/headers without warnings
 - `target_link_cuda`: linking Cuda to a target
 
@@ -265,6 +265,7 @@ run_vcpkg()
 ```
 
 Or by specifying the options
+
 ```cmake
 run_vcpkg(
     VCPKG_URL "https://github.com/microsoft/vcpkg.git"
@@ -344,7 +345,7 @@ Other arguments that are automatically found and manually specifying them is not
 
 - `CONFIG_INSTALL_DESTINATION`: the destination for installation of the configuration files. Defaults to `${CMAKE_INSTALL_DATADIR}/${NAME}`
 
-## Disabling static analysis for external targets:
+## Disabling static analysis for external targets
 
 This function disables static analysis for the given target:
 
@@ -357,7 +358,6 @@ There is also individual functions to disable a specific analysis for the target
 - `target_disable_cpp_check(target)`
 - `target_disable_vs_analysis(target)`
 - `target_disable_clang_tidy(target)`
-
 
 ## Changing the project_options dynamically
 

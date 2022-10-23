@@ -22,12 +22,14 @@ words:
   - ccmake
   - choco
   - cmake
+  - CMAKE
   - cmakelint
   - cmds
   - cond
   - CPATH
   - Cppcheck
   - cppcoreguidelines
+  - cppdbg
   - CPPFLAGS
   - cpprc
   - ctest
@@ -45,6 +47,7 @@ words:
   - gcovr
   - Graphviz
   - hwrap
+  - iwwu
   - kcov
   - LDFLAGS
   - libc
@@ -62,6 +65,7 @@ words:
   - myprogram
   - myproj
   - myproject
+  - mythirdpartylib
   - nothrow
   - nvcc
   - Opencppcoverage
@@ -104,10 +108,3 @@ words:
   - Wuseless
   - xcrun
   - Yahyaabadi
-  - "ARGN"
-  - "CMAKE"
-  - "fargs"
-  - "shlib"
-  - "vcpkg"
-  - cppdbg
-  - mythirdpartylib
