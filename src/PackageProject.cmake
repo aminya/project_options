@@ -158,7 +158,7 @@ function(package_project)
   # download ForwardArguments
   FetchContent_Declare(
     _fargs
-    URL https://github.com/polysquare/cmake-forward-arguments/archive/8c50d1f956172edb34e95efa52a2d5cb1f686ed2.zip)
+    URL https://github.com/polysquare/cmake-forward-arguments/archive/refs/tags/v1.0.0.zip)
   FetchContent_GetProperties(_fargs)
   if(NOT _fargs_POPULATED)
     FetchContent_Populate(_fargs)
