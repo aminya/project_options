@@ -7,9 +7,9 @@ A general-purpose CMake library that provides functions that improve the CMake e
 - `project_options`:
   - compiler warnings,
   - compiler optimizations (intraprocedural, native),
-  - caching (ccache),
+  - caching (ccache, sccache),
   - sanitizers,
-  - static code analyzers (clang-tidy, cppcheck, visual studio, iwwu),
+  - static code analyzers (clang-tidy, cppcheck, visual studio, include-what-you-use),
   - document generation (doxygen),
   - test coverage analysis,
   - precompiled headers,
