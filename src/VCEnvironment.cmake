@@ -1,6 +1,6 @@
 include_guard()
 
-include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Utilities.cmake")
 
 # detect if the compiler is msvc
 function(is_msvc value)
@@ -64,10 +64,10 @@ macro(msvc_toolchain)
     is_msvc(_is_msvc)
     if(${_is_msvc})
       # if msvc
-      message(STATUS "Using Windows MSVC toolchain")
+      message(STATUS "Using Windows Windows toolchain")
       include(FetchContent)
       FetchContent_Declare(
-        _msvc_toolchain URL "https://github.com/aminya/Toolchain/archive/95891a1e28a406ffb22e572f3ef24a7a8ad27ec0.zip")
+        _msvc_toolchain URL "https://github.com/MarkSchofield/WindowsToolchain/archive/refs/tags/v0.5.1.zip")
       FetchContent_MakeAvailable(_msvc_toolchain)
       include("${_msvc_toolchain_SOURCE_DIR}/Windows.MSVC.toolchain.cmake")
       message(STATUS "Setting CXX/C compiler to ${CMAKE_CXX_COMPILER}")
@@ -96,7 +96,7 @@ macro(run_vcvarsall)
 
   # if msvc_found is set by msvc_toolchain
   # or if MSVC but VSCMD_VER is not set, which means vcvarsall has not run
-  if(MSVC_FOUND OR (MSVC AND "$ENV{VSCMD_VER}" STREQUAL ""))
+  if((MSVC_FOUND OR MSVC) AND "$ENV{VSCMD_VER}" STREQUAL "")
 
     # find vcvarsall.bat
     get_filename_component(MSVC_DIR ${CMAKE_CXX_COMPILER} DIRECTORY)
@@ -113,19 +113,38 @@ macro(run_vcvarsall)
     if(EXISTS ${VCVARSALL_FILE})
       # run vcvarsall and print the environment variables
       message(STATUS "Running `${VCVARSALL_FILE} ${VCVARSALL_ARCH}` to set up the MSVC environment")
+
+      # make vcvarsall quiet
+      set(VSCMD_DEBUG "$ENV{VSCMD_DEBUG}")
+      set($ENV{VSCMD_DEBUG} 0)
+
       execute_process(
         COMMAND
-          "cmd" "/c" ${VCVARSALL_FILE} ${VCVARSALL_ARCH} #
-          "&&" "call" "echo" "VCVARSALL_ENV_START" #
-          "&" "set" #
+          "cmd" "/c" "${VCVARSALL_FILE}" "${VCVARSALL_ARCH}" "1>NUL" #
+          "&&" "call" "echo" "VCVARSALL_ENV_START" # a starting point
+          "&" "set" # print the environment variables
         OUTPUT_VARIABLE VCVARSALL_OUTPUT
-        OUTPUT_STRIP_TRAILING_WHITESPACE)
+        ERROR_VARIABLE VCVARSALL_ERROR
+        OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_STRIP_TRAILING_WHITESPACE)
 
-      # parse the output and get the environment variables string
-      find_substring_by_prefix(VCVARSALL_ENV "VCVARSALL_ENV_START" "${VCVARSALL_OUTPUT}")
+      # recover VSCMD_DEBUG variable
+      set($ENV{VSCMD_DEBUG} "${VSCMD_DEBUG}")
 
-      # set the environment variables
-      set_env_from_string("${VCVARSALL_ENV}")
+      if("${VCVARSALL_ERROR}" STREQUAL ""
+         AND NOT
+             "${VCVARSALL_OUTPUT}"
+             STREQUAL
+             "")
+        # parse the output and get the environment variables string
+        find_substring_by_prefix(VCVARSALL_ENV "VCVARSALL_ENV_START" "${VCVARSALL_OUTPUT}")
+
+        # set the environment variables
+        set_env_from_string("${VCVARSALL_ENV}")
+      else()
+        message(WARNING "Failed to parse the vcvarsall output. ${VCVARSALL_ERROR}.\nIgnoring this error")
+
+      endif()
+
     else()
       message(
         WARNING

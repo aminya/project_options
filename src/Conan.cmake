@@ -56,7 +56,7 @@ macro(run_conan)
     if(NOT ${_is_verbose})
       set(OUTPUT_QUIET "OUTPUT_QUIET")
     else()
-      set(OUTPUT_QUIET OFF)
+      set(OUTPUT_QUIET)
     endif()
 
     foreach(TYPE ${LIST_OF_BUILD_TYPES})
@@ -69,7 +69,11 @@ macro(run_conan)
         set(CONAN_ENV ENV "CC=${CMAKE_C_COMPILER}" "CXX=${CMAKE_CXX_COMPILER}")
       else()
         # Derive all conan settings from a conan profile
-        set(CONAN_SETTINGS PROFILE ${ProjectOptions_CONAN_PROFILE})
+        set(CONAN_SETTINGS
+            PROFILE
+            ${ProjectOptions_CONAN_PROFILE}
+            SETTINGS
+            "build_type=${TYPE}")
         # CONAN_ENV should be redundant, since the profile can set CC & CXX
       endif()
 

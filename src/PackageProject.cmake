@@ -5,18 +5,8 @@ include_guard()
 # A function that packages the project for external usage (e.g. from vcpkg, Conan, etc).
 # See the [README.md] for more details
 function(package_project)
-  if(${CMAKE_VERSION} VERSION_LESS "3.18.0")
-    message(
-      WARNING
-        "Consider upgrading CMake to the latest version. CMake ${CMAKE_VERSION} does not support checking for policy CMP0103."
-    )
-  else()
-    cmake_minimum_required(VERSION 3.18)
-    cmake_policy(SET CMP0103 NEW) # disallow multiple calls with the same NAME
-  endif()
-
-  set(_options ARCH_INDEPENDENT # default to false
-  )
+  # default to false
+  set(_options ARCH_INDEPENDENT)
   set(_oneValueArgs
       # default to the project_name:
       NAME
@@ -148,18 +138,27 @@ function(package_project)
   # Installation of package (compatible with vcpkg, etc)
   set(_targets_list ${_PackageProject_TARGETS})
   unset(_PackageProject_TARGETS) # to avoid ycm conflict
+
+  if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.23.0")
+    # required in CMake 3.23 and more
+    set(FILE_SET_ARGS "FILE_SET" "HEADERS")
+  endif()
+
   install(
     TARGETS ${_targets_list}
     EXPORT ${_PackageProject_EXPORT}
     LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
     ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT lib
     RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
-    PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_PackageProject_NAME}" COMPONENT dev)
+    PUBLIC_HEADER
+      DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_PackageProject_NAME}"
+      COMPONENT dev
+      ${FILE_SET_ARGS})
 
   # download ForwardArguments
   FetchContent_Declare(
     _fargs
-    URL https://github.com/polysquare/cmake-forward-arguments/archive/8c50d1f956172edb34e95efa52a2d5cb1f686ed2.zip)
+    URL https://github.com/polysquare/cmake-forward-arguments/archive/refs/tags/v1.0.0.zip)
   FetchContent_GetProperties(_fargs)
   if(NOT _fargs_POPULATED)
     FetchContent_Populate(_fargs)

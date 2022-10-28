@@ -1,8 +1,29 @@
 # project_options
 
-A general-purpose CMake library that provides functions that improve the CMake experience.
+A general-purpose CMake library that provides functions that improve the CMake experience following the best practices.
 
-It provides different functions such as `project_options`, `package_project`, `dynamic_project_options`, `run_vcpkg`, `target_link_system_libraries`, etc.
+## Features
+
+- `project_options`:
+  - compiler warnings,
+  - compiler optimizations (intraprocedural, native),
+  - caching (ccache, sccache),
+  - sanitizers,
+  - static code analyzers (clang-tidy, cppcheck, visual studio, include-what-you-use),
+  - document generation (doxygen),
+  - test coverage analysis,
+  - precompiled headers,
+  - build time measurement,
+  - unity builds
+  - using custom linkers (e.g. lld)
+- `package_project`: automatic packaging/installation of the project for seamless usage via find_package/target_link through CMake's FetchContent, vcpkg, etc.
+- `run_vcpkg`: automatic installation of vcpkg and the project dependencies
+- `ENABLE_CONAN` in `project_options`: automatic installation of Conan and the project dependencies
+- `dynamic_project_options`: a wrapper around `project_options` to change the options on the fly dynamically
+- `target_link_system_libraries` and `target_include_system_directories`: linking/including external dependencies/headers without warnings
+- `target_link_cuda`: linking Cuda to a target
+
+[![ci](https://github.com/aminya/project_options/actions/workflows/ci.yml/badge.svg)](https://github.com/aminya/project_options/actions/workflows/ci.yml)
 
 ## Usage
 
@@ -11,17 +32,17 @@ See `project_options()` in action in [this template repository](https://github.c
 Here is a full example:
 
 ```cmake
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.20)
 
 # set a default CXX standard for the tools and targets that do not specify them.
 # If commented, the latest supported standard for your compiler is automatically set.
 # set(CMAKE_CXX_STANDARD 20)
 
-# Add project_options v0.22.4
+# Add project_options v0.26.1
 # https://github.com/aminya/project_options
 # Change the version in the following URL to update the package (watch the releases of the repository for future updates)
 include(FetchContent)
-FetchContent_Declare(_project_options URL https://github.com/aminya/project_options/archive/refs/tags/v0.22.4.zip)
+FetchContent_Declare(_project_options URL https://github.com/aminya/project_options/archive/refs/tags/v0.26.1.zip)
 FetchContent_MakeAvailable(_project_options)
 include(${_project_options_SOURCE_DIR}/Index.cmake)
 
@@ -221,6 +242,7 @@ It accepts the following named flags:
 
 It gets the following named parameters that can have different values in front of them:
 
+- `PREFIX`: the optional prefix that is used to define `${PREFIX}_project_options` and `${PREFIX}_project_warnings` targets when the function is used in a multi-project fashion.
 - `DOXYGEN_THEME`: the name of the Doxygen theme to use. Supported themes:
   - `awesome-sidebar` (default)
   - `awesome`
@@ -232,15 +254,32 @@ It gets the following named parameters that can have different values in front o
 - `CLANG_WARNINGS`: Override the defaults for the CLANG warnings
 - `GCC_WARNINGS`: Override the defaults for the GCC warnings
 - `CUDA_WARNINGS`: Override the defaults for the CUDA warnings
-- `CPPCHECK_WARNINGS`: Override the defaults for the options passed to cppcheck
+- `CPPCHECK_OPTIONS`: Override the defaults for the options passed to cppcheck
 - `VS_ANALYSIS_RULESET`: Override the defaults for the code analysis rule set in Visual Studio.
 - `CONAN_OPTIONS`: Extra Conan options
 
 ## `run_vcpkg` function
 
+```cmake
+run_vcpkg()
+```
+
+Or by specifying the options
+
+```cmake
+run_vcpkg(
+    VCPKG_URL "https://github.com/microsoft/vcpkg.git"
+    VCPKG_REV "33c8f025390f8682811629b6830d2d66ecedcaa5"
+    ENABLE_VCPKG_UPDATE
+)
+```
+
 Named Option:
 
-- `ENABLE_VCPKG_UPDATE`: (Disabled by default). If enabled, the vcpkg registry is updated before building (using `git pull`). As a result, if some of your vcpkg dependencies have been updated in the registry, they will be rebuilt.
+- `ENABLE_VCPKG_UPDATE`: (Disabled by default). If enabled, the vcpkg registry is updated before building (using `git pull`).
+
+  If `VCPKG_REV` is set to a specific commit sha, no rebuilds are triggered.
+  If `VCPKG_REV` is not specified or is a branch, enabling `ENABLE_VCPKG_UPDATE` will rebuild your updated vcpkg dependencies.
 
 Named String:
 
@@ -248,6 +287,9 @@ Named String:
   If the directory does not exist, it will automatically install vcpkg in this directory.
 
 - `VCPKG_URL`: (Defaults to `https://github.com/microsoft/vcpkg.git`). This option allows setting the URL of the vcpkg repository. By default, the official vcpkg repository is used.
+
+- `VCPKG_REV`: This option allows checking out a specific branch name or a commit sha.
+If `VCPKG_REV` is set to a specific commit sha, the builds will become reproducible because that exact commit is always used for the builds. To make sure that this commit sha is pulled, enable `ENABLE_VCPKG_UPDATE`
 
 ## `target_link_system_libraries` function
 
@@ -303,6 +345,20 @@ Other arguments that are automatically found and manually specifying them is not
 
 - `CONFIG_INSTALL_DESTINATION`: the destination for installation of the configuration files. Defaults to `${CMAKE_INSTALL_DATADIR}/${NAME}`
 
+## Disabling static analysis for external targets
+
+This function disables static analysis for the given target:
+
+```cmake
+target_disable_static_analysis(some_external_target)
+```
+
+There is also individual functions to disable a specific analysis for the target:
+
+- `target_disable_cpp_check(target)`
+- `target_disable_vs_analysis(target)`
+- `target_disable_clang_tidy(target)`
+
 ## Changing the project_options dynamically
 
 During the test and development, it can be useful to change options on the fly. For example, to enable sanitizers when running tests. You can include `DynamicOptions.cmake`, which imports the `dynamic_project_options` function.
@@ -329,17 +385,17 @@ See `dynamic_project_options()` in action in [this template repository](https://
 <summary> 👉 Click to show the example:</summary>
 
 ```cmake
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.20)
 
 # set a default CXX standard for the tools and targets that do not specify them.
 # If commented, the latest supported standard for your compiler is automatically set.
 # set(CMAKE_CXX_STANDARD 20)
 
-# Add project_options v0.22.4
+# Add project_options v0.26.1
 # https://github.com/aminya/project_options
 # Change the version in the following URL to update the package (watch the releases of the repository for future updates)
 include(FetchContent)
-FetchContent_Declare(_project_options URL https://github.com/aminya/project_options/archive/refs/tags/v0.22.4.zip)
+FetchContent_Declare(_project_options URL https://github.com/aminya/project_options/archive/refs/tags/v0.26.1.zip)
 FetchContent_MakeAvailable(_project_options)
 include(${_project_options_SOURCE_DIR}/Index.cmake)
 

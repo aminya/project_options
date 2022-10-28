@@ -159,7 +159,6 @@ macro(enable_include_what_you_use)
   endif()
 endmacro()
 
-
 # Disable clang-tidy for target
 macro(target_disable_clang_tidy TARGET)
   find_program(CLANGTIDY clang-tidy)
@@ -183,17 +182,18 @@ macro(target_disable_vs_analysis TARGET)
   if(CMAKE_GENERATOR MATCHES "Visual Studio")
     set_target_properties(
       ${TARGET}
-      PROPERTIES
-        VS_GLOBAL_EnableMicrosoftCodeAnalysis false
-        VS_GLOBAL_CodeAnalysisRuleSet ""
-        VS_GLOBAL_EnableClangTidyCodeAnalysis ""
-    )
+      PROPERTIES VS_GLOBAL_EnableMicrosoftCodeAnalysis false
+                 VS_GLOBAL_CodeAnalysisRuleSet ""
+                 VS_GLOBAL_EnableClangTidyCodeAnalysis "")
   endif()
 endmacro()
 
 # Disable static analysis for target
 macro(target_disable_static_analysis TARGET)
-  if(NOT CMAKE_GENERATOR MATCHES "Visual Studio")
+  if(NOT
+     CMAKE_GENERATOR
+     MATCHES
+     "Visual Studio")
     target_disable_clang_tidy(${TARGET})
     target_disable_cpp_check(${TARGET})
   endif()

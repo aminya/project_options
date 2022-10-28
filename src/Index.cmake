@@ -1,46 +1,39 @@
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.18.0")
-  cmake_minimum_required(VERSION 3.18)
-else()
-  cmake_minimum_required(VERSION 3.16)
-  message(
-    WARNING
-      "Consider upgrading CMake to the latest version. CMake ${CMAKE_VERSION} might fail in the linking stage because of missing references."
-  )
-endif()
+cmake_minimum_required(VERSION 3.20)
+# 3.20 is required by the windows toolchain and cmake_path. It also has a more reliable building functionality.
+# 3.18 required by package_project and interprocedural optimization. It also has a more reliable building functionality (no errors during the linking stage).
 
 include_guard()
 
-set(ProjectOptions_SRC_DIR
-    ${CMAKE_CURRENT_LIST_DIR}
-    CACHE FILEPATH "")
+# only useable here
+set(ProjectOptions_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 # include the files to allow calling individual functions (including the files does not run any code.)
-include("${ProjectOptions_SRC_DIR}/Common.cmake")
-include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
-include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
-include("${ProjectOptions_SRC_DIR}/SystemLink.cmake")
-include("${ProjectOptions_SRC_DIR}/Cuda.cmake")
-include("${ProjectOptions_SRC_DIR}/PackageProject.cmake")
-include("${ProjectOptions_SRC_DIR}/Optimization.cmake")
-include("${ProjectOptions_SRC_DIR}/Cache.cmake")
-include("${ProjectOptions_SRC_DIR}/Linker.cmake")
-include("${ProjectOptions_SRC_DIR}/CompilerWarnings.cmake")
-include("${ProjectOptions_SRC_DIR}/Tests.cmake")
-include("${ProjectOptions_SRC_DIR}/Sanitizers.cmake")
-include("${ProjectOptions_SRC_DIR}/Doxygen.cmake")
-include("${ProjectOptions_SRC_DIR}/StaticAnalyzers.cmake")
-include("${ProjectOptions_SRC_DIR}/VCEnvironment.cmake")
-include("${ProjectOptions_SRC_DIR}/MinGW.cmake")
-include("${ProjectOptions_SRC_DIR}/DetectCompiler.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Common.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Utilities.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/SystemLink.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Cuda.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/PackageProject.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Optimization.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Cache.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Linker.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/CompilerWarnings.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Tests.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Sanitizers.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Doxygen.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/StaticAnalyzers.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/VCEnvironment.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/MinGW.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/DetectCompiler.cmake")
 
 # Include msvc toolchain on windows if the generator is not visual studio. Should be called before run_vcpkg and run_conan to be effective
 msvc_toolchain()
 
-include("${ProjectOptions_SRC_DIR}/Conan.cmake")
-include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Conan.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Vcpkg.cmake")
 
 #
 # Params:
+# - PREFIX: the optional prefix to be prepended to the `project_options` and `project_warnings` targets when the function is used in a multi-project fashion.
 # - WARNINGS_AS_ERRORS: Treat compiler warnings as errors
 # - ENABLE_CPPCHECK: Enable static analysis with cppcheck
 # - ENABLE_CLANG_TIDY: Enable static analysis with clang-tidy
@@ -94,7 +87,11 @@ macro(project_options)
       ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       ENABLE_SANITIZER_THREAD
       ENABLE_SANITIZER_MEMORY)
-  set(oneValueArgs LINKER VS_ANALYSIS_RULESET CONAN_PROFILE)
+  set(oneValueArgs
+      PREFIX
+      LINKER
+      VS_ANALYSIS_RULESET
+      CONAN_PROFILE)
   set(multiValueArgs
       DOXYGEN_THEME
       MSVC_WARNINGS
@@ -121,8 +118,26 @@ macro(project_options)
 
   common_project_options()
 
-  # Link this 'library' to set the c++ standard / compile-time options requested
-  add_library(project_options INTERFACE)
+  # Add an interface library for the options
+  set(_options_target project_options)
+  set(_warnings_target project_warnings)
+  if(NOT
+     "${ProjectOptions_PREFIX}"
+     STREQUAL
+     "")
+    set(_options_target "${ProjectOptions_PREFIX}_project_options")
+    set(_warnings_target "${ProjectOptions_PREFIX}_project_warnings")
+  else()
+    if(TARGET project_options)
+      message(
+        FATAL
+        "Multiple calls to `project_options` in the same `project` detected, but the argument `PREFIX` that is prepended to `project_options` and `project_warnings` is not set."
+      )
+    endif()
+  endif()
+
+  add_library(${_options_target} INTERFACE)
+  add_library(${_warnings_target} INTERFACE)
 
   # fix mingw
   mingw_unicode()
@@ -135,21 +150,18 @@ macro(project_options)
     set(ProjectOptions_ENABLE_INTERPROCEDURAL_OPTIMIZATION ${ProjectOptions_ENABLE_IPO})
   endif()
   if(${ProjectOptions_ENABLE_INTERPROCEDURAL_OPTIMIZATION})
-    enable_interprocedural_optimization(project_options)
+    enable_interprocedural_optimization(${_options_target})
   endif()
 
   if(${ProjectOptions_ENABLE_NATIVE_OPTIMIZATION})
-    enable_native_optimization(project_options)
+    enable_native_optimization(${_options_target})
   endif()
 
   if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
     if(ProjectOptions_ENABLE_BUILD_WITH_TIME_TRACE)
-      target_compile_options(project_options INTERFACE -ftime-trace)
+      target_compile_options(${_options_target} INTERFACE -ftime-trace)
     endif()
   endif()
-
-  # Link this 'library' to use the warnings specified in CompilerWarnings.cmake
-  add_library(project_warnings INTERFACE)
 
   if(${ProjectOptions_ENABLE_CACHE})
     # enable cache system
@@ -157,11 +169,11 @@ macro(project_options)
   endif()
 
   # use the linker
-  configure_linker(project_options "${ProjectOptions_LINKER}")
+  configure_linker(${_options_target} "${ProjectOptions_LINKER}")
 
   # standard compiler warnings
   set_project_warnings(
-    project_warnings
+    ${_warnings_target}
     "${WARNINGS_AS_ERRORS}"
     "${ProjectOptions_MSVC_WARNINGS}"
     "${ProjectOptions_CLANG_WARNINGS}"
@@ -169,12 +181,12 @@ macro(project_options)
     "${ProjectOptions_CUDA_WARNINGS}")
 
   if(${ProjectOptions_ENABLE_COVERAGE})
-    enable_coverage(project_options)
+    enable_coverage(${_options_target})
   endif()
 
   # sanitizer options if supported by compiler
   enable_sanitizers(
-    project_options
+    ${_options_target}
     ${ProjectOptions_ENABLE_SANITIZER_ADDRESS}
     ${ProjectOptions_ENABLE_SANITIZER_LEAK}
     ${ProjectOptions_ENABLE_SANITIZER_UNDEFINED_BEHAVIOR}
@@ -211,7 +223,7 @@ macro(project_options)
           <map>
           <utility>)
     endif()
-    target_precompile_headers(project_options INTERFACE ${ProjectOptions_PCH_HEADERS})
+    target_precompile_headers(${_options_target} INTERFACE ${ProjectOptions_PCH_HEADERS})
   endif()
 
   if(${ProjectOptions_ENABLE_VCPKG})
@@ -224,7 +236,7 @@ macro(project_options)
 
   if(${ProjectOptions_ENABLE_UNITY})
     # Add for any project you want to apply unity builds for
-    set_target_properties(project_options PROPERTIES UNITY_BUILD ON)
+    set_target_properties(${_options_target} PROPERTIES UNITY_BUILD ON)
   endif()
 
 endmacro()
