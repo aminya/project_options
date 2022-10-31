@@ -111,4 +111,16 @@ macro(run_vcpkg)
       CACHE STRING "vcpkg toolchain file")
 
   configure_mingw_vcpkg_after()
+
+  if(CROSSCOMPILING)
+    set(_toolchain_file)
+    get_toolchain_file(_toolchain_file)
+    if(_toolchain_file)
+      set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE
+          ${_toolchain_file}
+          CACHE STRING "vcpkg chainload toolchain file")
+      message(STATUS "Setup cross-compiler for ${VCPKG_TARGET_TRIPLET}")
+      message(STATUS "Use cross-compiler toolchain: ${VCPKG_CHAINLOAD_TOOLCHAIN_FILE}")
+    endif()
+  endif()
 endmacro()

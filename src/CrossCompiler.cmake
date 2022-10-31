@@ -1,0 +1,78 @@
+include_guard()
+
+macro(enable_cross_compiler)
+  include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
+  detect_architecture(_arch)
+  if(NOT DEFINED TARGET_ARCHITECTURE)
+    if($ENV{CC} MATCHES "x86_64(-w64)?-mingw32-[gc]..?" OR $ENV{CXX} MATCHES "x86_64(-w64)?-mingw32-[gc]..?")
+      set(TARGET_ARCHITECTURE "x64")
+    elseif($ENV{CC} MATCHES "i686(-w64)?-mingw32-[gc]..?" OR $ENV{CXX} MATCHES "i686(-w64)?-mingw32-[gc]..?")
+      set(TARGET_ARCHITECTURE "x86")
+    elseif($ENV{CC} MATCHES "emcc" OR $ENV{CXX} MATCHES "em++")
+      set(TARGET_ARCHITECTURE "wasm32")
+    else()
+      # TODO: check for arm compiler
+      set(TARGET_ARCHITECTURE ${_arch})
+    endif()
+  endif()
+
+  if (NOT DEFINED HOST_TRIPLET)
+    if(WIN32)
+      set(HOST_TRIPLET "${_arch}-windows")
+    elseif(APPLE)
+      set(HOST_TRIPLET "${_arch}-osx")
+    elseif(UNIX AND NOT APPLE)
+      set(HOST_TRIPLET "${_arch}-linux")
+    endif()
+  endif()
+
+  if($ENV{CC} MATCHES "(x86_64|i686)(-w64)?-mingw32-[gc]..?" OR $ENV{CXX} MATCHES "(x86_64|i686)(-w64)?-mingw32-[gc]..?")
+    set(MINGW TRUE)
+  elseif($ENV{CC} MATCHES "emcc" OR $ENV{CXX} MATCHES "em++")
+    set(EMSCRIPTEN TRUE)
+  endif()
+
+  set(LIBRARY_LINKAGE)
+  if(BUILD_SHARED_LIBS)
+    set(LIBRARY_LINKAGE "dynamic")
+  else()
+    set(LIBRARY_LINKAGE "static")
+  endif()
+
+  if (NOT DEFINED CROSS_ROOT)
+    if($ENV{CC} MATCHES "x86_64(-w64)?-mingw32-[gc]..?" OR $ENV{CXX} MATCHES "x86_64(-w64)?-mingw32-[gc]..?")
+      set(CROSS_ROOT "/usr/x86_64-w64-mingw32")
+    elseif($ENV{CC} MATCHES "i686(-w64)?-mingw32-[gc]..?" OR $ENV{CXX} MATCHES "i686(-w64)?-mingw32-[gc]..?")
+      set(CROSS_ROOT "/usr/i686-w64-mingw32")
+    endif()
+    # TODO: check if path is right, check for header files or something
+  endif()
+
+  set(_toolchain_file)
+  get_toolchain_file(_toolchain_file)
+  set(CMAKE_TOOLCHAIN_FILE ${_toolchain_file})
+  set(CROSSCOMPILING TRUE)
+endmacro()
+
+function(get_toolchain_file value)
+  include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
+  detect_architecture(_arch)
+  if(DEFINED TARGET_ARCHITECTURE)
+    set(_arch ${TARGET_ARCHITECTURE})
+  endif()
+  if("${_arch}" MATCHES "x64")
+    set(_arch "x86_64")
+  elseif("${_arch}" MATCHES "x86")
+    set(_arch "x86_64")
+  endif()
+
+  if (MINGW)
+    set(${value}
+        ${ProjectOptions_SRC_DIR}/toolchains/${_arch}-w64-mingw32.toolchain.cmake
+        PARENT_SCOPE)
+  elseif(EMSCRIPTEN)
+    set(${value}
+        "/usr/lib/emscripten/cmake/Modules/Platform/Emscripten.cmake"
+        PARENT_SCOPE)
+  endif()
+endfunction()

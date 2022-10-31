@@ -1,0 +1,32 @@
+FROM ubuntu:20.04 AS base
+
+# add setup_cpp
+ADD https://github.com/aminya/setup-cpp/releases/download/v0.21.0/setup_cpp_linux /setup_cpp_linux
+RUN chmod +x /setup_cpp_linux
+
+
+FROM base AS setup
+
+# install cmake, ninja, and ccache
+RUN /setup_cpp_linux --llvm true --cmake true --ninja true --ccache true --doxygen true --cppcheck true --vcpkg true --conan true --task true
+
+# TODO: install cross-compiler with setup_cpp_linux
+# NOTE: install mingw by hand, waiting for setup-cpp to have mingw cross-compiler support
+RUN apt-get update && apt-get install -y \
+    mingw-w64 \
+    && rm -rf /var/lib/apt/lists/*
+
+# update vcpkg
+#WORKDIR /root/vcpkg
+#RUN git pull origin master
+#RUN ./vcpkg update
+#WORKDIR /
+
+COPY ./docker/entrypoint.sh /docker-entrypoint.sh
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
+
+
+FROM setup AS build
+COPY . /home/project_options
+WORKDIR /home/project_options/test
+CMD ["/home/project_options/docker/build.mingw.sh"]

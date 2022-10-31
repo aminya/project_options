@@ -2,16 +2,25 @@ include_guard()
 
 # detect mingw
 function(is_mingw value)
-  if(NOT WIN32 OR MSVC)
-    set(${value}
-        OFF
-        PARENT_SCOPE)
-    return()
+  if(CROSSCOMPILING)
+    if(MINGW)
+      set(${value}
+          ON
+          PARENT_SCOPE)
+      return()
+    endif()
+  else()
+    if(NOT WIN32 OR MSVC)
+      set(${value}
+          OFF
+          PARENT_SCOPE)
+      return()
+    endif()
   endif()
 
   if(MINGW
-     OR ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND "${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
-     OR ("${DETECTED_CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND "${DETECTED_CMAKE_C_COMPILER_ID}" STREQUAL "GNU"))
+    OR ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND "${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+    OR ("${DETECTED_CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND "${DETECTED_CMAKE_C_COMPILER_ID}" STREQUAL "GNU"))
     set(${value}
         ON
         PARENT_SCOPE)
@@ -85,11 +94,18 @@ macro(configure_mingw_vcpkg)
     set(VCPKG_DEFAULT_TRIPLET
         "${_arch}-mingw-${MINGW_LINKAGE}"
         CACHE STRING "Default triplet for vcpkg")
-    set(VCPKG_DEFAULT_HOST_TRIPLET
-        "${_arch}-mingw-${MINGW_LINKAGE}"
-        CACHE STRING "Default target triplet for vcpkg")
     set($ENV{VCPKG_DEFAULT_TRIPLET} "${_arch}-mingw-${MINGW_LINKAGE}")
-    set($ENV{VCPKG_DEFAULT_HOST_TRIPLET} "${_arch}-mingw-${MINGW_LINKAGE}")
+    if(WIN32 AND NOT MSVC)
+      set(VCPKG_DEFAULT_HOST_TRIPLET
+          "${_arch}-mingw-${MINGW_LINKAGE}"
+          CACHE STRING "Default target triplet for vcpkg")
+      set($ENV{VCPKG_DEFAULT_HOST_TRIPLET} "${_arch}-mingw-${MINGW_LINKAGE}")
+    elseif (CROSSCOMPILING AND HOST_TRIPLET)
+      set(VCPKG_DEFAULT_HOST_TRIPLET
+          "${HOST_TRIPLET}"
+          CACHE STRING "Default target triplet for vcpkg")
+      set($ENV{VCPKG_DEFAULT_HOST_TRIPLET} "${HOST_TRIPLET}")
+    endif()
   endif()
 endmacro()
 
@@ -102,7 +118,11 @@ macro(configure_mingw_vcpkg_after)
     include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
     detect_architecture(_arch)
     string(TOLOWER "${_arch}" _arch)
-    set(Z_VCPKG_TARGET_TRIPLET_ARCH ${_arch})
+    if (CROSSCOMPILING AND TARGET_ARCHITECTURE)
+      set(Z_VCPKG_TARGET_TRIPLET_ARCH ${TARGET_ARCHITECTURE})
+    else()
+      set(Z_VCPKG_TARGET_TRIPLET_ARCH ${_arch})
+    endif()
 
     set(VCPKG_TARGET_TRIPLET
         "${Z_VCPKG_TARGET_TRIPLET_ARCH}-${Z_VCPKG_TARGET_TRIPLET_PLAT}"

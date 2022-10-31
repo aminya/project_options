@@ -11,6 +11,11 @@ set(CMAKE_CXX_STANDARD 20)
 # include(${_project_options_SOURCE_DIR}/Index.cmake)
 include(../src/Index.cmake)
 
+# opt-in cross-compiling
+option(ENABLE_CROSS_COMPILING "Detect cross compiler and setup toolchain" OFF)
+if(ENABLE_CROSS_COMPILING)
+  enable_cross_compiler()
+endif()
 run_vcpkg()
 
 project(
