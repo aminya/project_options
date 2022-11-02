@@ -42,6 +42,11 @@ tasks:
     - docker run --rm -it project_options:build-mingw
     - docker run --rm -it --env CROSS_CC=i686-w64-mingw32-gcc --env CROSS_CXX=i686-w64-mingw32-gcc project_options:build-mingw
     - docker rmi project_options:build-mingw
+  test_docker_emscripten:
+    # test emscripten (cross) compiler
+    - docker build -f ./docker/Dockerfile.emscripten --target build -t project_options:build-emscripten .
+    - docker run --rm -it project_options:build-emscripten
+    - docker rmi project_options:build-emscripten
 
   lint:
     - |

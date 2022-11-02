@@ -8,8 +8,8 @@ macro(enable_cross_compiler)
       set(TARGET_ARCHITECTURE "x64")
     elseif($ENV{CC} MATCHES "i686(-w64)?-mingw32-[gc]..?" OR $ENV{CXX} MATCHES "i686(-w64)?-mingw32-[gc]..?")
       set(TARGET_ARCHITECTURE "x86")
-    elseif($ENV{CC} MATCHES "emcc" OR $ENV{CXX} MATCHES "em++")
-      set(TARGET_ARCHITECTURE "wasm32")
+    elseif($ENV{CC} MATCHES "emcc" OR $ENV{CXX} MATCHES "em\\+\\+")
+      set(TARGET_ARCHITECTURE "wasm32-emscripten")
     else()
       # TODO: check for arm compiler
       set(TARGET_ARCHITECTURE ${_arch})
@@ -28,8 +28,8 @@ macro(enable_cross_compiler)
 
   if($ENV{CC} MATCHES "(x86_64|i686)(-w64)?-mingw32-[gc]..?" OR $ENV{CXX} MATCHES "(x86_64|i686)(-w64)?-mingw32-[gc]..?")
     set(MINGW TRUE)
-  elseif($ENV{CC} MATCHES "emcc" OR $ENV{CXX} MATCHES "em++")
-    set(EMSCRIPTEN TRUE)
+  elseif($ENV{CC} MATCHES "emcc" OR $ENV{CXX} MATCHES "em\\+\\+")
+    set(EMSCRIPTEN_COMPILER TRUE)
   endif()
 
   set(LIBRARY_LINKAGE)
@@ -46,6 +46,28 @@ macro(enable_cross_compiler)
       set(CROSS_ROOT "/usr/i686-w64-mingw32")
     endif()
     # TODO: check if path is right, check for header files or something
+  endif()
+
+  if(EMSCRIPTEN_COMPILER)
+    if($ENV{EMSCRIPTEN})
+      set(EMSCRIPTEN_ROOT $ENV{EMSCRIPTEN})
+    else()
+      if(NOT DEFINED EMSCRIPTEN_ROOT)
+        include(FetchContent)
+        FetchContent_Declare(
+          emscripten
+          GIT_REPOSITORY https://github.com/emscripten-core/emscripten
+          GIT_TAG main      
+        )
+        if(NOT emscripten_POPULATED)
+          FetchContent_Populate(emscripten)
+          set(EMSCRIPTEN_ROOT "${emscripten_SOURCE_DIR}")
+        endif()
+        if($ENV{EMSDK})
+          set(EMSCRIPTEN_PREFIX "$ENV{EMSDK}/upstream/emscripten")
+        endif()
+      endif()
+    endif()
   endif()
 
   set(_toolchain_file)
@@ -71,8 +93,12 @@ function(get_toolchain_file value)
         ${ProjectOptions_SRC_DIR}/toolchains/${_arch}-w64-mingw32.toolchain.cmake
         PARENT_SCOPE)
   elseif(EMSCRIPTEN)
-    set(${value}
-        "/usr/lib/emscripten/cmake/Modules/Platform/Emscripten.cmake"
-        PARENT_SCOPE)
+    if(EMSCRIPTEN_ROOT)
+      set(${value}
+          "${EMSCRIPTEN_ROOT}/cmake/Modules/Platform/Emscripten.cmake"
+          PARENT_SCOPE)
+    else()
+      message(ERROR "EMSCRIPTEN_ROOT is not set, please define EMSCRIPTEN_ROOT to emscripten repo")
+    endif()
   endif()
 endfunction()

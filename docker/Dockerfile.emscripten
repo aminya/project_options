@@ -1,0 +1,32 @@
+FROM ubuntu:22.04 AS base
+
+# add setup_cpp
+ADD https://github.com/aminya/setup-cpp/releases/download/v0.21.0/setup_cpp_linux /setup_cpp_linux
+RUN chmod +x /setup_cpp_linux
+
+
+FROM base AS setup
+
+# install cmake, ninja, and ccache
+RUN /setup_cpp_linux --llvm true --cmake true --ninja true --ccache true --doxygen true --cppcheck true --vcpkg true --conan true --task true
+
+
+# install emscripten
+# Get the emsdk repo
+RUN git clone https://github.com/emscripten-core/emsdk.git /root/emsdk
+# Download and install the latest SDK tools.
+RUN /root/emsdk/emsdk install latest
+# Make the "latest" SDK "active" for the current user. (writes .emscripten file)
+RUN /root/emsdk/emsdk activate latest
+# Get emscripten repo, for Emscripten.cmake
+#RUN git clone https://github.com/emscripten-core/emscripten /root/emscripten
+#ENV EMSCRIPTEN /root/emscripten
+
+COPY ./docker/entrypoint.emscripten.sh /docker-entrypoint.sh
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
+
+
+FROM setup AS build
+COPY . /home/project_options
+WORKDIR /home/project_options/test_emscripten
+CMD ["/home/project_options/docker/build.emscripten.sh"]
