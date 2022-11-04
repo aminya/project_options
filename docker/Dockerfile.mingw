@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 AS base
+FROM ubuntu:22.04 AS base
 
 # add setup_cpp
 ADD https://github.com/aminya/setup-cpp/releases/download/v0.21.0/setup_cpp_linux /setup_cpp_linux
@@ -17,10 +17,10 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # update vcpkg
-#WORKDIR /root/vcpkg
-#RUN git pull origin master
-#RUN ./vcpkg update
-#WORKDIR /
+WORKDIR /root/vcpkg
+RUN git pull origin master
+RUN ./vcpkg update
+WORKDIR /
 
 COPY ./docker/entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
@@ -29,4 +29,10 @@ ENTRYPOINT [ "/docker-entrypoint.sh" ]
 FROM setup AS build
 COPY . /home/project_options
 WORKDIR /home/project_options/test
+CMD ["/home/project_options/docker/build.mingw.sh"]
+
+
+FROM setup AS build-alt
+COPY . /home/project_options
+WORKDIR /home/project_options/test_minimal
 CMD ["/home/project_options/docker/build.mingw.sh"]

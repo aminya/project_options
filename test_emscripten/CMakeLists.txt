@@ -19,10 +19,9 @@ if(ENABLE_CROSS_COMPILING)
 endif()
 run_vcpkg()
 
+
 # Set the project name to your project name, my project isn't very descriptive
 project(myapp VERSION 0.1.0 LANGUAGES C CXX)
-
-set(CMAKE_CXX_STANDARD 11)
 
 project_options(
   ENABLE_CACHE
@@ -39,10 +38,10 @@ add_executable(myapp)
 target_sources(myapp PRIVATE main.cpp)
 target_include_directories(myapp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(myapp PRIVATE project_options project_warnings)
-target_link_libraries(myapp PRIVATE magic_enum::magic_enum)
-target_link_libraries(myapp PRIVATE Microsoft.GSL::GSL)
+target_link_system_libraries(myapp PRIVATE magic_enum::magic_enum)
+target_link_system_libraries(myapp PRIVATE Microsoft.GSL::GSL)
 
-if (DEFINED EMSCRIPTEN)
+if (EMSCRIPTEN)
 	set(CMAKE_EXECUTABLE_SUFFIX ".wasm")
 
 	set_target_properties(myapp PROPERTIES COMPILE_FLAGS "-Os -s SIDE_MODULE=1 ")

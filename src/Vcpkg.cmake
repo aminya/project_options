@@ -108,7 +108,7 @@ macro(run_vcpkg)
   list(APPEND VCPKG_FEATURE_FLAGS "versions")
   set(CMAKE_TOOLCHAIN_FILE
       ${_vcpkg_args_VCPKG_DIR}/scripts/buildsystems/vcpkg.cmake
-      CACHE STRING "vcpkg toolchain file")
+      CACHE STRING "vcpkg toolchain file" FORCE)
 
   configure_mingw_vcpkg_after()
 
@@ -123,7 +123,7 @@ macro(run_vcpkg)
     if(_toolchain_file)
       set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE
           ${_toolchain_file}
-          CACHE STRING "vcpkg chainload toolchain file")
+          CACHE STRING "vcpkg chainload toolchain file" FORCE)
       message(STATUS "Setup cross-compiler for ${VCPKG_TARGET_TRIPLET}")
       message(STATUS "Use cross-compiler toolchain: ${VCPKG_CHAINLOAD_TOOLCHAIN_FILE}")
     endif()

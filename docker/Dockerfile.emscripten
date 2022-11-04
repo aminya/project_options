@@ -10,6 +10,12 @@ FROM base AS setup
 # install cmake, ninja, and ccache
 RUN /setup_cpp_linux --llvm true --cmake true --ninja true --ccache true --doxygen true --cppcheck true --vcpkg true --conan true --task true
 
+# update vcpkg
+WORKDIR /root/vcpkg
+RUN git pull origin master
+RUN ./vcpkg update
+WORKDIR /
+
 
 # install emscripten
 # Get the emsdk repo
@@ -19,8 +25,8 @@ RUN /root/emsdk/emsdk install latest
 # Make the "latest" SDK "active" for the current user. (writes .emscripten file)
 RUN /root/emsdk/emsdk activate latest
 # Get emscripten repo, for Emscripten.cmake
-#RUN git clone https://github.com/emscripten-core/emscripten /root/emscripten
-#ENV EMSCRIPTEN /root/emscripten
+RUN git clone https://github.com/emscripten-core/emscripten /root/emscripten
+ENV EMSCRIPTEN /root/emscripten
 
 COPY ./docker/entrypoint.emscripten.sh /docker-entrypoint.sh
 ENTRYPOINT [ "/docker-entrypoint.sh" ]

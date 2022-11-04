@@ -26,22 +26,28 @@ tasks:
   test_docker:
     # test gcc compiler
     - docker build --build-arg compiler=gcc -f ./docker/Dockerfile --target build -t project_options:build .
+    - docker build --build-arg compiler=gcc -f ./docker/Dockerfile --target build-alt -t project_options:build-alt .
     - docker build --build-arg compiler=gcc -f ./docker/Dockerfile --target test -t project_options:test .
     - docker run --rm -it project_options:build
     - docker run --rm -it project_options:test
-    - docker rmi project_options:build project_options:test
+    - docker run --rm -it project_options:build-alt
+    - docker rmi project_options:build project_options:test project_options:build-alt 
     # test llvm compiler
     - docker build --build-arg compiler=llvm -f ./docker/Dockerfile --target build -t project_options:build-clang .
+    - docker build --build-arg compiler=llvm -f ./docker/Dockerfile --target build-alt -t project_options:build-alt-clang .
     - docker build --build-arg compiler=llvm -f ./docker/Dockerfile --target test -t project_options:test-clang .
     - docker run --rm -it project_options:build-clang
     - docker run --rm -it project_options:test-clang
+    - docker run --rm -it project_options:build-alt-clang
     - docker rmi project_options:build-clang project_options:test-clang
   test_docker_mingw:
     # test mingw (cross) compiler
     - docker build -f ./docker/Dockerfile.mingw --target build -t project_options:build-mingw .
+    - docker build -f ./docker/Dockerfile.mingw --target build-alt -t project_options:build-alt-mingw .
     - docker run --rm -it project_options:build-mingw
+    - docker run --rm -it project_options:build-alt-mingw
     - docker run --rm -it --env CROSS_CC=i686-w64-mingw32-gcc --env CROSS_CXX=i686-w64-mingw32-gcc project_options:build-mingw
-    - docker rmi project_options:build-mingw
+    - docker rmi project_options:build-mingw project_options:build-alt-mingw
   test_docker_emscripten:
     # test emscripten (cross) compiler
     - docker build -f ./docker/Dockerfile.emscripten --target build -t project_options:build-emscripten .

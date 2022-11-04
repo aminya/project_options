@@ -12,10 +12,10 @@ ARG compiler="gcc"
 RUN /setup_cpp_linux --compiler $compiler --llvm true --cmake true --ninja true --ccache true --doxygen true --cppcheck true --vcpkg true --conan true --task true
 
 # update vcpkg
-#WORKDIR /root/vcpkg
-#RUN git pull origin master
-#RUN ./vcpkg update
-#WORKDIR /
+WORKDIR /root/vcpkg
+RUN git pull origin master
+RUN ./vcpkg update
+WORKDIR /
 
 COPY ./docker/entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
@@ -33,7 +33,21 @@ WORKDIR /home/project_options/test
 CMD ["/home/project_options/docker/test.sh"]
 
 
-FROM gcr.io/distroless/cc AS runner
-COPY --from=build /home/project_options/test/build/Release/ /home/app/
-WORKDIR /home/app/
-ENTRYPOINT ["./build/main"]
+#FROM gcr.io/distroless/cc AS runner
+#COPY --from=build /home/project_options/test/build/Release/ /home/app/
+#WORKDIR /home/app/
+#ENTRYPOINT ["./build/main"]
+
+
+
+
+FROM setup AS build-alt
+COPY . /home/project_options
+WORKDIR /home/project_options/test_minimal
+CMD ["/home/project_options/docker/build.sh"]
+
+
+#FROM setup AS test-alt
+#COPY . /home/project_options
+#WORKDIR /home/project_options/test
+#CMD ["/home/project_options/docker/test.sh"]
