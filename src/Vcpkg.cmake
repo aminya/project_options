@@ -114,7 +114,7 @@ macro(run_vcpkg)
 
   if(CROSSCOMPILING)
     if(NOT MINGW)
-      if (TARGET_ARCHITECTURE)
+      if(TARGET_ARCHITECTURE)
         set(VCPKG_TARGET_TRIPLET "${TARGET_ARCHITECTURE}")
       endif()
     endif()

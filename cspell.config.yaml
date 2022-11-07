@@ -40,6 +40,10 @@ words:
   - dyld
   - dylib
   - Eigen
+  - emcc
+  - emcmake
+  - emscripten
+  - EMSDK
   - fargs
   - fcolor
   - fdiagnostics
@@ -61,6 +65,7 @@ words:
   - msys
   - multilib
   - municode
+  - myapp
   - mylib
   - myprogram
   - myproj
@@ -78,6 +83,7 @@ words:
   - setx
   - shlib
   - suppr
+  - SYSROOT
   - TOLOWER
   - TOUPPER
   - ubsan

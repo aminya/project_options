@@ -26,7 +26,7 @@ macro(enable_cross_compiler)
     endif()
   endif()
 
-  if (NOT DEFINED HOST_TRIPLET)
+  if(NOT DEFINED HOST_TRIPLET)
     if(WIN32)
       set(HOST_TRIPLET "${_arch}-windows")
     elseif(APPLE)
@@ -52,7 +52,7 @@ macro(enable_cross_compiler)
     set(LIBRARY_LINKAGE "static")
   endif()
 
-  if (NOT DEFINED CROSS_ROOT)
+  if(NOT DEFINED CROSS_ROOT)
     if(_cc MATCHES "x86_64(-w64)?-mingw32-[gc]..?" OR _cxx MATCHES "x86_64(-w64)?-mingw32-[gc]..?")
       set(CROSS_ROOT "/usr/x86_64-w64-mingw32")
     elseif(_cc MATCHES "i686(-w64)?-mingw32-[gc]..?" OR _cxx MATCHES "i686(-w64)?-mingw32-[gc]..?")
@@ -70,8 +70,7 @@ macro(enable_cross_compiler)
         FetchContent_Declare(
           emscripten
           GIT_REPOSITORY https://github.com/emscripten-core/emscripten
-          GIT_TAG main      
-        )
+          GIT_TAG main)
         if(NOT emscripten_POPULATED)
           FetchContent_Populate(emscripten)
           set(EMSCRIPTEN_ROOT "${emscripten_SOURCE_DIR}")
@@ -119,7 +118,7 @@ function(get_toolchain_file value)
     set(_arch "x86_64")
   endif()
 
-  if (MINGW)
+  if(MINGW)
     set(${value}
         ${ProjectOptions_SRC_DIR}/toolchains/${_arch}-w64-mingw32.toolchain.cmake
         PARENT_SCOPE)

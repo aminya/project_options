@@ -19,9 +19,11 @@ if(ENABLE_CROSS_COMPILING)
 endif()
 run_vcpkg()
 
-
 # Set the project name to your project name, my project isn't very descriptive
-project(example VERSION 0.1.0 LANGUAGES C CXX)
+project(
+  example
+  VERSION 0.1.0
+  LANGUAGES C CXX)
 
 set(ENABLE_CLANG_TIDY OFF)
 set(ENABLE_CPPCHECK OFF)
@@ -49,7 +51,10 @@ if(ENABLE_TESTING)
   endif()
 
   if(NOT DISABLE_SANITIZER)
-    if(NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
+    if(NOT
+       "${CMAKE_SYSTEM_NAME}"
+       STREQUAL
+       "Windows")
       set(ENABLE_SANITIZER_ADDRESS "ENABLE_SANITIZER_ADDRESS")
       set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR")
     else()
@@ -61,7 +66,6 @@ if(ENABLE_TESTING)
     endif()
   endif()
 endif()
-
 
 project_options(
   ENABLE_CACHE
@@ -105,13 +109,21 @@ add_executable(example)
 target_sources(example PRIVATE main.cpp)
 target_include_directories(example PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(example PRIVATE project_options project_warnings)
-target_link_system_libraries(example PRIVATE magic_enum::magic_enum Microsoft.GSL::GSL fmt::fmt-header-only)
-
+target_link_system_libraries(
+  example
+  PRIVATE
+  magic_enum::magic_enum
+  Microsoft.GSL::GSL
+  fmt::fmt-header-only)
 
 # TODO: add tests
 if(ENABLE_TESTING)
   # This variable is set by project() in CMake 3.21+
-  string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}" PROJECT_IS_TOP_LEVEL)
+  string(
+    COMPARE EQUAL
+            "${CMAKE_SOURCE_DIR}"
+            "${PROJECT_SOURCE_DIR}"
+            PROJECT_IS_TOP_LEVEL)
   if(PROJECT_IS_TOP_LEVEL)
     # Consider the CTest module, which creates targets and options! Only needed if you want to enable submissions to a CDash server.
     include(CTest)
