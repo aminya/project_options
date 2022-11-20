@@ -15,10 +15,10 @@ RUN /setup_cpp_linux --compiler $compiler --llvm true --cmake true --ninja true 
 #RUN touch /root/.bashrc && cat /root/.cpprc >> /root/.bashrc
 
 # update vcpkg
-WORKDIR /root/vcpkg
-RUN git pull origin master
-RUN ./vcpkg update
-WORKDIR /
+#WORKDIR /root/vcpkg
+#RUN git pull origin master
+#RUN ./vcpkg update
+#WORKDIR /
 
 COPY ./docker/entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT [ "/docker-entrypoint.sh" ]

@@ -2,13 +2,11 @@ include_guard()
 
 # detect mingw
 function(is_mingw value)
-  if(CROSSCOMPILING)
-    if(MINGW)
-      set(${value}
-          ON
-          PARENT_SCOPE)
-      return()
-    endif()
+  if(USE_CROSSCOMPILER_MINGW)
+    set(${value}
+        ON
+        PARENT_SCOPE)
+    return()
   else()
     if(NOT WIN32 OR MSVC)
       set(${value}

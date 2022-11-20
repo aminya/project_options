@@ -1,4 +1,4 @@
-FROM ubuntu:22.04 AS base
+FROM ubuntu:20.04 AS base
 
 ARG setup_cpp_linux_version="0.22.0"
 
@@ -11,14 +11,14 @@ RUN chmod +x /setup_cpp_linux
 FROM base AS setup
 
 # install cmake, ninja, and ccache
-RUN /setup_cpp_linux --llvm true --cmake true --ninja true --ccache true --doxygen true --cppcheck true --vcpkg true --conan true --task true
+RUN /setup_cpp_linux --cmake true --ninja true --ccache true --doxygen true --cppcheck true --vcpkg true --conan true --task true
 #RUN touch /root/.bashrc && cat /root/.cpprc >> /root/.bashrc
 
 # update vcpkg
-WORKDIR /root/vcpkg
-RUN git pull origin master
-RUN ./vcpkg update
-WORKDIR /
+#WORKDIR /root/vcpkg
+#RUN git pull origin master
+#RUN ./vcpkg update
+#WORKDIR /
 
 
 # install emscripten

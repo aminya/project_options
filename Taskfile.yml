@@ -44,9 +44,10 @@ tasks:
     - docker-compose down build-llvm test-llvm
 
   test_docker_mingw:
+    - docker-compose up --build minimal-build-mingw-x64
     - docker-compose up --build build-mingw-x64
     - docker-compose up --build build-mingw-x86
-    - docker-compose down build-mingw-x64 build-mingw-x86
+    - docker-compose down minimal-build-mingw-x64 build-mingw-x64 build-mingw-x86
     
   test_docker_emscripten:
     - docker-compose up --build build-emscripten
@@ -66,7 +67,7 @@ tasks:
 
   build_emscripten:
     cmds:
-      - cmake ./test_emscripten -B ./test_emscripten/build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER=emcc -DCMAKE_CXX_COMPILER=em++
+      - cmake ./test_emscripten -B ./test_emscripten/build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' -DENABLE_CROSS_COMPILING:BOOL=ON -DDEFAULT_TRIPLET=wasm32-emscripten
       - cmake --build ./test_emscripten/build --config Debug
 
 

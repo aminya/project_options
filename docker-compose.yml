@@ -8,12 +8,17 @@ services:
       args:
         compiler: gcc
       target: build
+    environment:
+      CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
   test-gcc:
     build:
       context: .
+      dockerfile: ./docker/Dockerfile
       args:
         compiler: gcc
       target: test
+    environment:
+      CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
   build-llvm:
     build:
       context: .
@@ -21,6 +26,8 @@ services:
       args:
         compiler: llvm
       target: build
+    environment:
+      CMAKE_ARGS: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
   test-llvm:
     build:
       context: .
@@ -28,6 +35,16 @@ services:
       args:
         compiler: llvm
       target: test
+    environment:
+      CMAKE_ARGS: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+  minimal-build-mingw-x64:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.mingw
+      target: build-minimal
+    environment:
+      - CROSS_CC=x86_64-w64-mingw32-gcc
+      - CROSS_CXX=x86_64-w64-mingw32-g++
   build-mingw-x64:
     build:
       context: .
