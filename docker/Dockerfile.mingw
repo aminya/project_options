@@ -40,3 +40,15 @@ FROM setup AS build-minimal
 COPY . /home/project_options
 WORKDIR /home/project_options
 CMD ["/bin/bash", "-c", "task build_minimal_mingw"]
+
+
+FROM setup AS build-minimal-from-env
+COPY . /home/project_options
+WORKDIR /home/project_options
+CMD ["/bin/bash", "-c", "task build_minimal_mingw_from_env"]
+
+
+FROM setup AS build-minimal-from-triplet
+COPY . /home/project_options
+WORKDIR /home/project_options
+CMD ["/bin/bash", "-c", "task build_minimal_mingw_from_triplet"]

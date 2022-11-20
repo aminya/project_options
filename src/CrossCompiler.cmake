@@ -4,7 +4,9 @@ macro(enable_cross_compiler)
   include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
   detect_architecture(_arch)
 
-  # detect_compiler()
+  if("${DEFAULT_TRIPLET}" STREQUAL "")
+    detect_compiler()
+  endif()
   set(_cc ${CMAKE_C_COMPILER})
   set(_cxx ${CMAKE_CXX_COMPILER})
 
