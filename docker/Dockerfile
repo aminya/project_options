@@ -44,17 +44,3 @@ CMD ["/bin/bash", "-c", "task test"]
 #COPY --from=build_release /home/project_options/test/build/Release/ /home/app/
 #WORKDIR /home/app/
 #ENTRYPOINT ["./build/main"]
-
-
-
-
-#FROM setup AS build-alt
-#COPY . /home/project_options
-#WORKDIR /home/project_options
-#CMD ["/home/project_options/docker/build.sh"]
-
-
-#FROM setup AS test-alt
-#COPY . /home/project_options
-#WORKDIR /home/project_options
-#CMD ["/home/project_options/docker/test.sh"]
