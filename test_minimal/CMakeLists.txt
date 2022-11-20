@@ -101,7 +101,6 @@ project_options(
   --inconclusive)
 target_compile_features(project_options INTERFACE cxx_std_20)
 
-find_package(magic_enum CONFIG REQUIRED)
 find_package(Microsoft.GSL CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 
@@ -112,7 +111,6 @@ target_link_libraries(example PRIVATE project_options project_warnings)
 target_link_system_libraries(
   example
   PRIVATE
-  magic_enum::magic_enum
   Microsoft.GSL::GSL
   fmt::fmt-header-only)
 

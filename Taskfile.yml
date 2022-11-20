@@ -2,14 +2,25 @@
 version: 3
 
 tasks:
-  test:
+  build:
     - cmake ./test -B ./test/build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}'
     - cmake --build ./test/build --config Debug
+  build_release:
+    - cmake ./test -B ./test/build -DCMAKE_BUILD_TYPE:STRING=Release -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}'
+    - cmake --build ./test/build --config Release
+  build_cross_compile:
+    - cmake ./test -B ./test/build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' -DENABLE_CROSS_COMPILING:BOOL=ON
+    - cmake --build ./test/build --config Debug
+  build_minimal:
+    - cmake ./test_minimal -B ./test_minimal/build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}'
+    - cmake --build ./test_minimal/build --config Debug
+
+  test:
+    - task: build
     - cd ./test/build && ctest -C Debug --verbose
 
   test_release:
-    - cmake ./test -B ./test/build -DCMAKE_BUILD_TYPE:STRING=Release -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}'
-    - cmake --build ./test/build --config Release
+    - task: build_release
     - cd ./test/build && ctest -C Release --verbose
 
   test_install:
@@ -26,26 +37,26 @@ tasks:
   test_docker:
     # test gcc compiler
     - docker build --build-arg compiler=gcc -f ./docker/Dockerfile --target build -t project_options:build .
-    - docker build --build-arg compiler=gcc -f ./docker/Dockerfile --target build-alt -t project_options:build-alt .
+    #- docker build --build-arg compiler=gcc -f ./docker/Dockerfile --target build-alt -t project_options:build-alt .
     - docker build --build-arg compiler=gcc -f ./docker/Dockerfile --target test -t project_options:test .
     - docker run --rm -it project_options:build
     - docker run --rm -it project_options:test
-    - docker run --rm -it project_options:build-alt
+    #- docker run --rm -it project_options:build-alt
     - docker rmi project_options:build project_options:test project_options:build-alt 
     # test llvm compiler
     - docker build --build-arg compiler=llvm -f ./docker/Dockerfile --target build -t project_options:build-clang .
-    - docker build --build-arg compiler=llvm -f ./docker/Dockerfile --target build-alt -t project_options:build-alt-clang .
+    #- docker build --build-arg compiler=llvm -f ./docker/Dockerfile --target build-alt -t project_options:build-alt-clang .
     - docker build --build-arg compiler=llvm -f ./docker/Dockerfile --target test -t project_options:test-clang .
     - docker run --rm -it project_options:build-clang
     - docker run --rm -it project_options:test-clang
-    - docker run --rm -it project_options:build-alt-clang
+    #- docker run --rm -it project_options:build-alt-clang
     - docker rmi project_options:build-clang project_options:test-clang
   test_docker_mingw:
     # test mingw (cross) compiler
     - docker build -f ./docker/Dockerfile.mingw --target build -t project_options:build-mingw .
     - docker build -f ./docker/Dockerfile.mingw --target build-alt -t project_options:build-alt-mingw .
     - docker run --rm -it project_options:build-mingw
-    - docker run --rm -it project_options:build-alt-mingw
+    #- docker run --rm -it project_options:build-alt-mingw
     - docker run --rm -it --env CROSS_CC=i686-w64-mingw32-gcc --env CROSS_CXX=i686-w64-mingw32-gcc project_options:build-mingw
     - docker rmi project_options:build-mingw project_options:build-alt-mingw
   test_docker_emscripten:
@@ -53,6 +64,21 @@ tasks:
     - docker build -f ./docker/Dockerfile.emscripten --target build -t project_options:build-emscripten .
     - docker run --rm -it project_options:build-emscripten
     - docker rmi project_options:build-emscripten
+
+  build_mingw:
+    cmds:
+      - task: build_cross_compile
+    vars:
+      CC: '{{ .CROSS_CC | default "x86_64-w64-mingw32-gcc" }}'
+      CXX: '{{ .CROSS_CXX | default "x86_64-w64-mingw32-g++" }}'
+  build_emscripten:
+    cmds:
+      - cmake ./test_emscripten -B ./test_emscripten/build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' -DENABLE_CROSS_COMPILING:BOOL=ON
+      - cmake --build ./test_emscripten/build --config Debug
+    vars:
+      CC: emcc
+      CXX: em++
+
 
   lint:
     - |

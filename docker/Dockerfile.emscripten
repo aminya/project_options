@@ -1,14 +1,18 @@
 FROM ubuntu:22.04 AS base
 
+ARG setup_cpp_linux_version="0.22.0"
+
 # add setup_cpp
-ADD https://github.com/aminya/setup-cpp/releases/download/v0.21.0/setup_cpp_linux /setup_cpp_linux
+ADD https://github.com/aminya/setup-cpp/releases/download/v${setup_cpp_linux_version}/setup_cpp_linux /setup_cpp_linux
 RUN chmod +x /setup_cpp_linux
+
 
 
 FROM base AS setup
 
 # install cmake, ninja, and ccache
 RUN /setup_cpp_linux --llvm true --cmake true --ninja true --ccache true --doxygen true --cppcheck true --vcpkg true --conan true --task true
+#RUN touch /root/.bashrc && cat /root/.cpprc >> /root/.bashrc
 
 # update vcpkg
 WORKDIR /root/vcpkg
@@ -34,5 +38,5 @@ ENTRYPOINT [ "/docker-entrypoint.sh" ]
 
 FROM setup AS build
 COPY . /home/project_options
-WORKDIR /home/project_options/test_emscripten
-CMD ["/home/project_options/docker/build.emscripten.sh"]
+WORKDIR /home/project_options
+CMD ["/bin/bash", "-c", "task build_emscripten"]
