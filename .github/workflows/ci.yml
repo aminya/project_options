@@ -15,8 +15,8 @@ jobs:
       matrix:
         os:
           - windows-2022
-          - ubuntu-20.04
-          - macos-11
+          - ubuntu-22.04
+          - macos-12
         compiler:
           - llvm
           - gcc
@@ -41,9 +41,9 @@ jobs:
             compiler: "msvc"
             vcvarsall: false
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/vcpkg
