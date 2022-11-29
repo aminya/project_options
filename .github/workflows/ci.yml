@@ -40,6 +40,16 @@ jobs:
           - os: "windows-2022"
             compiler: "msvc"
             vcvarsall: false
+          - os: "macos-11"
+            compiler: "gcc"
+            cmake: true
+            vcvarsall: true
+        exclude:
+          # fails with an internal error
+          - os: "macos-12"
+            compiler: "gcc"
+            cmake: true
+            vcvarsall: true
     steps:
       - uses: actions/checkout@v3
       - name: Cache
