@@ -1,7 +1,3 @@
-cmake_minimum_required(VERSION 3.20)
-# 3.20 is required by the windows toolchain and cmake_path. It also has a more reliable building functionality.
-# 3.18 required by package_project and interprocedural optimization. It also has a more reliable building functionality (no errors during the linking stage).
-
 include_guard()
 
 # only useable here

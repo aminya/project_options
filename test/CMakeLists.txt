@@ -1,4 +1,6 @@
-cmake_minimum_required(VERSION 3.16...3.21)
+set(CMAKE_MIN_VERSION 3.16)
+set(CMAKE_MAX_VERSION 3.21)
+cmake_minimum_required(VERSION ${CMAKE_MIN_VERSION}...${CMAKE_MAX_VERSION})
 
 # set a default CXX standard used by the external tools like clang-tidy, cppcheck, etc.
 # You can later set fine-grained standards for each target using `target_compile_features`
@@ -10,6 +12,18 @@ set(CMAKE_CXX_STANDARD 20)
 # FetchContent_MakeAvailable(_project_options)
 # include(${_project_options_SOURCE_DIR}/Index.cmake)
 include(../src/Index.cmake)
+
+# Make sure cmake min and max version are the same
+# as set by the project
+if(NOT CMAKE_MINIMUM_REQUIRED_VERSION STREQUAL ${CMAKE_MIN_VERSION})
+  message(FATAL_ERROR "CMake minimum version changed to ${CMAKE_MINIMUM_REQUIRED_VERSION}")
+endif()
+cmake_policy(GET CMP0126 CMP126)
+cmake_policy(GET CMP0127 CMP127)
+if(NOT CMP126 STREQUAL NEW OR NOT CMP127 STREQUAL "")
+  message(FATAL_ERROR "CMake policy settings don't match maximum version ${CMAKE_MAX_VERSION} (CMP126=${CMP126} CMP127=${CMP127})")
+endif()
+
 
 run_vcpkg()
 
