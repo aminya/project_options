@@ -15,8 +15,8 @@ jobs:
       matrix:
         os:
           - windows-2022
-          - ubuntu-20.04
-          - macos-11
+          - ubuntu-22.04
+          - macos-12
         compiler:
           - llvm
           - gcc
@@ -40,10 +40,20 @@ jobs:
           - os: "windows-2022"
             compiler: "msvc"
             vcvarsall: false
+          - os: "macos-11"
+            compiler: "gcc"
+            cmake: true
+            vcvarsall: true
+        exclude:
+          # fails with an internal error
+          - os: "macos-12"
+            compiler: "gcc"
+            cmake: true
+            vcvarsall: true
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/vcpkg

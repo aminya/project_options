@@ -4,6 +4,11 @@ cmake_minimum_required(VERSION 3.20)
 
 include_guard()
 
+# fix DOWNLOAD_EXTRACT_TIMESTAMP warning in FetchContent
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
+  cmake_policy(SET CMP0135 NEW)
+endif()
+
 # only useable here
 set(ProjectOptions_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 
