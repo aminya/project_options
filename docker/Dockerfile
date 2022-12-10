@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 AS base
+FROM ubuntu:22.04 AS base
 
 ARG setup_cpp_linux_version="0.24.0"
 
@@ -11,14 +11,8 @@ FROM base AS setup
 
 ARG compiler="gcc"
 # install cmake, ninja, and ccache
-RUN /setup_cpp_linux --compiler $compiler --llvm true --cmake true --ninja true --ccache true --doxygen true --cppcheck true --vcpkg true --conan true --task true
-#RUN touch /root/.bashrc && cat /root/.cpprc >> /root/.bashrc
+RUN /setup_cpp_linux --compiler $compiler --llvm true --cmake true --ninja true --ccache true --cppcheck true --vcpkg true --conan true --task true
 
-# update vcpkg
-#WORKDIR /root/vcpkg
-#RUN git pull origin master
-#RUN ./vcpkg update
-#WORKDIR /
 
 COPY ./docker/entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
