@@ -1,6 +1,6 @@
 FROM ubuntu:20.04 AS base
 
-ARG setup_cpp_linux_version="0.22.0"
+ARG setup_cpp_linux_version="0.24.0"
 
 # add setup_cpp
 ADD https://github.com/aminya/setup-cpp/releases/download/v${setup_cpp_linux_version}/setup_cpp_linux /setup_cpp_linux

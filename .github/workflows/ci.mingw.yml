@@ -61,11 +61,19 @@ jobs:
         with:
           platform: ${{ matrix.cmake }}
 
-      - name: Build
+      - name: Build (Minimal)
         run: |
           task build_minimal_mingw
-          task build_mingw
         env:
           CMAKE_GENERATOR: ${{ matrix.cmake_generator }}
           CROSS_CC: ${{ matrix.cross_cc }}
           CROSS_CXX: ${{ matrix.cross_cxx }}
+
+      # TODO: more complex build example
+      #- name: Build
+      #  run: |
+      #    task build_mingw
+      #  env:
+      #    CMAKE_GENERATOR: ${{ matrix.cmake_generator }}
+      #    CROSS_CC: ${{ matrix.cross_cc }}
+      #    CROSS_CXX: ${{ matrix.cross_cxx }}

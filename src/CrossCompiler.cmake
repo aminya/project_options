@@ -97,7 +97,10 @@ macro(enable_cross_compiler)
   endif()
 
   if(USE_CROSSCOMPILER_EMSCRIPTEN)
-    if(NOT "$ENV{EMSCRIPTEN}" STREQUAL "")
+    if(NOT
+       "$ENV{EMSCRIPTEN}"
+       STREQUAL
+       "")
       set(EMSCRIPTEN_ROOT $ENV{EMSCRIPTEN})
     else()
       if(NOT DEFINED EMSCRIPTEN_ROOT)
@@ -113,7 +116,10 @@ macro(enable_cross_compiler)
         endif()
       endif()
     endif()
-    if(NOT "$ENV{EMSDK}" STREQUAL "")
+    if(NOT
+       "$ENV{EMSDK}"
+       STREQUAL
+       "")
       set(EMSCRIPTEN_PREFIX "$ENV{EMSDK}/upstream/emscripten")
       set(EMSCRIPTEN_ROOT_PATH "$ENV{EMSDK}/upstream/emscripten")
     endif()
@@ -146,7 +152,7 @@ macro(enable_cross_compiler)
     message(STATUS "use emscripten cross-compiler emulator: ${CMAKE_CROSSCOMPILING_EMULATOR}")
   endif()
   message(STATUS "Target Architecture: ${TARGET_ARCHITECTURE}")
-  if (DEFAULT_TRIPLET)
+  if(DEFAULT_TRIPLET)
     message(STATUS "Default Triplet: ${DEFAULT_TRIPLET}")
   endif()
   message(STATUS "Host Triplet: ${HOST_TRIPLET}")

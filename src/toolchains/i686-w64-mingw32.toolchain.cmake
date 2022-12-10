@@ -3,10 +3,13 @@ cmake_minimum_required(VERSION 3.16)
 set(CMAKE_SYSTEM_NAME Windows)
 set(CMAKE_SYSTEM_PROCESSOR "i686")
 
-if(NOT "$ENV{CROSS_ROOT}" STREQUAL "")
+if(NOT
+   "$ENV{CROSS_ROOT}"
+   STREQUAL
+   "")
   set(CMAKE_SYSROOT $ENV{CROSS_ROOT})
   #set(CMAKE_FIND_ROOT_PATH $ENV{CROSS_ROOT})
-elseif(NOT "$ENV{CMAKE_FIND_ROOT_PATH}" STREQUAL "")
+elseif("${CMAKE_SYSROOT}" STREQUAL "")
   set(CMAKE_SYSROOT /usr/i686-w64-mingw32)
   #set(CMAKE_FIND_ROOT_PATH /usr/i686-w64-mingw32)
 endif()
