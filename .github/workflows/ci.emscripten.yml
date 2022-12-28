@@ -1,0 +1,55 @@
+name: ci-cross-emscripten
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  Test:
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-20.04
+        cmake:
+          - true
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/vcpkg
+            ./build/vcpkg_installed
+            ${{ env.HOME }}/.cache/vcpkg/archives
+            ${{ env.XDG_CACHE_HOME }}/vcpkg/archives
+            ${{ env.LOCALAPPDATA }}\vcpkg\archives
+            ${{ env.APPDATA }}\vcpkg\archives
+          key: ${{ runner.os }}-emscripten-${{ env.BUILD_TYPE }}-${{ hashFiles('**/CMakeLists.txt') }}-${{ hashFiles('./vcpkg.json')}}-${{ matrix.cmake }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.BUILD_TYPE }}-
+
+      - name: Setup Cpp
+        uses: aminya/setup-cpp@v1
+        with:
+          cmake: ${{ matrix.cmake }}
+          ninja: true
+          vcpkg: true
+          conan: true
+          cppcheck: true
+          clangtidy: true
+          task: true
+          doxygen: true
+      
+      - name: Setup emscripten
+        uses: mymindstorm/setup-emsdk@v11
+
+      - name: Build
+        run: |
+          task build_emscripten
+        env:
+          CMAKE_GENERATOR: ${{ matrix.cmake_generator }}
