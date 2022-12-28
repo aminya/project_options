@@ -78,6 +78,8 @@ macro(dynamic_project_options)
       "ENABLE_CPPCHECK\;OFF\;${MAKEFILE_OR_NINJA}\;Enable cppcheck analysis during compilation"
       "ENABLE_INTERPROCEDURAL_OPTIMIZATION\;OFF\;OFF\;Enable whole-program optimization (e.g. LTO)"
       "ENABLE_NATIVE_OPTIMIZATION\;OFF\;OFF\;Enable the optimizations specific to the build machine (e.g. SSE4_1, AVX2, etc.)."
+      "DISABLE_EXCEPTIONS\;OFF\;OFF\;Disable Exceptions (no-exceptions flag)"
+      "DISABLE_RTTI\;OFF\;OFF\;Disable RTTI (no-rtti flag)"
       "ENABLE_INCLUDE_WHAT_YOU_USE\;OFF\;OFF\;Enable include-what-you-use analysis during compilation"
       "ENABLE_PCH\;OFF\;OFF\;Enable pre-compiled-headers support"
       "ENABLE_DOXYGEN\;OFF\;OFF\;Build documentation with Doxygen"
@@ -153,6 +155,8 @@ macro(dynamic_project_options)
     ${ENABLE_COVERAGE_VALUE}
     ${ENABLE_INTERPROCEDURAL_OPTIMIZATION_VALUE}
     ${ENABLE_NATIVE_OPTIMIZATION_VALUE}
+    ${DISABLE_EXCEPTIONS_VALUE}
+    ${DISABLE_RTTI_VALUE}
     ${ENABLE_INCLUDE_WHAT_YOU_USE_VALUE}
     ${ENABLE_PCH_VALUE}
     ${ENABLE_DOXYGEN_VALUE}

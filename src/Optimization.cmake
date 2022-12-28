@@ -32,3 +32,13 @@ macro(enable_native_optimization project_name)
     endif()
   endif()
 endmacro()
+
+macro(disable_exceptions project_name)
+  target_compile_options(${project_name} INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/EHs-c- /D_HAS_EXCEPTIONS=0>)
+  target_compile_options(${project_name} INTERFACE $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-fno-exceptions>)
+endmacro()
+
+macro(disable_rtti project_name)
+  target_compile_options(${project_name} INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/GR->)
+  target_compile_options(${project_name} INTERFACE $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-fno-rtti>)
+endmacro()
