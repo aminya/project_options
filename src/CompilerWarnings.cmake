@@ -110,7 +110,8 @@ function(
     -Wnon-virtual-dtor
     -Wold-style-cast
     -Woverloaded-virtual
-    -Wuseless-cast)
+    -Wuseless-cast
+    -Wextra-semi)
 
   set(PROJECT_WARNINGS_CUDA "${CUDA_WARNINGS}")
 
