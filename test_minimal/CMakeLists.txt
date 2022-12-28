@@ -76,6 +76,8 @@ project_options(
   ${ENABLE_COVERAGE}
   ${ENABLE_SANITIZER_ADDRESS}
   ${ENABLE_SANITIZER_UNDEFINED_BEHAVIOR}
+  # DISABLE_EXCEPTIONS
+  # DISABLE_RTTI
   # Note: PCH is disabled by default in developer mode because these headers become globally included and they can mask other errors
   PCH_HEADERS
   # This is a list of headers to pre-compile, here are some common ones
