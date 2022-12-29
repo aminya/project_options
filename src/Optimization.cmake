@@ -35,7 +35,7 @@ endmacro()
 
 macro(disable_exceptions project_name)
   target_compile_options(${project_name} INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/EHs-c- /D_HAS_EXCEPTIONS=0>)
-  target_compile_options(${project_name} INTERFACE $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-fno-exceptions>)
+  target_compile_options(${project_name} INTERFACE $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-fno-exceptions -fno-unwind-tables>)
 endmacro()
 
 macro(disable_rtti project_name)
