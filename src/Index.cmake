@@ -85,7 +85,7 @@ macro(project_options)
       ENABLE_DOXYGEN
       ENABLE_INTERPROCEDURAL_OPTIMIZATION
       ENABLE_NATIVE_OPTIMIZATION
-      DISABLE_EXCPETIONS
+      DISABLE_EXCEPTIONS
       DISABLE_RTTI
       ENABLE_USER_LINKER
       ENABLE_BUILD_WITH_TIME_TRACE
@@ -165,7 +165,7 @@ macro(project_options)
     enable_native_optimization(${_options_target})
   endif()
 
-  if(${ProjectOptions_DISABLE_EXCPETIONS})
+  if(${ProjectOptions_DISABLE_EXCEPTIONS})
     disable_exceptions(${_options_target})
   endif()
   if(${ProjectOptions_DISABLE_RTTI})
