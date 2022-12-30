@@ -4,6 +4,11 @@ cmake_minimum_required(VERSION 3.20)
 
 include_guard()
 
+# fix DOWNLOAD_EXTRACT_TIMESTAMP warning in FetchContent
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
+  cmake_policy(SET CMP0135 NEW)
+endif()
+
 # only useable here
 set(ProjectOptions_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 
@@ -24,6 +29,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/StaticAnalyzers.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/VCEnvironment.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/MinGW.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/DetectCompiler.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/CrossCompiler.cmake")
 
 # Include msvc toolchain on windows if the generator is not visual studio. Should be called before run_vcpkg and run_conan to be effective
 msvc_toolchain()

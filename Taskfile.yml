@@ -2,14 +2,24 @@
 version: 3
 
 tasks:
-  test:
-    - cmake ./test -B ./test/build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}'
+  build:
+    - cmake ./test -B ./test/build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' {{ .CMAKE_ARGS }}
     - cmake --build ./test/build --config Debug
+
+  build_release:
+    - cmake ./test -B ./test/build -DCMAKE_BUILD_TYPE:STRING=Release -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' {{ .CMAKE_ARGS }}
+    - cmake --build ./test/build --config Release
+
+  build_minimal:
+    - cmake ./test_minimal -B ./test_minimal/build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' {{ .CMAKE_ARGS }}
+    - cmake --build ./test_minimal/build --config Debug
+
+  test:
+    - task: build
     - cd ./test/build && ctest -C Debug --verbose
 
   test_release:
-    - cmake ./test -B ./test/build -DCMAKE_BUILD_TYPE:STRING=Release -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}'
-    - cmake --build ./test/build --config Release
+    - task: build_release
     - cd ./test/build && ctest -C Release --verbose
 
   test_install:
@@ -22,6 +32,61 @@ tasks:
     vars:
       CWD:
         sh: git rev-parse --show-toplevel
+
+  build_mingw:
+    cmds:
+      - task: build
+        vars:
+          CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER={{.CROSS_CC | default "x86_64-w64-mingw32-gcc"}} -DCMAKE_CXX_COMPILER={{.CROSS_CXX | default "x86_64-w64-mingw32-g++"}}
+
+  build_emscripten:
+    cmds:
+      - cmake ./test_emscripten -B ./test_emscripten/build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' -DENABLE_CROSS_COMPILING:BOOL=ON -DDEFAULT_TRIPLET=wasm32-emscripten
+      - cmake --build ./test_emscripten/build --config Debug
+
+  # For Testing
+  build_minimal_mingw:
+    cmds:
+      - task: build_minimal
+        vars:
+          CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER={{.CROSS_CC | default "x86_64-w64-mingw32-gcc"}} -DCMAKE_CXX_COMPILER={{.CROSS_CXX | default "x86_64-w64-mingw32-g++"}}
+
+  build_minimal_mingw_from_env:
+    env: 
+      CC: x86_64-w64-mingw32-gcc
+      CXX: x86_64-w64-mingw32-g++
+    cmds:
+      - task: build_minimal
+        vars:
+          CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON
+
+  build_minimal_mingw_from_triplet:
+    cmds:
+      - task: build_minimal
+        vars:
+          CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON -DDEFAULT_TRIPLET=x64-mingw-dynamic
+
+  test_docker:
+    - docker-compose up --build build-gcc
+    - docker-compose up --build test-gcc
+    - docker-compose down build-gcc test-gcc
+
+  test_docker_llvm:
+    - docker-compose up --build build-llvm
+    - docker-compose up --build test-llvm
+    - docker-compose down build-llvm test-llvm
+
+  test_docker_mingw:
+    - docker-compose up --build minimal-build-mingw-x64
+    - docker-compose up --build minimal-build-mingw-x64-from-env
+    - docker-compose up --build minimal-build-mingw-x64-from-triplet
+    - docker-compose up --build build-mingw-x64
+    - docker-compose up --build build-mingw-x86
+    - docker-compose down minimal-build-mingw-x64 minimal-build-mingw-x64-from-triplet minimal-build-mingw-x64-from-env build-mingw-x64 build-mingw-x86
+    
+  test_docker_emscripten:
+    - docker-compose up --build build-emscripten
+    - docker-compose down build-emscripten
 
   lint:
     - |

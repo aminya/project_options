@@ -1,0 +1,73 @@
+version: "3.9"
+
+services:
+  build-gcc:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      args:
+        compiler: gcc
+      target: build
+  test-gcc:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      args:
+        compiler: gcc
+      target: test
+  build-llvm:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      args:
+        compiler: llvm
+      target: build
+  test-llvm:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      args:
+        compiler: llvm
+      target: test
+  build-mingw-x64:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.mingw
+      target: build
+    environment:
+      - CROSS_CC=x86_64-w64-mingw32-gcc
+      - CROSS_CXX=x86_64-w64-mingw32-g++
+  build-mingw-x86:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.mingw
+      target: build
+    environment:
+      - CROSS_CC=i686-w64-mingw32-gcc
+      - CROSS_CXX=i686-w64-mingw32-g++
+  build-emscripten:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.emscripten
+      target: build
+  minimal-build-mingw-x64:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.mingw
+      target: build-minimal
+    environment:
+      - CROSS_CC=x86_64-w64-mingw32-gcc
+      - CROSS_CXX=x86_64-w64-mingw32-g++
+  minimal-build-mingw-x64-from-env:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.mingw
+      target: build-minimal-from-env
+    environment:
+      - CC=x86_64-w64-mingw32-gcc
+      - CXX=x86_64-w64-mingw32-g++
+  minimal-build-mingw-x64-from-triplet:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.mingw
+      target: build-minimal-from-triplet

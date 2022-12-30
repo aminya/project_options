@@ -1,0 +1,79 @@
+name: ci-cross-mingw
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  Test:
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-20.04
+        cmake:
+          - true
+        platform:
+          - x64
+          - x86
+        include:
+          - platform: x64
+            cross_cc: x86_64-w64-mingw32-gcc
+            cross_cxx: x86_64-w64-mingw32-g++
+          - platform: x86
+            cross_cc: i686-w64-mingw32-gcc
+            cross_cxx: i686-w64-mingw32-g++
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/vcpkg
+            ./build/vcpkg_installed
+            ${{ env.HOME }}/.cache/vcpkg/archives
+            ${{ env.XDG_CACHE_HOME }}/vcpkg/archives
+            ${{ env.LOCALAPPDATA }}\vcpkg\archives
+            ${{ env.APPDATA }}\vcpkg\archives
+          key: ${{ runner.os }}-mingw-${{ matrix.platform }}-${{ env.BUILD_TYPE }}-${{ hashFiles('**/CMakeLists.txt') }}-${{ hashFiles('./vcpkg.json')}}-${{ matrix.cmake }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.BUILD_TYPE }}-
+
+      - name: Setup Cpp
+        uses: aminya/setup-cpp@v1
+        with:
+          cmake: ${{ matrix.cmake }}
+          ninja: true
+          vcpkg: true
+          conan: true
+          cppcheck: true
+          clangtidy: true
+          task: true
+          doxygen: true
+          powershell: true
+      
+      - name: Setup MinGW
+        uses: egor-tensin/setup-mingw@v2
+        with:
+          platform: ${{ matrix.cmake }}
+
+      - name: Build (Minimal)
+        run: |
+          task build_minimal_mingw
+        env:
+          CMAKE_GENERATOR: ${{ matrix.cmake_generator }}
+          CROSS_CC: ${{ matrix.cross_cc }}
+          CROSS_CXX: ${{ matrix.cross_cxx }}
+
+      # TODO: more complex build example
+      #- name: Build
+      #  run: |
+      #    task build_mingw
+      #  env:
+      #    CMAKE_GENERATOR: ${{ matrix.cmake_generator }}
+      #    CROSS_CC: ${{ matrix.cross_cc }}
+      #    CROSS_CXX: ${{ matrix.cross_cxx }}

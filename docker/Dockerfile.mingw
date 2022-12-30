@@ -1,0 +1,47 @@
+FROM ubuntu:22.04 AS base
+
+ARG setup_cpp_linux_version="0.24.0"
+
+# add setup_cpp
+ADD https://github.com/aminya/setup-cpp/releases/download/v${setup_cpp_linux_version}/setup_cpp_linux /setup_cpp_linux
+RUN chmod +x /setup_cpp_linux
+
+
+
+FROM base AS setup
+
+# install cmake, ninja, and ccache
+RUN /setup_cpp_linux --cmake true --ninja true --ccache true --cppcheck true --vcpkg true --conan true --task true --powershell true
+
+# TODO: install cross-compiler with setup_cpp_linux
+# NOTE: install mingw by hand, waiting for setup-cpp to have mingw cross-compiler support
+RUN apt-get update && apt-get install -y \
+    mingw-w64 \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY ./docker/entrypoint.sh /docker-entrypoint.sh
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
+
+
+FROM setup AS build
+COPY . /home/project_options
+WORKDIR /home/project_options
+CMD ["/bin/bash", "-c", "task build_mingw"]
+
+
+FROM setup AS build-minimal
+COPY . /home/project_options
+WORKDIR /home/project_options
+CMD ["/bin/bash", "-c", "task build_minimal_mingw"]
+
+
+FROM setup AS build-minimal-from-env
+COPY . /home/project_options
+WORKDIR /home/project_options
+CMD ["/bin/bash", "-c", "task build_minimal_mingw_from_env"]
+
+
+FROM setup AS build-minimal-from-triplet
+COPY . /home/project_options
+WORKDIR /home/project_options
+CMD ["/bin/bash", "-c", "task build_minimal_mingw_from_triplet"]
