@@ -1,0 +1,31 @@
+# https://taskfile.dev/#6/installation
+version: 3
+
+includes:
+  windows: ./Taskfile_windows.yml
+
+tasks:
+  build:release:
+    - cmake ./test -B ./build -DCMAKE_BUILD_TYPE:STRING=Release -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' {{.CMAKE_ARGS}}
+    - cmake --build ./build --config Release
+
+  test:release:
+    - task: build:release
+    - cd ./build && ctest -C Release --verbose
+
+  install:
+    cmds:
+      - task: test:release
+      - cmake --install ./build --config Release --prefix ./install
+      - cmake ./test_install -B ./test_install/build -DCMAKE_BUILD_TYPE:STRING=Release -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' -DCMAKE_PREFIX_PATH:STRING={{.CWD}}/install;
+      - cmake --build ./test_install/build --config Release
+      - cd ./build && ctest -C Release --verbose
+    vars:
+      CWD:
+        sh: git rev-parse --show-toplevel
+
+  lint:
+    - ~/vcpkg/vcpkg format-manifest ./vcpkg.json
+
+  clean:
+    - rm -rf ./build

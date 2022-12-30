@@ -1,113 +1,32 @@
-# https://taskfile.dev/#/installation
+# https://taskfile.dev/#6/installation
 version: 3
 
+includes:
+  windows: ./Taskfile_windows.yml
+  docker: ./docker/Taskfile.yml
+  main:
+    taskfile: ./tests/main/Taskfile.yml
+    dir: ./tests/main
+  install:
+    taskfile: ./tests/install/Taskfile.yml
+    dir: ./tests/install
+  minimal:
+    taskfile: ./tests/minimal/Taskfile.yml
+    dir: ./tests/minimal
+  emscripten:
+    taskfile: ./tests/emscripten/Taskfile.yml
+    dir: ./tests/emscripten
+
 tasks:
-  build:
-    - cmake ./test -B ./test/build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' {{ .CMAKE_ARGS }}
-    - cmake --build ./test/build --config Debug
-
-  build_release:
-    - cmake ./test -B ./test/build -DCMAKE_BUILD_TYPE:STRING=Release -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' {{ .CMAKE_ARGS }}
-    - cmake --build ./test/build --config Release
-
-  build_minimal:
-    - cmake ./test_minimal -B ./test_minimal/build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' {{ .CMAKE_ARGS }}
-    - cmake --build ./test_minimal/build --config Debug
-
-  test:
-    - task: build
-    - cd ./test/build && ctest -C Debug --verbose
-
-  test_release:
-    - task: build_release
-    - cd ./test/build && ctest -C Release --verbose
-
-  test_install:
-    cmds:
-      - task: test_release
-      - cmake --install ./test/build --config Release --prefix ./install
-      - cmake ./test_install -B ./test_install/build -DCMAKE_BUILD_TYPE:STRING=Release -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' -DCMAKE_PREFIX_PATH:STRING={{.CWD}}/install;
-      - cmake --build ./test_install/build --config Release
-      - cd ./test_install/build && ctest -C Release --verbose
-    vars:
-      CWD:
-        sh: git rev-parse --show-toplevel
-
-  build_mingw:
-    cmds:
-      - task: build
-        vars:
-          CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER={{.CROSS_CC | default "x86_64-w64-mingw32-gcc"}} -DCMAKE_CXX_COMPILER={{.CROSS_CXX | default "x86_64-w64-mingw32-g++"}}
-
-  build_emscripten:
-    cmds:
-      - cmake ./test_emscripten -B ./test_emscripten/build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' -DENABLE_CROSS_COMPILING:BOOL=ON -DDEFAULT_TRIPLET=wasm32-emscripten
-      - cmake --build ./test_emscripten/build --config Debug
-
-  # For Testing
-  build_minimal_mingw:
-    cmds:
-      - task: build_minimal
-        vars:
-          CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER={{.CROSS_CC | default "x86_64-w64-mingw32-gcc"}} -DCMAKE_CXX_COMPILER={{.CROSS_CXX | default "x86_64-w64-mingw32-g++"}}
-
-  build_minimal_mingw_from_env:
-    env: 
-      CC: x86_64-w64-mingw32-gcc
-      CXX: x86_64-w64-mingw32-g++
-    cmds:
-      - task: build_minimal
-        vars:
-          CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON
-
-  build_minimal_mingw_from_triplet:
-    cmds:
-      - task: build_minimal
-        vars:
-          CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON -DDEFAULT_TRIPLET=x64-mingw-dynamic
-
-  test_docker:
-    - docker-compose up --build build-gcc
-    - docker-compose up --build test-gcc
-    - docker-compose down build-gcc test-gcc
-
-  test_docker_llvm:
-    - docker-compose up --build build-llvm
-    - docker-compose up --build test-llvm
-    - docker-compose down build-llvm test-llvm
-
-  test_docker_mingw:
-    - docker-compose up --build minimal-build-mingw-x64
-    - docker-compose up --build minimal-build-mingw-x64-from-env
-    - docker-compose up --build minimal-build-mingw-x64-from-triplet
-    - docker-compose up --build build-mingw-x64
-    - docker-compose up --build build-mingw-x86
-    - docker-compose down minimal-build-mingw-x64 minimal-build-mingw-x64-from-triplet minimal-build-mingw-x64-from-env build-mingw-x64 build-mingw-x86
-    
-  test_docker_emscripten:
-    - docker-compose up --build build-emscripten
-    - docker-compose down build-emscripten
-
   lint:
-    - |
-      {{if eq OS "windows"}} 
-        powershell -c '$files=(git ls-files --exclude-standard); foreach ($file in $files) { if ((get-item $file).Extension -in ".cpp", ".hpp", ".c", ".cc", ".cxx", ".hxx", ".ixx") { clang-format -i -style=file $file } }' 
-      {{else}} 
-        git ls-files --exclude-standard | grep -E '\.(cpp|hpp|c|cc|cxx|hxx|ixx)$' | xargs clang-format -i -style=file 
-      {{end}}
-    - |
-      {{if eq OS "windows"}} 
-      powershell -c '$files=(git ls-files --exclude-standard); foreach ($file in $files) { $item=(get-item $file); if (($item.Name -eq "CMakeLists.txt") -or ($item.Extension -in ".cmake")) { cmake-format --in-place $file; cmake-lint $file --disabled-codes C0103 C0301 R0912 R0915 R0913 --suppress-decorations } }'
-      {{else}}
-        git ls-files --exclude-standard | grep -E '(CMakeLists\.txt)|(\.(cmake))$' | xargs cmake-format --in-place | xargs cmake-lint --disabled-codes C0103 C0301 R0912 R0915 R0913 --suppress-decorations
-      {{end}}
-
-    - ~/vcpkg/vcpkg format-manifest ./test/vcpkg.json ./test_install/vcpkg.json
+    - git ls-files --exclude-standard | grep -E '\.(cpp|hpp|c|cc|cxx|hxx|ixx)$' | xargs clang-format -i -style=file 
+    - git ls-files --exclude-standard | grep -E '(CMakeLists\.txt)|(\.(cmake))$' | xargs cmake-format --in-place | xargs cmake-lint --disabled-codes C0103 C0301 R0912 R0915 R0913 --suppress-decorations
+    - task: main:lint
+    - task: install:lint
+    - task: minimal:lint
+    - task: emscripten:lint
     - npx -y cspell lint --no-progress --show-suggestions
 
-  clean: |
-    {{if eq OS "windows"}} 
-      powershell -c 'function rmrf($path) { if (test-path $path) { rm -r -force $path }}; rmrf ./test/build; rmrf ./test_install/build/; rmrf ./install'
-    {{else}} 
-      rm -rf ./test/build ./test_install/build/ ./install
-    {{end}}
+  clean:
+    - task: main:clean
+    - task: install:clean

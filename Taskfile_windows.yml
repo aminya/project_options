@@ -1,0 +1,12 @@
+# https://taskfile.dev/#6/installation
+version: 3
+
+tasks:
+  lint:
+    - powershell -c '$files=(git ls-files --exclude-standard); foreach ($file in $files) { if ((get-item $file).Extension -in ".cpp", ".hpp", ".c", ".cc", ".cxx", ".hxx", ".ixx") { clang-format -i -style=file $file } }' 
+    - powershell -c '$files=(git ls-files --exclude-standard); foreach ($file in $files) { $item=(get-item $file); if (($item.Name -eq "CMakeLists.txt") -or ($item.Extension -in ".cmake")) { cmake-format --in-place $file; cmake-lint $file --disabled-codes C0103 C0301 R0912 R0915 R0913 --suppress-decorations } }'
+    - ~/vcpkg/vcpkg format-manifest ./test/vcpkg.json ./test_install/vcpkg.json
+    - npx -y cspell lint --no-progress --show-suggestions
+
+  clean: 
+    - powershell -c 'function rmrf($path) { if (test-path $path) { rm -r -force $path }}; rmrf ./test/build; rmrf ./test_install/build/; rmrf ./install'
