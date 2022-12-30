@@ -3,8 +3,8 @@ version: 3
 tasks:
   build:
     cmds:
-      - cmake ./test_emscripten -B ./test_emscripten/build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' -DENABLE_CROSS_COMPILING:BOOL=ON -DDEFAULT_TRIPLET=wasm32-emscripten
-      - cmake --build ./test_emscripten/build --config Debug
+      - cmake . -B ./build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' -DENABLE_CROSS_COMPILING:BOOL=ON -DDEFAULT_TRIPLET=wasm32-emscripten
+      - cmake --build ./build --config Debug
 
   lint:
     - ~/vcpkg/vcpkg format-manifest ./vcpkg.json

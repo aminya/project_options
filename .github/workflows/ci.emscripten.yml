@@ -50,6 +50,6 @@ jobs:
 
       - name: Build
         run: |
-          task build_emscripten
+          task emscripten:build
         env:
           CMAKE_GENERATOR: ${{ matrix.cmake_generator }}

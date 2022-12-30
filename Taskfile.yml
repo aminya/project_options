@@ -17,6 +17,10 @@ includes:
     taskfile: ./tests/emscripten/Taskfile.yml
     dir: ./tests/emscripten
 
+vars:
+  CWD:
+    sh: git rev-parse --show-toplevel
+
 tasks:
   lint:
     - git ls-files --exclude-standard | grep -E '\.(cpp|hpp|c|cc|cxx|hxx|ixx)$' | xargs clang-format -i -style=file 

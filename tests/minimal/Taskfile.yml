@@ -6,8 +6,8 @@ includes:
 
 tasks:
   build:
-    - cmake ./test_minimal -B ./test_minimal/build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' {{.CMAKE_ARGS}}
-    - cmake --build ./test_minimal/build --config Debug
+    - cmake . -B ./build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' {{.CMAKE_ARGS}}
+    - cmake --build ./build --config Debug
 
   build:mingw:
     cmds:
