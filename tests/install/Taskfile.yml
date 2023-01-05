@@ -3,6 +3,9 @@ version: 3
 
 includes:
   windows: ./Taskfile_windows.yml
+  myproj:
+    taskfile: ../myproj/Taskfile.yml
+    dir: ../myproj
 
 tasks:
   build:release:
@@ -13,10 +16,15 @@ tasks:
     - task: build:release
     - cd ./build && ctest -C Release --verbose
 
-  install:
+  install:myproj:
+    dir: ../myproj
     cmds:
-      - task: test:release
-      - cmake --install ./build --config Release --prefix ./install
+      - task: myproj:test:release
+      - cmake --install ./build --config Release --prefix {{.CWD}}/install
+
+  default:
+    cmds:
+      - task: install:myproj
       - cmake . -B ./build -DCMAKE_BUILD_TYPE:STRING=Release -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' -DCMAKE_PREFIX_PATH:STRING={{.CWD}}/install;
       - cmake --build ./build --config Release
       - cd ./build && ctest -C Release --verbose

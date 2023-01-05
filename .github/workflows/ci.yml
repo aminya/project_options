@@ -84,9 +84,7 @@ jobs:
 
       - name: Test
         run: |
-          task main:test
-          task main:test:release
-          task install
+          task ci:test
         env:
           CMAKE_GENERATOR: ${{ matrix.cmake_generator }}
 
