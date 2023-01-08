@@ -9,13 +9,13 @@ tasks:
     - cmake . -B ./build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' {{.CMAKE_ARGS}}
     - cmake --build ./build --config Debug
 
-  build:mingw:
+  build.mingw:
     cmds:
       - task: build
         vars:
           CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER={{.CROSS_CC | default "x86_64-w64-mingw32-gcc"}} -DCMAKE_CXX_COMPILER={{.CROSS_CXX | default "x86_64-w64-mingw32-g++"}}
 
-  build:mingw:from-env:
+  build.mingw.from-env:
     env: 
       CC: x86_64-w64-mingw32-gcc
       CXX: x86_64-w64-mingw32-g++
@@ -24,7 +24,7 @@ tasks:
         vars:
           CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON
 
-  build:mingw:from-triplet:
+  build.mingw.from-triplet:
     cmds:
       - task: build
         vars:

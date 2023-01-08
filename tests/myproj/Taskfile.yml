@@ -11,7 +11,7 @@ tasks:
     - cmake {{.PROJECT_DIR}} -B {{.PROJECT_DIR}}/build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' {{.CMAKE_ARGS}}
     - cmake --build {{.PROJECT_DIR}}/build --config Debug
 
-  build:release:
+  build.release:
     - cmake {{.PROJECT_DIR}} -B {{.PROJECT_DIR}}/build -DCMAKE_BUILD_TYPE:STRING=Release -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' {{.CMAKE_ARGS}}
     - cmake --build {{.PROJECT_DIR}}/build --config Release
 
@@ -19,19 +19,19 @@ tasks:
     - task: build
     - cd {{.PROJECT_DIR}}/build && ctest -C Debug --verbose
 
-  test:release:
-    - task: build:release
+  test.release:
+    - task: build.release
     - cd {{.PROJECT_DIR}}/build && ctest -C Release --verbose
 
-  build:mingw:
+  build.mingw:
     cmds:
       - task: build
         vars:
           CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER={{.CROSS_CC | default "x86_64-w64-mingw32-gcc"}} -DCMAKE_CXX_COMPILER={{.CROSS_CXX | default "x86_64-w64-mingw32-g++"}}
 
-  build:mingw:release:
+  build.mingw.release:
     cmds:
-      - task: build:release
+      - task: build.release
         vars:
           CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER={{.CROSS_CC | default "x86_64-w64-mingw32-gcc"}} -DCMAKE_CXX_COMPILER={{.CROSS_CXX | default "x86_64-w64-mingw32-g++"}}
 

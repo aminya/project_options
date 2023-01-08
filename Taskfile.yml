@@ -23,9 +23,9 @@ vars:
     sh: git rev-parse --show-toplevel
 
 tasks:
-  ci:test:
+  ci.test:
     - task: myproj:test
-    - task: myproj:test:release
+    - task: myproj:test.release
     - task: install
 
   lint:

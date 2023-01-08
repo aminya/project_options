@@ -65,7 +65,7 @@ jobs:
 
       - name: Build (Minimal)
         run: |
-          task minimal:build:mingw
+          task minimal:build.mingw
         env:
           CMAKE_GENERATOR: ${{ matrix.cmake_generator }}
           CROSS_CC: ${{ matrix.cross_cc }}
