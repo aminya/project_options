@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16...3.21)
+cmake_minimum_required(VERSION 3.16...3.23)
 
 # set a default CXX standard used by the external tools like clang-tidy, cppcheck, etc.
 # You can later set fine-grained standards for each target using `target_compile_features`
@@ -57,13 +57,12 @@ project_options(
   ENABLE_CPPCHECK
   ENABLE_CLANG_TIDY
   # ENABLE_INCLUDE_WHAT_YOU_USE
-  ENABLE_COVERAGE
-  ENABLE_PCH
-  PCH_HEADERS
-  ${PCH_HEADERS}
-  ENABLE_DOXYGEN
-  ENABLE_INTERPROCEDURAL_OPTIMIZATION
-  ENABLE_NATIVE_OPTIMIZATION
+  # TODO(CK: should not installed with this option!) ENABLE_COVERAGE
+  # TBD: ENABLE_PCH
+  # TBD: PCH_HEADERS ${PCH_HEADERS}
+  # NO(CK)! To slow! ENABLE_DOXYGEN
+  # ENABLE_INTERPROCEDURAL_OPTIMIZATION
+  # ENABLE_NATIVE_OPTIMIZATION
   # ENABLE_USER_LINKER
   # ENABLE_BUILD_WITH_TIME_TRACE
   # ENABLE_UNITY
@@ -99,11 +98,17 @@ add_subdirectory(libs)
 enable_testing()
 add_test(NAME main COMMAND main)
 
+if(NOT DEFINED CMAKE_INSTALL_INCLUDEDIR)
+  # NOTE: enable at least one language before including GNUInstallDirs.
+  include(GNUInstallDirs)
+endif()
+
 # Header-only library
 add_library(lib INTERFACE)
 set(lib_INCLUDE_DIR "include")
 target_include_directories(lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${lib_INCLUDE_DIR}>"
-                                         "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
+                                         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
+# FIXME(CK: This should not done for INTERFACE libs!)
 target_link_libraries(lib INTERFACE project_options project_warnings)
 target_link_system_libraries(
   lib
@@ -113,13 +118,13 @@ target_link_system_libraries(
 
 # Library
 add_library(lib2 "./src/mylib2/lib.cpp")
-set(lib2_INCLUDE_DIR2 "include")
-target_include_directories(lib2 PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${lib2_INCLUDE_DIR2}>"
-                                       "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
+set(lib2_INCLUDE_DIR "include")
+target_include_directories(lib2 PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${lib2_INCLUDE_DIR}>"
+                                       "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
 target_link_libraries(lib2 PRIVATE project_options project_warnings)
 target_link_system_libraries(
   lib2
-  PRIVATE
+  PUBLIC
   fmt::fmt
   Eigen3::Eigen)
 target_link_system_libraries(lib2 PRIVATE mythirdpartylib)
@@ -136,9 +141,9 @@ package_project(
   INTERFACE_DEPENDENCIES_CONFIGURED
   ${DEPENDENCIES_CONFIGURED}
   INTERFACE_INCLUDES
-  ${lib_INCLUDE_DIR2}
+  ${lib2_INCLUDE_DIR}
   PUBLIC_INCLUDES
-  ${lib2_INCLUDE_DIR2})
+  ${lib2_INCLUDE_DIR})
 
 # package separately (for testing)
 package_project(
@@ -161,7 +166,7 @@ package_project(
   project_options
   project_warnings
   PUBLIC_INCLUDES
-  ${lib2_INCLUDE_DIR22})
+  ${lib2_INCLUDE_DIR})
 
 package_project(
   NAME
