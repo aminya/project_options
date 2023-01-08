@@ -19,10 +19,10 @@ macro(run_conan)
   include(${CMAKE_BINARY_DIR}/conan.cmake)
 
   # Add (or remove) remotes as needed
-  # conan_add_remote(NAME conan-center URL https://conan.bintray.com)
+  # conan_add_remote(NAME conan-center URL https://center.conan.io)
   conan_add_remote(
     NAME
-    cci
+    conancenter
     URL
     https://center.conan.io
     INDEX
