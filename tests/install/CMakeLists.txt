@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16...3.21)
 
 ### Add project_options
-include(../src/Index.cmake)
+include(../../src/Index.cmake)
 
 run_vcpkg()
 
