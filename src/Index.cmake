@@ -85,6 +85,8 @@ macro(project_options)
       ENABLE_DOXYGEN
       ENABLE_INTERPROCEDURAL_OPTIMIZATION
       ENABLE_NATIVE_OPTIMIZATION
+      DISABLE_EXCEPTIONS
+      DISABLE_RTTI
       ENABLE_USER_LINKER
       ENABLE_BUILD_WITH_TIME_TRACE
       ENABLE_UNITY
@@ -161,6 +163,13 @@ macro(project_options)
 
   if(${ProjectOptions_ENABLE_NATIVE_OPTIMIZATION})
     enable_native_optimization(${_options_target})
+  endif()
+
+  if(${ProjectOptions_DISABLE_EXCEPTIONS})
+    disable_exceptions(${_options_target})
+  endif()
+  if(${ProjectOptions_DISABLE_RTTI})
+    disable_rtti(${_options_target})
   endif()
 
   if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
