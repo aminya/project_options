@@ -41,7 +41,7 @@ jobs:
             ${{ env.XDG_CACHE_HOME }}/vcpkg/archives
             ${{ env.LOCALAPPDATA }}\vcpkg\archives
             ${{ env.APPDATA }}\vcpkg\archives
-          key: ${{ runner.os }}-mingw-${{ env.BUILD_TYPE }}-${{ hashFiles('**/CMakeLists.txt') }}-${{ hashFiles('./vcpkg.json')}}-${{ matrix.cmake }}
+          key: ${{ runner.os }}-mingw-${{ matrix.platform }}-${{ env.BUILD_TYPE }}-${{ hashFiles('**/CMakeLists.txt') }}-${{ hashFiles('./vcpkg.json')}}-${{ matrix.cmake }}
           restore-keys: |
             ${{ runner.os }}-${{ env.BUILD_TYPE }}-
 
@@ -61,7 +61,7 @@ jobs:
       - name: Setup MinGW
         uses: egor-tensin/setup-mingw@v2
         with:
-          platform: ${{ matrix.cmake }}
+          platform: ${{ matrix.platform }}
 
       - name: Build (Minimal)
         run: |
