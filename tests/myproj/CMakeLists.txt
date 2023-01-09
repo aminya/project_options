@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD 20)
 # FetchContent_Declare(_project_options URL https://github.com/aminya/project_options/archive/refs/heads/main.zip)
 # FetchContent_MakeAvailable(_project_options)
 # include(${_project_options_SOURCE_DIR}/Index.cmake)
-include(../src/Index.cmake)
+include(../../src/Index.cmake)
 
 # opt-in cross-compiling
 option(ENABLE_CROSS_COMPILING "Detect cross compiler and setup toolchain" OFF)

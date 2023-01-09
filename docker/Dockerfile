@@ -21,20 +21,11 @@ ENTRYPOINT [ "/docker-entrypoint.sh" ]
 FROM setup AS build
 COPY . /home/project_options
 WORKDIR /home/project_options
-CMD ["/bin/bash", "-c", "task build_minimal"]
+CMD ["/bin/bash", "-c", "task minimal:build"]
 
 
 FROM setup AS test
 COPY . /home/project_options
 WORKDIR /home/project_options
-CMD ["/bin/bash", "-c", "task test"]
+CMD ["/bin/bash", "-c", "task main:test"]
 
-
-#FROM setup AS build_release
-#COPY . /home/project_options
-#WORKDIR /home/project_options
-#CMD ["task build_release"]
-#FROM gcr.io/distroless/cc AS runner
-#COPY --from=build_release /home/project_options/test/build/Release/ /home/app/
-#WORKDIR /home/app/
-#ENTRYPOINT ["./build/main"]

@@ -1,0 +1,5 @@
+version: 3
+
+tasks:
+  clean: 
+    - powershell -c 'function rmrf($path) { if (test-path $path) { rm -r -force $path }}; rmrf ./build'

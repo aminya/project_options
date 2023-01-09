@@ -26,22 +26,22 @@ ENTRYPOINT [ "/docker-entrypoint.sh" ]
 FROM setup AS build
 COPY . /home/project_options
 WORKDIR /home/project_options
-CMD ["/bin/bash", "-c", "task build_mingw"]
+CMD ["/bin/bash", "-c", "task main:build:mingw"]
 
 
 FROM setup AS build-minimal
 COPY . /home/project_options
 WORKDIR /home/project_options
-CMD ["/bin/bash", "-c", "task build_minimal_mingw"]
+CMD ["/bin/bash", "-c", "task minimal:build:mingw"]
 
 
 FROM setup AS build-minimal-from-env
 COPY . /home/project_options
 WORKDIR /home/project_options
-CMD ["/bin/bash", "-c", "task build_minimal_mingw_from_env"]
+CMD ["/bin/bash", "-c", "task minimal:build:mingw:from-env"]
 
 
 FROM setup AS build-minimal-from-triplet
 COPY . /home/project_options
 WORKDIR /home/project_options
-CMD ["/bin/bash", "-c", "task build_minimal_mingw_from_triplet"]
+CMD ["/bin/bash", "-c", "task minimal:build:mingw:from-triplet"]

@@ -33,4 +33,4 @@ ENTRYPOINT [ "/docker-entrypoint.sh" ]
 FROM setup AS build
 COPY . /home/project_options
 WORKDIR /home/project_options
-CMD ["/bin/bash", "-c", "task build_emscripten"]
+CMD ["/bin/bash", "-c", "task emscripten:build"]
