@@ -71,3 +71,11 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.mingw
       target: build-minimal-from-triplet
+  minimal-build-mingw-x86:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.mingw
+      target: build-minimal
+    environment:
+      - CROSS_CC=i686-w64-mingw32-gcc
+      - CROSS_CXX=i686-w64-mingw32-g++

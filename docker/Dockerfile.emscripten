@@ -1,8 +1,8 @@
 FROM ubuntu:22.04 AS base
 
-ARG setup_cpp_linux_version="0.24.0"
+ARG setup_cpp_linux_version="0.24.1"
 
-# add setup_cpp
+# add setup_cpp https://github.com/aminya/setup-cpp
 ADD https://github.com/aminya/setup-cpp/releases/download/v${setup_cpp_linux_version}/setup_cpp_linux /setup_cpp_linux
 RUN chmod +x /setup_cpp_linux
 

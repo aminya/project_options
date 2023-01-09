@@ -4,21 +4,20 @@ tasks:
   gcc:
     - docker-compose up --build build-gcc
     - docker-compose up --build test-gcc
-    - docker-compose down build-gcc test-gcc
+    - docker-compose down
 
   llvm:
     - docker-compose up --build build-llvm
     - docker-compose up --build test-llvm
-    - docker-compose down build-llvm test-llvm
+    - docker-compose down
 
   mingw:
     - docker-compose up --build minimal-build-mingw-x64
     - docker-compose up --build minimal-build-mingw-x64-from-env
     - docker-compose up --build minimal-build-mingw-x64-from-triplet
-    - docker-compose up --build build-mingw-x64
-    - docker-compose up --build build-mingw-x86
-    - docker-compose down minimal-build-mingw-x64 minimal-build-mingw-x64-from-triplet minimal-build-mingw-x64-from-env build-mingw-x64 build-mingw-x86
+    - docker-compose up --build minimal-build-mingw-x86
+    - docker-compose down
     
   emscripten:
     - docker-compose up --build build-emscripten
-    - docker-compose down build-emscripten
+    - docker-compose down
