@@ -66,6 +66,9 @@ if(ENABLE_TESTING)
   endif()
 endif()
 
+if(ENABLE_CROSS_COMPILING)
+  set(CLANG_TIDY_EXTRA_ARGUMENTS --extra-arg=--target=${CROSS_TRIPLET})
+endif()
 project_options(
   ENABLE_CACHE
   ${ENABLE_CPPCHECK}
@@ -87,6 +90,10 @@ project_options(
   <array>
   <algorithm>
   <concepts>
+
+  CLANG_TIDY_EXTRA_ARGUMENTS
+  ${CLANG_TIDY_EXTRA_ARGUMENTS}
+
   CPPCHECK_OPTIONS
   --enable=style,performance,warning,portability
   --inline-suppr

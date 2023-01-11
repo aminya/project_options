@@ -47,7 +47,10 @@ tasks:
     - task: install:lint
     - task: minimal:lint
     - task: emscripten:lint
-    - task: rpi:lint
+    - task: rpi3:lint
+    - task: rpi4:lint
+    - task: rpi4-vcpkg:lint
+    - task: pico:lint
     - npx -y cspell lint --no-progress --show-suggestions
 
   clean:
