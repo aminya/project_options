@@ -56,7 +56,7 @@ macro(enable_cppcheck CPPCHECK_OPTIONS)
 endmacro()
 
 # Enable static analysis with clang-tidy
-macro(enable_clang_tidy)
+macro(enable_clang_tidy CLANG_TIDY_EXTRA_ARGUMENTS)
   find_program(CLANGTIDY clang-tidy)
   if(CLANGTIDY)
 
@@ -113,6 +113,9 @@ macro(enable_clang_tidy)
         set(CMAKE_C_CLANG_TIDY ${CMAKE_C_CLANG_TIDY} -extra-arg=-std=c${CMAKE_C_STANDARD})
       endif()
     endif()
+
+    set(CMAKE_C_CLANG_TIDY ${CMAKE_C_CLANG_TIDY} ${CLANG_TIDY_EXTRA_ARGUMENTS})
+    set(CMAKE_CXX_CLANG_TIDY ${CMAKE_CXX_CLANG_TIDY} ${CLANG_TIDY_EXTRA_ARGUMENTS})
 
   else()
     message(${WARNING_MESSAGE} "clang-tidy requested but executable not found")
