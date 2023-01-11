@@ -17,6 +17,18 @@ includes:
   emscripten:
     taskfile: ./tests/emscripten/Taskfile.yml
     dir: ./tests/emscripten
+  rpi3:
+    taskfile: ./tests/rpi3/Taskfile.yml
+    dir: ./tests/rpi3
+  rpi4:
+    taskfile: ./tests/rpi4/Taskfile.yml
+    dir: ./tests/rpi4
+  rpi4-vcpkg:
+    taskfile: ./tests/rpi4-vcpkg/Taskfile.yml
+    dir: ./tests/rpi4-vcpkg
+  pico:
+    taskfile: ./tests/pico/Taskfile.yml
+    dir: ./tests/pico
 
 vars:
   CWD:
@@ -35,6 +47,7 @@ tasks:
     - task: install:lint
     - task: minimal:lint
     - task: emscripten:lint
+    - task: rpi:lint
     - npx -y cspell lint --no-progress --show-suggestions
 
   clean:

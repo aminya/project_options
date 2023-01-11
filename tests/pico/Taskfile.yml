@@ -1,0 +1,10 @@
+# https://taskfile.dev/#6/installation
+version: 3
+
+tasks:
+  build:
+    - cmake . -B ./build -DCMAKE_BUILD_TYPE:STRING=Release -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' {{.CMAKE_ARGS}}
+    - cmake --build ./build --config Release
+
+  lint:
+    - ~/vcpkg/vcpkg format-manifest ./vcpkg.json

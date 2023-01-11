@@ -21,3 +21,35 @@ tasks:
   emscripten:
     - docker-compose up --build build-emscripten
     - docker-compose down
+
+  rpi3:
+    - docker-compose up --build build-rpi3
+    - docker-compose down
+
+  rpi3.release:
+    - docker-compose up --build build-rpi3-release
+    - docker-compose down
+    
+  rpi4:
+    - docker-compose up --build build-rpi4
+    - docker-compose down
+
+  rpi4.release:
+    - docker-compose up --build build-rpi4-release
+    - docker-compose down
+
+  rpi4.test:
+    - docker-compose up --build test-rpi4
+    - docker-compose down
+
+  rpi4.vcpkg:
+    - docker-compose up --build build-rpi4-vcpkg
+    - docker-compose down
+
+  rpi4.custom:
+    - docker-compose up --build build-rpi4-custom
+    - docker-compose down
+
+  pico:
+    - docker-compose up --build build-pico
+    - docker-compose down

@@ -1,0 +1,16 @@
+# https://taskfile.dev/#6/installation
+version: 3
+
+tasks:
+  build:
+    - cmake . -B ./build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' {{.CMAKE_ARGS}}
+    - cmake --build ./build --config Debug
+
+  build.cross:
+    cmds:
+      - task: build
+        vars:
+          CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER={{.CROSS_CC | default "aarch64-linux-gnu-gcc"}} -DCMAKE_CXX_COMPILER={{.CROSS_CXX | default "aarch64-linux-gnu-g++"}} -DDEFAULT_TRIPLET=arm64-linux
+
+  lint:
+    - ~/vcpkg/vcpkg format-manifest ./vcpkg.json

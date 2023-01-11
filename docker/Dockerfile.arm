@@ -1,0 +1,33 @@
+FROM ubuntu:22.04 AS base
+
+ARG setup_cpp_linux_version="0.24.1"
+
+# add setup_cpp https://github.com/aminya/setup-cpp
+ADD https://github.com/aminya/setup-cpp/releases/download/v${setup_cpp_linux_version}/setup_cpp_linux /setup_cpp_linux
+RUN chmod +x /setup_cpp_linux
+
+
+
+FROM base AS setup
+
+# install cmake, ninja, and ccache
+RUN /setup_cpp_linux --clangtidy true --clangformat true --cmake true --ninja true --ccache true --cppcheck true --vcpkg true --conan true --task true 
+
+RUN apt-get update && apt-get install -y \
+    gcc-arm-none-eabi binutils-arm-none-eabi \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY ./docker/entrypoint.sh /docker-entrypoint.sh
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
+
+
+FROM setup AS build
+COPY . /home/project_options
+WORKDIR /home/project_options
+CMD ["/bin/bash", "-c", "task rpi3:build.cross"]
+
+
+FROM setup AS build-release
+COPY . /home/project_options
+WORKDIR /home/project_options
+CMD ["/bin/bash", "-c", "task rpi3:build.cross.release"]
