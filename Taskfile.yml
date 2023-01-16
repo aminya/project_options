@@ -26,9 +26,6 @@ includes:
   rpi4-vcpkg:
     taskfile: ./tests/rpi4-vcpkg/Taskfile.yml
     dir: ./tests/rpi4-vcpkg
-  pico:
-    taskfile: ./tests/pico/Taskfile.yml
-    dir: ./tests/pico
 
 vars:
   CWD:
