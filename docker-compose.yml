@@ -84,21 +84,21 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.arm
       target: build
-  build-rpi3-release:
+  build-rpi3-debug:
     build:
       context: .
       dockerfile: ./docker/Dockerfile.arm
-      target: build-release
+      target: build-debug
   build-rpi4:
     build:
       context: .
       dockerfile: ./docker/Dockerfile.aarch64
       target: build
-  build-rpi4-release:
+  build-rpi4-debug:
     build:
       context: .
       dockerfile: ./docker/Dockerfile.aarch64
-      target: build-release
+      target: build-debug
   test-rpi4:
     build:
       context: .
@@ -114,8 +114,3 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.aarch64
       target: build-custom
-  build-pico:
-    build:
-      context: .
-      dockerfile: ./docker/Dockerfile.pico
-      target: build

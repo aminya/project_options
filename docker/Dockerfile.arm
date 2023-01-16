@@ -27,7 +27,7 @@ WORKDIR /home/project_options
 CMD ["/bin/bash", "-c", "task rpi3:build.cross"]
 
 
-FROM setup AS build-release
+FROM setup AS build-debug
 COPY . /home/project_options
 WORKDIR /home/project_options
-CMD ["/bin/bash", "-c", "task rpi3:build.cross.release"]
+CMD ["/bin/bash", "-c", "task rpi3:build.cross.debug"]

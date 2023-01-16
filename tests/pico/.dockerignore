@@ -1,8 +1,0 @@
-build/
-.idea
-.vscode
-_deps
-cmake-*
-build
-.DS_Store
-*.pdf

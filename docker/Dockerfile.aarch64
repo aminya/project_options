@@ -26,10 +26,10 @@ COPY . /home/project_options
 WORKDIR /home/project_options
 CMD ["/bin/bash", "-c", "task rpi4:build.cross"]
 
-FROM setup AS build-release
+FROM setup AS build-debug
 COPY . /home/project_options
 WORKDIR /home/project_options
-CMD ["/bin/bash", "-c", "task rpi4:build.cross.release"]
+CMD ["/bin/bash", "-c", "task rpi4:build.cross.debug"]
 
 FROM setup AS build-vcpkg
 COPY . /home/project_options
@@ -49,4 +49,4 @@ RUN apt-get update && apt-get install -y \
 COPY . /home/project_options
 WORKDIR /home/project_options
 ENV QEMU_LD_PREFIX /usr/aarch64-linux-gnu
-CMD ["/bin/bash", "-c", "task rpi4:build.cross.release && qemu-aarch64 /home/project_options/tests/rpi4/build/Release/example"]
+CMD ["/bin/bash", "-c", "task rpi4:build.cross && qemu-aarch64 /home/project_options/tests/rpi4/build/Release/example"]

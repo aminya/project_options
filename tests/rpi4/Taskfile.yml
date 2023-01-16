@@ -2,11 +2,11 @@
 version: 3
 
 tasks:
-  build:
+  build.debug:
     - cmake . -B ./build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' {{.CMAKE_ARGS}}
     - cmake --build ./build --config Debug
 
-  build.release:
+  build:
     - cmake . -B ./build -DCMAKE_BUILD_TYPE:STRING=Release -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' {{.CMAKE_ARGS}}
     - cmake --build ./build --config Release
 
@@ -14,19 +14,16 @@ tasks:
     cmds:
       - task: build
         vars:
-          CMAKE_ARGS: -DENABLE_CHECKING:BOOL=ON -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER={{.CROSS_CC | default "gcc-aarch64-linux-gnu-gcc"}} -DCMAKE_CXX_COMPILER={{.CROSS_CXX | default "gcc-aarch64-linux-gnu-g++"}} -DDEFAULT_TRIPLET=arm64-linux
-
-  build.cross.release:
-    cmds:
-      - task: build.release
-        vars:
           CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER={{.CROSS_CC | default "gcc-aarch64-linux-gnu-gcc"}} -DCMAKE_CXX_COMPILER={{.CROSS_CXX | default "gcc-aarch64-linux-gnu-g++"}} -DDEFAULT_TRIPLET=arm64-linux
+
+  build.cross.debug:
+    cmds:
+      - task: build.debug
+        vars:
+          CMAKE_ARGS: -DENABLE_CHECKING:BOOL=ON -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER={{.CROSS_CC | default "gcc-aarch64-linux-gnu-gcc"}} -DCMAKE_CXX_COMPILER={{.CROSS_CXX | default "gcc-aarch64-linux-gnu-g++"}} -DDEFAULT_TRIPLET=arm64-linux
 
   build.cross.custom-toolchain:
     cmds:
       - task: build.release
         vars:
           CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER={{.CROSS_CC | default "gcc-aarch64-linux-gnu-gcc"}} -DCMAKE_CXX_COMPILER={{.CROSS_CXX | default "gcc-aarch64-linux-gnu-g++"}} -DDEFAULT_TRIPLET=arm64-linux -DCMAKE_TOOLCHAIN_FILE=./cmake/my-toolchain.cmake
-
-  lint:
-    - ~/vcpkg/vcpkg format-manifest ./vcpkg.json
