@@ -49,7 +49,3 @@ tasks:
   rpi4.custom:
     - docker-compose up --build build-rpi4-custom
     - docker-compose down
-
-  pico:
-    - docker-compose up --build build-pico
-    - docker-compose down
