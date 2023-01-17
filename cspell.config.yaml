@@ -29,6 +29,7 @@ words:
   - CPATH
   - Cppcheck
   - cppcoreguidelines
+  - cppreference
   - cppdbg
   - CPPFLAGS
   - cpprc
@@ -40,8 +41,8 @@ words:
   - DOPT
   - dyld
   - dylib
-  - Eigen
   - egor-tensin
+  - Eigen
   - emcc
   - emcmake
   - emscripten
@@ -82,6 +83,7 @@ words:
   - pwsh
   - rmrf
   - rpath
+  - rtti
   - sccache
   - setx
   - shlib
