@@ -6,7 +6,7 @@ include_guard()
 # https://github.com/lefticus/cppbestpractices/blob/master/02-Use_the_Tools_Available.md
 function(
   set_project_warnings
-  project_name
+  _project_name
   WARNINGS_AS_ERRORS
   MSVC_WARNINGS
   CLANG_WARNINGS
@@ -116,7 +116,7 @@ function(
   set(PROJECT_WARNINGS_CUDA "${CUDA_WARNINGS}")
 
   target_compile_options(
-    ${project_name}
+    ${_project_name}
     INTERFACE # C++ warnings
               $<$<COMPILE_LANGUAGE:CXX>:${PROJECT_WARNINGS_CXX}>
               # C warnings

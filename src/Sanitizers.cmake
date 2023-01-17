@@ -2,7 +2,7 @@ include_guard()
 
 function(
   enable_sanitizers
-  project_name
+  _project_name
   ENABLE_SANITIZER_ADDRESS
   ENABLE_SANITIZER_LEAK
   ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
@@ -69,8 +69,8 @@ function(
        STREQUAL
        "")
       if(NOT MSVC)
-        target_compile_options(${project_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
-        target_link_options(${project_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
+        target_compile_options(${_project_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
+        target_link_options(${_project_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
       else()
         string(FIND "$ENV{PATH}" "$ENV{VSINSTALLDIR}" index_of_vs_install_dir)
         if("${index_of_vs_install_dir}" STREQUAL "-1")
@@ -79,8 +79,8 @@ function(
               "Using MSVC sanitizers requires setting the MSVC environment before building the project. Please manually open the MSVC command prompt and rebuild the project."
           )
         endif()
-        target_compile_options(${project_name} INTERFACE /fsanitize=${LIST_OF_SANITIZERS} /Zi /INCREMENTAL:NO)
-        target_link_options(${project_name} INTERFACE /INCREMENTAL:NO)
+        target_compile_options(${_project_name} INTERFACE /fsanitize=${LIST_OF_SANITIZERS} /Zi /INCREMENTAL:NO)
+        target_link_options(${_project_name} INTERFACE /INCREMENTAL:NO)
       endif()
     endif()
   endif()
