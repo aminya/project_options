@@ -26,16 +26,16 @@ tasks:
     - docker-compose up --build build-rpi3
     - docker-compose down
 
-  rpi3.release:
-    - docker-compose up --build build-rpi3-release
+  rpi3.debug:
+    - docker-compose up --build build-rpi3-debug
     - docker-compose down
     
   rpi4:
     - docker-compose up --build build-rpi4
     - docker-compose down
 
-  rpi4.release:
-    - docker-compose up --build build-rpi4-release
+  rpi4.debug:
+    - docker-compose up --build build-rpi4-debug
     - docker-compose down
 
   rpi4.test:
