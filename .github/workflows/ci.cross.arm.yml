@@ -60,7 +60,7 @@ jobs:
           task: true
           doxygen: true
           powershell: true
-      
+
       - name: Setup ARM (Cross) Compiler
         uses: tecolicom/actions-use-apt-tools@v1
         with:

@@ -168,7 +168,7 @@ macro(enable_cross_compiler)
 
   set(_toolchain_file)
   get_toolchain_file(_toolchain_file)
-  if (NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     set(CMAKE_TOOLCHAIN_FILE ${_toolchain_file})
   endif()
   set(CROSSCOMPILING TRUE)

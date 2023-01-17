@@ -90,10 +90,8 @@ project_options(
   <array>
   <algorithm>
   <concepts>
-
   CLANG_TIDY_EXTRA_ARGUMENTS
   ${CLANG_TIDY_EXTRA_ARGUMENTS}
-
   CPPCHECK_OPTIONS
   --enable=style,performance,warning,portability
   --inline-suppr
@@ -120,7 +118,15 @@ target_link_libraries(example_c PRIVATE project_options project_warnings)
 
 if(ENABLE_CROSS_COMPILING)
   # fix: ...arm-none-eabi/lib/libg.a(lib_a-exit.o): in function `exit':
-  target_link_options(example_c PRIVATE -Wl,--start-group -lgcc -lc -lm -lrdimon -Wl,--end-group)
+  target_link_options(
+    example_c
+    PRIVATE
+    -Wl,--start-group
+    -lgcc
+    -lc
+    -lm
+    -lrdimon
+    -Wl,--end-group)
 
   # custom raspberry pi 3 options
   target_compile_options(project_options INTERFACE -march=armv8-a -mfpu=neon-fp-armv8 -mthumb)
