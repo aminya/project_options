@@ -2,7 +2,6 @@
 version: 3
 
 includes:
-  windows: ./Taskfile_windows.yml
   docker: ./docker/Taskfile.yml
   examples: ./examples/Taskfile.yml
   myproj:
@@ -29,15 +28,31 @@ tasks:
     - task: install
 
   lint:
-    - git ls-files --exclude-standard | grep -E '\.(cpp|hpp|c|cc|cxx|hxx|ixx)$' | xargs clang-format -i -style=file 
-    - git ls-files --exclude-standard | grep -E '(CMakeLists\.txt)|(\.(cmake))$' | xargs cmake-format --in-place | xargs cmake-lint --disabled-codes C0103 C0301 R0912 R0915 R0913 --suppress-decorations
-    - task: myproj:lint
-    - task: install:lint
-    - task: minimal:lint
-    - task: emscripten:lint
-    - npx -y cspell lint --no-progress --show-suggestions
+    cmds:
+      - npx -y cspell lint --no-progress --show-suggestions
+
+      - cmd: powershell -c '$files=(git ls-files --exclude-standard); foreach ($file in $files) { if ((get-item $file).Extension -in ".cpp", ".hpp", ".c", ".cc", ".cxx", ".hxx", ".ixx") { clang-format -i -style=file $file } }'
+        platforms: [windows]
+      - cmd: git ls-files --exclude-standard | grep -E '\.(cpp|hpp|c|cc|cxx|hxx|ixx)$' | xargs clang-format -i -style=file
+        platforms: [linux, darwin]
+
+      - cmd: powershell -c '$files=(git ls-files --exclude-standard); foreach ($file in $files) { $item=(get-item $file); if (($item.Name -eq "CMakeLists.txt") -or ($item.Extension -in ".cmake")) { cmake-format --in-place $file; cmake-lint $file {{.CMAKE_LINT_FLAGS}} } }'
+        platforms: [windows]
+      - cmd: git ls-files --exclude-standard | grep -E '(CMakeLists\.txt)|(\.(cmake))$' | xargs cmake-format --in-place | xargs cmake-lint {{.CMAKE_LINT_FLAGS}}
+        platforms: [linux, darwin]
+
+      - task: myproj:lint
+      - task: install:lint
+      - task: minimal:lint
+      - task: emscripten:lint
+    vars:
+      CMAKE_LINT_FLAGS: --disabled-codes C0103 C0301 R0912 R0915 R0913 --suppress-decorations
 
   clean:
+    - cmd: powershell -c 'function rmrf($path) { if (test-path $path) { rm -r -force $path }}; rmrf ./install'
+      platforms: [windows]
+    - cmd: rm -rf ./install
+      platforms: [linux, darwin]
+
     - task: myproj:clean
     - task: install:clean
-    - rm -rf {{.CWD}}/install
