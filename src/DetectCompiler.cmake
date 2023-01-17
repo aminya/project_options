@@ -1,8 +1,8 @@
 include_guard()
 
+# includes a separate CMakeLists.txt file to detect the CXX/C compilers before project is called
+# Using a separate file ensures that the current scope is not contaminated by the variable
 macro(detect_compiler)
-  # includes a separate CMakeLists.txt file to detect the CXX/C compilers before project is called
-  # Using a separate file ensures that the current scope is not contaminated by the variable
   find_program(CMAKE_EXECUTABLE cmake)
   execute_process(
     COMMAND "${CMAKE_EXECUTABLE}" -S "${ProjectOptions_SRC_DIR}/detect_compiler" -B

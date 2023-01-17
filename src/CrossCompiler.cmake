@@ -1,5 +1,6 @@
 include_guard()
 
+# Enable cross-compiling
 macro(enable_cross_compiler)
   include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
   detect_architecture(_arch)
@@ -159,6 +160,7 @@ macro(enable_cross_compiler)
   message(STATUS "Toolchain File: ${CMAKE_TOOLCHAIN_FILE}")
 endmacro()
 
+# Get the toolchain file
 function(get_toolchain_file value)
   include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
   detect_architecture(_arch)

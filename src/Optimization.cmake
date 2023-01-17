@@ -1,5 +1,6 @@
 include_guard()
 
+# Enable Interprocedural Optimization (Link Time Optimization, LTO) in the release build
 macro(enable_interprocedural_optimization _project_name)
   if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
     include(CheckIPOSupported)
@@ -20,6 +21,7 @@ macro(enable_interprocedural_optimization _project_name)
   endif()
 endmacro()
 
+# Enable the optimizations specific to the build machine (e.g. SSE4_1, AVX2, etc.).
 macro(enable_native_optimization _project_name)
   detect_architecture(_arch)
   if("${_arch}" STREQUAL "x64")
@@ -33,12 +35,14 @@ macro(enable_native_optimization _project_name)
   endif()
 endmacro()
 
+# Disable C++ exceptions for the given project.
 macro(disable_exceptions _project_name)
   target_compile_options(${_project_name} INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/EHs-c- /D_HAS_EXCEPTIONS=0>)
   target_compile_options(${_project_name} INTERFACE $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-fno-exceptions
                                                     -fno-unwind-tables>)
 endmacro()
 
+# Disable C++ RTTI (Run-Time Type Information) for the given project.
 macro(disable_rtti _project_name)
   target_compile_options(${_project_name} INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/GR->)
   target_compile_options(${_project_name} INTERFACE $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-fno-rtti>)

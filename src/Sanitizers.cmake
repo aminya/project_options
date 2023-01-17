@@ -1,5 +1,6 @@
 include_guard()
 
+# Enable the sanitizers for the given project
 function(
   enable_sanitizers
   _project_name
