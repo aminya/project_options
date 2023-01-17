@@ -1,9 +1,6 @@
 # https://taskfile.dev/#6/installation
 version: 3
 
-includes:
-  windows: ./Taskfile_windows.yml
-
 tasks:
   build:
     - cmake . -B ./build -DCMAKE_BUILD_TYPE:STRING=Debug -G '{{.CMAKE_GENERATOR | default "Ninja Multi-Config"}}' {{.CMAKE_ARGS}}
@@ -16,7 +13,7 @@ tasks:
           CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER={{.CROSS_CC | default "x86_64-w64-mingw32-gcc"}} -DCMAKE_CXX_COMPILER={{.CROSS_CXX | default "x86_64-w64-mingw32-g++"}}
 
   build.mingw.from-env:
-    env: 
+    env:
       CC: x86_64-w64-mingw32-gcc
       CXX: x86_64-w64-mingw32-g++
     cmds:
@@ -32,3 +29,9 @@ tasks:
 
   lint:
     - ~/vcpkg/vcpkg format-manifest ./vcpkg.json
+
+  clean:
+    - cmd: powershell -c 'function rmrf($path) { if (test-path $path) { rm -r -force $path }}; rmrf ./build'
+      platforms: [windows]
+    - cmd: rm -rf ./build
+      platforms: [linux, darwin]

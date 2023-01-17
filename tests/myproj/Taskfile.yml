@@ -1,8 +1,5 @@
 version: 3
 
-includes:
-  windows: ./Taskfile_windows.yml
-
 vars:
   PROJECT_DIR: '{{.PROJECT_DIR | default "."}}'
 
@@ -37,6 +34,9 @@ tasks:
 
   lint:
     - ~/vcpkg/vcpkg format-manifest ./vcpkg.json
-    
+
   clean:
-    - rm -rf ./build
+    - cmd: powershell -c 'function rmrf($path) { if (test-path $path) { rm -r -force $path }}; rmrf ./build'
+      platforms: [windows]
+    - cmd: rm -rf ./build
+      platforms: [linux, darwin]

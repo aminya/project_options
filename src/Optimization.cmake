@@ -1,6 +1,7 @@
 include_guard()
 
-macro(enable_interprocedural_optimization project_name)
+# Enable Interprocedural Optimization (Link Time Optimization, LTO) in the release build
+macro(enable_interprocedural_optimization _project_name)
   if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
     include(CheckIPOSupported)
     check_ipo_supported(RESULT result OUTPUT output)
@@ -13,32 +14,36 @@ macro(enable_interprocedural_optimization project_name)
           "Interprocedural optimization is enabled. In other projects, linking with the compiled libraries of this project might require `set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)`"
       )
       set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
-      set_target_properties(${project_name} PROPERTIES INTERPROCEDURAL_OPTIMIZATION ON)
+      set_target_properties(${_project_name} PROPERTIES INTERPROCEDURAL_OPTIMIZATION ON)
     else()
       message(WARNING "Interprocedural Optimization is not supported. Not using it. Here is the error log: ${output}")
     endif()
   endif()
 endmacro()
 
-macro(enable_native_optimization project_name)
+# Enable the optimizations specific to the build machine (e.g. SSE4_1, AVX2, etc.).
+macro(enable_native_optimization _project_name)
   detect_architecture(_arch)
   if("${_arch}" STREQUAL "x64")
     message(STATUS "Enabling the optimizations specific to the current build machine (less portable)")
     if(MSVC)
       # TODO It seems it only accepts the exact instruction set like AVX https://docs.microsoft.com/en-us/cpp/build/reference/arch-x64
-      # target_compile_options(${project_name} INTERFACE /arch:native)
+      # target_compile_options(${_project_name} INTERFACE /arch:native)
     else()
-      target_compile_options(${project_name} INTERFACE -march=native)
+      target_compile_options(${_project_name} INTERFACE -march=native)
     endif()
   endif()
 endmacro()
 
-macro(disable_exceptions project_name)
-  target_compile_options(${project_name} INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/EHs-c- /D_HAS_EXCEPTIONS=0>)
-  target_compile_options(${project_name} INTERFACE $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-fno-exceptions -fno-unwind-tables>)
+# Disable C++ exceptions for the given project.
+macro(disable_exceptions _project_name)
+  target_compile_options(${_project_name} INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/EHs-c- /D_HAS_EXCEPTIONS=0>)
+  target_compile_options(${_project_name} INTERFACE $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-fno-exceptions
+                                                    -fno-unwind-tables>)
 endmacro()
 
-macro(disable_rtti project_name)
-  target_compile_options(${project_name} INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/GR->)
-  target_compile_options(${project_name} INTERFACE $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-fno-rtti>)
+# Disable C++ RTTI (Run-Time Type Information) for the given project.
+macro(disable_rtti _project_name)
+  target_compile_options(${_project_name} INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/GR->)
+  target_compile_options(${_project_name} INTERFACE $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-fno-rtti>)
 endmacro()
