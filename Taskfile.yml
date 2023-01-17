@@ -35,7 +35,7 @@ tasks:
     - cmd: git ls-files --exclude-standard | grep -E '\.(cpp|hpp|c|cc|cxx|hxx|ixx)$' | xargs clang-format -i -style=file
       platforms: [linux, darwin]
 
-  lint.cmake-format:
+  lint.cmake:
     cmds:
       - cmd: powershell -c '$files=(git ls-files --exclude-standard); foreach ($file in $files) { $item=(get-item $file); if (($item.Name -eq "CMakeLists.txt") -or ($item.Extension -in ".cmake")) { cmake-format --in-place $file; cmake-lint $file {{.CMAKE_LINT_FLAGS}} } }'
         platforms: [windows]
@@ -48,7 +48,7 @@ tasks:
     deps:
       - lint.cspell
       - lint.clang-format
-      - lint.cmake-format
+      - lint.cmake
       - myproj:lint
       - install:lint
       - minimal:lint
