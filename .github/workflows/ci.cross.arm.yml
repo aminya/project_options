@@ -17,6 +17,11 @@ jobs:
           - ubuntu-22.04
         cmake:
           - true
+        task:
+          - rpi4:build.cross
+          - rpi4-vcpkg:build.cross
+          - rpi4:build.cross.custom-toolchain
+          - rpi3:build.cross
         include:
           - task: rpi4:build.cross
             install-cross-compiler: g++-aarch64-linux-gnu gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
@@ -25,7 +30,7 @@ jobs:
             install-cross-compiler: g++-aarch64-linux-gnu gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
             target: aarch64-linux-gnu
           - task: rpi4:build.cross.custom-toolchain
-            insstall-cross-compiler: g++-aarch64-linux-gnu gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
+            install-cross-compiler: g++-aarch64-linux-gnu gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
             target: aarch64-linux-gnu
           - task: rpi3:build.cross
             install-cross-compiler: gcc-arm-none-eabi binutils-arm-none-eabi
