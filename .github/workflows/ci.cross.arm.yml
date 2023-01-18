@@ -67,9 +67,10 @@ jobs:
           powershell: true
 
       - name: Setup ARM (Cross) Compiler
-        uses: tecolicom/actions-use-apt-tools@v1
+        uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          tools: ${{ matrix.install-cross-compiler }}
+          packages: ${{ matrix.install-cross-compiler }}
+          version: 1.0
 
       - name: Build (Task)
         run: |
