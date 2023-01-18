@@ -1,17 +1,17 @@
 FROM ubuntu:22.04 AS base
 
-ARG setup_cpp_linux_version="0.24.1"
-
-# add setup_cpp https://github.com/aminya/setup-cpp
-ADD https://github.com/aminya/setup-cpp/releases/download/v${setup_cpp_linux_version}/setup_cpp_linux /setup_cpp_linux
-RUN chmod +x /setup_cpp_linux
+# add setup-cpp https://github.com/aminya/setup-cpp
+RUN apt-get update && apt-get install -y \
+  npm \
+  && rm -rf /var/lib/apt/lists/*
+RUN npm install -g setup-cpp
 
 
 
 FROM base AS setup
 
 # install cmake, ninja, and ccache
-RUN /setup_cpp_linux --clangtidy true --clangformat true --cmake true --ninja true --ccache true --cppcheck true --vcpkg true --conan true --task true 
+RUN setup-cpp --clangtidy true --clangformat true --cmake true --ninja true --ccache true --cppcheck true --vcpkg true --conan true --task true 
 
 RUN apt-get update && apt-get install -y \
     g++-aarch64-linux-gnu gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu \
