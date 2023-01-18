@@ -21,11 +21,13 @@ ENTRYPOINT [ "/docker-entrypoint.sh" ]
 FROM setup AS build
 COPY . /home/project_options
 WORKDIR /home/project_options
+RUN git submodule update --init
 CMD ["/bin/bash", "-c", "task myproj:build"]
 
 
 FROM setup AS test
 COPY . /home/project_options
 WORKDIR /home/project_options
+RUN git submodule update --init
 CMD ["/bin/bash", "-c", "task myproj:test"]
 

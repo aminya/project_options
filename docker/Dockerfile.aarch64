@@ -24,21 +24,25 @@ ENTRYPOINT [ "/docker-entrypoint.sh" ]
 FROM setup AS build
 COPY . /home/project_options
 WORKDIR /home/project_options
+RUN git submodule update --init
 CMD ["/bin/bash", "-c", "task rpi4:build.cross"]
 
 FROM setup AS build-debug
 COPY . /home/project_options
 WORKDIR /home/project_options
+RUN git submodule update --init
 CMD ["/bin/bash", "-c", "task rpi4:build.cross.debug"]
 
 FROM setup AS build-vcpkg
 COPY . /home/project_options
 WORKDIR /home/project_options
+RUN git submodule update --init
 CMD ["/bin/bash", "-c", "task rpi4-vcpkg:build.cross"]
 
 FROM setup AS build-custom
 COPY . /home/project_options
 WORKDIR /home/project_options
+RUN git submodule update --init
 CMD ["/bin/bash", "-c", "task rpi4:build.cross.custom-toolchain"]
 
 
@@ -48,5 +52,6 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 COPY . /home/project_options
 WORKDIR /home/project_options
+RUN git submodule update --init
 ENV QEMU_LD_PREFIX /usr/aarch64-linux-gnu
 CMD ["/bin/bash", "-c", "task rpi4:build.cross && qemu-aarch64 /home/project_options/tests/rpi4/build/Release/example"]

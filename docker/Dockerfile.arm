@@ -24,10 +24,12 @@ ENTRYPOINT [ "/docker-entrypoint.sh" ]
 FROM setup AS build
 COPY . /home/project_options
 WORKDIR /home/project_options
+RUN git submodule update --init
 CMD ["/bin/bash", "-c", "task rpi3:build.cross"]
 
 
 FROM setup AS build-debug
 COPY . /home/project_options
 WORKDIR /home/project_options
+RUN git submodule update --init
 CMD ["/bin/bash", "-c", "task rpi3:build.cross.debug"]

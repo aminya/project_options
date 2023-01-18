@@ -26,22 +26,26 @@ ENTRYPOINT [ "/docker-entrypoint.sh" ]
 FROM setup AS build
 COPY . /home/project_options
 WORKDIR /home/project_options
+RUN git submodule update --init
 CMD ["/bin/bash", "-c", "task myproj:build.mingw"]
 
 
 FROM setup AS build-minimal
 COPY . /home/project_options
 WORKDIR /home/project_options
+RUN git submodule update --init
 CMD ["/bin/bash", "-c", "task minimal:build.mingw"]
 
 
 FROM setup AS build-minimal-from-env
 COPY . /home/project_options
 WORKDIR /home/project_options
+RUN git submodule update --init
 CMD ["/bin/bash", "-c", "task minimal:build.mingw.from-env"]
 
 
 FROM setup AS build-minimal-from-triplet
 COPY . /home/project_options
 WORKDIR /home/project_options
+RUN git submodule update --init
 CMD ["/bin/bash", "-c", "task minimal:build.mingw.from-triplet"]
