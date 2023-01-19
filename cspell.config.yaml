@@ -10,6 +10,8 @@ language: en, en-GB
 allowCompoundWords: true
 enableGlobDot: true
 words:
+  - awalsh
+  - pkgs
   - aarch
   - aminya
   - Amnet

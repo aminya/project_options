@@ -37,13 +37,16 @@ endmacro()
 
 # Disable C++ exceptions for the given project.
 macro(disable_exceptions _project_name)
-  target_compile_options(${_project_name} INTERFACE $<$<AND:$<COMPILE_LANGUAGE:CXX,$<CXX_COMPILER_ID:MSVC>>>:/EHs-c- /D_HAS_EXCEPTIONS=0>)
-  target_compile_options(${_project_name} INTERFACE $<$<AND:$<COMPILE_LANGUAGE:CXX,$<NOT:$<CXX_COMPILER_ID:MSVC>>>>:-fno-exceptions
-                                                    -fno-unwind-tables>)
+  target_compile_options(${_project_name} INTERFACE $<$<AND:$<COMPILE_LANGUAGE:CXX,$<CXX_COMPILER_ID:MSVC>>>:/EHs-c-
+                                                    /D_HAS_EXCEPTIONS=0>)
+  target_compile_options(
+    ${_project_name} INTERFACE $<$<AND:$<COMPILE_LANGUAGE:CXX,$<NOT:$<CXX_COMPILER_ID:MSVC>>>>:-fno-exceptions
+                               -fno-unwind-tables>)
 endmacro()
 
 # Disable C++ RTTI (Run-Time Type Information) for the given project.
 macro(disable_rtti _project_name)
   target_compile_options(${_project_name} INTERFACE $<$<AND:$<COMPILE_LANGUAGE:CXX,$<CXX_COMPILER_ID:MSVC>>>:/GR->)
-  target_compile_options(${_project_name} INTERFACE $<$<AND:$<COMPILE_LANGUAGE:CXX,$<NOT:$<CXX_COMPILER_ID:MSVC>>>>:-fno-rtti>)
+  target_compile_options(${_project_name}
+                         INTERFACE $<$<AND:$<COMPILE_LANGUAGE:CXX,$<NOT:$<CXX_COMPILER_ID:MSVC>>>>:-fno-rtti>)
 endmacro()
