@@ -57,7 +57,26 @@ endmacro()
 
 # Enable static analysis with clang-tidy
 macro(enable_clang_tidy)
-  find_program(CLANGTIDY clang-tidy)
+  # https://github.com/ejfitzgerald/clang-tidy-cache
+  find_program(
+    CLANGTIDY_CACHE
+    NAMES "clang-tidy-cache"
+          "clang-tidy-cache-windows-amd64"
+          "clang-tidy-cache-linux-amd64"
+          "clang-tidy-cache-darwin-amd64")
+  if(CLANGTIDY_CACHE)
+    # use clang-tidy-cache if found
+    set($ENV{CLANG_TIDY_CACHE_BINARY} ${CLANGTIDY_CACHE})
+    set(CLANGTIDY
+        ${CLANGTIDY_CACHE}
+        -p
+        "${CMAKE_CURRENT_BINARY_DIR}"
+        --export-fixes
+        "${CMAKE_CURRENT_BINARY_DIR}/clang_tidy_fixes.yaml")
+  else()
+    # otherwise use clang-tidy directly
+    find_program(CLANGTIDY clang-tidy)
+  endif()
   if(CLANGTIDY)
 
     # clang-tidy only works with clang when PCH is enabled
