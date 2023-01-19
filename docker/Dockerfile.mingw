@@ -1,17 +1,17 @@
 FROM ubuntu:22.04 AS base
 
-ARG setup_cpp_linux_version="0.24.1"
-
-# add setup_cpp https://github.com/aminya/setup-cpp
-ADD https://github.com/aminya/setup-cpp/releases/download/v${setup_cpp_linux_version}/setup_cpp_linux /setup_cpp_linux
-RUN chmod +x /setup_cpp_linux
+# add setup-cpp https://github.com/aminya/setup-cpp
+RUN apt-get update && apt-get install -y \
+  npm \
+  && rm -rf /var/lib/apt/lists/*
+RUN npm install -g setup-cpp
 
 
 
 FROM base AS setup
 
 # install cmake, ninja, and ccache
-RUN /setup_cpp_linux --cmake true --ninja true --ccache true --cppcheck true --vcpkg true --conan true --task true --powershell true
+RUN setup-cpp --cmake true --ninja true --ccache true --cppcheck true --vcpkg true --conan true --task true --powershell true
 
 # TODO: install cross-compiler with setup_cpp_linux
 # NOTE: install mingw by hand, waiting for setup-cpp to have mingw cross-compiler support
@@ -26,22 +26,26 @@ ENTRYPOINT [ "/docker-entrypoint.sh" ]
 FROM setup AS build
 COPY . /home/project_options
 WORKDIR /home/project_options
+RUN git submodule update --init
 CMD ["/bin/bash", "-c", "task myproj:build.mingw"]
 
 
 FROM setup AS build-minimal
 COPY . /home/project_options
 WORKDIR /home/project_options
+RUN git submodule update --init
 CMD ["/bin/bash", "-c", "task minimal:build.mingw"]
 
 
 FROM setup AS build-minimal-from-env
 COPY . /home/project_options
 WORKDIR /home/project_options
+RUN git submodule update --init
 CMD ["/bin/bash", "-c", "task minimal:build.mingw.from-env"]
 
 
 FROM setup AS build-minimal-from-triplet
 COPY . /home/project_options
 WORKDIR /home/project_options
+RUN git submodule update --init
 CMD ["/bin/bash", "-c", "task minimal:build.mingw.from-triplet"]

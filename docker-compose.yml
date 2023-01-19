@@ -79,3 +79,38 @@ services:
     environment:
       - CROSS_CC=i686-w64-mingw32-gcc
       - CROSS_CXX=i686-w64-mingw32-g++
+  build-rpi3:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.arm
+      target: build
+  build-rpi3-debug:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.arm
+      target: build-debug
+  build-rpi4:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.aarch64
+      target: build
+  build-rpi4-debug:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.aarch64
+      target: build-debug
+  test-rpi4:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.aarch64
+      target: test
+  build-rpi4-vcpkg:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.aarch64
+      target: build-vcpkg
+  build-rpi4-custom:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.aarch64
+      target: build-custom

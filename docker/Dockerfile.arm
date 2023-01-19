@@ -6,12 +6,16 @@ RUN apt-get update && apt-get install -y \
   && rm -rf /var/lib/apt/lists/*
 RUN npm install -g setup-cpp
 
+
+
 FROM base AS setup
 
-ARG compiler="gcc"
 # install cmake, ninja, and ccache
-RUN setup-cpp --compiler $compiler --llvm true --cmake true --doxygen true --ninja true --ccache true --cppcheck true --vcpkg true --conan true --task true
+RUN setup-cpp --clangtidy true --clangformat true --cmake true --ninja true --ccache true --cppcheck true --vcpkg true --conan true --task true 
 
+RUN apt-get update && apt-get install -y \
+    gcc-arm-none-eabi binutils-arm-none-eabi \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY ./docker/entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
@@ -21,12 +25,11 @@ FROM setup AS build
 COPY . /home/project_options
 WORKDIR /home/project_options
 RUN git submodule update --init
-CMD ["/bin/bash", "-c", "task myproj:build"]
+CMD ["/bin/bash", "-c", "task rpi3:build.cross"]
 
 
-FROM setup AS test
+FROM setup AS build-debug
 COPY . /home/project_options
 WORKDIR /home/project_options
 RUN git submodule update --init
-CMD ["/bin/bash", "-c", "task myproj:test"]
-
+CMD ["/bin/bash", "-c", "task rpi3:build.cross.debug"]

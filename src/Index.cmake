@@ -107,6 +107,7 @@ macro(project_options)
       GCC_WARNINGS
       CUDA_WARNINGS
       CPPCHECK_OPTIONS
+      CLANG_TIDY_EXTRA_ARGUMENTS
       PCH_HEADERS
       CONAN_OPTIONS)
   cmake_parse_arguments(
@@ -219,7 +220,7 @@ macro(project_options)
   endif()
 
   if(${ProjectOptions_ENABLE_CLANG_TIDY})
-    enable_clang_tidy()
+    enable_clang_tidy("${ProjectOptions_CLANG_TIDY_EXTRA_ARGUMENTS}")
   endif()
 
   if(${ProjectOptions_ENABLE_VS_ANALYSIS})

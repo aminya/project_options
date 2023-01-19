@@ -16,6 +16,7 @@ words:
   - anotherproj
   - applellvm
   - ARGN
+  - armv
   - asan
   - buildtools
   - ccache
@@ -29,10 +30,10 @@ words:
   - CPATH
   - Cppcheck
   - cppcoreguidelines
-  - cppreference
   - cppdbg
   - CPPFLAGS
   - cpprc
+  - cppreference
   - ctest
   - Cuda
   - DCMAKE
@@ -41,6 +42,7 @@ words:
   - DOPT
   - dyld
   - dylib
+  - eabi
   - egor-tensin
   - Eigen
   - emcc
@@ -52,20 +54,29 @@ words:
   - fdiagnostics
   - ftime
   - gcovr
+  - gnueabi
+  - gnueabihf
   - Graphviz
   - hwrap
   - iwwu
   - kcov
   - LDFLAGS
+  - lgcc
   - libc
   - libcuda
+  - libg
   - libstdc
   - LPSTR
   - LPWSTR
+  - lrdimon
+  - lstdc
+  - mcpu
   - mdfile
+  - mfpu
   - msbuild
   - msvc
   - msys
+  - mthumb
   - multilib
   - municode
   - myapp
@@ -89,6 +100,7 @@ words:
   - shlib
   - suppr
   - SYSROOT
+  - tecolicom
   - TOLOWER
   - TOUPPER
   - ubsan
