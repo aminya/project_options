@@ -53,7 +53,6 @@ include("${CMAKE_CURRENT_LIST_DIR}/Vcpkg.cmake")
 # - DOXYGEN_THEME: the name of the Doxygen theme to use. Supported themes: `awesome-sidebar` (default), `awesome` and `original`.
 # - ENABLE_INTERPROCEDURAL_OPTIMIZATION: Enable Interprocedural Optimization, aka Link Time Optimization (LTO)
 # - ENABLE_NATIVE_OPTIMIZATION: Enable the optimizations specific to the build machine (e.g. SSE4_1, AVX2, etc.).
-# - ENABLE_USER_LINKER: Enable a specific linker if available
 # - ENABLE_BUILD_WITH_TIME_TRACE: Enable -ftime-trace to generate time tracing .json files on clang
 # - ENABLE_UNITY: Enable Unity builds of projects
 # - ENABLE_SANITIZER_ADDRESS: Enable address sanitizer
@@ -87,7 +86,6 @@ macro(project_options)
       ENABLE_NATIVE_OPTIMIZATION
       DISABLE_EXCEPTIONS
       DISABLE_RTTI
-      ENABLE_USER_LINKER
       ENABLE_BUILD_WITH_TIME_TRACE
       ENABLE_UNITY
       ENABLE_SANITIZER_ADDRESS

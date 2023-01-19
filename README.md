@@ -114,9 +114,9 @@ project_options(
       # PCH_HEADERS
       # WARNINGS_AS_ERRORS
       # ENABLE_INCLUDE_WHAT_YOU_USE
-      # ENABLE_USER_LINKER
       # ENABLE_BUILD_WITH_TIME_TRACE
       # ENABLE_UNITY
+      # LINKER "lld"
       # CONAN_PROFILE ${profile_path}  # passes a profile to conan: see https://docs.conan.io/en/latest/reference/profiles.html
 )
 ```
@@ -236,7 +236,6 @@ It accepts the following named flags:
 - `ENABLE_SANITIZER_MEMORY`: Enable memory sanitizer
 - `ENABLE_PCH`: Enable Precompiled Headers
 - `ENABLE_INCLUDE_WHAT_YOU_USE`: Enable static analysis with include-what-you-use
-- `ENABLE_USER_LINKER`: Enable a specific linker if available
 - `ENABLE_BUILD_WITH_TIME_TRACE`: Enable `-ftime-trace` to generate time tracing `.json` files on clang
 - `ENABLE_UNITY`: Enable Unity builds of projects
 
