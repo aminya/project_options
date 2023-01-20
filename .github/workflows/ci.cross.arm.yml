@@ -33,7 +33,7 @@ jobs:
             install-cross-compiler: g++-aarch64-linux-gnu gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
             target: aarch64-linux-gnu
           - task: rpi3:build.cross
-            install-cross-compiler: gcc-arm-none-eabi binutils-arm-none-eabi
+            install-cross-compiler: gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi
             target: arm-none-eabi
     steps:
       - uses: actions/checkout@v3
