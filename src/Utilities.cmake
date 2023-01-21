@@ -189,6 +189,14 @@ function(detect_architecture arch)
     set(${arch}
         arm64
         PARENT_SCOPE)
+  elseif(_arch STREQUAL riscv64)
+    set(${arch}
+        rv64
+        PARENT_SCOPE)
+  elseif(_arch STREQUAL riscv32)
+    set(${arch}
+        rv32
+        PARENT_SCOPE)
   else()
     # fallback to the most common architecture
     message(STATUS "Unknown architecture ${_arch} - using x64")
