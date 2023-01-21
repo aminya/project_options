@@ -97,7 +97,9 @@ macro(project_options)
       PREFIX
       LINKER
       VS_ANALYSIS_RULESET
-      CONAN_PROFILE)
+      CONAN_PROFILE
+      CONAN_HOST_PROFILE
+      CONAN_BUILD_PROFILE)
   set(multiValueArgs
       DOXYGEN_THEME
       MSVC_WARNINGS

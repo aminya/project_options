@@ -77,6 +77,23 @@ macro(run_conan)
         # CONAN_ENV should be redundant, since the profile can set CC & CXX
       endif()
 
+      if("${ProjectOptions_CONAN_PROFILE}" STREQUAL "")
+        set(CONAN_DEFAULT_PROFILE "default")
+      else()
+        set(CONAN_DEFAULT_PROFILE ${ProjectOptions_CONAN_PROFILE})
+      endif()
+      if("${ProjectOptions_CONAN_BUILD_PROFILE}" STREQUAL "")
+        set(CONAN_BUILD_PROFILE ${CONAN_DEFAULT_PROFILE})
+      else()
+        set(CONAN_BUILD_PROFILE ${ProjectOptions_CONAN_BUILD_PROFILE})
+      endif()
+
+      if("${ProjectOptions_CONAN_HOST_PROFILE}" STREQUAL "")
+        set(CONAN_HOST_PROFILE ${CONAN_DEFAULT_PROFILE})
+      else()
+        set(CONAN_HOST_PROFILE ${ProjectOptions_CONAN_HOST_PROFILE})
+      endif()
+
       # PATH_OR_REFERENCE ${CMAKE_SOURCE_DIR} is used to tell conan to process
       # the external "conanfile.py" provided with the project
       # Alternatively a conanfile.txt could be used
@@ -90,6 +107,10 @@ macro(run_conan)
         ${ProjectOptions_CONAN_OPTIONS}
         # Pass CMake compilers to Conan
         ${CONAN_ENV}
+        PROFILE_HOST
+        ${CONAN_HOST_PROFILE}
+        PROFILE_BUILD
+        ${CONAN_BUILD_PROFILE}
         # Pass either autodetected settings or a conan profile
         ${CONAN_SETTINGS}
         ${OUTPUT_QUIET})
