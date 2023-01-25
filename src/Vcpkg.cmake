@@ -124,14 +124,22 @@ macro(run_vcpkg)
         set(VCPKG_LIBRARY_LINKAGE "${LIBRARY_LINKAGE}")
       endif()
     endif()
-    set(_toolchain_file)
-    get_toolchain_file(_toolchain_file)
-    if(_toolchain_file)
-      set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE
-          ${_toolchain_file}
-          CACHE STRING "vcpkg chainload toolchain file")
-      message(STATUS "Setup cross-compiler for ${VCPKG_TARGET_TRIPLET}")
-      message(STATUS "Use cross-compiler toolchain: ${VCPKG_CHAINLOAD_TOOLCHAIN_FILE}")
+
+    if(NOT DEFINED VCPKG_CHAINLOAD_TOOLCHAIN_FILE)
+      set(_toolchain_file)
+      if(NOT "${CROSS_TOOLCHAIN_FILE}" STREQUAL "")
+        set(_toolchain_file ${CROSS_TOOLCHAIN_FILE})
+      else()
+        get_toolchain_file(_toolchain_file)
+      endif()
+      
+      if(${_toolchain_file})
+        set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE
+            ${_toolchain_file}
+            CACHE STRING "vcpkg chainload toolchain file")
+        message(STATUS "Setup cross-compiler for ${VCPKG_TARGET_TRIPLET}")
+        message(STATUS "Use cross-compiler toolchain for vcpkg: ${VCPKG_CHAINLOAD_TOOLCHAIN_FILE}")
+      endif()
     endif()
   endif()
 endmacro()

@@ -7,14 +7,13 @@ RUN apt-get update && apt-get install -y \
 RUN npm install -g setup-cpp
 
 
-
 FROM base AS setup
 
 # install cmake, ninja, and ccache
 RUN setup-cpp --clangtidy true --clangformat true --cmake true --ninja true --ccache true --cppcheck true --vcpkg true --conan true --task true 
 
 RUN apt-get update && apt-get install -y \
-    gcc-arm-linux-gnueabi g++-arm-linux-gnueabi gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf \
+    gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi \
     && rm -rf /var/lib/apt/lists/*
 
 COPY ./docker/entrypoint.sh /docker-entrypoint.sh
@@ -25,11 +24,4 @@ FROM setup AS build
 COPY . /home/project_options
 WORKDIR /home/project_options
 RUN git submodule update --init
-CMD ["/bin/bash", "-c", "task rpi3:build.cross"]
-
-
-FROM setup AS build-debug
-COPY . /home/project_options
-WORKDIR /home/project_options
-RUN git submodule update --init
-CMD ["/bin/bash", "-c", "task rpi3:build.cross.debug"]
+CMD ["/bin/bash", "-c", "task rpi3:build.cross.bare-metal"]

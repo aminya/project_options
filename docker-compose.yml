@@ -109,8 +109,23 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.aarch64
       target: build-vcpkg
+  build-rpi4-vcpkg-custom:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.aarch64
+      target: build-vcpkg-custom
   build-rpi4-custom:
     build:
       context: .
       dockerfile: ./docker/Dockerfile.aarch64
       target: build-custom
+  build-rpi4-aarch64:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.aarch64
+      target: build-aarch64
+  build-rpi3-bare-metal:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.arm-bare-metal
+      target: build

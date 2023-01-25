@@ -27,3 +27,9 @@ tasks:
       - task: build
         vars:
           CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER={{.CROSS_CC | default "gcc-aarch64-linux-gnu-gcc"}} -DCMAKE_CXX_COMPILER={{.CROSS_CXX | default "gcc-aarch64-linux-gnu-g++"}} -DDEFAULT_TRIPLET=arm64-linux -DCMAKE_TOOLCHAIN_FILE=./cmake/my-toolchain.cmake
+
+  build.cross.aarch64:
+    cmds:
+      - task: build
+        vars:
+          CMAKE_ARGS: -DENABLE_AARCH64_CROSS_COMPILING:BOOL=ON

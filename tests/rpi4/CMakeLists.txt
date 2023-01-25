@@ -13,9 +13,22 @@ set(CMAKE_C_STANDARD 99)
 include(../../src/Index.cmake)
 
 # opt-in cross-compiling
-option(ENABLE_CROSS_COMPILING "Detect cross compiler and setup toolchain" OFF)
-if(ENABLE_CROSS_COMPILING)
-  enable_cross_compiler()
+if(ENABLE_AARCH64_CROSS_COMPILING)
+  # my custom aarch64 settings
+  enable_cross_compiler(
+    DEFAULT_TRIPLET "arm64-linux"
+    CC "aarch64-linux-gnu-gcc"
+    CXX "aarch64-linux-gnu-g++"
+    TARGET_ARCHITECTURE "arm64-linux"
+    CROSS_ROOT "/usr/gcc-aarch64-linux-gnu"
+    CROSS_TRIPLET "aarch64-linux-gnu"
+    #TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/my-toolchain.cmake"
+  )
+else()
+  option(ENABLE_CROSS_COMPILING "Detect cross compiler and setup toolchain" OFF)
+  if(ENABLE_CROSS_COMPILING)
+    enable_cross_compiler()
+  endif()
 endif()
 
 # Set the project name to your project name, my project isn't very descriptive
@@ -104,7 +117,7 @@ target_sources(example PRIVATE main.cpp)
 target_include_directories(example PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(example PRIVATE project_options project_warnings)
 
-if(ENABLE_CROSS_COMPILING)
+if(ENABLE_AARCH64_CROSS_COMPILING OR ENABLE_CROSS_COMPILING)
   # custom raspberry pi 4 options
   #target_compile_definitions(project_options INTERFACE -D__ARM_NEON)
   target_compile_options(project_options INTERFACE -mcpu=cortex-a72)

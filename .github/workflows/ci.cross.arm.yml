@@ -19,21 +19,33 @@ jobs:
           - true
         task:
           - rpi4:build.cross
-          - rpi4-vcpkg:build.cross
           - rpi4:build.cross.custom-toolchain
+          - rpi4-vcpkg:build.cross
+          - rpi4-vcpkg:build.cross.custom-toolchain
+          - rpi4:build.cross.aarch64
           - rpi3:build.cross
+          - rpi3:build.cross.bare-metal
         include:
           - task: rpi4:build.cross
-            install-cross-compiler: g++-aarch64-linux-gnu gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
-            target: aarch64-linux-gnu
-          - task: rpi4-vcpkg:build.cross
             install-cross-compiler: g++-aarch64-linux-gnu gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
             target: aarch64-linux-gnu
           - task: rpi4:build.cross.custom-toolchain
             install-cross-compiler: g++-aarch64-linux-gnu gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
             target: aarch64-linux-gnu
+          - task: rpi4-vcpkg:build.cross
+            install-cross-compiler: g++-aarch64-linux-gnu gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
+            target: aarch64-linux-gnu
+          - task: rpi4-vcpkg:build.cross.custom-toolchain
+            install-cross-compiler: g++-aarch64-linux-gnu gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
+            target: aarch64-linux-gnu
+          - task: rpi4:build.cross.aarch64
+            install-cross-compiler: g++-aarch64-linux-gnu gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
+            target: aarch64-linux-gnu
           - task: rpi3:build.cross
-            install-cross-compiler: gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi
+            install-cross-compiler: gcc-arm-linux-gnueabi g++-arm-linux-gnueabi gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf 
+            target: arm-linux-gnueabi
+          - task: rpi3:build.cross.bare-metal
+            install-cross-compiler: gcc-arm-none-eabi g++-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi
             target: arm-none-eabi
     steps:
       - uses: actions/checkout@v3
@@ -64,7 +76,6 @@ jobs:
           clangtidy: true
           task: true
           doxygen: true
-          powershell: true
 
       - name: Setup ARM (Cross) Compiler
         uses: awalsh128/cache-apt-pkgs-action@latest

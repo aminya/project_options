@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(CMAKE_SYSTEM_NAME Generic)
-set(CMAKE_SYSTEM_PROCESSOR arm)
+set(CMAKE_SYSTEM_NAME Linux)
+set(CMAKE_SYSTEM_PROCESSOR arm64)
 
 if(NOT "${CROSS_ROOT}" STREQUAL "")
   set(CMAKE_SYSROOT ${CROSS_ROOT})

@@ -13,9 +13,26 @@ set(CMAKE_C_STANDARD 99)
 include(../../src/Index.cmake)
 
 # opt-in cross-compiling
-option(ENABLE_CROSS_COMPILING "Detect cross compiler and setup toolchain" OFF)
-if(ENABLE_CROSS_COMPILING)
-  enable_cross_compiler()
+if(ENABLE_BARE_METAL_CROSS_COMPILING)
+  # my custom arm settings
+  enable_cross_compiler(
+    CC "arm-none-eabi-gcc"
+    CXX "arm-none-eabi-g++"
+    TARGET_ARCHITECTURE "arm"
+    CROSS_ROOT "/usr/arm-none-eabi-gcc"
+    CROSS_TRIPLET "arm-none-eabi-gcc"
+  )  
+
+  # some more custom compiler settings
+  # -Wl,--gc-sections     Perform the dead code elimination.
+  # --specs=nano.specs    Link with newlib-nano.
+  # --specs=nosys.specs   No syscalls, provide empty implementations for the POSIX system calls.
+  set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections --specs=nano.specs --specs=nosys.specs -mthumb" CACHE INTERNAL "Linker options")
+else()
+  option(ENABLE_CROSS_COMPILING "Detect cross compiler and setup toolchain" OFF)
+  if(ENABLE_CROSS_COMPILING)
+    enable_cross_compiler()
+  endif()
 endif()
 
 # Set the project name to your project name, my project isn't very descriptive
@@ -108,7 +125,6 @@ project_options(
 #target_sources(example PRIVATE main.cpp)
 #target_include_directories(example PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 #target_link_libraries(example PRIVATE project_options project_warnings)
-#target_link_options(example PRIVATE -Wl,--start-group -lgcc -lc -lstdc++ -lm -lrdimon -Wl,--end-group)
 #FIXME: linking with c++ (libs) ... /libstdc++.a(cxx11-ios_failure.o): in function `(anonymous namespace)::__io_category_instance()':
 
 add_executable(example_c)
@@ -116,7 +132,9 @@ target_sources(example_c PRIVATE main.c)
 target_include_directories(example_c PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(example_c PRIVATE project_options project_warnings)
 
-if(ENABLE_CROSS_COMPILING)
+if(ENABLE_BARE_METAL_CROSS_COMPILING OR ENABLE_CROSS_COMPILING)
+  #target_link_options(example PRIVATE -Wl,--start-group -lgcc -lc -lstdc++ -lm -lrdimon -Wl,--end-group)
+
   # fix: ...arm-none-eabi/lib/libg.a(lib_a-exit.o): in function `exit':
   target_link_options(
     example_c
@@ -125,7 +143,6 @@ if(ENABLE_CROSS_COMPILING)
     -lgcc
     -lc
     -lm
-    -lrdimon
     -Wl,--end-group)
 
   # custom raspberry pi 3 options
