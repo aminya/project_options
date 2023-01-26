@@ -16,7 +16,7 @@ tasks:
     cmds:
       - task: build
         vars:
-          CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER={{.CROSS_CC | default "gcc-aarch64-linux-gnu-gcc"}} -DCMAKE_CXX_COMPILER={{.CROSS_CXX | default "gcc-aarch64-linux-gnu-g++"}} -DDEFAULT_TRIPLET=arm64-linux -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=./cmake/my-toolchain.cmake
+          CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE={{.CWD}}/tests/rpi4-vcpkg/cmake/my-toolchain.cmake -DDEFAULT_TRIPLET=arm64-linux
 
   lint:
     - ~/vcpkg/vcpkg format-manifest ./vcpkg.json

@@ -20,7 +20,7 @@ if(ENABLE_BARE_METAL_CROSS_COMPILING)
     CXX "arm-none-eabi-g++"
     TARGET_ARCHITECTURE "arm"
     CROSS_ROOT "/usr/arm-none-eabi-gcc"
-    CROSS_TRIPLET "arm-none-eabi-gcc"
+    CROSS_TRIPLET "arm-none-eabi"
   )  
 
   # some more custom compiler settings
