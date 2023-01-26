@@ -74,7 +74,7 @@ function(
   endif()
 
   if("${CUDA_WARNINGS}" STREQUAL "")
-    set(CUDA_WARNINGS
+    set(_CUDA_WARNINGS
         -Wall
         -Wextra
         -Wunused
@@ -82,6 +82,12 @@ function(
         -Wshadow
         # TODO add more Cuda warnings
     )
+
+    # append -Xcompiler= to each warning
+    set(CUDA_WARNINGS "")
+    foreach(_warning ${_CUDA_WARNINGS})
+      list(APPEND CUDA_WARNINGS "-Xcompiler=${_warning}")
+    endforeach()
   endif()
 
   if(WARNINGS_AS_ERRORS)
