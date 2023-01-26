@@ -74,10 +74,8 @@ jobs:
           doxygen: true
 
       - name: Setup ARM (Cross) Compiler
-        uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: ${{ matrix.install-cross-compiler }}
-          version: 1.0
+        run: sudo apt-get install -y ${{ matrix.install-cross-compiler }}
+        shell: bash
 
       - name: Build (Task)
         run: |
