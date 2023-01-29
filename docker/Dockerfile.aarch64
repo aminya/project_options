@@ -45,6 +45,17 @@ WORKDIR /home/project_options
 RUN git submodule update --init
 CMD ["/bin/bash", "-c", "task rpi4:build.cross.custom-toolchain"]
 
+FROM setup AS build-vcpkg-custom
+COPY . /home/project_options
+WORKDIR /home/project_options
+RUN git submodule update --init
+CMD ["/bin/bash", "-c", "task rpi4-vcpkg:build.cross.custom-toolchain"]
+
+FROM setup AS build-aarch64
+COPY . /home/project_options
+WORKDIR /home/project_options
+RUN git submodule update --init
+CMD ["/bin/bash", "-c", "task rpi4:build.cross.aarch64"]
 
 FROM setup AS test
 RUN apt-get update && apt-get install -y \
@@ -55,3 +66,14 @@ WORKDIR /home/project_options
 RUN git submodule update --init
 ENV QEMU_LD_PREFIX /usr/aarch64-linux-gnu
 CMD ["/bin/bash", "-c", "task rpi4:build.cross && qemu-aarch64 /home/project_options/tests/rpi4/build/Release/example"]
+
+
+FROM setup AS test-aarch64
+RUN apt-get update && apt-get install -y \
+    qemu-user \
+    && rm -rf /var/lib/apt/lists/*
+COPY . /home/project_options
+WORKDIR /home/project_options
+RUN git submodule update --init
+ENV QEMU_LD_PREFIX /usr/aarch64-linux-gnu
+CMD ["/bin/bash", "-c", "task rpi4:build.aarch64 && qemu-aarch64 /home/project_options/tests/rpi4/build/Release/example"]

@@ -18,23 +18,31 @@ jobs:
         cmake:
           - true
         task:
-          - rpi4:build.cross
-          - rpi4-vcpkg:build.cross
-          - rpi4:build.cross.custom-toolchain
           - rpi3:build.cross
+          - rpi3:build.cross.bare-metal
+          - rpi4:build.cross
+          - rpi4:build.cross.aarch64
+          - rpi4:build.cross.custom-toolchain
+          - rpi4-vcpkg:build.cross
         include:
+          - task: rpi3:build.cross
+            install-cross-compiler: gcc-arm-linux-gnueabi g++-arm-linux-gnueabi gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf 
+            target: arm-linux-gnueabi
+          - task: rpi3:build.cross.bare-metal
+            install-cross-compiler: gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi
+            target: arm-none-eabi
           - task: rpi4:build.cross
             install-cross-compiler: g++-aarch64-linux-gnu gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
             target: aarch64-linux-gnu
-          - task: rpi4-vcpkg:build.cross
+          - task: rpi4:build.cross.aarch64
             install-cross-compiler: g++-aarch64-linux-gnu gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
             target: aarch64-linux-gnu
           - task: rpi4:build.cross.custom-toolchain
             install-cross-compiler: g++-aarch64-linux-gnu gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
             target: aarch64-linux-gnu
-          - task: rpi3:build.cross
-            install-cross-compiler: gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi
-            target: arm-none-eabi
+          - task: rpi4-vcpkg:build.cross
+            install-cross-compiler: g++-aarch64-linux-gnu gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
+            target: aarch64-linux-gnu
     steps:
       - uses: actions/checkout@v3
         with:
@@ -64,13 +72,10 @@ jobs:
           clangtidy: true
           task: true
           doxygen: true
-          powershell: true
 
       - name: Setup ARM (Cross) Compiler
-        uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: ${{ matrix.install-cross-compiler }}
-          version: 1.0
+        run: sudo apt-get install -y ${{ matrix.install-cross-compiler }}
+        shell: bash
 
       - name: Build (Task)
         run: |

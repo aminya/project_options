@@ -29,6 +29,10 @@ tasks:
   rpi3.debug:
     - docker-compose up --build build-rpi3-debug
     - docker-compose down
+
+  rpi3.bare-metal:
+    - docker-compose up --build build-rpi3-bare-metal
+    - docker-compose down
     
   rpi4:
     - docker-compose up --build build-rpi4
@@ -42,10 +46,18 @@ tasks:
     - docker-compose up --build test-rpi4
     - docker-compose down
 
+  rpi4.custom:
+    - docker-compose up --build build-rpi4-custom
+    - docker-compose down
+    
+  rpi4.aarch64:
+    - docker-compose up --build build-rpi4-aarch64
+    - docker-compose down
+
   rpi4.vcpkg:
     - docker-compose up --build build-rpi4-vcpkg
     - docker-compose down
 
-  rpi4.custom:
-    - docker-compose up --build build-rpi4-custom
+  rpi4.vcpkg-custsom:
+    - docker-compose up --build build-rpi4-vcpkg-custom
     - docker-compose down

@@ -14,10 +14,16 @@ tasks:
     cmds:
       - task: build.debug
         vars:
-          CMAKE_ARGS: -DENABLE_CHECKING:BOOL=ON -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER={{.CROSS_CC | default "arm-none-eabi-gcc"}} -DCMAKE_CXX_COMPILER={{.CROSS_CXX | default "arm-none-eabi-g++"}} -DDEFAULT_TRIPLET=arm-linux
+          CMAKE_ARGS: -DENABLE_CHECKING:BOOL=ON -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER={{.CROSS_CC | default "arm-linux-gnueabihf-gcc"}} -DCMAKE_CXX_COMPILER={{.CROSS_CXX | default "arm-linux-gnueabihf-g++"}} -DDEFAULT_TRIPLET=arm-linux
 
   build.cross:
     cmds:
       - task: build
         vars:
-          CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER={{.CROSS_CC | default "arm-none-eabi-gcc"}} -DCMAKE_CXX_COMPILER={{.CROSS_CXX | default "arm-none-eabi-g++"}} -DDEFAULT_TRIPLET=arm-linux
+          CMAKE_ARGS: -DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER={{.CROSS_CC | default "arm-linux-gnueabihf-gcc"}} -DCMAKE_CXX_COMPILER={{.CROSS_CXX | default "arm-linux-gnueabi-g++"}} -DDEFAULT_TRIPLET=arm-linux
+
+  build.cross.bare-metal:
+    cmds:
+      - task: build
+        vars:
+          CMAKE_ARGS: -DENABLE_BARE_METAL_CROSS_COMPILING:BOOL=ON
