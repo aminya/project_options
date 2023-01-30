@@ -82,6 +82,8 @@ macro(common_project_options)
         ERROR_VARIABLE IS_NONADMINISTRATOR
         OUTPUT_QUIET
       )
+    else()
+      set(IS_NONADMINISTRATOR "")
     endif()
 
     if(IS_NONADMINISTRATOR)
