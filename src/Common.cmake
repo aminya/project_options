@@ -77,7 +77,11 @@ macro(common_project_options)
     # Make a symbol link of compile_commands.json on the source dir to help clang based tools find it
     if(WIN32)
       # Detect whether cmake is run as administrator (only administrator can read the LOCAL SERVICE account reg key)
-      cmake_host_system_information(RESULT QURY_RESULT QUERY WINDOWS_REGISTRY "HKU\\S-1-5-19" ERROR_VARIABLE IS_NONADMINISTRATOR)
+      execute_process(
+        COMMAND reg query "HKU\\S-1-5-19"
+        ERROR_VARIABLE IS_NONADMINISTRATOR
+        OUTPUT_QUIET
+      )
 
       if(IS_NONADMINISTRATOR)
         # For non-administrator, create an auxiliary target and ask user to run it
