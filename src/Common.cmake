@@ -82,25 +82,37 @@ macro(common_project_options)
         ERROR_VARIABLE IS_NONADMINISTRATOR
         OUTPUT_QUIET
       )
+    else()
+      set(IS_NONADMINISTRATOR "")
+    endif()
 
-      if(IS_NONADMINISTRATOR)
-        # For non-administrator, create an auxiliary target and ask user to run it
-        add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/compile_commands.json
+    if(IS_NONADMINISTRATOR)
+      # For non-administrator, create an auxiliary target and ask user to run it
+      add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/compile_commands.json
           COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json
           DEPENDS ${CMAKE_SOURCE_DIR}/compile_commands.json
           VERBATIM
-        )
-        add_custom_target(_copy_compile_commands
+      )
+      add_custom_target(_copy_compile_commands
           DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
           VERBATIM
-        )
-        message(STATUS "compile_commands.json was not symlinked to the root. Run `cmake --build <build_dir> -t _copy_compile_commands` if needed.")
-      else()
-        # For administrator, symlink is available
-        file(CREATE_LINK ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json SYMBOLIC)
-      endif()
+      )
+      message(STATUS "compile_commands.json was not symlinked to the root. Run `cmake --build <build_dir> -t _copy_compile_commands` if needed.")
     else()
+      # For others, symlink when cmake configures
       file(CREATE_LINK ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json SYMBOLIC)
+
+      # create an auxiliary target to help users switch confiurations
+      add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/compile_commands.json
+          COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json
+          DEPENDS ${CMAKE_SOURCE_DIR}/compile_commands.json
+          VERBATIM
+      )
+      add_custom_target(_copy_compile_commands
+          DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
+          VERBATIM
+      )
+      message(STATUS "compile_commands.json was symlinked to the root. Run `cmake --build <build_dir> -t _copy_compile_commands` if switched among configurations.")
     endif()
 
     # Add compile_commans.json to .gitignore if .gitignore exists
