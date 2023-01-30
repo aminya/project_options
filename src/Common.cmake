@@ -89,13 +89,13 @@ macro(common_project_options)
     if(IS_NONADMINISTRATOR)
       # For non-administrator, create an auxiliary target and ask user to run it
       add_custom_command(OUTPUT ${CMAKE_SOURCE_DIR}/compile_commands.json
-          COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json
-          DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
-          VERBATIM
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json
+        DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
+        VERBATIM
       )
       add_custom_target(_copy_compile_commands
-          DEPENDS ${CMAKE_SOURCE_DIR}/compile_commands.json
-          VERBATIM
+        DEPENDS ${CMAKE_SOURCE_DIR}/compile_commands.json
+        VERBATIM
       )
       message(STATUS "compile_commands.json was not symlinked to the root. Run `cmake --build <build_dir> -t _copy_compile_commands` if needed.")
     else()
@@ -104,19 +104,20 @@ macro(common_project_options)
 
       # create an auxiliary target to help users switch confiurations
       add_custom_command(OUTPUT ${CMAKE_SOURCE_DIR}/compile_commands.json
-          COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json
-          DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
-          VERBATIM
+        COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json
+        DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
+        VERBATIM
       )
       add_custom_target(_copy_compile_commands
-          DEPENDS ${CMAKE_SOURCE_DIR}/compile_commands.json
-          VERBATIM
+        DEPENDS ${CMAKE_SOURCE_DIR}/compile_commands.json
+        VERBATIM
       )
       message(STATUS "compile_commands.json was symlinked to the root. Run `cmake --build <build_dir> -t _copy_compile_commands` if switched among configurations.")
     endif()
 
     # Add compile_commans.json to .gitignore if .gitignore exists
     set(GITIGNORE_FILE "${CMAKE_SOURCE_DIR}/.gitignore")
+
     if(EXISTS ${GITIGNORE_FILE})
       file(STRINGS ${GITIGNORE_FILE} HAS_IGNORED REGEX "^compile_commands.json")
 
