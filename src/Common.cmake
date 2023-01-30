@@ -93,11 +93,11 @@ macro(common_project_options)
         DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
         VERBATIM
       )
-      add_custom_target(_link_compile_commands
+      add_custom_target(_copy_compile_commands
         DEPENDS ${CMAKE_SOURCE_DIR}/compile_commands.json
         VERBATIM
       )
-      message(STATUS "compile_commands.json was not symlinked to the root. Run `cmake --build <build_dir> -t _link_compile_commands` if needed.")
+      message(STATUS "compile_commands.json was not symlinked to the root. Run `cmake --build <build_dir> -t _copy_compile_commands` if needed.")
     else()
       # For others, symlink when cmake configures
       file(CREATE_LINK ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json SYMBOLIC)
@@ -108,11 +108,11 @@ macro(common_project_options)
         DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
         VERBATIM
       )
-      add_custom_target(_link_compile_commands
+      add_custom_target(_copy_compile_commands
         DEPENDS ${CMAKE_SOURCE_DIR}/compile_commands.json
         VERBATIM
       )
-      message(STATUS "compile_commands.json was symlinked to the root. Run `cmake --build <build_dir> -t _link_compile_commands` if switched among configurations.")
+      message(STATUS "compile_commands.json was symlinked to the root. Run `cmake --build <build_dir> -t _copy_compile_commands` if switched among configurations.")
     endif()
 
     # Add compile_commans.json to .gitignore if .gitignore exists
