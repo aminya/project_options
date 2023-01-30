@@ -76,12 +76,9 @@ macro(common_project_options)
     # Make a symbol link of compile_commands.json on the source dir to help clang based tools find it
     if(WIN32)
       # Detect whether cmake is run as administrator (only administrator can read the LOCAL SERVICE account reg key)
-      cmake_host_system_information(RESULT IS_ADMINISTRATOR QUERY WINDOWS_REGISTRY "HKU\\S-1-5-19")
+      cmake_host_system_information(RESULT QURY_RESULT QUERY WINDOWS_REGISTRY "HKU\\S-1-5-19" ERROR_VARIABLE IS_NONADMINISTRATOR)
 
-      if(IS_ADMINISTRATOR)
-        # For administrator, symlink is available
-        file(CREATE_LINK ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json SYMBOLIC)
-      else()
+      if(IS_NONADMINISTRATOR)
         # For non-administrator, create an auxiliary target and ask user to run it
         add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/compile_commands.json
           COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json
@@ -93,6 +90,9 @@ macro(common_project_options)
           VERBATIM
         )
         message(AUTHOR_WARNING "Can't symlink compile_commands.json. Run cmake as administrator or use `cmake --build <build_dir> -t _copy_compile_commands` to copy it.")
+      else()
+        # For administrator, symlink is available
+        file(CREATE_LINK ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json SYMBOLIC)
       endif()
     else()
       file(CREATE_LINK ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json SYMBOLIC)
