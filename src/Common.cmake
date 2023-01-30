@@ -100,7 +100,7 @@ macro(common_project_options)
       message(STATUS "compile_commands.json was not symlinked to the root. Run `cmake --build <build_dir> -t _copy_compile_commands` if needed.")
     else()
       file(CREATE_LINK ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json SYMBOLIC)
-      message(STATUS "compile_commands.json was symlinked to the root.")
+      message(TRACE "compile_commands.json was symlinked to the root.")
     endif()
 
     # Add compile_commans.json to .gitignore if .gitignore exists
@@ -110,7 +110,7 @@ macro(common_project_options)
       file(STRINGS ${GITIGNORE_FILE} HAS_IGNORED REGEX "^compile_commands.json")
 
       if(NOT HAS_IGNORED)
-        message(STATUS "Adding compile_commands.json to .gitignore")
+        message(TRACE "Adding compile_commands.json to .gitignore")
         file(APPEND ${GITIGNORE_FILE} "\ncompile_commands.json")
       endif()
     endif()
