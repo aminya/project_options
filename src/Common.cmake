@@ -90,7 +90,7 @@ macro(common_project_options)
           DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
           VERBATIM
         )
-        message(STATUS "compile_commands was not symlinked to the root. Run `cmake --build <build_dir> -t _copy_compile_commands` if needed.")
+        message(STATUS "compile_commands.json was not symlinked to the root. Run `cmake --build <build_dir> -t _copy_compile_commands` if needed.")
       else()
         # For administrator, symlink is available
         file(CREATE_LINK ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json SYMBOLIC)
