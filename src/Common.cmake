@@ -89,7 +89,7 @@ macro(common_project_options)
           DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
           VERBATIM
         )
-        message(AUTHOR_WARNING "Can't symlink compile_commands.json. Run cmake as administrator or use `cmake --build <build_dir> -t _copy_compile_commands` to copy it.")
+        message(STATUS "compile_commands was not symlinked to the root. Run `cmake --build <build_dir> -t _copy_compile_commands` if needed.")
       else()
         # For administrator, symlink is available
         file(CREATE_LINK ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json SYMBOLIC)
