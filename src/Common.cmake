@@ -86,14 +86,14 @@ macro(common_project_options)
 
     if(IS_NONADMINISTRATOR)
       # For non-administrator, create an auxiliary target and ask user to run it
-      add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/compile_commands.json
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json
-        DEPENDS ${CMAKE_SOURCE_DIR}/compile_commands.json
-        VERBATIM
+      add_custom_command(OUTPUT ${CMAKE_SOURCE_DIR}/compile_commands.json
+          COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json
+          DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
+          VERBATIM
       )
       add_custom_target(_copy_compile_commands
-        DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
-        VERBATIM
+          DEPENDS ${CMAKE_SOURCE_DIR}/compile_commands.json
+          VERBATIM
       )
       message(STATUS "compile_commands.json was not symlinked to the root. Run `cmake --build <build_dir> -t _copy_compile_commands` if needed.")
     else()
