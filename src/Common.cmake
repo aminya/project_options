@@ -97,6 +97,17 @@ macro(common_project_options)
     else()
       file(CREATE_LINK ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json SYMBOLIC)
     endif()
+
+    # Add `compile_commans.json` to `.gitignore` if `.gitignore` exists
+    set(GITIGNORE_FILE "${CMAKE_SOURCE_DIR}/.gitignore")
+    if(EXISTS ${GITIGNORE_FILE})
+      file(STRINGS ${GITIGNORE_FILE} HAS_IGNORED REGEX "^compile_commands.json")
+
+      if(NOT HAS_IGNORED)
+        message(STATUS "Adding `compile_commands.json` to `.gitignore`")
+        file(APPEND ${GITIGNORE_FILE} "\ncompile_commands.json")
+      endif()
+    endif()
   endif()
 
   # Enhance error reporting and compiler messages
