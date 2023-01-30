@@ -69,8 +69,9 @@ macro(common_project_options)
         CACHE STRING "Fallbacks for the RelWithDebInfo build type")
   endif()
 
+  # Generate and possibly symlink compile_commands.json to make it easier to work with clang based tools
   if(CMAKE_GENERATOR MATCHES ".*Makefile*." OR CMAKE_GENERATOR MATCHES ".*Ninja*")
-    # Generate compile_commands.json to make it easier to work with clang based tools
+    # Enable generate compile_commands.json
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
     # Make a symbol link of compile_commands.json on the source dir to help clang based tools find it
