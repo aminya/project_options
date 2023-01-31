@@ -125,7 +125,7 @@ add_library(my_header_lib INTERFACE)
 target_link_libraries(my_header_lib INTERFACE project_options project_warnings) # link project_options/warnings
 
 # Includes
-target_include_header_directory(my_header_lib)
+target_include_interface_directory(my_header_lib)
 
 # Find dependencies:
 target_find_dependencies(my_header_lib
@@ -157,7 +157,7 @@ add_library(my_lib "./src/my_lib/lib.cpp")
 target_link_libraries(my_lib PRIVATE project_options project_warnings) # link project_options/warnings
 
 # Includes
-target_include_header_directory(my_lib)
+target_include_interface_directory(my_lib)
 
 # Find dependencies:
 target_find_dependencies(my_lib
