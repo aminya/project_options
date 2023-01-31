@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.25)
 
 project(
   project_options_docs
-  VERSION 0.1.0
+  VERSION 0.26.3
   DESCRIPTION "Documentation"
   LANGUAGES NONE)
 
@@ -49,9 +49,9 @@ set(conf_path "${CMAKE_CURRENT_SOURCE_DIR}") # Location of your conf.py
 set(conf_out_path "${CMAKE_CURRENT_BINARY_DIR}") # Location of the output directory
 set(conf_version "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 set(conf_release "${PROJECT_VERSION}")
-set(conf_name "CMake Spinx Documentation")
-set(conf_author "Firstname Lastname")
-set(conf_brief "TODO some brief description.")
+set(conf_name "project_options")
+set(conf_author "Amin Yahyaabadi")
+set(conf_brief "A general-purpose CMake library that provides functions that improve the CMake experience following the best practices.")
 set(conf_doxygen_input
     "\
   \"${CMAKE_SOURCE_DIR}/include\" \

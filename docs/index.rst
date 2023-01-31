@@ -1,8 +1,18 @@
-project_options
+Usage
 ======================================================
 
-.. include:: ../README.md
+.. include:: ./src/Readme_top.md
    :parser: myst_parser.sphinx_
+
+Usage
+------
+
+.. include:: ./src/project_options_example.md
+   :parser: myst_parser.sphinx_
+
+.. include:: ./src/License.md
+   :parser: myst_parser.sphinx_
+
 
 Table of Contents
 ==================
@@ -13,9 +23,9 @@ Table of Contents
     self
     src/index
 
-Indices
-==================
+.. Indices
+.. ==================
 
-* :ref:`genindex`
+.. * :ref:`genindex`
 .. * :ref:`modindex`
-* :ref:`search`
+.. * :ref:`search`

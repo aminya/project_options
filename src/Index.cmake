@@ -40,8 +40,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/Vcpkg.cmake")
 
 #[[.rst:
 
-.. include:: ../../docs/src/project_options.md
-   :parser: myst_parser.sphinx_
+.. include:: ../../docs/src/project_options.rst
 
 #]]
 # NOTE: cmake-lint [C0103] Invalid macro name "project_options" doesn't match `[0-9A-Z_]+`
