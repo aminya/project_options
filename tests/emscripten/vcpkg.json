@@ -1,8 +1,0 @@
-{
-  "name": "example",
-  "version-string": "0.1.0",
-  "dependencies": [
-    "magic-enum",
-    "ms-gsl"
-  ]
-}

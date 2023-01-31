@@ -1,9 +1,0 @@
-version: 3
-
-includes:
-  cpp_vcpkg_project: 
-    taskfile: ./cpp_vcpkg_project/Taskfile.yml
-    optional: true
-    dir: ./cpp_vcpkg_project
-    vars:
-      CMAKE_GENERATOR: "Ninja Multi-Config"

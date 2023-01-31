@@ -1,3 +1,0 @@
-[submodule "examples/cpp_vcpkg_project"]
-	path = examples/cpp_vcpkg_project
-	url = https://github.com/aminya/cpp_vcpkg_project
