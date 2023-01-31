@@ -101,15 +101,14 @@ add_executable(main main.cpp)
 target_link_libraries(main PRIVATE project_options project_warnings) # link project_options/warnings
 
 # Find dependencies:
-set(DEPENDENCIES_CONFIGURED fmt Eigen3)
-
-foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
-  find_package(${DEPENDENCY} CONFIG REQUIRED)
-endforeach()
+target_configure_dependencies(main
+  PRIVATE
+  fmt
+  Eigen3
+)
 
 # Link dependencies
-target_link_system_libraries(
-  main
+target_link_system_libraries(main
   PRIVATE
   fmt::fmt
   Eigen3::Eigen
@@ -126,20 +125,17 @@ add_library(my_header_lib INTERFACE)
 target_link_libraries(my_header_lib INTERFACE project_options project_warnings) # link project_options/warnings
 
 # Includes
-set(INCLUDE_DIR "include") # must be relative paths
-target_include_directories(my_header_lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
-                                          "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
+target_include_header_directory(my_header_lib)
 
 # Find dependencies:
-set(DEPENDENCIES_CONFIGURED fmt Eigen3)
-
-foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
-  find_package(${DEPENDENCY} CONFIG REQUIRED)
-endforeach()
+target_configure_dependencies(my_header_lib
+  INTERFACE
+  fmt
+  Eigen3
+)
 
 # Link dependencies:
-target_link_system_libraries(
-  my_header_lib
+target_link_system_libraries(my_header_lib
   INTERFACE
   fmt::fmt
   Eigen3::Eigen
@@ -148,8 +144,9 @@ target_link_system_libraries(
 # Package the project
 package_project(
   TARGETS my_header_lib project_options project_warnings
-  INTERFACE_DEPENDENCIES_CONFIGURED ${DEPENDENCIES_CONFIGURED}
-  INTERFACE_INCLUDES ${INCLUDE_DIR}
+  # Just add these no matter whether dependencies exist.
+  INTERFACE_DEPENDENCIES_CONFIGURED ${my_header_lib_INTERFACE_DEPENDENCIES}
+  INTERFACE_INCLUDES ${my_header_lib_HEADER_DIRECTORY}
 )
 ```
 
@@ -160,20 +157,17 @@ add_library(my_lib "./src/my_lib/lib.cpp")
 target_link_libraries(my_lib PRIVATE project_options project_warnings) # link project_options/warnings
 
 # Includes
-set(INCLUDE_DIR "include") # must be relative paths
-target_include_directories(my_lib PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
-                                         "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>")
+target_include_header_directory(my_lib)
 
 # Find dependencies:
-set(DEPENDENCIES_CONFIGURED fmt Eigen3)
-
-foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
-  find_package(${DEPENDENCY} CONFIG REQUIRED)
-endforeach()
+target_configure_dependencies(my_lib
+  PRIVATE
+  fmt
+  Eigen3
+)
 
 # Link dependencies:
-target_link_system_libraries(
-  my_lib
+target_link_system_libraries(my_lib
   PRIVATE
   fmt::fmt
   Eigen3::Eigen
@@ -182,6 +176,9 @@ target_link_system_libraries(
 # Package the project
 package_project(
   TARGETS my_lib
-  PUBLIC_INCLUDES ${INCLUDE_DIR}
+  # Just add these no matter whether dependencies exist.
+  INTERFACE_DEPENDENCIES_CONFIGURED ${my_lib_INTERFACE_DEPENDENCIES}
+  PUBLIC_DEPENDENCIES_CONFIGURED ${my_lib_PUBLIC_DEPENDENCIES}
+  PUBLIC_INCLUDES ${my_lib_HEADER_DIRECTORY}
 )
 ```

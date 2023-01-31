@@ -208,8 +208,12 @@ function(package_project)
   include("${_ycm_SOURCE_DIR}/modules/AddUninstallTarget.cmake")
 endfunction()
 
-# A function that includes ${CMAKE_CURRENT_SOURCE_DIR}/include as the header directory of the target.
-# A variable `<target_name>_HEADER_DIRECTORY` will be created to represent the header directory path.
+#[[.rst:
+
+.. include:: ../../docs/src/target_include_header_directory.md
+   :parser: myst_parser.sphinx_
+
+#]]
 function(target_include_header_directory target)
   # CACHE and FORCE to use it as a global variable
   set(${target}_HEADER_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include" CACHE STRING "" FORCE)
@@ -231,8 +235,12 @@ function(target_include_header_directory target)
   endif()
 endfunction()
 
-# A function that `find_package(${dependency} CONFIG REQUIRED)` for all dependencies required and binds them to the target.
-# Variables `<target_name>_<PRIVATE|PUBLIC|INTERFACE>_DEPENDENCIES` will be created to represent corresponding dependencies.
+#[[.rst:
+
+.. include:: ../../docs/src/target_configure_dependencies.md
+   :parser: myst_parser.sphinx_
+
+#]]
 function(target_configure_dependencies target)
   set(options)
   set(one_value_args)
