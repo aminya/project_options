@@ -7,7 +7,7 @@ Variables `<target_name>_<PRIVATE|PUBLIC|INTERFACE>_DEPENDENCIES` will be create
 ```cmake
 add_library(my_lib)
 target_sources(my_lib PRIVATE function.cpp)
-target_include_header_directory(my_header_lib)
+target_include_interface_directory(my_header_lib)
 
 target_find_dependencies(my_lib
   PUBLIC
