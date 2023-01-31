@@ -244,20 +244,20 @@ endfunction()
 #]]
 function(target_include_interface_directory target)
   # CACHE and FORCE to use it as a global variable
-  set(${target}_HEADER_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include" CACHE STRING "" FORCE)
+  set(${target}_INTERFACE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include" CACHE STRING "" FORCE)
 
   get_target_property(sources ${target} SOURCES)
 
   if(NOT sources) # header-only library, aka `add_library(target INTERFACE)`
     target_include_directories(${target}
       INTERFACE
-      $<BUILD_INTERFACE:${${target}_HEADER_DIRECTORY}>
+      $<BUILD_INTERFACE:${${target}_INTERFACE_DIRECTORY}>
       $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     )
   else()
     target_include_directories(${target}
       PUBLIC
-      $<BUILD_INTERFACE:${${target}_HEADER_DIRECTORY}>
+      $<BUILD_INTERFACE:${${target}_INTERFACE_DIRECTORY}>
       $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     )
   endif()
