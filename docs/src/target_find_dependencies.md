@@ -1,4 +1,4 @@
-# `target_configure_dependencies` function
+# `target_find_dependencies` function
 
 This function `find_package(${dependency} CONFIG REQUIRED)` for all dependencies required and binds them to the target.
 
@@ -9,7 +9,7 @@ add_library(my_lib)
 target_sources(my_lib PRIVATE function.cpp)
 target_include_header_directory(my_header_lib)
 
-target_configure_dependencies(my_lib
+target_find_dependencies(my_lib
   PUBLIC
   fmt
   PRIVATE

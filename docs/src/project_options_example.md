@@ -101,7 +101,7 @@ add_executable(main main.cpp)
 target_link_libraries(main PRIVATE project_options project_warnings) # link project_options/warnings
 
 # Find dependencies:
-target_configure_dependencies(main
+target_find_dependencies(main
   PRIVATE
   fmt
   Eigen3
@@ -128,7 +128,7 @@ target_link_libraries(my_header_lib INTERFACE project_options project_warnings) 
 target_include_header_directory(my_header_lib)
 
 # Find dependencies:
-target_configure_dependencies(my_header_lib
+target_find_dependencies(my_header_lib
   INTERFACE
   fmt
   Eigen3
@@ -160,7 +160,7 @@ target_link_libraries(my_lib PRIVATE project_options project_warnings) # link pr
 target_include_header_directory(my_lib)
 
 # Find dependencies:
-target_configure_dependencies(my_lib
+target_find_dependencies(my_lib
   PRIVATE
   fmt
   Eigen3
