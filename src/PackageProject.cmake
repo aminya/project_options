@@ -230,3 +230,22 @@ function(target_include_header_directory target)
     )
   endif()
 endfunction()
+
+# A function that `find_package(${dependency} CONFIG REQUIRED)` for all dependencies required and binds them to the target.
+# Variables `<target_name>_<PRIVATE|PUBLIC|INTERFACE>_DEPENDENCIES` will be created to represent corresponding dependencies.
+function(target_configure_dependencies target)
+  set(options)
+  set(one_value_args)
+  set(multi_value_args PRIVATE PUBLIC INTERFACE)
+
+  cmake_parse_arguments(args "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
+
+  # CACHE and FORCE to use it as a global variable
+  set(${target}_PRIVATE_DEPENDENCIES ${args_PRIVATE} CACHE STRING "" FORCE)
+  set(${target}_PUBLIC_DEPENDENCIES ${args_PUBLIC} CACHE STRING "" FORCE)
+  set(${target}_INTERFACE_DEPENDENCIES ${args_INTERFACE} CACHE STRING "" FORCE)
+
+  foreach(dependency IN LISTS args_PRIVATE args_PUBLIC args_INTERFACE)
+    find_package(${dependency} CONFIG REQUIRED)
+  endforeach()
+endfunction()
