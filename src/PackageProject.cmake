@@ -2,8 +2,12 @@ include_guard()
 
 # Uses ycm (permissive BSD-3-Clause license) and ForwardArguments (permissive MIT license)
 
-# A function that packages the project for external usage (e.g. from vcpkg, Conan, etc).
-# See the [README.md] for more details
+#[[.rst:
+
+.. include:: ../../docs/src/package_project.md
+   :parser: myst_parser.sphinx_
+
+#]]
 function(package_project)
   # default to false
   set(_options ARCH_INDEPENDENT)

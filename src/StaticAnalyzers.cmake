@@ -191,7 +191,12 @@ macro(target_disable_vs_analysis TARGET)
   endif()
 endmacro()
 
-# Disable static analysis for target
+#[[.rst:
+
+.. include:: ../../docs/src/target_disable_static_analysis.md
+   :parser: myst_parser.sphinx_
+
+#]]
 macro(target_disable_static_analysis TARGET)
   if(NOT
      CMAKE_GENERATOR

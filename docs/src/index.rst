@@ -1,8 +1,14 @@
 .. cmake-manual-description: CMake Modules Reference
 
-Macros and Function
+Functions
 *************
 
-Below you find a list of macros and functions included in this project.
+Here is a list of functions included in this project:
 
 .. cmake-module:: ../../src/Index.cmake
+.. cmake-module:: ../../src/Vcpkg.cmake
+.. cmake-module:: ../../src/PackageProject.cmake
+.. cmake-module:: ../../src/SystemLink.cmake
+.. cmake-module:: ../../src/StaticAnalyzers.cmake
+.. cmake-module:: ../../src/Cuda.cmake
+.. cmake-module:: ../../src/DynamicProjectOptions.cmake

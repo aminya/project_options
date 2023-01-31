@@ -2,7 +2,12 @@ include_guard()
 
 include(FetchContent)
 
-# Install vcpkg and vcpkg dependencies: - should be called before defining project()
+#[[.rst:
+
+.. include:: ../../docs/src/run_vcpkg.md
+   :parser: myst_parser.sphinx_
+
+#]]
 macro(run_vcpkg)
   # named boolean ENABLE_VCPKG_UPDATE arguments
   set(options ENABLE_VCPKG_UPDATE)
@@ -132,7 +137,7 @@ macro(run_vcpkg)
       else()
         get_toolchain_file(_toolchain_file)
       endif()
-      
+
       if(NOT "${_toolchain_file}" STREQUAL "")
         set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE
             ${_toolchain_file}
