@@ -25,11 +25,11 @@ subprocess.call('doxygen ./Doxyfile.doxygen-docs', shell=True)
 
 # -- Project information -----------------------------------------------------
 
-project = 'CMake Spinx Documentation'
-author = 'Firstname Lastname'
+project = 'project_options'
+author = 'Amin Yahyaabadi'
 copyright = 'MIT - Copyright (c) 2022-2100 Amin Yahyaabadi'
-version = '0.1.0' # feature version
-release = '0.1.0' # full version string
+version = '0.26.3' # feature version
+release = '0.26.3' # full version string
 
 
 # -- General configuration ---------------------------------------------------

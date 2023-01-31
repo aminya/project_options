@@ -1,10 +1,11 @@
 var searchData=
 [
-  ['ref_5fexists_0',['ref_exists',['../namespaceupdate__versions.html#a6c4b330623119155fb3771be78bc3a70',1,'update_versions']]],
-  ['release_1',['release',['../namespaceconf.html#aca7e23e5f354ec5d8e18d6b5769908c9',1,'conf']]],
-  ['repo_2',['repo',['../namespaceconf.html#a35fa2d94ab255198dffac5df0e345111',1,'conf']]],
-  ['repo_5fname_3',['REPO_NAME',['../namespaceconf.html#a7dcb56741015154fbf577264845b66d5',1,'conf']]],
-  ['required_4',['required',['../namespaceupdate__versions.html#a4c09c645e6b6543b8aa2251aeb0a4ed1',1,'update_versions']]],
-  ['reverse_5',['reverse',['../namespaceupdate__versions.html#a7d7d02e700d1e931639dce9650a62394',1,'update_versions']]],
-  ['run_5fvcpkg_2emd_6',['run_vcpkg.md',['../run__vcpkg_8md.html',1,'']]]
+  ['package_5fproject_2emd_0',['package_project.md',['../package__project_8md.html',1,'']]],
+  ['parser_1',['parser',['../namespaceupdate__versions.html#a38b35eee1abdf830033006c6314849c5',1,'update_versions']]],
+  ['project_2',['project',['../namespaceconf.html#a2803387c30920e3e74f46eb541db430d',1,'conf']]],
+  ['project_5foptions_3',['project_options',['../md__home_aminya_GitHub_Cpp_project_options_docs_src_Readme_top.html',1,'']]],
+  ['project_5foptions_5fapi_4',['project_options_api',['../md__home_aminya_GitHub_Cpp_project_options_docs_src_project_options_api.html',1,'']]],
+  ['project_5foptions_5fapi_2emd_5',['project_options_api.md',['../project__options__api_8md.html',1,'']]],
+  ['project_5foptions_5fdocs_6',['project_options_docs',['../index.html',1,'']]],
+  ['project_5foptions_5fexample_2emd_7',['project_options_example.md',['../project__options__example_8md.html',1,'']]]
 ];

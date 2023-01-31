@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['master_5fdoc_0',['master_doc',['../namespaceconf.html#aa95c63cf0a3d87fed36d450840c6fd48',1,'conf']]],
-  ['metavar_1',['metavar',['../namespaceupdate__versions.html#af6a35450441d52a5a57e54322431f3ee',1,'update_versions']]]
+  ['license_0',['License',['../md__home_aminya_GitHub_Cpp_project_options_docs_src_License.html',1,'']]],
+  ['license_2emd_1',['License.md',['../License_8md.html',1,'']]]
 ];

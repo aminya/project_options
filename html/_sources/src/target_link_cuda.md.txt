@@ -1,4 +1,4 @@
-# `target_link_cuda` function
+# `target_link_cuda`
 
 Link Cuda to the given target.
 

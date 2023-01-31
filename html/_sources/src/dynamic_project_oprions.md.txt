@@ -1,4 +1,4 @@
-# `dynamic_project_options` function
+# `dynamic_project_options`
 
 During the test and development, it can be useful to change options on the fly. For example, to enable sanitizers when running tests. You can include `DynamicOptions.cmake`, which imports the `dynamic_project_options` function.
 

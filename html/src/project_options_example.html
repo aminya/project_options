@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>project_options &mdash; project_options 0.26.3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<link href="../css/company_style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> project_options
+          </a>
+              <div class="version">
+                main
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html"><code class="docutils literal notranslate"><span class="pre">project_options</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#run-vcpkg"><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#package-project"><code class="docutils literal notranslate"><span class="pre">package_project</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-include-system-directories"><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-link-system-libraries"><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-disable-static-analysis"><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-link-cuda"><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">project_options</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">project_options</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/src/project_options_example.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="project-options">
+<h1><code class="docutils literal notranslate"><span class="pre">project_options</span></code><a class="headerlink" href="#project-options" title="Permalink to this heading"></a></h1>
+<p>See <code class="docutils literal notranslate"><span class="pre">project_options()</span></code> in action in <a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project">this template repository</a>. <a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project">cpp_vcpkg_project</a> has prepared all the best practices for a production-ready C++ project.</p>
+<p>Here is a full example.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.20</span><span class="nf">)</span><span class="w"></span>
+
+<span class="c"># set a default CXX standard for the tools and targets that do not specify them.</span>
+<span class="c"># If commented, the latest supported standard for your compiler is automatically set.</span>
+<span class="c"># set(CMAKE_CXX_STANDARD 20)</span>
+
+<span class="c"># Add project_options v0.26.3</span>
+<span class="c"># https://github.com/aminya/project_options</span>
+<span class="c"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</span>
+<span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">FetchContent_Declare(</span><span class="nb">_project_options</span><span class="w"> </span><span class="no">URL</span><span class="w"> </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/v0.26.3.zip</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">FetchContent_MakeAvailable(</span><span class="nb">_project_options</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">include(</span><span class="o">${</span><span class="nt">_project_options_SOURCE_DIR</span><span class="o">}</span><span class="na">/Index.cmake</span><span class="nf">)</span><span class="w"></span>
+
+<span class="c"># install vcpkg dependencies: - should be called before defining project()</span>
+<span class="nf">run_vcpkg()</span><span class="w"></span>
+
+<span class="c"># Set the project name and language</span>
+<span class="nf">project(</span><span class="nb">myproject</span><span class="w"> </span><span class="no">LANGUAGES</span><span class="w"> </span><span class="no">CXX</span><span class="w"> </span><span class="no">C</span><span class="nf">)</span><span class="w"></span>
+
+<span class="c"># Build Features</span>
+<span class="nf">option(</span><span class="no">FEATURE_TESTS</span><span class="w"> </span><span class="s">&quot;Enable the tests&quot;</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">if(</span><span class="no">FEATURE_TESTS</span><span class="nf">)</span><span class="w"></span>
+<span class="w">  </span><span class="nf">list(</span><span class="no">APPEND</span><span class="w"> </span><span class="no">VCPKG_MANIFEST_FEATURES</span><span class="w"> </span><span class="s">&quot;tests&quot;</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">endif()</span><span class="w"></span>
+
+<span class="nf">option(</span><span class="no">FEATURE_DOCS</span><span class="w"> </span><span class="s">&quot;Enable the docs&quot;</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span><span class="w"></span>
+
+<span class="c"># Enable sanitizers and static analyzers when running the tests</span>
+<span class="nf">set(</span><span class="no">ENABLE_CLANG_TIDY</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">set(</span><span class="no">ENABLE_CPPCHECK</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">set(</span><span class="no">ENABLE_SANITIZER_ADDRESS</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">set(</span><span class="no">ENABLE_SANITIZER_UNDEFINED_BEHAVIOR</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">set(</span><span class="no">ENABLE_COVERAGE</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span><span class="w"></span>
+
+<span class="nf">if(</span><span class="no">FEATURE_TESTS</span><span class="nf">)</span><span class="w"></span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_CLANG_TIDY</span><span class="w"> </span><span class="s">&quot;ENABLE_CLANG_TIDY&quot;</span><span class="nf">)</span><span class="w"></span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_CPPCHECK</span><span class="w"> </span><span class="s">&quot;ENABLE_CPPCHECK&quot;</span><span class="nf">)</span><span class="w"></span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_COVERAGE</span><span class="w"> </span><span class="s">&quot;ENABLE_COVERAGE&quot;</span><span class="nf">)</span><span class="w"></span>
+
+<span class="w">  </span><span class="nf">if(</span><span class="no">NOT</span><span class="w"></span>
+<span class="w">     </span><span class="s">&quot;${CMAKE_SYSTEM_NAME}&quot;</span><span class="w"></span>
+<span class="w">     </span><span class="no">STREQUAL</span><span class="w"></span>
+<span class="w">     </span><span class="s">&quot;Windows&quot;</span><span class="nf">)</span><span class="w"></span>
+<span class="w">    </span><span class="nf">set(</span><span class="no">ENABLE_SANITIZER_ADDRESS</span><span class="w"> </span><span class="s">&quot;ENABLE_SANITIZER_ADDRESS&quot;</span><span class="nf">)</span><span class="w"></span>
+<span class="w">    </span><span class="nf">set(</span><span class="no">ENABLE_SANITIZER_UNDEFINED_BEHAVIOR</span><span class="w"> </span><span class="s">&quot;ENABLE_SANITIZER_UNDEFINED_BEHAVIOR&quot;</span><span class="nf">)</span><span class="w"></span>
+<span class="w">  </span><span class="nf">else()</span><span class="w"></span>
+<span class="w">    </span><span class="c"># or it is MSVC and has run vcvarsall</span>
+<span class="w">    </span><span class="nf">string(</span><span class="no">FIND</span><span class="w"> </span><span class="s">&quot;$ENV{PATH}&quot;</span><span class="w"> </span><span class="s">&quot;$ENV{VSINSTALLDIR}&quot;</span><span class="w"> </span><span class="nb">index_of_vs_install_dir</span><span class="nf">)</span><span class="w"></span>
+<span class="w">    </span><span class="nf">if(</span><span class="no">MSVC</span><span class="w"> </span><span class="no">AND</span><span class="w"> </span><span class="s">&quot;${index_of_vs_install_dir}&quot;</span><span class="w"> </span><span class="no">STREQUAL</span><span class="w"> </span><span class="s">&quot;-1&quot;</span><span class="nf">)</span><span class="w"></span>
+<span class="w">      </span><span class="nf">set(</span><span class="no">ENABLE_SANITIZER_ADDRESS</span><span class="w"> </span><span class="s">&quot;ENABLE_SANITIZER_ADDRESS&quot;</span><span class="nf">)</span><span class="w"></span>
+<span class="w">    </span><span class="nf">endif()</span><span class="w"></span>
+<span class="w">  </span><span class="nf">endif()</span><span class="w"></span>
+<span class="nf">endif()</span><span class="w"></span>
+
+<span class="nf">if(</span><span class="no">FEATURE_DOCS</span><span class="nf">)</span><span class="w"></span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_DOXYGEN</span><span class="w"> </span><span class="s">&quot;ENABLE_DOXYGEN&quot;</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">else()</span><span class="w"></span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_DOXYGEN</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">endif()</span><span class="w"></span>
+
+<span class="c"># Initialize project_options variable related to this project</span>
+<span class="c"># This overwrites `project_options` and sets `project_warnings`</span>
+<span class="c"># uncomment to enable the options. Some of them accept one or more inputs:</span>
+<span class="nf">project_options(</span><span class="w"></span>
+<span class="w">      </span><span class="no">ENABLE_CACHE</span><span class="w"></span>
+<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_CPPCHECK</span><span class="o">}</span><span class="w"></span>
+<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_CLANG_TIDY</span><span class="o">}</span><span class="w"></span>
+<span class="w">      </span><span class="no">ENABLE_VS_ANALYSIS</span><span class="w"></span>
+<span class="w">      </span><span class="c"># ENABLE_CONAN</span>
+<span class="w">      </span><span class="c"># ENABLE_INTERPROCEDURAL_OPTIMIZATION</span>
+<span class="w">      </span><span class="c"># ENABLE_NATIVE_OPTIMIZATION</span>
+<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_DOXYGEN</span><span class="o">}</span><span class="w"></span>
+<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_COVERAGE</span><span class="o">}</span><span class="w"></span>
+<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_SANITIZER_ADDRESS</span><span class="o">}</span><span class="w"></span>
+<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_SANITIZER_UNDEFINED_BEHAVIOR</span><span class="o">}</span><span class="w"></span>
+<span class="w">      </span><span class="c"># ENABLE_SANITIZER_THREAD</span>
+<span class="w">      </span><span class="c"># ENABLE_SANITIZER_MEMORY</span>
+<span class="w">      </span><span class="c"># ENABLE_PCH</span>
+<span class="w">      </span><span class="c"># PCH_HEADERS</span>
+<span class="w">      </span><span class="c"># WARNINGS_AS_ERRORS</span>
+<span class="w">      </span><span class="c"># ENABLE_INCLUDE_WHAT_YOU_USE</span>
+<span class="w">      </span><span class="c"># ENABLE_BUILD_WITH_TIME_TRACE</span>
+<span class="w">      </span><span class="c"># ENABLE_UNITY</span>
+<span class="w">      </span><span class="c"># LINKER &quot;lld&quot;</span>
+<span class="w">      </span><span class="c"># CONAN_PROFILE ${profile_path}  # passes a profile to conan: see https://docs.conan.io/en/latest/reference/profiles.html</span>
+<span class="nf">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Then add the executables or libraries to the project:</p>
+<section id="executable">
+<h2><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe">Executable</a><a class="headerlink" href="#executable" title="Permalink to this heading"></a></h2>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">main</span><span class="w"> </span><span class="nb">main.cpp</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">target_link_libraries(</span><span class="nb">main</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">project_options</span><span class="w"> </span><span class="nb">project_warnings</span><span class="nf">)</span><span class="w"> </span><span class="c"># link project_options/warnings</span>
+
+<span class="c"># Find dependencies:</span>
+<span class="nf">set(</span><span class="no">DEPENDENCIES_CONFIGURED</span><span class="w"> </span><span class="nb">fmt</span><span class="w"> </span><span class="nb">Eigen3</span><span class="nf">)</span><span class="w"></span>
+
+<span class="nf">foreach(</span><span class="no">DEPENDENCY</span><span class="w"> </span><span class="o">${</span><span class="nt">DEPENDENCIES_CONFIGURED</span><span class="o">}</span><span class="nf">)</span><span class="w"></span>
+<span class="w">  </span><span class="nf">find_package(</span><span class="o">${</span><span class="nt">DEPENDENCY</span><span class="o">}</span><span class="w"> </span><span class="no">CONFIG</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">endforeach()</span><span class="w"></span>
+
+<span class="c"># Link dependencies</span>
+<span class="nf">target_link_system_libraries(</span><span class="w"></span>
+<span class="w">  </span><span class="nb">main</span><span class="w"></span>
+<span class="w">  </span><span class="no">PRIVATE</span><span class="w"></span>
+<span class="w">  </span><span class="nb">fmt</span><span class="o">::</span><span class="nb">fmt</span><span class="w"></span>
+<span class="w">  </span><span class="nb">Eigen3</span><span class="o">::</span><span class="nb">Eigen</span><span class="w"></span>
+<span class="nf">)</span><span class="w"></span>
+
+<span class="c"># Package the project</span>
+<span class="nf">package_project(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">main</span><span class="nf">)</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="header-only-library">
+<h2><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib">Header-only library</a><a class="headerlink" href="#header-only-library" title="Permalink to this heading"></a></h2>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">my_header_lib</span><span class="w"> </span><span class="no">INTERFACE</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">target_link_libraries(</span><span class="nb">my_header_lib</span><span class="w"> </span><span class="no">INTERFACE</span><span class="w"> </span><span class="nb">project_options</span><span class="w"> </span><span class="nb">project_warnings</span><span class="nf">)</span><span class="w"> </span><span class="c"># link project_options/warnings</span>
+
+<span class="c"># Includes</span>
+<span class="nf">set(</span><span class="no">INCLUDE_DIR</span><span class="w"> </span><span class="s">&quot;include&quot;</span><span class="nf">)</span><span class="w"> </span><span class="c"># must be relative paths</span>
+<span class="nf">target_include_directories(</span><span class="nb">my_header_lib</span><span class="w"> </span><span class="no">INTERFACE</span><span class="w"> </span><span class="s">&quot;$&lt;BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}&gt;&quot;</span><span class="w"></span>
+<span class="w">                                          </span><span class="s">&quot;$&lt;INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}&gt;&quot;</span><span class="nf">)</span><span class="w"></span>
+
+<span class="c"># Find dependencies:</span>
+<span class="nf">set(</span><span class="no">DEPENDENCIES_CONFIGURED</span><span class="w"> </span><span class="nb">fmt</span><span class="w"> </span><span class="nb">Eigen3</span><span class="nf">)</span><span class="w"></span>
+
+<span class="nf">foreach(</span><span class="no">DEPENDENCY</span><span class="w"> </span><span class="o">${</span><span class="nt">DEPENDENCIES_CONFIGURED</span><span class="o">}</span><span class="nf">)</span><span class="w"></span>
+<span class="w">  </span><span class="nf">find_package(</span><span class="o">${</span><span class="nt">DEPENDENCY</span><span class="o">}</span><span class="w"> </span><span class="no">CONFIG</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">endforeach()</span><span class="w"></span>
+
+<span class="c"># Link dependencies:</span>
+<span class="nf">target_link_system_libraries(</span><span class="w"></span>
+<span class="w">  </span><span class="nb">my_header_lib</span><span class="w"></span>
+<span class="w">  </span><span class="no">INTERFACE</span><span class="w"></span>
+<span class="w">  </span><span class="nb">fmt</span><span class="o">::</span><span class="nb">fmt</span><span class="w"></span>
+<span class="w">  </span><span class="nb">Eigen3</span><span class="o">::</span><span class="nb">Eigen</span><span class="w"></span>
+<span class="nf">)</span><span class="w"></span>
+
+<span class="c"># Package the project</span>
+<span class="nf">package_project(</span><span class="w"></span>
+<span class="w">  </span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">my_header_lib</span><span class="w"> </span><span class="nb">project_options</span><span class="w"> </span><span class="nb">project_warnings</span><span class="w"></span>
+<span class="w">  </span><span class="no">INTERFACE_DEPENDENCIES_CONFIGURED</span><span class="w"> </span><span class="o">${</span><span class="nt">DEPENDENCIES_CONFIGURED</span><span class="o">}</span><span class="w"></span>
+<span class="w">  </span><span class="no">INTERFACE_INCLUDES</span><span class="w"> </span><span class="o">${</span><span class="nt">INCLUDE_DIR</span><span class="o">}</span><span class="w"></span>
+<span class="nf">)</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="library-with-source-files">
+<h2><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib">Library with source files</a><a class="headerlink" href="#library-with-source-files" title="Permalink to this heading"></a></h2>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">my_lib</span><span class="w"> </span><span class="s">&quot;./src/my_lib/lib.cpp&quot;</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">target_link_libraries(</span><span class="nb">my_lib</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">project_options</span><span class="w"> </span><span class="nb">project_warnings</span><span class="nf">)</span><span class="w"> </span><span class="c"># link project_options/warnings</span>
+
+<span class="c"># Includes</span>
+<span class="nf">set(</span><span class="no">INCLUDE_DIR</span><span class="w"> </span><span class="s">&quot;include&quot;</span><span class="nf">)</span><span class="w"> </span><span class="c"># must be relative paths</span>
+<span class="nf">target_include_directories(</span><span class="nb">my_lib</span><span class="w"> </span><span class="no">PUBLIC</span><span class="w"> </span><span class="s">&quot;$&lt;BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}&gt;&quot;</span><span class="w"></span>
+<span class="w">                                         </span><span class="s">&quot;$&lt;INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}&gt;&quot;</span><span class="nf">)</span><span class="w"></span>
+
+<span class="c"># Find dependencies:</span>
+<span class="nf">set(</span><span class="no">DEPENDENCIES_CONFIGURED</span><span class="w"> </span><span class="nb">fmt</span><span class="w"> </span><span class="nb">Eigen3</span><span class="nf">)</span><span class="w"></span>
+
+<span class="nf">foreach(</span><span class="no">DEPENDENCY</span><span class="w"> </span><span class="o">${</span><span class="nt">DEPENDENCIES_CONFIGURED</span><span class="o">}</span><span class="nf">)</span><span class="w"></span>
+<span class="w">  </span><span class="nf">find_package(</span><span class="o">${</span><span class="nt">DEPENDENCY</span><span class="o">}</span><span class="w"> </span><span class="no">CONFIG</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">endforeach()</span><span class="w"></span>
+
+<span class="c"># Link dependencies:</span>
+<span class="nf">target_link_system_libraries(</span><span class="w"></span>
+<span class="w">  </span><span class="nb">my_lib</span><span class="w"></span>
+<span class="w">  </span><span class="no">PRIVATE</span><span class="w"></span>
+<span class="w">  </span><span class="nb">fmt</span><span class="o">::</span><span class="nb">fmt</span><span class="w"></span>
+<span class="w">  </span><span class="nb">Eigen3</span><span class="o">::</span><span class="nb">Eigen</span><span class="w"></span>
+<span class="nf">)</span><span class="w"></span>
+
+<span class="c"># Package the project</span>
+<span class="nf">package_project(</span><span class="w"></span>
+<span class="w">  </span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">my_lib</span><span class="w"></span>
+<span class="w">  </span><span class="no">PUBLIC_INCLUDES</span><span class="w"> </span><span class="o">${</span><span class="nt">INCLUDE_DIR</span><span class="o">}</span><span class="w"></span>
+<span class="nf">)</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright MIT - Copyright (c) 2022-2100 Amin Yahyaabadi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Read the Docs</span>
+      v: main
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <!-- The content here is replaced in the version_switcher.js -->
+    </div>
+</div>
+<script src="../js/versions.js"></script>
+<script src="../js/version_switcher.js"></script>
+<script>
+    window.addEventListener('load', (event) => {
+        ar_updateVersionList('main');
+    });
+</script>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

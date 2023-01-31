@@ -1,4 +1,4 @@
-# `target_link_system_libraries` function
+# `target_link_system_libraries`
 
 Link multiple library targets as system libraries (which suppresses their warnings).
 

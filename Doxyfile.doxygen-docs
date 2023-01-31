@@ -4,7 +4,7 @@
 
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = project_options_docs
-PROJECT_NUMBER         = 0.1.0
+PROJECT_NUMBER         = 0.26.3
 PROJECT_BRIEF          = Documentation
 PROJECT_LOGO           = 
 OUTPUT_DIRECTORY       = /home/aminya/GitHub/Cpp/project_options/docs/build
@@ -119,7 +119,7 @@ INPUT_FILTER           =
 FILTER_PATTERNS        = 
 FILTER_SOURCE_FILES    = NO
 FILTER_SOURCE_PATTERNS = 
-USE_MDFILE_AS_MAINPAGE = 
+USE_MDFILE_AS_MAINPAGE = /home/aminya/GitHub/Cpp/project_options/docs/README.md
 FORTRAN_COMMENT_AFTER  = 72
 SOURCE_BROWSER         = NO
 INLINE_SOURCES         = NO

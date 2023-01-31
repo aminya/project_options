@@ -1,4 +1,4 @@
-# `run_vcpkg` function
+# `run_vcpkg`
 
 Install vcpkg and vcpkg dependencies:
 

@@ -1,4 +1,4 @@
-# `package_project` function
+# `package_project`
 
 A function that packages the project for external usage (e.g. from vcpkg, Conan, etc).
 

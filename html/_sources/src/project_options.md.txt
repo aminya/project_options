@@ -1,10 +1,10 @@
-# `project_options` function
-
-## Example
+# project_options
 
 See `project_options()` in action in [this template repository](https://github.com/aminya/cpp_vcpkg_project). [cpp_vcpkg_project](https://github.com/aminya/cpp_vcpkg_project) has prepared all the best practices for a production-ready C++ project.
 
-Here is a full example:
+## Example
+
+Here is a full example.
 
 ```cmake
 cmake_minimum_required(VERSION 3.20)
@@ -98,7 +98,7 @@ project_options(
 
 Then add the executables or libraries to the project:
 
-[An executable](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe):
+### [Executable](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe)
 
 ```cmake
 add_executable(main main.cpp)
@@ -123,7 +123,7 @@ target_link_system_libraries(
 package_project(TARGETS main)
 ```
 
-[A header-only library](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib):
+### [Header-only library](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib):
 
 ```cmake
 add_library(my_header_lib INTERFACE)
@@ -157,7 +157,7 @@ package_project(
 )
 ```
 
-[A library with separate header and source files](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib)
+### [Library with separate header and source files](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib)
 
 ```cmake
 add_library(my_lib "./src/my_lib/lib.cpp")

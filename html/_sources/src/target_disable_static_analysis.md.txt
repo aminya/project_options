@@ -1,4 +1,4 @@
-# `target_disable_static_analysis` function
+# `target_disable_static_analysis`
 
 This function disables static analysis for the given target:
 

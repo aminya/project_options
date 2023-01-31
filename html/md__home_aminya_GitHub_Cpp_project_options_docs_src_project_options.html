@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>project_options_docs: &lt;tt&gt;project_options&lt;/tt&gt; function</title>
+<title>project_options_docs: project_options</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">project_options_docs<span id="projectnumber">&#160;0.1.0</span>
+   <div id="projectname">project_options_docs<span id="projectnumber">&#160;0.26.3</span>
    </div>
    <div id="projectbrief">Documentation</div>
   </td>
@@ -92,13 +92,13 @@ $(document).ready(function(){initNavTree('md__home_aminya_GitHub_Cpp_project_opt
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title"><code>project_options</code> function </div></div>
+  <div class="headertitle"><div class="title">project_options </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md3"></a>
+<div class="textblock"><p>See <code>project_options()</code> in action in <a href="https://github.com/aminya/cpp_vcpkg_project">this template repository</a>. <a href="https://github.com/aminya/cpp_vcpkg_project">cpp_vcpkg_project</a> has prepared all the best practices for a production-ready C++ project.</p>
+<h1><a class="anchor" id="autotoc_md4"></a>
 Example</h1>
-<p>See <code>project_options()</code> in action in <a href="https://github.com/aminya/cpp_vcpkg_project">this template repository</a>. <a href="https://github.com/aminya/cpp_vcpkg_project">cpp_vcpkg_project</a> has prepared all the best practices for a production-ready C++ project.</p>
-<p>Here is a full example:</p>
+<p>Here is a full example.</p>
 <div class="fragment"><div class="line">cmake_minimum_required(VERSION 3.20)</div>
 <div class="line"> </div>
 <div class="line"># set a default CXX standard for the tools and targets that do not specify them.</div>
@@ -187,7 +187,8 @@ Example</h1>
 <div class="line">      # CONAN_PROFILE ${profile_path}  # passes a profile to conan: see https://docs.conan.io/en/latest/reference/profiles.html</div>
 <div class="line">)</div>
 </div><!-- fragment --><p>Then add the executables or libraries to the project:</p>
-<p><a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe">An executable</a>:</p>
+<h2><a class="anchor" id="autotoc_md5"></a>
+&lt;a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe" &gt;Executable&lt;/a&gt;</h2>
 <div class="fragment"><div class="line">add_executable(main main.cpp)</div>
 <div class="line">target_link_libraries(main PRIVATE project_options project_warnings) # link project_options/warnings</div>
 <div class="line"> </div>
@@ -208,7 +209,8 @@ Example</h1>
 <div class="line"> </div>
 <div class="line"># Package the project</div>
 <div class="line">package_project(TARGETS main)</div>
-</div><!-- fragment --><p><a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib">A header-only library</a>:</p>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md6"></a>
+&lt;a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib" &gt;Header-only library&lt;/a&gt;:</h2>
 <div class="fragment"><div class="line">add_library(my_header_lib INTERFACE)</div>
 <div class="line">target_link_libraries(my_header_lib INTERFACE project_options project_warnings) # link project_options/warnings</div>
 <div class="line"> </div>
@@ -238,7 +240,8 @@ Example</h1>
 <div class="line">  INTERFACE_DEPENDENCIES_CONFIGURED ${DEPENDENCIES_CONFIGURED}</div>
 <div class="line">  INTERFACE_INCLUDES ${INCLUDE_DIR}</div>
 <div class="line">)</div>
-</div><!-- fragment --><p><a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib">A library with separate header and source files</a></p>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md7"></a>
+&lt;a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib" &gt;Library with separate header and source files&lt;/a&gt;</h2>
 <div class="fragment"><div class="line">add_library(my_lib &quot;./src/my_lib/lib.cpp&quot;)</div>
 <div class="line">target_link_libraries(my_lib PRIVATE project_options project_warnings) # link project_options/warnings</div>
 <div class="line"> </div>
@@ -267,7 +270,7 @@ Example</h1>
 <div class="line">  TARGETS my_lib</div>
 <div class="line">  PUBLIC_INCLUDES ${INCLUDE_DIR}</div>
 <div class="line">)</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md4"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md8"></a>
 API</h1>
 <p><code>project_options</code> function accepts the following named flags:</p>
 <ul>

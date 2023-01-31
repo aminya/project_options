@@ -1,4 +1,4 @@
-# `target_include_system_directories` function
+# `target_include_system_directories`
 
 Include a system directory (which suppresses its warnings).
 

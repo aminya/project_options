@@ -1,8 +1,5 @@
 .. cmake-manual-description: CMake Modules Reference
 
-Functions
-*************
-
 .. cmake-module:: ../../src/Index.cmake
 .. cmake-module:: ../../src/Vcpkg.cmake
 .. cmake-module:: ../../src/PackageProject.cmake
