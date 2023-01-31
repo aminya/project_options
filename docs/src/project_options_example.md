@@ -1,8 +1,6 @@
-# `project_options`
+See the `project_options()` in action in [this template repository](https://github.com/aminya/cpp_vcpkg_project). [cpp_vcpkg_project](https://github.com/aminya/cpp_vcpkg_project) has prepared all the best practices for a production-ready C++ project.
 
-See `project_options()` in action in [this template repository](https://github.com/aminya/cpp_vcpkg_project). [cpp_vcpkg_project](https://github.com/aminya/cpp_vcpkg_project) has prepared all the best practices for a production-ready C++ project.
-
-Here is a full example.
+Here is an example of the usage:
 
 ```cmake
 cmake_minimum_required(VERSION 3.20)
