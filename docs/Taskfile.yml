@@ -11,3 +11,10 @@ tasks:
     cmds:
       - cmake -S ./ -B ./build -G "Ninja Multi-Config" -DCMAKE_BUILD_TYPE=Release
       - cmake --build ./build --config Release
+      - touch ./build/.nojekyll
+
+  docs.deploy:
+    deps:
+      - docs
+    cmds:
+      - npx gh-pages -d ./build/ -t true

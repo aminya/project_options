@@ -2,6 +2,10 @@
 
 A general-purpose CMake library that provides functions that improve the CMake experience following the best practices.
 
+[![documentation](https://img.shields.io/badge/documentation-blue?style=flat&logo=docs.rs&link=https://aminya.github.io/project_options/)](https://aminya.github.io/project_options/)
+
+[![ci](https://github.com/aminya/project_options/actions/workflows/ci.yml/badge.svg)](https://github.com/aminya/project_options/actions/workflows/ci.yml)
+
 ## Features
 
 - `project_options`:
@@ -23,15 +27,15 @@ A general-purpose CMake library that provides functions that improve the CMake e
 - `target_link_system_libraries` and `target_include_system_directories`: linking/including external dependencies/headers without warnings
 - `target_link_cuda`: linking Cuda to a target
 
-[![ci](https://github.com/aminya/project_options/actions/workflows/ci.yml/badge.svg)](https://github.com/aminya/project_options/actions/workflows/ci.yml)
-
 ## Usage
 
 See `project_options()` in action in [this template repository](https://github.com/aminya/cpp_vcpkg_project). [cpp_vcpkg_project](https://github.com/aminya/cpp_vcpkg_project) has prepared all the best practices for a production-ready C++ project.
 
 ## Documentation
 
-See the [docs](./docs/src/project_options.md) folder.
+The documentation is available [here](https://aminya.github.io/project_options/):
+
+[![documentation](https://img.shields.io/badge/documentation-blue?style=flat&logo=docs.rs&link=https://aminya.github.io/project_options/)](https://aminya.github.io/project_options/)
 
 ## License
 
