@@ -1,0 +1,20 @@
+{% if READTHEDOCS or display_lower_left %}
+{# Add rst-badge after rst-versions for small badge style. #}
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Read the Docs</span>
+      v: {{ current_version }}
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <!-- The content here is replaced in the version_switcher.js -->
+    </div>
+</div>
+<script src="../js/versions.js"></script>
+<script src="../js/version_switcher.js"></script>
+<script>
+    window.addEventListener('load', (event) => {
+        ar_updateVersionList('{{ current_version }}');
+    });
+</script>
+{% endif %}

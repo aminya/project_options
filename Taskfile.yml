@@ -25,13 +25,15 @@ includes:
   rpi4-vcpkg:
     taskfile: ./tests/rpi4-vcpkg/Taskfile.yml
     dir: ./tests/rpi4-vcpkg
-
+  docs:
+    taskfile: ./docs/Taskfile.yml
+    dir: ./docs
 vars:
   CWD:
     sh: git rev-parse --show-toplevel
 
 tasks:
-  ci.test:
+  test:
     - task: myproj:test
     - task: myproj:test.release
     - task: install
@@ -72,3 +74,7 @@ tasks:
 
     - task: myproj:clean
     - task: install:clean
+
+  docs:
+    deps:
+      - docs:docs
