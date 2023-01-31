@@ -146,7 +146,7 @@ package_project(
   TARGETS my_header_lib project_options project_warnings
   # Just add these no matter whether dependencies exist.
   INTERFACE_DEPENDENCIES_CONFIGURED ${my_header_lib_INTERFACE_DEPENDENCIES}
-  INTERFACE_INCLUDES ${my_header_lib_HEADER_DIRECTORY}
+  INTERFACE_INCLUDES ${my_header_lib_INTERFACE_DIRECTORY}
 )
 ```
 
@@ -179,6 +179,6 @@ package_project(
   # Just add these no matter whether dependencies exist.
   INTERFACE_DEPENDENCIES_CONFIGURED ${my_lib_INTERFACE_DEPENDENCIES}
   PUBLIC_DEPENDENCIES_CONFIGURED ${my_lib_PUBLIC_DEPENDENCIES}
-  PUBLIC_INCLUDES ${my_lib_HEADER_DIRECTORY}
+  PUBLIC_INCLUDES ${my_lib_INTERFACE_DIRECTORY}
 )
 ```

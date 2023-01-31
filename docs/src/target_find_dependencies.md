@@ -26,6 +26,6 @@ target_link_system_libraries(my_lib
 package_project(
   TARGETS my_lib
   PUBLIC_DEPENDENCIES_CONFIGURED ${my_lib_PUBLIC_DEPENDENCIES}
-  PUBLIC_INCLUDES ${my_lib_HEADER_DIRECTORY}
+  PUBLIC_INCLUDES ${my_lib_INTERFACE_DIRECTORY}
 )
 ```
