@@ -207,3 +207,26 @@ function(package_project)
 
   include("${_ycm_SOURCE_DIR}/modules/AddUninstallTarget.cmake")
 endfunction()
+
+# A function that includes ${CMAKE_CURRENT_SOURCE_DIR}/include as the header directory of the target.
+# A variable `<target_name>_HEADER_DIRECTORY` will be created to represent the header directory path.
+function(target_include_header_directory target)
+  # CACHE and FORCE to use it as a global variable
+  set(${target}_HEADER_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include" CACHE STRING "" FORCE)
+
+  get_target_property(sources ${target} SOURCES)
+
+  if(NOT sources) # header-only library, aka `add_library(target INTERFACE)`
+    target_include_directories(${target}
+      INTERFACE
+      $<BUILD_INTERFACE:${${target}_HEADER_DIRECTORY}>
+      $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+    )
+  else()
+    target_include_directories(${target}
+      PUBLIC
+      $<BUILD_INTERFACE:${${target}_HEADER_DIRECTORY}>
+      $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+    )
+  endif()
+endfunction()
