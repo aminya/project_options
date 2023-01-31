@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>project_options_docs: &lt;tt&gt;project_options&lt;/tt&gt;</title>
+<title>project_options_docs: project_options_example</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -92,11 +92,11 @@ $(document).ready(function(){initNavTree('md__home_aminya_GitHub_Cpp_project_opt
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title"><code>project_options</code> </div></div>
+  <div class="headertitle"><div class="title">project_options_example </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>See <code>project_options()</code> in action in <a href="https://github.com/aminya/cpp_vcpkg_project">this template repository</a>. <a href="https://github.com/aminya/cpp_vcpkg_project">cpp_vcpkg_project</a> has prepared all the best practices for a production-ready C++ project.</p>
-<p>Here is a full example.</p>
+<div class="textblock"><p>See the <code>project_options()</code> in action in <a href="https://github.com/aminya/cpp_vcpkg_project">this template repository</a>. <a href="https://github.com/aminya/cpp_vcpkg_project">cpp_vcpkg_project</a> has prepared all the best practices for a production-ready C++ project.</p>
+<p>Here is an example of the usage:</p>
 <div class="fragment"><div class="line">cmake_minimum_required(VERSION 3.20)</div>
 <div class="line"> </div>
 <div class="line"># set a default CXX standard for the tools and targets that do not specify them.</div>
@@ -185,8 +185,8 @@ $(document).ready(function(){initNavTree('md__home_aminya_GitHub_Cpp_project_opt
 <div class="line">      # CONAN_PROFILE ${profile_path}  # passes a profile to conan: see https://docs.conan.io/en/latest/reference/profiles.html</div>
 <div class="line">)</div>
 </div><!-- fragment --><p>Then add the executables or libraries to the project:</p>
-<h3><a class="anchor" id="autotoc_md5"></a>
-&lt;a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe" &gt;Executable&lt;/a&gt;</h3>
+<h4><a class="anchor" id="autotoc_md4"></a>
+&lt;a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe" &gt;Executable&lt;/a&gt;</h4>
 <div class="fragment"><div class="line">add_executable(main main.cpp)</div>
 <div class="line">target_link_libraries(main PRIVATE project_options project_warnings) # link project_options/warnings</div>
 <div class="line"> </div>
@@ -207,8 +207,8 @@ $(document).ready(function(){initNavTree('md__home_aminya_GitHub_Cpp_project_opt
 <div class="line"> </div>
 <div class="line"># Package the project</div>
 <div class="line">package_project(TARGETS main)</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md6"></a>
-&lt;a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib" &gt;Header-only library&lt;/a&gt;</h3>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md5"></a>
+&lt;a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib" &gt;Header-only library&lt;/a&gt;</h4>
 <div class="fragment"><div class="line">add_library(my_header_lib INTERFACE)</div>
 <div class="line">target_link_libraries(my_header_lib INTERFACE project_options project_warnings) # link project_options/warnings</div>
 <div class="line"> </div>
@@ -238,8 +238,8 @@ $(document).ready(function(){initNavTree('md__home_aminya_GitHub_Cpp_project_opt
 <div class="line">  INTERFACE_DEPENDENCIES_CONFIGURED ${DEPENDENCIES_CONFIGURED}</div>
 <div class="line">  INTERFACE_INCLUDES ${INCLUDE_DIR}</div>
 <div class="line">)</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md7"></a>
-&lt;a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib" &gt;Library with source files&lt;/a&gt;</h3>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md6"></a>
+&lt;a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib" &gt;Library with source files&lt;/a&gt;</h4>
 <div class="fragment"><div class="line">add_library(my_lib &quot;./src/my_lib/lib.cpp&quot;)</div>
 <div class="line">target_link_libraries(my_lib PRIVATE project_options project_warnings) # link project_options/warnings</div>
 <div class="line"> </div>

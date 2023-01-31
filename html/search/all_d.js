@@ -7,5 +7,6 @@ var searchData=
   ['project_5foptions_5fapi_4',['project_options_api',['../md__home_aminya_GitHub_Cpp_project_options_docs_src_project_options_api.html',1,'']]],
   ['project_5foptions_5fapi_2emd_5',['project_options_api.md',['../project__options__api_8md.html',1,'']]],
   ['project_5foptions_5fdocs_6',['project_options_docs',['../index.html',1,'']]],
-  ['project_5foptions_5fexample_2emd_7',['project_options_example.md',['../project__options__example_8md.html',1,'']]]
+  ['project_5foptions_5fexample_7',['project_options_example',['../md__home_aminya_GitHub_Cpp_project_options_docs_src_project_options_example.html',1,'']]],
+  ['project_5foptions_5fexample_2emd_8',['project_options_example.md',['../project__options__example_8md.html',1,'']]]
 ];

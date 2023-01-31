@@ -46,18 +46,18 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Usage</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">project_options</span></code></a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">project_options</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#executable">Executable</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#header-only-library">Header-only library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#library-with-source-files">Library with source files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-vcpkg"><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#package-project"><code class="docutils literal notranslate"><span class="pre">package_project</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#target-include-system-directories"><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#target-link-system-libraries"><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#target-disable-static-analysis"><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#target-link-cuda"><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#run-vcpkg"><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#package-project"><code class="docutils literal notranslate"><span class="pre">package_project</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#target-include-system-directories"><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#target-link-system-libraries"><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#target-disable-static-analysis"><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#target-link-cuda"><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code></a></li>
 </ul>
 
         </div>
@@ -74,7 +74,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a></li>
-      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">project_options</span></code></li>
+      <li class="breadcrumb-item active">project_options</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/src/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -85,9 +85,9 @@
            <div itemprop="articleBody">
              
   <section id="project-options">
-<h1><code class="docutils literal notranslate"><span class="pre">project_options</span></code><a class="headerlink" href="#project-options" title="Permalink to this heading"></a></h1>
-<p>See <code class="docutils literal notranslate"><span class="pre">project_options()</span></code> in action in <a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project">this template repository</a>. <a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project">cpp_vcpkg_project</a> has prepared all the best practices for a production-ready C++ project.</p>
-<p>Here is a full example.</p>
+<h1>project_options<a class="headerlink" href="#project-options" title="Permalink to this heading"></a></h1>
+<p>See the <code class="docutils literal notranslate"><span class="pre">project_options()</span></code> in action in <a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project">this template repository</a>. <a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project">cpp_vcpkg_project</a> has prepared all the best practices for a production-ready C++ project.</p>
+<p>Here is an example of the usage:</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.20</span><span class="nf">)</span><span class="w"></span>
 
 <span class="c"># set a default CXX standard for the tools and targets that do not specify them.</span>
@@ -270,7 +270,6 @@
 </pre></div>
 </div>
 </section>
-</section>
 <p><code class="docutils literal notranslate"><span class="pre">project_options</span></code> function accepts the following named flags:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_CACHE</span></code>: Enable cache if available</p></li>
@@ -315,7 +314,7 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">CONAN_OPTIONS</span></code>: Extra Conan options</p></li>
 </ul>
 <section id="run-vcpkg">
-<h1><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code><a class="headerlink" href="#run-vcpkg" title="Permalink to this heading"></a></h1>
+<h2><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code><a class="headerlink" href="#run-vcpkg" title="Permalink to this heading"></a></h2>
 <p>Install vcpkg and vcpkg dependencies:</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">run_vcpkg()</span><span class="w"></span>
 </pre></div>
@@ -346,7 +345,7 @@ If <code class="docutils literal notranslate"><span class="pre">VCPKG_REV</span>
 </ul>
 </section>
 <section id="package-project">
-<h1><code class="docutils literal notranslate"><span class="pre">package_project</span></code><a class="headerlink" href="#package-project" title="Permalink to this heading"></a></h1>
+<h2><code class="docutils literal notranslate"><span class="pre">package_project</span></code><a class="headerlink" href="#package-project" title="Permalink to this heading"></a></h2>
 <p>A function that packages the project for external usage (e.g. from vcpkg, Conan, etc).</p>
 <p>The following arguments specify the package:</p>
 <ul>
@@ -369,12 +368,12 @@ If <code class="docutils literal notranslate"><span class="pre">VCPKG_REV</span>
 </ul>
 </section>
 <section id="target-include-system-directories">
-<h1><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code><a class="headerlink" href="#target-include-system-directories" title="Permalink to this heading"></a></h1>
+<h2><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code><a class="headerlink" href="#target-include-system-directories" title="Permalink to this heading"></a></h2>
 <p>Include a system directory (which suppresses its warnings).</p>
 <p>The function accepts the same arguments as <code class="docutils literal notranslate"><span class="pre">target_include_directories</span></code>. It has the mentioned features of <code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code>.</p>
 </section>
 <section id="target-link-system-libraries">
-<h1><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code><a class="headerlink" href="#target-link-system-libraries" title="Permalink to this heading"></a></h1>
+<h2><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code><a class="headerlink" href="#target-link-system-libraries" title="Permalink to this heading"></a></h2>
 <p>Link multiple library targets as system libraries (which suppresses their warnings).</p>
 <p>The function accepts the same arguments as <code class="docutils literal notranslate"><span class="pre">target_link_libraries</span></code>. It has the following features:</p>
 <ul class="simple">
@@ -383,7 +382,7 @@ If <code class="docutils literal notranslate"><span class="pre">VCPKG_REV</span>
 </ul>
 </section>
 <section id="target-disable-static-analysis">
-<h1><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code><a class="headerlink" href="#target-disable-static-analysis" title="Permalink to this heading"></a></h1>
+<h2><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code><a class="headerlink" href="#target-disable-static-analysis" title="Permalink to this heading"></a></h2>
 <p>This function disables static analysis for the given target:</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_disable_static_analysis(</span><span class="nb">some_external_target</span><span class="nf">)</span><span class="w"></span>
 </pre></div>
@@ -396,7 +395,7 @@ If <code class="docutils literal notranslate"><span class="pre">VCPKG_REV</span>
 </ul>
 </section>
 <section id="target-link-cuda">
-<h1><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code><a class="headerlink" href="#target-link-cuda" title="Permalink to this heading"></a></h1>
+<h2><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code><a class="headerlink" href="#target-link-cuda" title="Permalink to this heading"></a></h2>
 <p>Link Cuda to the given target.</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">main_cuda</span><span class="w"> </span><span class="nb">main.cu</span><span class="nf">)</span><span class="w"></span>
 <span class="nf">target_compile_features(</span><span class="nb">main_cuda</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">cxx_std_17</span><span class="nf">)</span><span class="w"></span>
@@ -404,6 +403,7 @@ If <code class="docutils literal notranslate"><span class="pre">VCPKG_REV</span>
 <span class="nf">target_link_cuda(</span><span class="nb">main_cuda</span><span class="nf">)</span><span class="w"></span>
 </pre></div>
 </div>
+</section>
 </section>
 
 

@@ -29,12 +29,12 @@ var NAVTREE =
     [ "License", "md__home_aminya_GitHub_Cpp_project_options_docs_src_License.html", null ],
     [ "<tt>package_project</tt>", "md__home_aminya_GitHub_Cpp_project_options_docs_src_package_project.html", null ],
     [ "project_options_api", "md__home_aminya_GitHub_Cpp_project_options_docs_src_project_options_api.html", null ],
-    [ "<tt>project_options</tt>", "md__home_aminya_GitHub_Cpp_project_options_docs_src_project_options_example.html", [
+    [ "project_options_example", "md__home_aminya_GitHub_Cpp_project_options_docs_src_project_options_example.html", [
       [ "Usage", "index.html#autotoc_md0", null ]
     ] ],
     [ "project_options", "md__home_aminya_GitHub_Cpp_project_options_docs_src_Readme_top.html", [
-      [ "Features", "md__home_aminya_GitHub_Cpp_project_options_docs_src_Readme_top.html#autotoc_md9", null ],
-      [ "Documentation", "md__home_aminya_GitHub_Cpp_project_options_docs_src_Readme_top.html#autotoc_md10", null ]
+      [ "Features", "md__home_aminya_GitHub_Cpp_project_options_docs_src_Readme_top.html#autotoc_md8", null ],
+      [ "Documentation", "md__home_aminya_GitHub_Cpp_project_options_docs_src_Readme_top.html#autotoc_md9", null ]
     ] ],
     [ "<tt>run_vcpkg</tt>", "md__home_aminya_GitHub_Cpp_project_options_docs_src_run_vcpkg.html", null ],
     [ "<tt>target_disable_static_analysis</tt>", "md__home_aminya_GitHub_Cpp_project_options_docs_src_target_disable_static_analysis.html", null ],
