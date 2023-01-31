@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customization &mdash; CMake Spinx Documentation 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+<link href="../css/company_style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> CMake Spinx Documentation
+          </a>
+              <div class="version">
+                main
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">project_options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src/index.html">Functions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">CMake Spinx Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Customization</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/build/_deps/_doxygen_theme-src/docs/customization.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="customization">
+<h1>Customization<a class="headerlink" href="#customization" title="Permalink to this heading"></a></h1>
+<p>[TOC]</p>
+<section id="css-variables">
+<h2>CSS-Variables<a class="headerlink" href="#css-variables" title="Permalink to this heading"></a></h2>
+<p>This theme is highly customizable because a lot of things are parameterized with CSS variables.</p>
+<p>Just to give you an idea on how flexible the styling is, click this button:</p>
+<div class="alter-theme-button" onclick="toggle_alternative_theme()" onkeypress="if (event.keyCode == 13) toggle_alternative_theme()" tabindex=0>Alter theme</div>
+<section id="setup">
+<h3>Setup<a class="headerlink" href="#setup" title="Permalink to this heading"></a></h3>
+<p>It is recommended to add your own <code class="docutils literal notranslate"><span class="pre">custom.css</span></code> and overwrite the variables there:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">HTML_EXTRA_STYLESHEET</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">doxygen</span><span class="o">-</span><span class="n">awesome</span><span class="p">.</span><span class="n">css</span><span class="w"> </span><span class="n">custom</span><span class="p">.</span><span class="n">css</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Make sure to override the variables in the correct spot. All variables should be customized where they have been defined, in the <code class="docutils literal notranslate"><span class="pre">html</span></code> tag selector:</p>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">html</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c">/* override light-mode variables here */</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>For dark-mode overrides you have to choose where to put them, depending on wether the dark-mode toggle extension is installed or not:</p>
+<ul>
+<li><p>dark-mode toggle is installed:</p>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">html</span><span class="p">.</span><span class="nc">dark-mode</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c">/* define dark-mode variable overrides here if you DO use doxygen-awesome-darkmode-toggle.js */</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>dark-mode toggle is <strong>NOT</strong> installed. The dark-mode is enabled automatically depending on the system preference:</p>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="p">@</span><span class="k">media</span><span class="w"> </span><span class="o">(</span><span class="nt">prefers-color-scheme</span><span class="o">:</span><span class="w"> </span><span class="nt">dark</span><span class="o">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">html</span><span class="p">:</span><span class="nd">not</span><span class="o">(</span><span class="p">.</span><span class="nc">light-mode</span><span class="o">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c">/* define dark-mode variable overrides here if you DON&#39;T use doxygen-awesome-darkmode-toggle.js */</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="available-variables">
+<h3>Available variables<a class="headerlink" href="#available-variables" title="Permalink to this heading"></a></h3>
+<p>The following list gives an overview of the variables defined in <a class="reference external" href="https://github.com/jothepro/doxygen-awesome-css/blob/main/doxygen-awesome.css"><code class="docutils literal notranslate"><span class="pre">doxygen-awesome.css</span></code></a>.</p>
+<p>The list is not complete. To explore all available variables, have a look at the CSS starting from <a class="reference external" href="https://github.com/jothepro/doxygen-awesome-css/blob/main/doxygen-awesome.css#L30">here</a>.
+All variables are defined at the beginning of the stylesheet.</p>
+<table class="colwidths-auto docutils align-default">
+<thead>
+<tr class="row-odd"><th class="text-left head"><p>Parameter</p></th>
+<th class="text-left head"><p>Default (Light)</p></th>
+<th class="head"><p>Default (Dark)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Color Scheme</strong>:<br>primary theme colors. This will affect the entire websites color scheme: links, arrows, labels, …</p></td>
+<td class="text-left"><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">--primary-color</span></code></p></td>
+<td class="text-left"><p><span style="background:#1779c4;color:white">#1779c4</span></p></td>
+<td><p><span style="background:#1982d2;color:white">#1982d2</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">--primary-dark-color</span></code></p></td>
+<td class="text-left"><p><span style="background:#335c80;color:white">#335c80</span></p></td>
+<td><p><span style="background:#5ca8e2;color:white">#5ca8e2</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">--primary-light-color</span></code></p></td>
+<td class="text-left"><p><span style="background:#70b1e9;color:black">#70b1e9</span></p></td>
+<td><p><span style="background:#4779ac;color:white">#4779ac</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Page Colors</strong>:<br>background and foreground (text-color) of the documentation.</p></td>
+<td class="text-left"><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">--page-background-color</span></code></p></td>
+<td class="text-left"><p><span style="background:white;color:black">white</span></p></td>
+<td><p><span style="background:#1C1D1F;color:white">#1C1D1F</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">--page-foreground-color</span></code></p></td>
+<td class="text-left"><p><span style="background:#2f4153;color:white">#2f4153</span></p></td>
+<td><p><span style="background:#d2dbde;color:black">#d2dbde</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">--page-secondary-foreground-color</span></code></p></td>
+<td class="text-left"><p><span style="background:#637485;color:white">#637485</span></p></td>
+<td><p><span style="background:#859399;color:black">#859399</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Spacing:</strong><br>default spacings. Most ui components reference these values for spacing, to provide uniform spacing on the page.</p></td>
+<td class="text-left"><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">--spacing-small</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">5px</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">--spacing-medium</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">10px</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">--spacing-large</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">16px</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Border Radius</strong>:<br>border radius for all rounded ui components. Will affect many components, like dropdowns, memitems, codeblocks, …</p></td>
+<td class="text-left"><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">--border-radius-small</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">4px</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">--border-radius-medium</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">6px</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">--border-radius-large</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">8px</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Content Width</strong>:<br>The content is centered and constrained in its width. To make the content fill the whole page, set the following variable to <code class="docutils literal notranslate"><span class="pre">auto</span></code>.</p></td>
+<td class="text-left"><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">--content-maxwidth</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">1000px</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Code Fragment Colors</strong>:<br>Color-Scheme of multiline codeblocks</p></td>
+<td class="text-left"><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">--fragment-background</span></code></p></td>
+<td class="text-left"><p><span style="background:#F8F9FA;color:black">#F8F9FA</span></p></td>
+<td><p><span style="background:#282c34;color:white">#282c34</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">--fragment-foreground</span></code></p></td>
+<td class="text-left"><p><span style="background:#37474F;color:white">#37474F</span></p></td>
+<td><p><span style="background:#dbe4eb;color:black">#dbe4eb</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Arrow Opacity</strong>:<br>By default the arrows in the sidebar are only visible on hover. You can override this behaviour so they are visible all the time.</p></td>
+<td class="text-left"><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">--side-nav-arrow-opacity</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">--side-nav-arrow-hover-opacity</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">0.9</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>…and many more</p></td>
+<td class="text-left"><p></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p>If you miss a configuration option or find a bug, please consider <a class="reference external" href="https://github.com/jothepro/doxygen-awesome-css/issues">opening an issue</a>!</p>
+</section>
+</section>
+<section id="doxygen-generator">
+<h2>Doxygen generator<a class="headerlink" href="#doxygen-generator" title="Permalink to this heading"></a></h2>
+<p>The theme overrides most colors with the <code class="docutils literal notranslate"><span class="pre">--primary-color-*</span></code> variables.</p>
+<p>But there is a few small images and graphics that the theme cannot adjust or replace. To make these blend in better with
+the rest, it is recommended to adjust the <a class="reference external" href="https://www.doxygen.nl/manual/customize.html#minor_tweaks_colors">doxygen color settings</a>
+to something that matches the chosen color-scheme.</p>
+<p>For the default color-scheme, these values work out quite well:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp"># Doxyfile</span>
+<span class="n">HTML_COLORSTYLE_HUE</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">209</span><span class="w"></span>
+<span class="n">HTML_COLORSTYLE_SAT</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">255</span><span class="w"></span>
+<span class="n">HTML_COLORSTYLE_GAMMA</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">113</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="share-your-customizations">
+<h2>Share your customizations<a class="headerlink" href="#share-your-customizations" title="Permalink to this heading"></a></h2>
+<p>If you customized the theme with custom colors, spacings, font-sizes, etc. and you want to share your creation with others, you can to this <a class="reference external" href="https://github.com/jothepro/doxygen-awesome-css/discussions/13">here</a>.</p>
+<p>I am always curious to learn about how you made the theme look even better!</p>
+<span class="next_section_button">
+<p>Read Next: <a class="reference internal" href="tricks.html"><span class="doc std std-doc">Tips &amp; Tricks</span></a>
+</span></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright MIT - Copyright (c) 2022-2100 Amin Yahyaabadi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Read the Docs</span>
+      v: main
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <!-- The content here is replaced in the version_switcher.js -->
+    </div>
+</div>
+<script src="../js/versions.js"></script>
+<script src="../js/version_switcher.js"></script>
+<script>
+    window.addEventListener('load', (event) => {
+        ar_updateVersionList('main');
+    });
+</script>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
