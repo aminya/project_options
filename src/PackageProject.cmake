@@ -237,11 +237,11 @@ endfunction()
 
 #[[.rst:
 
-.. include:: ../../docs/src/target_configure_dependencies.md
+.. include:: ../../docs/src/target_find_dependencies.md
    :parser: myst_parser.sphinx_
 
 #]]
-function(target_configure_dependencies target)
+function(target_find_dependencies target)
   set(options)
   set(one_value_args)
   set(multi_value_args PRIVATE PUBLIC INTERFACE)
