@@ -31,7 +31,7 @@ See `project_options()` in action in [this template repository](https://github.c
 
 ## Documentation
 
-See the [docs](./docs) folder.
+See the [docs](./docs/src/project_options.md) folder.
 
 ## License
 

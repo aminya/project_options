@@ -8,7 +8,7 @@ on:
 
 jobs:
   Test:
-    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -57,7 +57,7 @@ jobs:
           task: true
           doxygen: true
           powershell: true
-      
+
       - name: Setup MinGW
         uses: egor-tensin/setup-mingw@v2
         with:

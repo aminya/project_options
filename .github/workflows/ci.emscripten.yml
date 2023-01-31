@@ -8,7 +8,7 @@ on:
 
 jobs:
   Test:
-    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -46,7 +46,7 @@ jobs:
           clangtidy: true
           task: true
           doxygen: true
-      
+
       - name: Setup emscripten
         uses: mymindstorm/setup-emsdk@v11
 

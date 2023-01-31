@@ -8,7 +8,7 @@ on:
 
 jobs:
   Test:
-    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -26,7 +26,7 @@ jobs:
           - rpi4-vcpkg:build.cross
         include:
           - task: rpi3:build.cross
-            install-cross-compiler: gcc-arm-linux-gnueabi g++-arm-linux-gnueabi gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf 
+            install-cross-compiler: gcc-arm-linux-gnueabi g++-arm-linux-gnueabi gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
             target: arm-linux-gnueabi
           - task: rpi3:build.cross.bare-metal
             install-cross-compiler: gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi
