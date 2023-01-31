@@ -1,0 +1,3 @@
+/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild/CMakeFiles/_doxygen_theme-populate.dir
+/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild/CMakeFiles/edit_cache.dir
+/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>project_options &mdash; CMake Spinx Documentation 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Functions" href="src/index.html" />
+<link href="../css/company_style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> CMake Spinx Documentation
+          </a>
+              <div class="version">
+                main
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">project_options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="src/index.html">Functions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">CMake Spinx Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">project_options</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="project-options">
+<h1>project_options<a class="headerlink" href="#project-options" title="Permalink to this heading"></a></h1>
+<section id="project-options">
+<h2>project_options<a class="headerlink" href="#project-options" title="Permalink to this heading"></a></h2>
+<p>A general-purpose CMake library that provides functions that improve the CMake experience following the best practices.</p>
+<section id="features">
+<h3>Features<a class="headerlink" href="#features" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">project_options</span></code>:</p>
+<ul>
+<li><p>compiler warnings,</p></li>
+<li><p>compiler optimizations (intraprocedural, native),</p></li>
+<li><p>caching (ccache, sccache),</p></li>
+<li><p>sanitizers,</p></li>
+<li><p>static code analyzers (clang-tidy, cppcheck, visual studio, include-what-you-use),</p></li>
+<li><p>document generation (doxygen),</p></li>
+<li><p>test coverage analysis,</p></li>
+<li><p>precompiled headers,</p></li>
+<li><p>build time measurement,</p></li>
+<li><p>unity builds</p></li>
+<li><p>using custom linkers (e.g. lld)</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">package_project</span></code>: automatic packaging/installation of the project for seamless usage via find_package/target_link through CMake’s FetchContent, vcpkg, etc.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code>: automatic installation of vcpkg and the project dependencies</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_CONAN</span></code> in <code class="docutils literal notranslate"><span class="pre">project_options</span></code>: automatic installation of Conan and the project dependencies</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code>: a wrapper around <code class="docutils literal notranslate"><span class="pre">project_options</span></code> to change the options on the fly dynamically</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code> and <code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code>: linking/including external dependencies/headers without warnings</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code>: linking Cuda to a target</p></li>
+</ul>
+<p><a class="reference external" href="https://github.com/aminya/project_options/actions/workflows/ci.yml"><img alt="ci" src="https://github.com/aminya/project_options/actions/workflows/ci.yml/badge.svg" /></a></p>
+</section>
+<section id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h3>
+<p>See <code class="docutils literal notranslate"><span class="pre">project_options()</span></code> in action in <a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project">this template repository</a>. <a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project">cpp_vcpkg_project</a> has prepared all the best practices for a production-ready C++ project.</p>
+</section>
+<section id="documentation">
+<h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading"></a></h3>
+<p>See the <span class="xref myst">docs</span> folder.</p>
+</section>
+<section id="license">
+<h3>License<a class="headerlink" href="#license" title="Permalink to this heading"></a></h3>
+<p>This project can be used under the terms of either the <span class="xref myst">MIT license</span> or the <span class="xref myst">Unlicense</span> depending on your choice (as you wish).</p>
+</section>
+</section>
+</section>
+<section id="table-of-contents">
+<h1>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">project_options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="src/index.html">Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src/index.html#project-options-function"><code class="docutils literal notranslate"><span class="pre">project_options</span></code> function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src/index.html#run-vcpkg-function"><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code> function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src/index.html#package-project-function"><code class="docutils literal notranslate"><span class="pre">package_project</span></code> function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src/index.html#target-include-system-directories-function"><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code> function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src/index.html#target-link-system-libraries-function"><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code> function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src/index.html#target-disable-static-analysis-function"><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code> function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src/index.html#target-link-cuda-function"><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code> function</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="indices">
+<h1>Indices<a class="headerlink" href="#indices" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+</ul>
+<ul class="simple">
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="src/index.html" class="btn btn-neutral float-right" title="Functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright MIT - Copyright (c) 2022-2100 Amin Yahyaabadi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Read the Docs</span>
+      v: main
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <!-- The content here is replaced in the version_switcher.js -->
+    </div>
+</div>
+<script src="../js/versions.js"></script>
+<script src="../js/version_switcher.js"></script>
+<script>
+    window.addEventListener('load', (event) => {
+        ar_updateVersionList('main');
+    });
+</script>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
