@@ -1,0 +1,13 @@
+# https://taskfile.dev/#6/installation
+version: 3
+
+tasks:
+  docs-deps:
+    - pip install -U GitPython sphinx-rtd-theme breathe sphinx-sitemap sphinxcontrib-moderncmakedomain myst-parser
+
+  docs:
+    deps:
+      - docs-deps
+    cmds:
+      - cmake -S ./ -B ./build -G "Ninja Multi-Config" -DCMAKE_BUILD_TYPE=Release
+      - cmake --build ./build --config Release

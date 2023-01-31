@@ -1,26 +1,11 @@
 include_guard()
 
-# ENABLE_DEVELOPER_MODE: sets defaults appropriate for developers, this is defaulted to ON
-#  * WARNINGS_AS_ERRORS: ON
-#  * ENABLE_SANITIZER_ADDRESS: ON
-#  * ENABLE_CLANG_TIDY: ON for Ninja/Makefiles
-#  * ENABLE_SANITIZER_UNDEFINED: ON for Compilers that support it
-#  * ENABLE_CPPCHECK: ON for Ninja/Makefiles
-#
-# For non-developer builds
-#  -DENABLE_DEVELOPER_MODE:BOOL=OFF
-# Is recommended
-#
-# In developer mode, all features have options that show up in the CMake GUI tools
-#
-# dynamic_project_options() macro enables all recommended defaults with appropriately
-# applied options from the GUI which are set
-#
-# Any default can be overridden
-# set(<feature_name>_DEFAULT <value>) - set default for both user and developer modes
-# set(<feature_name>_DEVELOPER_DEFAULT <value>) - set default for developer mode
-# set(<feature_name>_USER_DEFAULT <value>) - set default for user mode
-#
+#[[.rst:
+
+.. include:: ../../docs/src/dynamic_project_options.md
+   :parser: myst_parser.sphinx_
+
+#]]
 macro(dynamic_project_options)
   option(ENABLE_DEVELOPER_MODE "Set up defaults for a developer of the project, and let developer change options" OFF)
   if(NOT ${ENABLE_DEVELOPER_MODE})

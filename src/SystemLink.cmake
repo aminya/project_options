@@ -1,6 +1,12 @@
 include_guard()
 
-# Include a system directory (which suppresses its warnings).
+#
+#[[.rst:
+
+.. include:: ../../docs/src/target_include_system_directories.md
+   :parser: myst_parser.sphinx_
+
+#]]
 function(target_include_system_directories target)
   set(multiValueArgs INTERFACE PUBLIC PRIVATE)
   cmake_parse_arguments(
@@ -66,7 +72,12 @@ function(
   target_link_libraries(${target} ${scope} ${lib})
 endfunction()
 
-# Link multiple library targets as system libraries (which suppresses their warnings).
+#[[.rst:
+
+.. include:: ../../docs/src/target_link_system_libraries.md
+   :parser: myst_parser.sphinx_
+
+#]]
 function(target_link_system_libraries target)
   set(multiValueArgs INTERFACE PUBLIC PRIVATE)
   cmake_parse_arguments(

@@ -37,37 +37,13 @@ msvc_toolchain()
 include("${CMAKE_CURRENT_LIST_DIR}/Conan.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/Vcpkg.cmake")
 
-#
-# Params:
-# - PREFIX: the optional prefix to be prepended to the `project_options` and `project_warnings` targets when the function is used in a multi-project fashion.
-# - WARNINGS_AS_ERRORS: Treat compiler warnings as errors
-# - ENABLE_CPPCHECK: Enable static analysis with cppcheck
-# - ENABLE_CLANG_TIDY: Enable static analysis with clang-tidy
-# - ENABLE_INCLUDE_WHAT_YOU_USE: Enable static analysis with include-what-you-use
-# - ENABLE_COVERAGE: Enable coverage reporting for gcc/clang
-# - ENABLE_CACHE: Enable cache if available
-# - ENABLE_PCH: Enable Precompiled Headers
-# - PCH_HEADERS: the list of the headers to precompile
-# - ENABLE_CONAN: Use Conan for dependency management
-# - ENABLE_DOXYGEN: Enable doxygen doc builds of source
-# - DOXYGEN_THEME: the name of the Doxygen theme to use. Supported themes: `awesome-sidebar` (default), `awesome` and `original`.
-# - ENABLE_INTERPROCEDURAL_OPTIMIZATION: Enable Interprocedural Optimization, aka Link Time Optimization (LTO)
-# - ENABLE_NATIVE_OPTIMIZATION: Enable the optimizations specific to the build machine (e.g. SSE4_1, AVX2, etc.).
-# - ENABLE_BUILD_WITH_TIME_TRACE: Enable -ftime-trace to generate time tracing .json files on clang
-# - ENABLE_UNITY: Enable Unity builds of projects
-# - ENABLE_SANITIZER_ADDRESS: Enable address sanitizer
-# - ENABLE_SANITIZER_LEAK: Enable leak sanitizer
-# - ENABLE_SANITIZER_UNDEFINED_BEHAVIOR: Enable undefined behavior sanitizer
-# - ENABLE_SANITIZER_THREAD: Enable thread sanitizer
-# - ENABLE_SANITIZER_MEMORY: Enable memory sanitizer
-# - LINKER: choose a specific linker (e.g. lld, gold, bfd). If set to OFF (default), the linker is automatically chosen.
-# - MSVC_WARNINGS: Override the defaults for the MSVC warnings
-# - CLANG_WARNINGS: Override the defaults for the CLANG warnings
-# - GCC_WARNINGS: Override the defaults for the GCC warnings
-# - CUDA_WARNINGS: Override the defaults for the CUDA warnings
-# - CPPCHECK_OPTIONS: Override the defaults for CppCheck settings
-# - CONAN_OPTIONS: Extra Conan options
-#
+
+#[[.rst:
+
+.. include:: ../../docs/src/project_options.md
+   :parser: myst_parser.sphinx_
+
+#]]
 # NOTE: cmake-lint [C0103] Invalid macro name "project_options" doesn't match `[0-9A-Z_]+`
 macro(project_options)
   set(options

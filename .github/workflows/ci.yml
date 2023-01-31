@@ -50,7 +50,7 @@ jobs:
             compiler: "gcc"
             cmake: true
             vcvarsall: true
-    steps:      
+    steps:
       - uses: actions/checkout@v3
         with:
           submodules: true
@@ -84,7 +84,7 @@ jobs:
 
       - name: Test
         run: |
-          task ci.test
+          task test
         env:
           CMAKE_GENERATOR: ${{ matrix.cmake_generator }}
 
