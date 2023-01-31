@@ -1,0 +1,39 @@
+name: docs
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  Test:
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Setup Cpp
+        uses: aminya/setup-cpp@v1
+        with:
+          cmake: true
+          ninja: true
+          task: true
+          doxygen: true
+
+      - name: Build Documentation
+        run: task docs
+
+      - name: Deploy Documentation
+        uses: Cecilapp/GitHub-Pages-deploy@v3
+        with:
+          build_dir: docs/build/html/
+          branch: gh-pages
+          email: aminyahyaabadi74@gmail.com
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
