@@ -12,45 +12,34 @@ function(package_project)
   # default to false
   set(_options ARCH_INDEPENDENT)
   set(_oneValueArgs
-
-    # default to the project_name:
-    NAME
-    COMPONENT
-
-    # default to project version:
-    VERSION
-
-    # default to semver
-    COMPATIBILITY
-
-    # default to ${CMAKE_BINARY_DIR}/${NAME}
-    CONFIG_EXPORT_DESTINATION
-
-    # default to ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/${NAME} suitable for vcpkg, etc.
-    CONFIG_INSTALL_DESTINATION)
+      # default to the project_name:
+      NAME
+      COMPONENT
+      # default to project version:
+      VERSION
+      # default to semver
+      COMPATIBILITY
+      # default to ${CMAKE_BINARY_DIR}/${NAME}
+      CONFIG_EXPORT_DESTINATION
+      # default to ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/${NAME} suitable for vcpkg, etc.
+      CONFIG_INSTALL_DESTINATION)
   set(_multiValueArgs
-
-    # recursively found for the current folder if not specified
-    TARGETS
-
-    # a list of public/interface include directories or files
-    INTERFACE_INCLUDES
-    PUBLIC_INCLUDES
-
-    # the names of the INTERFACE/PUBLIC dependencies that are found using `CONFIG`
-    INTERFACE_DEPENDENCIES_CONFIGURED
-    PUBLIC_DEPENDENCIES_CONFIGURED
-
-    # the INTERFACE/PUBLIC dependencies that are found by any means using `find_dependency`.
-    # the arguments must be specified within double quotes (e.g. "<dependency> 1.0.0 EXACT" or "<dependency> CONFIG").
-    INTERFACE_DEPENDENCIES
-    PUBLIC_DEPENDENCIES
-
-    # the names of the PRIVATE dependencies that are found using `CONFIG`. Only included when BUILD_SHARED_LIBS is OFF.
-    PRIVATE_DEPENDENCIES_CONFIGURED
-
-    # PRIVATE dependencies that are only included when BUILD_SHARED_LIBS is OFF
-    PRIVATE_DEPENDENCIES)
+      # recursively found for the current folder if not specified
+      TARGETS
+      # a list of public/interface include directories or files
+      INTERFACE_INCLUDES
+      PUBLIC_INCLUDES
+      # the names of the INTERFACE/PUBLIC dependencies that are found using `CONFIG`
+      INTERFACE_DEPENDENCIES_CONFIGURED
+      PUBLIC_DEPENDENCIES_CONFIGURED
+      # the INTERFACE/PUBLIC dependencies that are found by any means using `find_dependency`.
+      # the arguments must be specified within double quotes (e.g. "<dependency> 1.0.0 EXACT" or "<dependency> CONFIG").
+      INTERFACE_DEPENDENCIES
+      PUBLIC_DEPENDENCIES
+      # the names of the PRIVATE dependencies that are found using `CONFIG`. Only included when BUILD_SHARED_LIBS is OFF.
+      PRIVATE_DEPENDENCIES_CONFIGURED
+      # PRIVATE dependencies that are only included when BUILD_SHARED_LIBS is OFF
+      PRIVATE_DEPENDENCIES)
 
   cmake_parse_arguments(
     _PackageProject
@@ -72,7 +61,6 @@ function(package_project)
   if("${_PackageProject_NAME}" STREQUAL "")
     set(_PackageProject_NAME ${PROJECT_NAME})
   endif()
-
   # ycm args
   set(_PackageProject_NAMESPACE "${_PackageProject_NAME}::")
   set(_PackageProject_VARS_PREFIX ${_PackageProject_NAME})
@@ -92,30 +80,26 @@ function(package_project)
   if("${_PackageProject_CONFIG_EXPORT_DESTINATION}" STREQUAL "")
     set(_PackageProject_CONFIG_EXPORT_DESTINATION "${CMAKE_BINARY_DIR}/${_PackageProject_NAME}")
   endif()
-
   set(_PackageProject_EXPORT_DESTINATION "${_PackageProject_CONFIG_EXPORT_DESTINATION}")
 
   # use datadir (works better with vcpkg, etc)
   if("${_PackageProject_CONFIG_INSTALL_DESTINATION}" STREQUAL "")
     set(_PackageProject_CONFIG_INSTALL_DESTINATION "${CMAKE_INSTALL_DATADIR}/${_PackageProject_NAME}")
   endif()
-
   # ycm args
   set(_PackageProject_INSTALL_DESTINATION "${_PackageProject_CONFIG_INSTALL_DESTINATION}")
 
   # Installation of the public/interface includes
   set(_PackageProject_PUBLIC_INCLUDES "${_PackageProject_PUBLIC_INCLUDES}" "${_PackageProject_INTERFACE_INCLUDES}")
-
   if(NOT
-    "${_PackageProject_PUBLIC_INCLUDES}"
-    STREQUAL
-    "")
+     "${_PackageProject_PUBLIC_INCLUDES}"
+     STREQUAL
+     "")
     foreach(_INC ${_PackageProject_PUBLIC_INCLUDES})
       # make include absolute
       if(NOT IS_ABSOLUTE ${_INC})
         set(_INC "${CMAKE_CURRENT_SOURCE_DIR}/${_INC}")
       endif()
-
       # install include
       if(IS_DIRECTORY ${_INC})
         # the include directories are directly installed to the install destination. If you want an `include` folder in the install destination, name your include directory as `include` (or install it manually using `install()` command).
@@ -128,36 +112,30 @@ function(package_project)
 
   # Append the configured public dependencies
   set(_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}"
-    "${_PackageProject_INTERFACE_DEPENDENCIES_CONFIGURED}")
-
+                                                     "${_PackageProject_INTERFACE_DEPENDENCIES_CONFIGURED}")
   if(NOT
-    "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}"
-    STREQUAL
-    "")
+     "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}"
+     STREQUAL
+     "")
     set(_PUBLIC_DEPENDENCIES_CONFIG)
-
     foreach(DEP ${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED})
       list(APPEND _PUBLIC_DEPENDENCIES_CONFIG "${DEP} CONFIG")
     endforeach()
   endif()
-
   list(APPEND _PackageProject_PUBLIC_DEPENDENCIES ${_PUBLIC_DEPENDENCIES_CONFIG})
-
   # ycm arg
   set(_PackageProject_DEPENDENCIES ${_PackageProject_PUBLIC_DEPENDENCIES} ${_PackageProject_INTERFACE_DEPENDENCIES})
 
   # Append the configured private dependencies
   if(NOT
-    "${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED}"
-    STREQUAL
-    "")
+     "${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED}"
+     STREQUAL
+     "")
     set(_PRIVATE_DEPENDENCIES_CONFIG)
-
     foreach(DEP ${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED})
       list(APPEND _PRIVATE_DEPENDENCIES_CONFIG "${DEP} CONFIG")
     endforeach()
   endif()
-
   # ycm arg
   list(APPEND _PackageProject_PRIVATE_DEPENDENCIES ${_PRIVATE_DEPENDENCIES_CONFIG})
 
@@ -177,18 +155,16 @@ function(package_project)
     ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT lib
     RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
     PUBLIC_HEADER
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_PackageProject_NAME}"
-    COMPONENT dev
-    ${FILE_SET_ARGS})
+      DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_PackageProject_NAME}"
+      COMPONENT dev
+      ${FILE_SET_ARGS})
 
   # download ForwardArguments
   FetchContent_Declare(_fargs URL https://github.com/polysquare/cmake-forward-arguments/archive/refs/tags/v1.0.0.zip)
   FetchContent_GetProperties(_fargs)
-
   if(NOT _fargs_POPULATED)
     FetchContent_Populate(_fargs)
   endif()
-
   include("${_fargs_SOURCE_DIR}/ForwardArguments.cmake")
 
   # prepare the forward arguments for ycm
@@ -206,31 +182,27 @@ function(package_project)
   # download ycm
   FetchContent_Declare(_ycm URL https://github.com/robotology/ycm/archive/refs/tags/v0.13.0.zip)
   FetchContent_GetProperties(_ycm)
-
   if(NOT _ycm_POPULATED)
     FetchContent_Populate(_ycm)
   endif()
-
   include("${_ycm_SOURCE_DIR}/modules/InstallBasicPackageFiles.cmake")
 
   install_basic_package_files(${_PackageProject_NAME} "${_FARGS_LIST}")
 
   # install the usage file
   set(_targets_str "")
-
   foreach(_target ${_targets_list})
     set(_targets_str "${_targets_str} ${_PackageProject_NAMESPACE}${_target}")
   endforeach()
-
   set(USAGE_FILE_CONTENT
-    "# The package ${_PackageProject_NAME} provides the following CMake targets:
+      "# The package ${_PackageProject_NAME} provides the following CMake targets:
 
     find_package(${_PackageProject_NAME} CONFIG REQUIRED)
     target_link_libraries(main PRIVATE ${_targets_str})
   ")
   file(WRITE "${_PackageProject_EXPORT_DESTINATION}/usage" "${USAGE_FILE_CONTENT}")
   install(FILES "${_PackageProject_EXPORT_DESTINATION}/usage"
-    DESTINATION "${_PackageProject_CONFIG_INSTALL_DESTINATION}")
+          DESTINATION "${_PackageProject_CONFIG_INSTALL_DESTINATION}")
   install(CODE "MESSAGE(STATUS \"${USAGE_FILE_CONTENT}\")")
 
   include("${_ycm_SOURCE_DIR}/modules/AddUninstallTarget.cmake")
