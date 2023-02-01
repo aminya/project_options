@@ -192,7 +192,8 @@ target_link_system_libraries(my_header_lib
 
 # Package the project
 package_project(
-  TARGETS my_header_lib project_options project_warnings
+  # Note that you must export `project_options` and `project_warnings` for `my_header_lib`
+  TARGETS my_header_lib project_options project_warnings 
   # Just add these no matter whether dependencies exist.
   INTERFACE_DEPENDENCIES_CONFIGURED ${my_header_lib_INTERFACE_DEPENDENCIES}
   INTERFACE_INCLUDES ${my_header_lib_INTERFACE_DIRECTORY}
@@ -224,7 +225,8 @@ target_link_system_libraries(my_lib
 
 # Package the project
 package_project(
-  TARGETS my_lib
+  # Note that you must export `project_options` and `project_warnings` for `my_lib`
+  TARGETS my_lib project_options project_warnings
   # Just add these no matter whether dependencies exist.
   INTERFACE_DEPENDENCIES_CONFIGURED ${my_lib_INTERFACE_DEPENDENCIES}
   PUBLIC_DEPENDENCIES_CONFIGURED ${my_lib_PUBLIC_DEPENDENCIES}
