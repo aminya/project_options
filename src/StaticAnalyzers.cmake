@@ -191,6 +191,15 @@ macro(target_disable_vs_analysis TARGET)
   endif()
 endmacro()
 
+# Disable include-what-you-use for target
+macro(target_disable_include_what_you_use TARGET)
+  find_program(INCLUDE_WHAT_YOU_USE include-what-you-use)
+  if(INCLUDE_WHAT_YOU_USE)
+    set_target_properties(${TARGET} PROPERTIES C_INCLUDE_WHAT_YOU_USE "")
+    set_target_properties(${TARGET} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE "")
+  endif()
+endmacro()
+
 #[[.rst:
 
 .. include:: ../../docs/src/target_disable_static_analysis.md
@@ -206,4 +215,5 @@ macro(target_disable_static_analysis TARGET)
     target_disable_cpp_check(${TARGET})
   endif()
   target_disable_vs_analysis(${TARGET})
+  target_disable_include_what_you_use(${TARGET})
 endmacro()
