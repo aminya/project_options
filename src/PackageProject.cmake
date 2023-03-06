@@ -254,6 +254,6 @@ function(target_find_dependencies target)
   set(${target}_INTERFACE_DEPENDENCIES ${args_INTERFACE} CACHE STRING "" FORCE)
 
   foreach(dependency IN LISTS args_PRIVATE args_PUBLIC args_INTERFACE)
-    find_package(${dependency} CONFIG REQUIRED)
+    find_package(${dependency} REQUIRED)
   endforeach()
 endfunction()
