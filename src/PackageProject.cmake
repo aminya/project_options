@@ -208,6 +208,20 @@ function(package_project)
   include("${_ycm_SOURCE_DIR}/modules/AddUninstallTarget.cmake")
 endfunction()
 
+function(set_or_append_target_property target property new_values)
+  get_target_property(all_values ${target} ${property})
+
+  if(NOT all_values) # If the property hasn't set
+    set(all_values "${new_values}")
+  else()
+    list(APPEND all_values ${new_values})
+  endif()
+
+  set_target_properties(${target}
+    PROPERTIES ${property} "${all_values}"
+  )
+endfunction()
+
 #[[.rst:
 
 .. include:: ../../docs/src/target_include_interface_directory.md
@@ -222,8 +236,8 @@ function(target_include_interface_directory target include_dir)
   endif()
 
   # Append include_dir to target property PROJECT_OPTIONS_INTERFACE_DIRECTORY
-  set_target_properties(${target} PROPERTIES
-    PROJECT_OPTIONS_INTERFACE_DIRECTORY ${include_dir}
+  set_or_append_target_property(${target}
+    "PROJECT_OPTIONS_INTERFACE_DIRECTORY" ${include_dir}
   )
 
   # Include the interface directory
@@ -260,9 +274,13 @@ function(target_find_dependencies target)
     find_package(${dependency} REQUIRED)
   endforeach()
 
-  set_target_properties(${target} PROPERTIES
-    PROJECT_OPTIONS_PRIVATE_DEPENDENCIES "${args_PRIVATE}"
-    PROJECT_OPTIONS_PUBLIC_DEPENDENCIES "${args_PUBLIC}"
-    PROJECT_OPTIONS_INTERFACE_DEPENDENCIES "${args_INTERFACE}"
+  set_or_append_target_property(${target}
+    "PROJECT_OPTIONS_PRIVATE_DEPENDENCIES" "${args_PRIVATE}"
+  )
+  set_or_append_target_property(${target}
+    "PROJECT_OPTIONS_PUBLIC_DEPENDENCIES" "${args_PUBLIC}"
+  )
+  set_or_append_target_property(${target}
+    "PROJECT_OPTIONS_INTERFACE_DEPENDENCIES" "${args_INTERFACE}"
   )
 endfunction()
