@@ -15,6 +15,7 @@ function(get_property_of_targets)
       list(APPEND value ${current_property})
     endif()
   endforeach()
+  list(REMOVE_DUPLICATES current_property)
   set(${args_OUTPUT} ${value} PARENT_SCOPE)
 endfunction()
 
@@ -150,6 +151,7 @@ function(package_project)
                                                      "${_PackageProject_PROPERTY_PUBLIC_DEPENDENCIES}"
                                                      "${_PackageProject_INTERFACE_DEPENDENCIES_CONFIGURED}"
                                                      "${_PackageProject_PROPERTY_INTERFACE_DEPENDENCIES}")
+  list(REMOVE_DUPLICATES _PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED)
   if(NOT
      "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}"
      STREQUAL
@@ -170,8 +172,9 @@ function(package_project)
   )
   
   # Append the configured private dependencies
-    set(_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED "${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED}"
-                                                        "${_PackageProject_PROPERTY_PRIVATE_DEPENDENCIES}")
+  set(_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED "${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED}"
+                                                      "${_PackageProject_PROPERTY_PRIVATE_DEPENDENCIES}")
+  list(REMOVE_DUPLICATES _PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED)
   if(NOT
      "${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED}"
      STREQUAL
@@ -261,6 +264,7 @@ function(set_or_append_target_property target property new_values)
   else()
     list(APPEND all_values ${new_values})
   endif()
+  list(REMOVE_DUPLICATES all_values)
 
   set_target_properties(${target}
     PROPERTIES ${property} "${all_values}"
