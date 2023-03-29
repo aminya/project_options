@@ -214,22 +214,30 @@ endfunction()
    :parser: myst_parser.sphinx_
 
 #]]
-function(target_include_interface_directory target)
-  # CACHE and FORCE to use it as a global variable
-  set(${target}_INTERFACE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include" CACHE STRING "" FORCE)
+function(target_include_interface_directory target include_dir)
+  # Make include_dir absolute
+  cmake_path(IS_RELATIVE include_dir is_relative)
+  if(is_relative)
+    set(include_dir "${CMAKE_CURRENT_SOURCE_DIR}/${include_dir}")
+  endif()
 
-  get_target_property(sources ${target} SOURCES)
+  # Append include_dir to target property PROJECT_OPTIONS_INTERFACE_DIRECTORY
+  set_target_properties(${target} PROPERTIES
+    PROJECT_OPTIONS_INTERFACE_DIRECTORY ${include_dir}
+  )
 
-  if(NOT sources) # header-only library, aka `add_library(target INTERFACE)`
+  # Include the interface directory
+  get_target_property(has_source_files ${target} SOURCES)
+  if(NOT has_source_files) # header-only library, aka `add_library(<name> INTERFACE)`
     target_include_directories(${target}
       INTERFACE
-      $<BUILD_INTERFACE:${${target}_INTERFACE_DIRECTORY}>
+      $<BUILD_INTERFACE:${include_dir}>
       $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     )
   else()
     target_include_directories(${target}
       PUBLIC
-      $<BUILD_INTERFACE:${${target}_INTERFACE_DIRECTORY}>
+      $<BUILD_INTERFACE:${include_dir}>
       $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     )
   endif()
@@ -245,15 +253,16 @@ function(target_find_dependencies target)
   set(options)
   set(one_value_args)
   set(multi_value_args PRIVATE PUBLIC INTERFACE)
-
   cmake_parse_arguments(args "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
-  # CACHE and FORCE to use it as a global variable
-  set(${target}_PRIVATE_DEPENDENCIES ${args_PRIVATE} CACHE STRING "" FORCE)
-  set(${target}_PUBLIC_DEPENDENCIES ${args_PUBLIC} CACHE STRING "" FORCE)
-  set(${target}_INTERFACE_DEPENDENCIES ${args_INTERFACE} CACHE STRING "" FORCE)
-
+  # Call find_package to all newly added dependencies
   foreach(dependency IN LISTS args_PRIVATE args_PUBLIC args_INTERFACE)
     find_package(${dependency} REQUIRED)
   endforeach()
+
+  set_target_properties(${target} PROPERTIES
+    PROJECT_OPTIONS_PRIVATE_DEPENDENCIES "${args_PRIVATE}"
+    PROJECT_OPTIONS_PUBLIC_DEPENDENCIES "${args_PUBLIC}"
+    PROJECT_OPTIONS_INTERFACE_DEPENDENCIES "${args_INTERFACE}"
+  )
 endfunction()
