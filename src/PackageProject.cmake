@@ -15,7 +15,7 @@ function(get_property_of_targets)
       list(APPEND value ${current_property})
     endif()
   endforeach()
-  set(${args_OUTPUT} ${value})
+  set(${args_OUTPUT} ${value} PARENT_SCOPE)
 endfunction()
 
 #[[.rst:
@@ -107,14 +107,14 @@ function(package_project)
 
   # includes in target properties
   get_property_of_targets(TARGETS ${_PackageProject_TARGETS}
-    PROPERTY PROJECT_OPTIONS_INTERFACE_DIRECTORY
-    OUTPUT _PackageProject_PROPERTY_INTERFACE_DIRECTORY
+    PROPERTY PROJECT_OPTIONS_INTERFACE_DIRECTORIES
+    OUTPUT _PackageProject_PROPERTY_INTERFACE_DIRECTORIES
   )
 
   # Installation of the public/interface includes
   set(_PackageProject_PUBLIC_INCLUDES "${_PackageProject_PUBLIC_INCLUDES}"
                                       "${_PackageProject_INTERFACE_INCLUDES}"
-                                      "${_PackageProject_PROPERTY_INTERFACE_DIRECTORY}")
+                                      "${_PackageProject_PROPERTY_INTERFACE_DIRECTORIES}")
   if(NOT
      "${_PackageProject_PUBLIC_INCLUDES}"
      STREQUAL
@@ -269,37 +269,43 @@ endfunction()
 
 #[[.rst:
 
-.. include:: ../../docs/src/target_include_interface_directory.md
+.. include:: ../../docs/src/target_include_interface_directories.md
    :parser: myst_parser.sphinx_
 
 #]]
-function(target_include_interface_directory target include_dir)
-  # Make include_dir absolute
-  cmake_path(IS_RELATIVE include_dir is_relative)
-  if(is_relative)
-    set(include_dir "${CMAKE_CURRENT_SOURCE_DIR}/${include_dir}")
-  endif()
+function(target_include_interface_directories target)
+  function(target_include_interface_directory target include_dir)
+    # Make include_dir absolute
+    cmake_path(IS_RELATIVE include_dir is_relative)
+    if(is_relative)
+      set(include_dir "${CMAKE_CURRENT_SOURCE_DIR}/${include_dir}")
+    endif()
 
-  # Append include_dir to target property PROJECT_OPTIONS_INTERFACE_DIRECTORY
-  set_or_append_target_property(${target}
-    "PROJECT_OPTIONS_INTERFACE_DIRECTORY" ${include_dir}
-  )
+    # Append include_dir to target property PROJECT_OPTIONS_INTERFACE_DIRECTORIES
+    set_or_append_target_property(${target}
+      "PROJECT_OPTIONS_INTERFACE_DIRECTORIES" ${include_dir}
+    )
+  
+    # Include the interface directory
+    get_target_property(has_source_files ${target} SOURCES)
+    if(NOT has_source_files) # header-only library, aka `add_library(<name> INTERFACE)`
+      target_include_directories(${target}
+        INTERFACE
+        $<BUILD_INTERFACE:${include_dir}>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+      )
+    else()
+      target_include_directories(${target}
+        PUBLIC
+        $<BUILD_INTERFACE:${include_dir}>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+      )
+    endif()
+  endfunction()
 
-  # Include the interface directory
-  get_target_property(has_source_files ${target} SOURCES)
-  if(NOT has_source_files) # header-only library, aka `add_library(<name> INTERFACE)`
-    target_include_directories(${target}
-      INTERFACE
-      $<BUILD_INTERFACE:${include_dir}>
-      $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-    )
-  else()
-    target_include_directories(${target}
-      PUBLIC
-      $<BUILD_INTERFACE:${include_dir}>
-      $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-    )
-  endif()
+  foreach(include_dir IN LISTS ARGN)
+    target_include_interface_directory(${target} ${include_dir})
+  endforeach()
 endfunction()
 
 #[[.rst:
