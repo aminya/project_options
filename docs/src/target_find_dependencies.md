@@ -1,17 +1,32 @@
 # `target_find_dependencies` function
 
-This function `find_package(${dependency} REQUIRED)` for all dependencies required and binds them to the target.
+```cmake
+target_find_dependencies(<target_name>
+  [INTERFACE [dependency ...]]
+  [PUBLIC [dependency ...]]
+  [PRIVATE [dependency ...]]
+)
+```
 
-Variables `<target_name>_<PRIVATE|PUBLIC|INTERFACE>_DEPENDENCIES` will be created to represent corresponding dependencies.
+This function calls `find_package(${dependency} REQUIRED)` for all dependencies required and binds them to the target.
+
+Properties named `PROJECT_OPTIONS_<PRIVATE|PUBLIC|INTERFACE>_DEPENDENCIES` will be created in `target_name` to represent corresponding dependencies.
+When adding the target to `package_project`, directories in this property will be automatically added.
+
+You can call this function with the same `target_name` multiple times to add more dependencies.
 
 ```cmake
 add_library(my_lib)
 target_sources(my_lib PRIVATE function.cpp)
-target_include_interface_directory(my_lib)
+target_include_interface_directories(my_lib "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 target_find_dependencies(my_lib
   PUBLIC
   fmt
+  PRIVATE
+  Microsoft.GSL
+)
+target_find_dependencies(my_lib
   PRIVATE
   range-v3
 )
@@ -20,12 +35,9 @@ target_link_system_libraries(my_lib
   PUBLIC
   fmt::fmt
   PRIVATE
+  Microsoft.GSL::GSL
   range-v3::range-v3
 )
 
-package_project(
-  TARGETS my_lib
-  PUBLIC_DEPENDENCIES_CONFIGURED ${my_lib_PUBLIC_DEPENDENCIES}
-  PUBLIC_INCLUDES ${my_lib_INTERFACE_DIRECTORY}
-)
+package_project(TARGETS my_lib)
 ```

@@ -174,7 +174,7 @@ add_library(my_header_lib INTERFACE)
 target_link_libraries(my_header_lib INTERFACE project_options project_warnings) # link project_options/warnings
 
 # Includes
-target_include_interface_directory(my_header_lib)
+target_include_interface_directories(my_header_lib "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 # Find dependencies:
 target_find_dependencies(my_header_lib
@@ -194,9 +194,6 @@ target_link_system_libraries(my_header_lib
 package_project(
   # Note that you must export `project_options` and `project_warnings` for `my_header_lib`
   TARGETS my_header_lib project_options project_warnings 
-  # Just add these no matter whether dependencies exist.
-  INTERFACE_DEPENDENCIES_CONFIGURED ${my_header_lib_INTERFACE_DEPENDENCIES}
-  INTERFACE_INCLUDES ${my_header_lib_INTERFACE_DIRECTORY}
 )
 ```
 
@@ -207,7 +204,7 @@ add_library(my_lib "./src/my_lib/lib.cpp")
 target_link_libraries(my_lib PRIVATE project_options project_warnings) # link project_options/warnings
 
 # Includes
-target_include_interface_directory(my_lib)
+target_include_interface_directories(my_lib "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 # Find dependencies:
 target_find_dependencies(my_lib
@@ -227,10 +224,6 @@ target_link_system_libraries(my_lib
 package_project(
   # Note that you must export `project_options` and `project_warnings` for `my_lib`
   TARGETS my_lib project_options project_warnings
-  # Just add these no matter whether dependencies exist.
-  INTERFACE_DEPENDENCIES_CONFIGURED ${my_lib_INTERFACE_DEPENDENCIES}
-  PUBLIC_DEPENDENCIES_CONFIGURED ${my_lib_PUBLIC_DEPENDENCIES}
-  PUBLIC_INCLUDES ${my_lib_INTERFACE_DIRECTORY}
 )
 ```
 
