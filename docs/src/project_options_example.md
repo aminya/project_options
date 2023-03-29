@@ -102,7 +102,7 @@ target_link_libraries(main PRIVATE project_options project_warnings) # link proj
 
 # Find dependencies:
 target_find_dependencies(main
-  PRIVATE
+  PRIVATE_CONFIG
   fmt
   Eigen3
 )
@@ -124,12 +124,12 @@ package_project(TARGETS main)
 add_library(my_header_lib INTERFACE)
 target_link_libraries(my_header_lib INTERFACE project_options project_warnings) # link project_options/warnings
 
-# Includes
+# Includes:
 target_include_interface_directories(my_header_lib "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 # Find dependencies:
 target_find_dependencies(my_header_lib
-  INTERFACE
+  INTERFACE_CONFIG
   fmt
   Eigen3
 )
@@ -154,12 +154,12 @@ package_project(
 add_library(my_lib "./src/my_lib/lib.cpp")
 target_link_libraries(my_lib PRIVATE project_options project_warnings) # link project_options/warnings
 
-# Includes
+# Includes:
 target_include_interface_directories(my_lib "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 # Find dependencies:
 target_find_dependencies(my_lib
-  PRIVATE
+  PRIVATE_CONFIG
   fmt
   Eigen3
 )

@@ -106,16 +106,25 @@ function(package_project)
   # ycm args
   set(_PackageProject_INSTALL_DESTINATION "${_PackageProject_CONFIG_INSTALL_DESTINATION}")
 
-  # includes in target properties
-  get_property_of_targets(TARGETS ${_PackageProject_TARGETS}
-    PROPERTY PROJECT_OPTIONS_INTERFACE_DIRECTORIES
-    OUTPUT _PackageProject_PROPERTY_INTERFACE_DIRECTORIES
-  )
+  # target properties
+  macro(_Get_property property)
+    get_property_of_targets(TARGETS ${_PackageProject_TARGETS}
+      PROPERTY "PROJECT_OPTIONS_${property}"
+      OUTPUT "PROPERTY_${property}"
+    )
+  endmacro()
+  _Get_property(INTERFACE_INCLUDES)
+  _Get_property(INTERFACE_DEPENDENCIES)
+  _Get_property(PUBLIC_DEPENDENCIES)
+  _Get_property(PRIVATE_DEPENDENCIES)
+  _Get_property(INTERFACE_CONFIG_DEPENDENCIES)
+  _Get_property(PUBLIC_CONFIG_DEPENDENCIES)
+  _Get_property(PRIVATE_CONFIG_DEPENDENCIES)
 
   # Installation of the public/interface includes
   set(_PackageProject_PUBLIC_INCLUDES "${_PackageProject_PUBLIC_INCLUDES}"
                                       "${_PackageProject_INTERFACE_INCLUDES}"
-                                      "${_PackageProject_PROPERTY_INTERFACE_DIRECTORIES}")
+                                      "${PROPERTY_INTERFACE_DIRECTORIES}")
   if(NOT
      "${_PackageProject_PUBLIC_INCLUDES}"
      STREQUAL
@@ -135,22 +144,11 @@ function(package_project)
     endforeach()
   endif()
 
-  # public dependencies in target properties
-  get_property_of_targets(TARGETS ${_PackageProject_TARGETS}
-    PROPERTY PROJECT_OPTIONS_PUBLIC_DEPENDENCIES
-    OUTPUT _PackageProject_PROPERTY_PUBLIC_DEPENDENCIES
-  )
-  # interface dependencies in target properties
-  get_property_of_targets(TARGETS ${_PackageProject_TARGETS}
-    PROPERTY PROJECT_OPTIONS_INTERFACE_DEPENDENCIES
-    OUTPUT _PackageProject_PROPERTY_INTERFACE_DEPENDENCIES
-  )
-
   # Append the configured public dependencies
   set(_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}"
-                                                     "${_PackageProject_PROPERTY_PUBLIC_DEPENDENCIES}"
+                                                     "${PROPERTY_PUBLIC_CONFIG_DEPENDENCIES}"
                                                      "${_PackageProject_INTERFACE_DEPENDENCIES_CONFIGURED}"
-                                                     "${_PackageProject_PROPERTY_INTERFACE_DEPENDENCIES}")
+                                                     "${PROPERTY_INTERFACE_CONFIG_DEPENDENCIES}")
   list(REMOVE_DUPLICATES _PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED)
   if(NOT
      "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}"
@@ -161,19 +159,18 @@ function(package_project)
       list(APPEND _PUBLIC_DEPENDENCIES_CONFIG "${DEP} CONFIG")
     endforeach()
   endif()
-  list(APPEND _PackageProject_PUBLIC_DEPENDENCIES ${_PUBLIC_DEPENDENCIES_CONFIG})
-  # ycm arg
-  set(_PackageProject_DEPENDENCIES ${_PackageProject_PUBLIC_DEPENDENCIES} ${_PackageProject_INTERFACE_DEPENDENCIES})
 
-  # private dependencies in target properties
-  get_property_of_targets(TARGETS ${_PackageProject_TARGETS}
-    PROPERTY PROJECT_OPTIONS_PRIVATE_DEPENDENCIES
-    OUTPUT _PackageProject_PROPERTY_PRIVATE_DEPENDENCIES
-  )
-  
+  list(APPEND _PackageProject_PUBLIC_DEPENDENCIES ${_PUBLIC_DEPENDENCIES_CONFIG}
+                                                  ${PROPERTY_PUBLIC_DEPENDENCIES})
+
+  # ycm arg
+  set(_PackageProject_DEPENDENCIES ${_PackageProject_PUBLIC_DEPENDENCIES}
+                                   ${_PackageProject_INTERFACE_DEPENDENCIES}
+                                   ${PROPERTY_INTERFACE_DEPENDENCIES})
+
   # Append the configured private dependencies
   set(_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED "${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED}"
-                                                      "${_PackageProject_PROPERTY_PRIVATE_DEPENDENCIES}")
+                                                      "${PROPERTY_PRIVATE_CONFIG_DEPENDENCIES}")
   list(REMOVE_DUPLICATES _PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED)
   if(NOT
      "${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED}"
@@ -185,7 +182,8 @@ function(package_project)
     endforeach()
   endif()
   # ycm arg
-  list(APPEND _PackageProject_PRIVATE_DEPENDENCIES ${_PRIVATE_DEPENDENCIES_CONFIG})
+  list(APPEND _PackageProject_PRIVATE_DEPENDENCIES ${_PRIVATE_DEPENDENCIES_CONFIG}
+                                                   ${PROPERTY_PRIVATE_DEPENDENCIES})
 
   # Installation of package (compatible with vcpkg, etc)
   set(_targets_list ${_PackageProject_TARGETS})
@@ -321,21 +319,30 @@ endfunction()
 function(target_find_dependencies target)
   set(options)
   set(one_value_args)
-  set(multi_value_args PRIVATE PUBLIC INTERFACE)
+  set(multi_value_args PRIVATE PUBLIC INTERFACE PRIVATE_CONFIG PUBLIC_CONFIG INTERFACE_CONFIG)
   cmake_parse_arguments(args "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
-  # Call find_package to all newly added dependencies
-  foreach(dependency IN LISTS args_PRIVATE args_PUBLIC args_INTERFACE)
-    find_package(${dependency} REQUIRED)
-  endforeach()
+  macro(_Property_for property)
+    # Call find_package to all newly added dependencies
+    foreach(dependency IN LISTS args_${property})
+      if (${property} MATCHES ".*CONFIG")
+        find_package(${dependency} CONFIG REQUIRED)
+      else()
+        include(CMakeFindDependencyMacro)
+        find_dependency(${dependency})
+      endif()
+    endforeach()
 
-  set_or_append_target_property(${target}
-    "PROJECT_OPTIONS_PRIVATE_DEPENDENCIES" "${args_PRIVATE}"
-  )
-  set_or_append_target_property(${target}
-    "PROJECT_OPTIONS_PUBLIC_DEPENDENCIES" "${args_PUBLIC}"
-  )
-  set_or_append_target_property(${target}
-    "PROJECT_OPTIONS_INTERFACE_DEPENDENCIES" "${args_INTERFACE}"
-  )
+    # Append to target property
+    set_or_append_target_property(${target}
+      "PROJECT_OPTIONS_${property}_DEPENDENCIES" "${args_${property}}"
+    )
+  endmacro()
+
+  _Property_for(PRIVATE)
+  _Property_for(PUBLIC)
+  _Property_for(INTERFACE)
+  _Property_for(PRIVATE_CONFIG)
+  _Property_for(PUBLIC_CONFIG)
+  _Property_for(INTERFACE_CONFIG)
 endfunction()
