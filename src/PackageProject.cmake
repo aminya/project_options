@@ -3,20 +3,20 @@ include_guard()
 # Uses ycm (permissive BSD-3-Clause license) and ForwardArguments (permissive MIT license)
 
 function(get_property_of_targets)
-  set(options)
-  set(one_value_args OUTPUT PROPERTY)
-  set(multi_value_args TARGETS)
-  cmake_parse_arguments(args "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
+  set(_options)
+  set(_oneValueArgs OUTPUT PROPERTY)
+  set(_multiValueArgs TARGETS)
+  cmake_parse_arguments(args "${_options}" "${_oneValueArgs}" "${_multiValueArgs}" ${ARGN})
 
-  set(value)
-  foreach(target IN LISTS args_TARGETS)
-    get_target_property(current_property ${target} ${args_PROPERTY})
-    if (current_property)
-      list(APPEND value ${current_property})
+  set(_Value)
+  foreach(_Target IN LISTS args_TARGETS)
+    get_target_property(_Current_roperty ${_Target} ${args_PROPERTY})
+    if (_Current_roperty)
+      list(APPEND _Value ${_Current_roperty})
     endif()
   endforeach()
-  list(REMOVE_DUPLICATES current_property)
-  set(${args_OUTPUT} ${value} PARENT_SCOPE)
+  list(REMOVE_DUPLICATES _Current_roperty)
+  set(${args_OUTPUT} ${_Value} PARENT_SCOPE)
 endfunction()
 
 #[[.rst:
@@ -255,17 +255,17 @@ function(package_project)
 endfunction()
 
 function(set_or_append_target_property target property new_values)
-  get_target_property(all_values ${target} ${property})
+  get_target_property(_AllValues ${target} ${property})
 
-  if(NOT all_values) # If the property hasn't set
-    set(all_values "${new_values}")
+  if(NOT _AllValues) # If the property hasn't set
+    set(_AllValues "${new_values}")
   else()
-    list(APPEND all_values ${new_values})
+    list(APPEND _AllValues ${new_values})
   endif()
-  list(REMOVE_DUPLICATES all_values)
+  list(REMOVE_DUPLICATES _AllValues)
 
   set_target_properties(${target}
-    PROPERTIES ${property} "${all_values}"
+    PROPERTIES ${property} "${_AllValues}"
   )
 endfunction()
 
@@ -278,8 +278,8 @@ endfunction()
 function(target_include_interface_directories target)
   function(target_include_interface_directory target include_dir)
     # Make include_dir absolute
-    cmake_path(IS_RELATIVE include_dir is_relative)
-    if(is_relative)
+    cmake_path(IS_RELATIVE include_dir _IsRelative)
+    if(_IsRelative)
       set(include_dir "${CMAKE_CURRENT_SOURCE_DIR}/${include_dir}")
     endif()
 
@@ -289,8 +289,8 @@ function(target_include_interface_directories target)
     )
   
     # Include the interface directory
-    get_target_property(has_source_files ${target} SOURCES)
-    if(NOT has_source_files) # header-only library, aka `add_library(<name> INTERFACE)`
+    get_target_property(_HasSourceFiles ${target} SOURCES)
+    if(NOT _HasSourceFiles) # header-only library, aka `add_library(<name> INTERFACE)`
       target_include_directories(${target}
         INTERFACE
         $<BUILD_INTERFACE:${include_dir}>
@@ -305,8 +305,8 @@ function(target_include_interface_directories target)
     endif()
   endfunction()
 
-  foreach(include_dir IN LISTS ARGN)
-    target_include_interface_directory(${target} ${include_dir})
+  foreach(_IncludeDir IN LISTS ARGN)
+    target_include_interface_directory(${target} ${_IncludeDir})
   endforeach()
 endfunction()
 
@@ -317,19 +317,19 @@ endfunction()
 
 #]]
 function(target_find_dependencies target)
-  set(options)
-  set(one_value_args)
-  set(multi_value_args PRIVATE PUBLIC INTERFACE PRIVATE_CONFIG PUBLIC_CONFIG INTERFACE_CONFIG)
-  cmake_parse_arguments(args "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
+  set(_options)
+  set(_oneValueArgs)
+  set(_MultiValueArgs PRIVATE PUBLIC INTERFACE PRIVATE_CONFIG PUBLIC_CONFIG INTERFACE_CONFIG)
+  cmake_parse_arguments(args "${_options}" "${_oneValueArgs}" "${_MultiValueArgs}" ${ARGN})
 
   macro(_Property_for property)
     # Call find_package to all newly added dependencies
-    foreach(dependency IN LISTS args_${property})
+    foreach(_Dependency IN LISTS args_${property})
       if (${property} MATCHES ".*CONFIG")
-        find_package(${dependency} CONFIG REQUIRED)
+        find_package(${_Dependency} CONFIG REQUIRED)
       else()
         include(CMakeFindDependencyMacro)
-        find_dependency(${dependency})
+        find_dependency(${_Dependency})
       endif()
     endforeach()
 
