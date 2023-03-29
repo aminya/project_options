@@ -2,6 +2,22 @@ include_guard()
 
 # Uses ycm (permissive BSD-3-Clause license) and ForwardArguments (permissive MIT license)
 
+function(get_property_of_targets)
+  set(options)
+  set(one_value_args OUTPUT PROPERTY)
+  set(multi_value_args TARGETS)
+  cmake_parse_arguments(args "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
+
+  set(value)
+  foreach(target IN LISTS args_TARGETS)
+    get_target_property(current_property ${target} ${args_PROPERTY})
+    if (current_property)
+      list(APPEND value ${current_property})
+    endif()
+  endforeach()
+  set(${args_OUTPUT} ${value})
+endfunction()
+
 #[[.rst:
 
 .. include:: ../../docs/src/package_project.md
@@ -89,8 +105,16 @@ function(package_project)
   # ycm args
   set(_PackageProject_INSTALL_DESTINATION "${_PackageProject_CONFIG_INSTALL_DESTINATION}")
 
+  # includes in target properties
+  get_property_of_targets(TARGETS ${_PackageProject_TARGETS}
+    PROPERTY PROJECT_OPTIONS_INTERFACE_DIRECTORY
+    OUTPUT _PackageProject_PROPERTY_INTERFACE_DIRECTORY
+  )
+
   # Installation of the public/interface includes
-  set(_PackageProject_PUBLIC_INCLUDES "${_PackageProject_PUBLIC_INCLUDES}" "${_PackageProject_INTERFACE_INCLUDES}")
+  set(_PackageProject_PUBLIC_INCLUDES "${_PackageProject_PUBLIC_INCLUDES}"
+                                      "${_PackageProject_INTERFACE_INCLUDES}"
+                                      "${_PackageProject_PROPERTY_INTERFACE_DIRECTORY}")
   if(NOT
      "${_PackageProject_PUBLIC_INCLUDES}"
      STREQUAL
@@ -110,9 +134,22 @@ function(package_project)
     endforeach()
   endif()
 
+  # public dependencies in target properties
+  get_property_of_targets(TARGETS ${_PackageProject_TARGETS}
+    PROPERTY PROJECT_OPTIONS_PUBLIC_DEPENDENCIES
+    OUTPUT _PackageProject_PROPERTY_PUBLIC_DEPENDENCIES
+  )
+  # interface dependencies in target properties
+  get_property_of_targets(TARGETS ${_PackageProject_TARGETS}
+    PROPERTY PROJECT_OPTIONS_INTERFACE_DEPENDENCIES
+    OUTPUT _PackageProject_PROPERTY_INTERFACE_DEPENDENCIES
+  )
+
   # Append the configured public dependencies
   set(_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}"
-                                                     "${_PackageProject_INTERFACE_DEPENDENCIES_CONFIGURED}")
+                                                     "${_PackageProject_PROPERTY_PUBLIC_DEPENDENCIES}"
+                                                     "${_PackageProject_INTERFACE_DEPENDENCIES_CONFIGURED}"
+                                                     "${_PackageProject_PROPERTY_INTERFACE_DEPENDENCIES}")
   if(NOT
      "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}"
      STREQUAL
@@ -126,7 +163,15 @@ function(package_project)
   # ycm arg
   set(_PackageProject_DEPENDENCIES ${_PackageProject_PUBLIC_DEPENDENCIES} ${_PackageProject_INTERFACE_DEPENDENCIES})
 
+  # private dependencies in target properties
+  get_property_of_targets(TARGETS ${_PackageProject_TARGETS}
+    PROPERTY PROJECT_OPTIONS_PRIVATE_DEPENDENCIES
+    OUTPUT _PackageProject_PROPERTY_PRIVATE_DEPENDENCIES
+  )
+  
   # Append the configured private dependencies
+    set(_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED "${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED}"
+                                                        "${_PackageProject_PROPERTY_PRIVATE_DEPENDENCIES}")
   if(NOT
      "${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED}"
      STREQUAL
