@@ -2,6 +2,23 @@ include_guard()
 
 # Uses ycm (permissive BSD-3-Clause license) and ForwardArguments (permissive MIT license)
 
+function(get_property_of_targets)
+  set(_options)
+  set(_oneValueArgs OUTPUT PROPERTY)
+  set(_multiValueArgs TARGETS)
+  cmake_parse_arguments(args "${_options}" "${_oneValueArgs}" "${_multiValueArgs}" ${ARGN})
+
+  set(_Value)
+  foreach(_Target IN LISTS args_TARGETS)
+    get_target_property(_Current_roperty ${_Target} ${args_PROPERTY})
+    if (_Current_roperty)
+      list(APPEND _Value ${_Current_roperty})
+    endif()
+  endforeach()
+  list(REMOVE_DUPLICATES _Current_roperty)
+  set(${args_OUTPUT} ${_Value} PARENT_SCOPE)
+endfunction()
+
 #[[.rst:
 
 .. include:: ../../docs/src/package_project.md
@@ -89,8 +106,25 @@ function(package_project)
   # ycm args
   set(_PackageProject_INSTALL_DESTINATION "${_PackageProject_CONFIG_INSTALL_DESTINATION}")
 
+  # target properties
+  macro(_Get_property property)
+    get_property_of_targets(TARGETS ${_PackageProject_TARGETS}
+      PROPERTY "PROJECT_OPTIONS_${property}"
+      OUTPUT "PROPERTY_${property}"
+    )
+  endmacro()
+  _Get_property(INTERFACE_INCLUDES)
+  _Get_property(INTERFACE_DEPENDENCIES)
+  _Get_property(PUBLIC_DEPENDENCIES)
+  _Get_property(PRIVATE_DEPENDENCIES)
+  _Get_property(INTERFACE_CONFIG_DEPENDENCIES)
+  _Get_property(PUBLIC_CONFIG_DEPENDENCIES)
+  _Get_property(PRIVATE_CONFIG_DEPENDENCIES)
+
   # Installation of the public/interface includes
-  set(_PackageProject_PUBLIC_INCLUDES "${_PackageProject_PUBLIC_INCLUDES}" "${_PackageProject_INTERFACE_INCLUDES}")
+  set(_PackageProject_PUBLIC_INCLUDES "${_PackageProject_PUBLIC_INCLUDES}"
+                                      "${_PackageProject_INTERFACE_INCLUDES}"
+                                      "${PROPERTY_INTERFACE_DIRECTORIES}")
   if(NOT
      "${_PackageProject_PUBLIC_INCLUDES}"
      STREQUAL
@@ -112,7 +146,10 @@ function(package_project)
 
   # Append the configured public dependencies
   set(_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}"
-                                                     "${_PackageProject_INTERFACE_DEPENDENCIES_CONFIGURED}")
+                                                     "${PROPERTY_PUBLIC_CONFIG_DEPENDENCIES}"
+                                                     "${_PackageProject_INTERFACE_DEPENDENCIES_CONFIGURED}"
+                                                     "${PROPERTY_INTERFACE_CONFIG_DEPENDENCIES}")
+  list(REMOVE_DUPLICATES _PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED)
   if(NOT
      "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}"
      STREQUAL
@@ -122,11 +159,19 @@ function(package_project)
       list(APPEND _PUBLIC_DEPENDENCIES_CONFIG "${DEP} CONFIG")
     endforeach()
   endif()
-  list(APPEND _PackageProject_PUBLIC_DEPENDENCIES ${_PUBLIC_DEPENDENCIES_CONFIG})
+
+  list(APPEND _PackageProject_PUBLIC_DEPENDENCIES ${_PUBLIC_DEPENDENCIES_CONFIG}
+                                                  ${PROPERTY_PUBLIC_DEPENDENCIES})
+
   # ycm arg
-  set(_PackageProject_DEPENDENCIES ${_PackageProject_PUBLIC_DEPENDENCIES} ${_PackageProject_INTERFACE_DEPENDENCIES})
+  set(_PackageProject_DEPENDENCIES ${_PackageProject_PUBLIC_DEPENDENCIES}
+                                   ${_PackageProject_INTERFACE_DEPENDENCIES}
+                                   ${PROPERTY_INTERFACE_DEPENDENCIES})
 
   # Append the configured private dependencies
+  set(_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED "${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED}"
+                                                      "${PROPERTY_PRIVATE_CONFIG_DEPENDENCIES}")
+  list(REMOVE_DUPLICATES _PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED)
   if(NOT
      "${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED}"
      STREQUAL
@@ -137,7 +182,8 @@ function(package_project)
     endforeach()
   endif()
   # ycm arg
-  list(APPEND _PackageProject_PRIVATE_DEPENDENCIES ${_PRIVATE_DEPENDENCIES_CONFIG})
+  list(APPEND _PackageProject_PRIVATE_DEPENDENCIES ${_PRIVATE_DEPENDENCIES_CONFIG}
+                                                   ${PROPERTY_PRIVATE_DEPENDENCIES})
 
   # Installation of package (compatible with vcpkg, etc)
   set(_targets_list ${_PackageProject_TARGETS})
@@ -206,4 +252,97 @@ function(package_project)
   install(CODE "MESSAGE(STATUS \"${USAGE_FILE_CONTENT}\")")
 
   include("${_ycm_SOURCE_DIR}/modules/AddUninstallTarget.cmake")
+endfunction()
+
+function(set_or_append_target_property target property new_values)
+  get_target_property(_AllValues ${target} ${property})
+
+  if(NOT _AllValues) # If the property hasn't set
+    set(_AllValues "${new_values}")
+  else()
+    list(APPEND _AllValues ${new_values})
+  endif()
+  list(REMOVE_DUPLICATES _AllValues)
+
+  set_target_properties(${target}
+    PROPERTIES ${property} "${_AllValues}"
+  )
+endfunction()
+
+#[[.rst:
+
+.. include:: ../../docs/src/target_include_interface_directories.md
+   :parser: myst_parser.sphinx_
+
+#]]
+function(target_include_interface_directories target)
+  function(target_include_interface_directory target include_dir)
+    # Make include_dir absolute
+    cmake_path(IS_RELATIVE include_dir _IsRelative)
+    if(_IsRelative)
+      set(include_dir "${CMAKE_CURRENT_SOURCE_DIR}/${include_dir}")
+    endif()
+
+    # Append include_dir to target property PROJECT_OPTIONS_INTERFACE_DIRECTORIES
+    set_or_append_target_property(${target}
+      "PROJECT_OPTIONS_INTERFACE_DIRECTORIES" ${include_dir}
+    )
+  
+    # Include the interface directory
+    get_target_property(_HasSourceFiles ${target} SOURCES)
+    if(NOT _HasSourceFiles) # header-only library, aka `add_library(<name> INTERFACE)`
+      target_include_directories(${target}
+        INTERFACE
+        $<BUILD_INTERFACE:${include_dir}>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+      )
+    else()
+      target_include_directories(${target}
+        PUBLIC
+        $<BUILD_INTERFACE:${include_dir}>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+      )
+    endif()
+  endfunction()
+
+  foreach(_IncludeDir IN LISTS ARGN)
+    target_include_interface_directory(${target} ${_IncludeDir})
+  endforeach()
+endfunction()
+
+#[[.rst:
+
+.. include:: ../../docs/src/target_find_dependencies.md
+   :parser: myst_parser.sphinx_
+
+#]]
+function(target_find_dependencies target)
+  set(_options)
+  set(_oneValueArgs)
+  set(_MultiValueArgs PRIVATE PUBLIC INTERFACE PRIVATE_CONFIG PUBLIC_CONFIG INTERFACE_CONFIG)
+  cmake_parse_arguments(args "${_options}" "${_oneValueArgs}" "${_MultiValueArgs}" ${ARGN})
+
+  macro(_Property_for property)
+    # Call find_package to all newly added dependencies
+    foreach(_Dependency IN LISTS args_${property})
+      if (${property} MATCHES ".*CONFIG")
+        find_package(${_Dependency} CONFIG REQUIRED)
+      else()
+        include(CMakeFindDependencyMacro)
+        find_dependency(${_Dependency})
+      endif()
+    endforeach()
+
+    # Append to target property
+    set_or_append_target_property(${target}
+      "PROJECT_OPTIONS_${property}_DEPENDENCIES" "${args_${property}}"
+    )
+  endmacro()
+
+  _Property_for(PRIVATE)
+  _Property_for(PUBLIC)
+  _Property_for(INTERFACE)
+  _Property_for(PRIVATE_CONFIG)
+  _Property_for(PUBLIC_CONFIG)
+  _Property_for(INTERFACE_CONFIG)
 endfunction()

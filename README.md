@@ -145,20 +145,19 @@ Then add the executables or libraries to the project:
 
 #### [Executable](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe)
 
-``` cmake
+```cmake
 add_executable(main main.cpp)
 target_link_libraries(main PRIVATE project_options project_warnings) # link project_options/warnings
 
 # Find dependencies:
-set(DEPENDENCIES_CONFIGURED fmt Eigen3)
-
-foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
-  find_package(${DEPENDENCY} CONFIG REQUIRED)
-endforeach()
+target_find_dependencies(main
+  PRIVATE_CONFIG
+  fmt
+  Eigen3
+)
 
 # Link dependencies
-target_link_system_libraries(
-  main
+target_link_system_libraries(main
   PRIVATE
   fmt::fmt
   Eigen3::Eigen
@@ -170,25 +169,22 @@ package_project(TARGETS main)
 
 #### [Header-only library](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib)
 
-``` cmake
+```cmake
 add_library(my_header_lib INTERFACE)
 target_link_libraries(my_header_lib INTERFACE project_options project_warnings) # link project_options/warnings
 
-# Includes
-set(INCLUDE_DIR "include") # must be relative paths
-target_include_directories(my_header_lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
-                                          "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
+# Includes:
+target_include_interface_directories(my_header_lib "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 # Find dependencies:
-set(DEPENDENCIES_CONFIGURED fmt Eigen3)
-
-foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
-  find_package(${DEPENDENCY} CONFIG REQUIRED)
-endforeach()
+target_find_dependencies(my_header_lib
+  INTERFACE_CONFIG
+  fmt
+  Eigen3
+)
 
 # Link dependencies:
-target_link_system_libraries(
-  my_header_lib
+target_link_system_libraries(my_header_lib
   INTERFACE
   fmt::fmt
   Eigen3::Eigen
@@ -196,33 +192,29 @@ target_link_system_libraries(
 
 # Package the project
 package_project(
-  TARGETS my_header_lib project_options project_warnings
-  INTERFACE_DEPENDENCIES_CONFIGURED ${DEPENDENCIES_CONFIGURED}
-  INTERFACE_INCLUDES ${INCLUDE_DIR}
+  # Note that you must export `project_options` and `project_warnings` for `my_header_lib`
+  TARGETS my_header_lib project_options project_warnings 
 )
 ```
 
 #### [Library with source files](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib)
 
-``` cmake
+```cmake
 add_library(my_lib "./src/my_lib/lib.cpp")
 target_link_libraries(my_lib PRIVATE project_options project_warnings) # link project_options/warnings
 
-# Includes
-set(INCLUDE_DIR "include") # must be relative paths
-target_include_directories(my_lib PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}>"
-                                         "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>")
+# Includes:
+target_include_interface_directories(my_lib "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 # Find dependencies:
-set(DEPENDENCIES_CONFIGURED fmt Eigen3)
-
-foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
-  find_package(${DEPENDENCY} CONFIG REQUIRED)
-endforeach()
+target_find_dependencies(my_lib
+  PRIVATE_CONFIG
+  fmt
+  Eigen3
+)
 
 # Link dependencies:
-target_link_system_libraries(
-  my_lib
+target_link_system_libraries(my_lib
   PRIVATE
   fmt::fmt
   Eigen3::Eigen
@@ -230,8 +222,8 @@ target_link_system_libraries(
 
 # Package the project
 package_project(
-  TARGETS my_lib
-  PUBLIC_INCLUDES ${INCLUDE_DIR}
+  # Note that you must export `project_options` and `project_warnings` for `my_lib`
+  TARGETS my_lib project_options project_warnings
 )
 ```
 
