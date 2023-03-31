@@ -42,14 +42,18 @@ The full documentation is available here:
 
 <https://aminya.github.io/project_options/>
 
-## Usage
+## `project_options` function
 
-See the `project_options()` in action in [this template repository](https://github.com/aminya/cpp_vcpkg_project). [cpp_vcpkg_project](https://github.com/aminya/cpp_vcpkg_project) has prepared all the best practices for a production-ready C++ project.
-#### `project_options` call
+See the `project_options()` in action in [this template
+repository](https://github.com/aminya/cpp_vcpkg_project).
+[cpp_vcpkg_project](https://github.com/aminya/cpp_vcpkg_project) has
+prepared all the best practices for a production-ready C++ project.
+
+### `project` and `project_options`
 
 Here is an example of the usage:
 
-```cmake
+``` cmake
 cmake_minimum_required(VERSION 3.20)
 
 # set a default CXX standard for the tools and targets that do not specify them.
@@ -142,9 +146,9 @@ project_options(
 
 Then add the executables or libraries to the project:
 
-#### [executable usage](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe)
+### [executable usage](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe)
 
-```cmake
+``` cmake
 add_executable(main main.cpp)
 
 # link project_options/warnings
@@ -170,9 +174,9 @@ target_link_system_libraries(main
 package_project(TARGETS main)
 ```
 
-#### [library usage](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib)
+### [library usage](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib)
 
-```cmake
+``` cmake
 add_library(my_lib "./src/my_lib/lib.cpp")
 
 # link project_options/warnings
@@ -204,9 +208,9 @@ package_project(
 )
 ```
 
-#### [header-only library usage](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib)
+### [header-only library usage](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib)
 
-```cmake
+``` cmake
 add_library(my_header_lib INTERFACE)
 
 # link project_options/warnings

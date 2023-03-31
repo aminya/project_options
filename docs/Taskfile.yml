@@ -4,15 +4,17 @@ version: 3
 tasks:
   readme:
     - pip install -q -U pandoc-include
+    # requires pandoc 3.0.0 or higher
     - pandoc -s --filter pandoc-include -o ../README.md ./README.md
 
   docs:
+    deps:
+      - readme
     cmds:
       - pip install -q -U GitPython sphinx-rtd-theme breathe sphinx-sitemap sphinxcontrib-moderncmakedomain myst-parser pandoc-include
       - cmake -S ./ -B ./build -G "Ninja Multi-Config" -DCMAKE_BUILD_TYPE=Release
       - cmake --build ./build --config Release
       - touch ./build/.nojekyll
-      - task: readme
 
   docs.deploy:
     deps:
