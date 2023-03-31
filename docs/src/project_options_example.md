@@ -190,6 +190,6 @@ target_link_system_libraries(my_header_lib
 
 # Package the project
 package_project(
-  TARGETS my_header_lib project_options project_warnings
+  TARGETS my_header_lib myproject_project_options myproject_project_warnings
 )
 ```
