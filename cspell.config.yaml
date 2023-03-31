@@ -38,9 +38,11 @@ words:
   - ctest
   - Cuda
   - DCMAKE
+  - DCROSS
   - DDEFAULT_TRIPLET
   - deps
   - DOPT
+  - DTARGET
   - DVCPKG
   - dyld
   - dylib

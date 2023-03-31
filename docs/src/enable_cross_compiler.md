@@ -1,7 +1,10 @@
 # `enable_cross_compiler`
 
+**NOTE**: this feature is experimental and needs more documentation/examples. See the `tests/rpi3`, `tests/rpi4`, `tests/emscripten`, `tests-rpi4-vcpkg` directories in the [repositpry](https://github.com/aminya/project_options/tree/main/tests) for full examples.
+
+The following calls `enable_cross_compiler` to enable the cross-compiler as the current toolchain.
+
 ```cmake
-# my custom arm settings
 enable_cross_compiler(
   CC "arm-none-eabi-gcc"
   CXX "arm-none-eabi-g++"
@@ -10,6 +13,8 @@ enable_cross_compiler(
   CROSS_TRIPLET "arm-none-eabi-gcc"
 )
 ```
+
+The following examples enables cross-compiling when it is opt-in.
 
 ```cmake
 # opt-in cross-compiling
@@ -38,9 +43,9 @@ endif()
 - _emscripten_
 
 **Example:**
+
 - `-DENABLE_CROSS_COMPILING:BOOL=ON -DDEFAULT_TRIPLET=x64-mingw-dynamic`
 - `-DENABLE_CROSS_COMPILING:BOOL=ON -DDEFAULT_TRIPLET=wasm32-emscripten`
-
 
 For `arm-linux` or `arm64-linux`, you must set the compiler:
 
@@ -48,9 +53,9 @@ For `arm-linux` or `arm64-linux`, you must set the compiler:
 - arm-linux-gnueabi, arm-linux-gnueabihf [arm-linux.toolchain.cmake](https://github.com/abeimler/project_options/blob/feature/open-closed-enable-cross-compiler/src/toolchains/arm-linux.toolchain.cmake)
 
 **Example:**
+
 - `-DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER=gcc-aarch64-linux-gnu-gcc -DCMAKE_CXX_COMPILER=gcc-aarch64-linux-gnu-g++ -DDEFAULT_TRIPLET=arm64-linux`
 - `-DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER=arm-linux-gnueabihf-gcc -DCMAKE_CXX_COMPILER=arm-linux-gnueabi-g++ -DDEFAULT_TRIPLET=arm-linux -DCROSS_ROOT=/usr/gcc-arm-linux-gnueabihf`
-
 
 For (bare-metal) you don't need/can't(?) set `arm-linux`/`arm64-linux` (for vcpkg):
 
@@ -62,8 +67,7 @@ For (bare-metal) you don't need/can't(?) set `arm-linux`/`arm64-linux` (for vcpk
 - `-DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER=arm-none-eabi-gcc -DCMAKE_CXX_COMPILER=arm-none-eabi-g++ -DTARGET_ARCHITECTURE:STRING=arm -DCROSS_ROOT:STRING="/usr/arm-none-eabi-gcc"
     -DCROSS_TRIPLET:STRING=arm-none-eabi-gcc`
 
-
-The option for `DEFAULT_TRIPLET` are the simlary to [vcpkg triplets](https://github.com/microsoft/vcpkg/tree/master/triplets/community/)
+The option for `DEFAULT_TRIPLET` are the similarly to [vcpkg triplets](https://github.com/microsoft/vcpkg/tree/master/triplets/community/)
 
 - x64-mingw-dynamic
 - x64-mingw-static
