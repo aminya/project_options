@@ -67,7 +67,7 @@ For (bare-metal) you don't need/can't(?) set `arm-linux`/`arm64-linux` (for vcpk
 - `-DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER=arm-none-eabi-gcc -DCMAKE_CXX_COMPILER=arm-none-eabi-g++ -DTARGET_ARCHITECTURE:STRING=arm -DCROSS_ROOT:STRING="/usr/arm-none-eabi-gcc"
     -DCROSS_TRIPLET:STRING=arm-none-eabi-gcc`
 
-The option for `DEFAULT_TRIPLET` are the similarly to [vcpkg triplets](https://github.com/microsoft/vcpkg/tree/master/triplets/community/)
+The option for `DEFAULT_TRIPLET` are the similar to [vcpkg triplets](https://github.com/microsoft/vcpkg/tree/master/triplets/community/)
 
 - x64-mingw-dynamic
 - x64-mingw-static
