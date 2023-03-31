@@ -1,4 +1,4 @@
-#### `project_options` parameters
+## `project_options` parameters
 
 `project_options` function accepts the following named flags:
 

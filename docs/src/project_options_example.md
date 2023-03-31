@@ -2,7 +2,7 @@
 
 See the `project_options()` in action in [this template repository](https://github.com/aminya/cpp_vcpkg_project). [cpp_vcpkg_project](https://github.com/aminya/cpp_vcpkg_project) has prepared all the best practices for a production-ready C++ project.
 
-#### `project_options` call
+## `project` and `project_options`
 
 Here is an example of the usage:
 
@@ -99,7 +99,7 @@ project_options(
 
 Then add the executables or libraries to the project:
 
-#### [executable usage](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe)
+## [executable usage](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe)
 
 ```cmake
 add_executable(main main.cpp)
@@ -127,7 +127,7 @@ target_link_system_libraries(main
 package_project(TARGETS main)
 ```
 
-#### [library usage](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib)
+## [library usage](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib)
 
 ```cmake
 add_library(my_lib "./src/my_lib/lib.cpp")
@@ -161,7 +161,7 @@ package_project(
 )
 ```
 
-#### [header-only library usage](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib)
+## [header-only library usage](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib)
 
 ```cmake
 add_library(my_header_lib INTERFACE)
