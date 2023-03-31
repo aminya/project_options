@@ -3,7 +3,10 @@ cmake_minimum_required(VERSION 3.16)
 set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR aarch64)
 
-if(NOT "${CROSS_ROOT}" STREQUAL "")
+if(NOT
+   "${CROSS_ROOT}"
+   STREQUAL
+   "")
   set(CMAKE_SYSROOT ${CROSS_ROOT})
   #set(CMAKE_FIND_ROOT_PATH ${CROSS_ROOT})
 elseif("${CMAKE_SYSROOT}" STREQUAL "")
@@ -11,12 +14,18 @@ elseif("${CMAKE_SYSROOT}" STREQUAL "")
   set(CMAKE_FIND_ROOT_PATH /usr/aarch64-linux-gnu)
 endif()
 
-if(NOT "${CROSS_C}" STREQUAL "")
+if(NOT
+   "${CROSS_C}"
+   STREQUAL
+   "")
   set(CMAKE_C_COMPILER ${CROSS_C})
 else()
   set(CMAKE_C_COMPILER aarch64-linux-gnu-gcc)
 endif()
-if(NOT "${CROSS_CXX}" STREQUAL "")
+if(NOT
+   "${CROSS_CXX}"
+   STREQUAL
+   "")
   set(CMAKE_CXX_COMPILER ${CROSS_CXX})
 else()
   set(CMAKE_CXX_COMPILER aarch64-linux-gnu-g++)

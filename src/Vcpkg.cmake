@@ -119,26 +119,41 @@ macro(run_vcpkg)
 
   if(CROSSCOMPILING)
     if(NOT MINGW)
-      if(NOT "${TARGET_ARCHITECTURE}" STREQUAL "")
+      if(NOT
+         "${TARGET_ARCHITECTURE}"
+         STREQUAL
+         "")
         set(VCPKG_TARGET_TRIPLET "${TARGET_ARCHITECTURE}")
       endif()
-      if(NOT "${DEFAULT_TRIPLET}" STREQUAL "")
+      if(NOT
+         "${DEFAULT_TRIPLET}"
+         STREQUAL
+         "")
         set(VCPKG_DEFAULT_TRIPLET "${DEFAULT_TRIPLET}")
       endif()
-      if(NOT "${LIBRARY_LINKAGE}" STREQUAL "")
+      if(NOT
+         "${LIBRARY_LINKAGE}"
+         STREQUAL
+         "")
         set(VCPKG_LIBRARY_LINKAGE "${LIBRARY_LINKAGE}")
       endif()
     endif()
 
     if(NOT DEFINED VCPKG_CHAINLOAD_TOOLCHAIN_FILE)
       set(_toolchain_file)
-      if(NOT "${CROSS_TOOLCHAIN_FILE}" STREQUAL "")
+      if(NOT
+         "${CROSS_TOOLCHAIN_FILE}"
+         STREQUAL
+         "")
         set(_toolchain_file ${CROSS_TOOLCHAIN_FILE})
       else()
         get_toolchain_file(_toolchain_file)
       endif()
 
-      if(NOT "${_toolchain_file}" STREQUAL "")
+      if(NOT
+         "${_toolchain_file}"
+         STREQUAL
+         "")
         set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE
             ${_toolchain_file}
             CACHE STRING "vcpkg chainload toolchain file" FORCE)

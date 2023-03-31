@@ -16,12 +16,18 @@ include(../../src/Index.cmake)
 if(ENABLE_AARCH64_CROSS_COMPILING)
   # my custom aarch64 settings
   enable_cross_compiler(
-    DEFAULT_TRIPLET "arm64-linux"
-    CC "aarch64-linux-gnu-gcc"
-    CXX "aarch64-linux-gnu-g++"
-    TARGET_ARCHITECTURE "arm64-linux"
-    CROSS_ROOT "/usr/gcc-aarch64-linux-gnu"
-    CROSS_TRIPLET "aarch64-linux-gnu"
+    DEFAULT_TRIPLET
+    "arm64-linux"
+    CC
+    "aarch64-linux-gnu-gcc"
+    CXX
+    "aarch64-linux-gnu-g++"
+    TARGET_ARCHITECTURE
+    "arm64-linux"
+    CROSS_ROOT
+    "/usr/gcc-aarch64-linux-gnu"
+    CROSS_TRIPLET
+    "aarch64-linux-gnu"
     #TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/my-toolchain.cmake"
   )
 else()

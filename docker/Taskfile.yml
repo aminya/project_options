@@ -17,7 +17,7 @@ tasks:
     - docker-compose up --build minimal-build-mingw-x64-from-triplet
     - docker-compose up --build minimal-build-mingw-x86
     - docker-compose down
-    
+
   emscripten:
     - docker-compose up --build build-emscripten
     - docker-compose down
@@ -33,7 +33,7 @@ tasks:
   rpi3.bare-metal:
     - docker-compose up --build build-rpi3-bare-metal
     - docker-compose down
-    
+
   rpi4:
     - docker-compose up --build build-rpi4
     - docker-compose down
@@ -49,7 +49,7 @@ tasks:
   rpi4.custom:
     - docker-compose up --build build-rpi4-custom
     - docker-compose down
-    
+
   rpi4.aarch64:
     - docker-compose up --build build-rpi4-aarch64
     - docker-compose down
@@ -58,6 +58,6 @@ tasks:
     - docker-compose up --build build-rpi4-vcpkg
     - docker-compose down
 
-  rpi4.vcpkg-custsom:
+  rpi4.vcpkg-custom:
     - docker-compose up --build build-rpi4-vcpkg-custom
     - docker-compose down

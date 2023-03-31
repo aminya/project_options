@@ -51,7 +51,9 @@ set(conf_version "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VE
 set(conf_release "${PROJECT_VERSION}")
 set(conf_name "project_options")
 set(conf_author "Amin Yahyaabadi")
-set(conf_brief "A general-purpose CMake library that provides functions that improve the CMake experience following the best practices.")
+set(conf_brief
+    "A general-purpose CMake library that provides functions that improve the CMake experience following the best practices."
+)
 set(conf_doxygen_input
     "\
   \"${CMAKE_SOURCE_DIR}/include\" \

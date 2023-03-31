@@ -60,11 +60,12 @@ tasks:
       - lint.cspell
       - lint.clang-format
       - lint.cmake
-      - myproj:lint
-      - install:lint
-      - minimal:lint
-      - emscripten:lint
-      - rpi4-vcpkg:lint
+    cmds:
+      - task: myproj:lint
+      - task: install:lint
+      - task: minimal:lint
+      - task: emscripten:lint
+      - task: rpi4-vcpkg:lint
 
   clean:
     - cmd: powershell -c 'function rmrf($path) { if (test-path $path) { rm -r -force $path }}; rmrf ./install'

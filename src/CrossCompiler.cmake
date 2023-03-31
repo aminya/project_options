@@ -18,12 +18,15 @@ macro(enable_cross_compiler)
     "${oneValueArgs}"
     "${multiValueArgs}"
     ${ARGN})
-    
+
   include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
   detect_architecture(_arch)
 
   set(_default_triplet ${DEFAULT_TRIPLET})
-  if(NOT "${EnableCrossCompiler_DEFAULT_TRIPLET}" STREQUAL "")
+  if(NOT
+     "${EnableCrossCompiler_DEFAULT_TRIPLET}"
+     STREQUAL
+     "")
     set(_default_triplet ${EnableCrossCompiler_DEFAULT_TRIPLET})
   endif()
 
@@ -32,25 +35,40 @@ macro(enable_cross_compiler)
   endif()
   set(_cc ${CMAKE_C_COMPILER})
   set(_cxx ${CMAKE_CXX_COMPILER})
-  if(NOT "${EnableCrossCompiler_CC}" STREQUAL "")
+  if(NOT
+     "${EnableCrossCompiler_CC}"
+     STREQUAL
+     "")
     set(_cc ${EnableCrossCompiler_CC})
   endif()
-  if(NOT "${EnableCrossCompiler_CXX}" STREQUAL "")
+  if(NOT
+     "${EnableCrossCompiler_CXX}"
+     STREQUAL
+     "")
     set(_cxx ${EnableCrossCompiler_CXX})
   endif()
 
   set(_target_architecture ${TARGET_ARCHITECTURE})
-  if(NOT "${EnableCrossCompiler_TARGET_ARCHITECTURE}" STREQUAL "")
+  if(NOT
+     "${EnableCrossCompiler_TARGET_ARCHITECTURE}"
+     STREQUAL
+     "")
     set(_target_architecture ${EnableCrossCompiler_TARGET_ARCHITECTURE})
   endif()
-  
+
   set(_cross_root ${CROSS_ROOT})
-  if(NOT "${EnableCrossCompiler_CROSS_ROOT}" STREQUAL "")
+  if(NOT
+     "${EnableCrossCompiler_CROSS_ROOT}"
+     STREQUAL
+     "")
     set(_cross_root ${EnableCrossCompiler_CROSS_ROOT})
   endif()
-  
+
   set(_cross_triplet ${CROSS_TRIPLET})
-  if(NOT "${EnableCrossCompiler_CROSS_TRIPLET}" STREQUAL "")
+  if(NOT
+     "${EnableCrossCompiler_CROSS_TRIPLET}"
+     STREQUAL
+     "")
     set(_cross_triplet ${EnableCrossCompiler_CROSS_TRIPLET})
   endif()
 
@@ -176,7 +194,7 @@ macro(enable_cross_compiler)
       set(LIBRARY_LINKAGE "static")
     endif()
   endif()
-  
+
   if(_cc MATCHES "x86_64(-w64)?-mingw32-[gc]..?" OR _cxx MATCHES "x86_64(-w64)?-mingw32-[gc]..?")
     if("${_cross_root}" STREQUAL "")
       set(_cross_root "/usr/x86_64-w64-mingw32")
@@ -221,7 +239,11 @@ macro(enable_cross_compiler)
     set(USE_CROSSCOMPILER_ARM_NONE TRUE)
   endif()
   # TODO: check if path is right, check for header files or something
-  if(NOT "${_cross_root}" STREQUAL "" AND "${_cross_triplet}" STREQUAL "")
+  if(NOT
+     "${_cross_root}"
+     STREQUAL
+     ""
+     AND "${_cross_triplet}" STREQUAL "")
     message(WARNING "CROSS_ROOT (${_cross_root}) is set, but CROSS_TRIPLET is not")
   endif()
 
@@ -270,7 +292,10 @@ macro(enable_cross_compiler)
   endif()
 
   set(_toolchain_file)
-  if(NOT "${EnableCrossCompiler_TOOLCHAIN_FILE}" STREQUAL "")
+  if(NOT
+     "${EnableCrossCompiler_TOOLCHAIN_FILE}"
+     STREQUAL
+     "")
     set(_toolchain_file ${EnableCrossCompiler_TOOLCHAIN_FILE})
   else()
     get_toolchain_file(_toolchain_file)
@@ -283,7 +308,7 @@ macro(enable_cross_compiler)
       set(CROSS_TOOLCHAIN_FILE ${VCPKG_CHAINLOAD_TOOLCHAIN_FILE})
     endif()
   else()
-      set(CROSS_TOOLCHAIN_FILE ${CMAKE_TOOLCHAIN_FILE})
+    set(CROSS_TOOLCHAIN_FILE ${CMAKE_TOOLCHAIN_FILE})
   endif()
   set(CROSSCOMPILING TRUE)
 
@@ -302,16 +327,25 @@ macro(enable_cross_compiler)
     #message(STATUS "EMSDK: $ENV{EMSDK}")
     message(STATUS "use emscripten cross-compiler emulator: ${CMAKE_CROSSCOMPILING_EMULATOR}")
   else()
-    if(NOT "${CROSS_ROOT}" STREQUAL "")
+    if(NOT
+       "${CROSS_ROOT}"
+       STREQUAL
+       "")
       message(STATUS "use SYSROOT: ${CROSS_ROOT}")
     endif()
   endif()
   message(STATUS "Target Architecture: ${TARGET_ARCHITECTURE}")
-  if(NOT "${DEFAULT_TRIPLET}" STREQUAL "")
+  if(NOT
+     "${DEFAULT_TRIPLET}"
+     STREQUAL
+     "")
     message(STATUS "Default Triplet: ${DEFAULT_TRIPLET}")
   endif()
   message(STATUS "Host Triplet: ${HOST_TRIPLET}")
-  if(NOT "${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
+  if(NOT
+     "${CMAKE_TOOLCHAIN_FILE}"
+     STREQUAL
+     "")
     message(STATUS "Toolchain File: ${CMAKE_TOOLCHAIN_FILE}")
   else()
     if(NOT DEFINED VCPKG_CHAINLOAD_TOOLCHAIN_FILE)

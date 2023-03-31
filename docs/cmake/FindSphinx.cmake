@@ -29,7 +29,7 @@ if(NOT SPHINX_EXECUTABLE)
     find_program(
       SPHINX_EXECUTABLE
       NAMES ${_sphinx_NAMES}
-      PATHS /usr/bin /usr/local/bin /opt/loca/bin
+      PATHS /usr/bin /usr/local/bin /opt/local/bin
       DOC "Sphinx documentation generator")
   endforeach()
 endif()

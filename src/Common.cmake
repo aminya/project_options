@@ -80,26 +80,33 @@ macro(common_project_options)
       execute_process(
         COMMAND reg query "HKU\\S-1-5-19"
         ERROR_VARIABLE IS_NONADMINISTRATOR
-        OUTPUT_QUIET
-      )
+        OUTPUT_QUIET)
     else()
       set(IS_NONADMINISTRATOR "")
     endif()
 
     if(IS_NONADMINISTRATOR)
       # For non-administrator, create an auxiliary target and ask user to run it
-      add_custom_command(OUTPUT ${CMAKE_SOURCE_DIR}/compile_commands.json
-          COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json
-          DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
-          VERBATIM
+      add_custom_command(
+        OUTPUT ${CMAKE_SOURCE_DIR}/compile_commands.json
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/compile_commands.json
+                ${CMAKE_SOURCE_DIR}/compile_commands.json
+        DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
+        VERBATIM)
+      add_custom_target(
+        _copy_compile_commands
+        DEPENDS ${CMAKE_SOURCE_DIR}/compile_commands.json
+        VERBATIM)
+      message(
+        STATUS
+          "compile_commands.json was not symlinked to the root. Run `cmake --build <build_dir> -t _copy_compile_commands` if needed."
       )
-      add_custom_target(_copy_compile_commands
-          DEPENDS ${CMAKE_SOURCE_DIR}/compile_commands.json
-          VERBATIM
-      )
-      message(STATUS "compile_commands.json was not symlinked to the root. Run `cmake --build <build_dir> -t _copy_compile_commands` if needed.")
     else()
-      file(CREATE_LINK ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json SYMBOLIC)
+      file(
+        CREATE_LINK
+        ${CMAKE_BINARY_DIR}/compile_commands.json
+        ${CMAKE_SOURCE_DIR}/compile_commands.json
+        SYMBOLIC)
       message(TRACE "compile_commands.json was symlinked to the root.")
     endif()
 

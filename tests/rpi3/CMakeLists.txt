@@ -16,18 +16,24 @@ include(../../src/Index.cmake)
 if(ENABLE_BARE_METAL_CROSS_COMPILING)
   # my custom arm settings
   enable_cross_compiler(
-    CC "arm-none-eabi-gcc"
-    CXX "arm-none-eabi-g++"
-    TARGET_ARCHITECTURE "arm"
-    CROSS_ROOT "/usr/arm-none-eabi-gcc"
-    CROSS_TRIPLET "arm-none-eabi"
-  )  
+    CC
+    "arm-none-eabi-gcc"
+    CXX
+    "arm-none-eabi-g++"
+    TARGET_ARCHITECTURE
+    "arm"
+    CROSS_ROOT
+    "/usr/arm-none-eabi-gcc"
+    CROSS_TRIPLET
+    "arm-none-eabi")
 
   # some more custom compiler settings
   # -Wl,--gc-sections     Perform the dead code elimination.
   # --specs=nano.specs    Link with newlib-nano.
   # --specs=nosys.specs   No syscalls, provide empty implementations for the POSIX system calls.
-  set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections --specs=nano.specs --specs=nosys.specs -mthumb" CACHE INTERNAL "Linker options")
+  set(CMAKE_EXE_LINKER_FLAGS
+      "-Wl,--gc-sections --specs=nano.specs --specs=nosys.specs -mthumb"
+      CACHE INTERNAL "Linker options")
 else()
   option(ENABLE_CROSS_COMPILING "Detect cross compiler and setup toolchain" OFF)
   if(ENABLE_CROSS_COMPILING)

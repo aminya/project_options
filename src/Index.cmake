@@ -37,7 +37,6 @@ msvc_toolchain()
 include("${CMAKE_CURRENT_LIST_DIR}/Conan.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/Vcpkg.cmake")
 
-
 #[[.rst:
 
 .. include:: ../../docs/src/project_options.rst
