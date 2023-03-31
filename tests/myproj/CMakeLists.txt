@@ -51,6 +51,8 @@ endif()
 # Initialize project_options
 # uncomment the options to enable them
 project_options(
+  PREFIX
+  "myproj"
   ENABLE_CACHE
   ENABLE_CONAN
   # WARNINGS_AS_ERRORS
@@ -77,7 +79,7 @@ project_options(
 
 # Executable
 add_executable(main ./src/main/main.cpp)
-target_link_libraries(main PRIVATE project_options project_warnings)
+target_link_libraries(main PRIVATE myproj_project_options myproj_project_warnings)
 
 ## dependencies
 set(DEPENDENCIES_CONFIGURED fmt Eigen3 docopt)
@@ -103,7 +105,7 @@ add_library(lib INTERFACE)
 set(lib_INCLUDE_DIR "include")
 target_include_directories(lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${lib_INCLUDE_DIR}>"
                                          "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
-target_link_libraries(lib INTERFACE project_options project_warnings)
+target_link_libraries(lib INTERFACE myproj_project_options myproj_project_warnings)
 target_link_system_libraries(
   lib
   INTERFACE
@@ -115,7 +117,7 @@ add_library(lib2 "./src/mylib2/lib.cpp")
 set(lib2_INCLUDE_DIR2 "include")
 target_include_directories(lib2 PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${lib2_INCLUDE_DIR2}>"
                                        "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
-target_link_libraries(lib2 PRIVATE project_options project_warnings)
+target_link_libraries(lib2 PRIVATE myproj_project_options myproj_project_warnings)
 target_link_system_libraries(
   lib2
   PRIVATE
@@ -130,8 +132,8 @@ package_project(
   # TARGETS
   # main
   # lib
-  # project_warnings
-  # project_options
+  # myproj_project_warnings
+  # myproj_project_options
   INTERFACE_DEPENDENCIES_CONFIGURED
   ${DEPENDENCIES_CONFIGURED}
   INTERFACE_INCLUDES
@@ -145,8 +147,8 @@ package_project(
   myproj_header_only_lib
   TARGETS
   lib
-  project_options
-  project_warnings
+  myproj_project_options
+  myproj_project_warnings
   INTERFACE_DEPENDENCIES_CONFIGURED
   ${DEPENDENCIES_CONFIGURED}
   INTERFACE_INCLUDES
@@ -157,8 +159,8 @@ package_project(
   myproj_lib
   TARGETS
   lib2
-  project_options
-  project_warnings
+  myproj_project_options
+  myproj_project_warnings
   PUBLIC_INCLUDES
   ${lib2_INCLUDE_DIR22})
 

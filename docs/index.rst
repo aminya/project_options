@@ -1,4 +1,4 @@
-Usage
+Getting Started
 ======================================================
 
 .. include:: ./src/Readme_top.md
@@ -12,7 +12,6 @@ Usage
 
 .. include:: ./src/License.md
    :parser: myst_parser.sphinx_
-
 
 Table of Contents
 ==================

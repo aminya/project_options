@@ -1,4 +1,8 @@
+# `project_options`
+
 See the `project_options()` in action in [this template repository](https://github.com/aminya/cpp_vcpkg_project). [cpp_vcpkg_project](https://github.com/aminya/cpp_vcpkg_project) has prepared all the best practices for a production-ready C++ project.
+
+## `project` and `project_options`
 
 Here is an example of the usage:
 
@@ -68,6 +72,7 @@ endif()
 # This overwrites `project_options` and sets `project_warnings`
 # uncomment to enable the options. Some of them accept one or more inputs:
 project_options(
+      PREFIX "myproject"
       ENABLE_CACHE
       ${ENABLE_CPPCHECK}
       ${ENABLE_CLANG_TIDY}
@@ -94,11 +99,15 @@ project_options(
 
 Then add the executables or libraries to the project:
 
-#### [Executable](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe)
+## [executable usage](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe)
 
 ```cmake
 add_executable(main main.cpp)
-target_link_libraries(main PRIVATE project_options project_warnings) # link project_options/warnings
+
+# link project_options/warnings
+target_link_libraries(main
+  PRIVATE myproject_project_options myproject_project_warnings
+)
 
 # Find dependencies:
 target_find_dependencies(main
@@ -118,41 +127,15 @@ target_link_system_libraries(main
 package_project(TARGETS main)
 ```
 
-#### [Header-only library](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib)
-
-```cmake
-add_library(my_header_lib INTERFACE)
-target_link_libraries(my_header_lib INTERFACE project_options project_warnings) # link project_options/warnings
-
-# Includes:
-target_include_interface_directories(my_header_lib "${CMAKE_CURRENT_SOURCE_DIR}/include")
-
-# Find dependencies:
-target_find_dependencies(my_header_lib
-  INTERFACE_CONFIG
-  fmt
-  Eigen3
-)
-
-# Link dependencies:
-target_link_system_libraries(my_header_lib
-  INTERFACE
-  fmt::fmt
-  Eigen3::Eigen
-)
-
-# Package the project
-package_project(
-  # Note that you must export `project_options` and `project_warnings` for `my_header_lib`
-  TARGETS my_header_lib project_options project_warnings
-)
-```
-
-#### [Library with source files](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib)
+## [library usage](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib)
 
 ```cmake
 add_library(my_lib "./src/my_lib/lib.cpp")
-target_link_libraries(my_lib PRIVATE project_options project_warnings) # link project_options/warnings
+
+# link project_options/warnings
+target_link_libraries(my_lib
+  PRIVATE myproject_project_options myproject_project_warnings
+)
 
 # Includes:
 target_include_interface_directories(my_lib "${CMAKE_CURRENT_SOURCE_DIR}/include")
@@ -173,7 +156,40 @@ target_link_system_libraries(my_lib
 
 # Package the project
 package_project(
-  # Note that you must export `project_options` and `project_warnings` for `my_lib`
-  TARGETS my_lib project_options project_warnings
+  # Note that you must export `myproject_project_options` and `myproject_project_warnings` for `my_lib`
+  TARGETS my_lib myproject_project_options myproject_project_warnings
+)
+```
+
+## [header-only library usage](https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib)
+
+```cmake
+add_library(my_header_lib INTERFACE)
+
+# link project_options/warnings
+target_link_libraries(my_header_lib
+  INTERFACE myproject_project_options myproject_project_warnings
+)
+
+# Includes:
+target_include_interface_directories(my_header_lib "${CMAKE_CURRENT_SOURCE_DIR}/include")
+
+# Find dependencies:
+target_find_dependencies(my_header_lib
+  INTERFACE_CONFIG
+  fmt
+  Eigen3
+)
+
+# Link dependencies:
+target_link_system_libraries(my_header_lib
+  INTERFACE
+  fmt::fmt
+  Eigen3::Eigen
+)
+
+# Package the project
+package_project(
+  TARGETS my_header_lib project_options project_warnings
 )
 ```

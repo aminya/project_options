@@ -1,6 +1,11 @@
 include_guard()
 
-# Enable cross-compiling
+#[[.rst:
+
+.. include:: ../../docs/src/enable_cross_compiler.md
+   :parser: myst_parser.sphinx_
+
+#]]
 macro(enable_cross_compiler)
   set(options)
   set(oneValueArgs

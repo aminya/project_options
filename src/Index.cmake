@@ -42,7 +42,6 @@ include("${CMAKE_CURRENT_LIST_DIR}/Vcpkg.cmake")
 .. include:: ../../docs/src/project_options.rst
 
 #]]
-# NOTE: cmake-lint [C0103] Invalid macro name "project_options" doesn't match `[0-9A-Z_]+`
 macro(project_options)
   set(options
       WARNINGS_AS_ERRORS

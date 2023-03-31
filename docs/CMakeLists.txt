@@ -12,7 +12,6 @@ project(
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include("../src/Index.cmake")
-
 project_options(ENABLE_DOXYGEN)
 
 find_package(Sphinx REQUIRED)

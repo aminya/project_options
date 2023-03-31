@@ -3,12 +3,12 @@ version: 3
 
 tasks:
   readme:
-    - pip install -U pandoc-include
+    - pip install -q -U pandoc-include
     - pandoc -s --filter pandoc-include -o ../README.md ./README.md
 
   docs:
     cmds:
-      - pip install -U GitPython sphinx-rtd-theme breathe sphinx-sitemap sphinxcontrib-moderncmakedomain myst-parser pandoc-include
+      - pip install -q -U GitPython sphinx-rtd-theme breathe sphinx-sitemap sphinxcontrib-moderncmakedomain myst-parser pandoc-include
       - cmake -S ./ -B ./build -G "Ninja Multi-Config" -DCMAKE_BUILD_TYPE=Release
       - cmake --build ./build --config Release
       - touch ./build/.nojekyll
