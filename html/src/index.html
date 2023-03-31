@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>project_options &mdash; project_options 0.26.3 documentation</title>
+  <title>project_options function &mdash; project_options 0.27.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -13,15 +13,12 @@
   <![endif]-->
   
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Usage" href="../index.html" />
+    <link rel="prev" title="Getting Started" href="../index.html" />
 <link href="../css/company_style.css" rel="stylesheet" type="text/css">
 
 </head>
@@ -31,33 +28,43 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> project_options
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            project_options
           </a>
               <div class="version">
                 main
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../index.html">Usage</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">project_options</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#executable">Executable</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#header-only-library">Header-only library</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#library-with-source-files">Library with source files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#run-vcpkg"><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#package-project"><code class="docutils literal notranslate"><span class="pre">package_project</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#target-include-system-directories"><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#target-link-system-libraries"><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#target-disable-static-analysis"><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#target-link-cuda"><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">project_options</span></code> function</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#project-and-project-options"><code class="docutils literal notranslate"><span class="pre">project</span></code> and <code class="docutils literal notranslate"><span class="pre">project_options</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#executable-usage">executable usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#library-usage">library usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#header-only-library-usage">header-only library usage</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="#project-options-parameters"><code class="docutils literal notranslate"><span class="pre">project_options</span></code> parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#run-vcpkg"><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#package-project"><code class="docutils literal notranslate"><span class="pre">package_project</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#target-include-interface-directories-function"><code class="docutils literal notranslate"><span class="pre">target_include_interface_directories</span></code> function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#target-find-dependencies-function"><code class="docutils literal notranslate"><span class="pre">target_find_dependencies</span></code> function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#target-include-system-directories"><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#target-link-system-libraries"><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#target-disable-static-analysis"><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#enable-cross-compiler"><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#target-link-cuda"><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#dynamic-project-options"><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code></a></li>
 </ul>
 
         </div>
@@ -73,8 +80,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
-      <li class="breadcrumb-item active">project_options</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">project_options</span></code> function</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/src/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -84,86 +91,90 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="project-options">
-<h1>project_options<a class="headerlink" href="#project-options" title="Permalink to this heading"></a></h1>
+  <section id="project-options-function">
+<h1><code class="docutils literal notranslate"><span class="pre">project_options</span></code> function<a class="headerlink" href="#project-options-function" title="Permalink to this heading"></a></h1>
 <p>See the <code class="docutils literal notranslate"><span class="pre">project_options()</span></code> in action in <a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project">this template repository</a>. <a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project">cpp_vcpkg_project</a> has prepared all the best practices for a production-ready C++ project.</p>
+<section id="project-and-project-options">
+<h2><code class="docutils literal notranslate"><span class="pre">project</span></code> and <code class="docutils literal notranslate"><span class="pre">project_options</span></code><a class="headerlink" href="#project-and-project-options" title="Permalink to this heading"></a></h2>
 <p>Here is an example of the usage:</p>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.20</span><span class="nf">)</span><span class="w"></span>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.20</span><span class="nf">)</span>
 
 <span class="c"># set a default CXX standard for the tools and targets that do not specify them.</span>
 <span class="c"># If commented, the latest supported standard for your compiler is automatically set.</span>
 <span class="c"># set(CMAKE_CXX_STANDARD 20)</span>
 
-<span class="c"># Add project_options v0.26.3</span>
-<span class="c"># https://github.com/aminya/project_options</span>
+<span class="c"># Add project_options from https://github.com/aminya/project_options</span>
 <span class="c"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</span>
-<span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">FetchContent_Declare(</span><span class="nb">_project_options</span><span class="w"> </span><span class="no">URL</span><span class="w"> </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/v0.26.3.zip</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">FetchContent_MakeAvailable(</span><span class="nb">_project_options</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">include(</span><span class="o">${</span><span class="nt">_project_options_SOURCE_DIR</span><span class="o">}</span><span class="na">/Index.cmake</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span><span class="nb">_project_options</span><span class="w"> </span><span class="no">URL</span>
+<span class="w">  </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/v0.27.0.zip</span>
+<span class="nf">)</span>
+<span class="nf">FetchContent_MakeAvailable(</span><span class="nb">_project_options</span><span class="nf">)</span>
+<span class="nf">include(</span><span class="o">${</span><span class="nt">_project_options_SOURCE_DIR</span><span class="o">}</span><span class="na">/Index.cmake</span><span class="nf">)</span>
 
 <span class="c"># install vcpkg dependencies: - should be called before defining project()</span>
-<span class="nf">run_vcpkg()</span><span class="w"></span>
+<span class="nf">run_vcpkg()</span>
 
 <span class="c"># Set the project name and language</span>
-<span class="nf">project(</span><span class="nb">myproject</span><span class="w"> </span><span class="no">LANGUAGES</span><span class="w"> </span><span class="no">CXX</span><span class="w"> </span><span class="no">C</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">project(</span><span class="nb">myproject</span><span class="w"> </span><span class="no">LANGUAGES</span><span class="w"> </span><span class="no">CXX</span><span class="w"> </span><span class="no">C</span><span class="nf">)</span>
 
 <span class="c"># Build Features</span>
-<span class="nf">option(</span><span class="no">FEATURE_TESTS</span><span class="w"> </span><span class="s">&quot;Enable the tests&quot;</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">if(</span><span class="no">FEATURE_TESTS</span><span class="nf">)</span><span class="w"></span>
-<span class="w">  </span><span class="nf">list(</span><span class="no">APPEND</span><span class="w"> </span><span class="no">VCPKG_MANIFEST_FEATURES</span><span class="w"> </span><span class="s">&quot;tests&quot;</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">endif()</span><span class="w"></span>
+<span class="nf">option(</span><span class="no">FEATURE_TESTS</span><span class="w"> </span><span class="s">&quot;Enable the tests&quot;</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span>
+<span class="nf">if(</span><span class="no">FEATURE_TESTS</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">list(</span><span class="no">APPEND</span><span class="w"> </span><span class="no">VCPKG_MANIFEST_FEATURES</span><span class="w"> </span><span class="s">&quot;tests&quot;</span><span class="nf">)</span>
+<span class="nf">endif()</span>
 
-<span class="nf">option(</span><span class="no">FEATURE_DOCS</span><span class="w"> </span><span class="s">&quot;Enable the docs&quot;</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">option(</span><span class="no">FEATURE_DOCS</span><span class="w"> </span><span class="s">&quot;Enable the docs&quot;</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span>
 
 <span class="c"># Enable sanitizers and static analyzers when running the tests</span>
-<span class="nf">set(</span><span class="no">ENABLE_CLANG_TIDY</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">set(</span><span class="no">ENABLE_CPPCHECK</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">set(</span><span class="no">ENABLE_SANITIZER_ADDRESS</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">set(</span><span class="no">ENABLE_SANITIZER_UNDEFINED_BEHAVIOR</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">set(</span><span class="no">ENABLE_COVERAGE</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">set(</span><span class="no">ENABLE_CLANG_TIDY</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">ENABLE_CPPCHECK</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">ENABLE_SANITIZER_ADDRESS</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">ENABLE_SANITIZER_UNDEFINED_BEHAVIOR</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">ENABLE_COVERAGE</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span>
 
-<span class="nf">if(</span><span class="no">FEATURE_TESTS</span><span class="nf">)</span><span class="w"></span>
-<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_CLANG_TIDY</span><span class="w"> </span><span class="s">&quot;ENABLE_CLANG_TIDY&quot;</span><span class="nf">)</span><span class="w"></span>
-<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_CPPCHECK</span><span class="w"> </span><span class="s">&quot;ENABLE_CPPCHECK&quot;</span><span class="nf">)</span><span class="w"></span>
-<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_COVERAGE</span><span class="w"> </span><span class="s">&quot;ENABLE_COVERAGE&quot;</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">if(</span><span class="no">FEATURE_TESTS</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_CLANG_TIDY</span><span class="w"> </span><span class="s">&quot;ENABLE_CLANG_TIDY&quot;</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_CPPCHECK</span><span class="w"> </span><span class="s">&quot;ENABLE_CPPCHECK&quot;</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_COVERAGE</span><span class="w"> </span><span class="s">&quot;ENABLE_COVERAGE&quot;</span><span class="nf">)</span>
 
-<span class="w">  </span><span class="nf">if(</span><span class="no">NOT</span><span class="w"></span>
-<span class="w">     </span><span class="s">&quot;${CMAKE_SYSTEM_NAME}&quot;</span><span class="w"></span>
-<span class="w">     </span><span class="no">STREQUAL</span><span class="w"></span>
-<span class="w">     </span><span class="s">&quot;Windows&quot;</span><span class="nf">)</span><span class="w"></span>
-<span class="w">    </span><span class="nf">set(</span><span class="no">ENABLE_SANITIZER_ADDRESS</span><span class="w"> </span><span class="s">&quot;ENABLE_SANITIZER_ADDRESS&quot;</span><span class="nf">)</span><span class="w"></span>
-<span class="w">    </span><span class="nf">set(</span><span class="no">ENABLE_SANITIZER_UNDEFINED_BEHAVIOR</span><span class="w"> </span><span class="s">&quot;ENABLE_SANITIZER_UNDEFINED_BEHAVIOR&quot;</span><span class="nf">)</span><span class="w"></span>
-<span class="w">  </span><span class="nf">else()</span><span class="w"></span>
+<span class="w">  </span><span class="nf">if(</span><span class="no">NOT</span>
+<span class="w">     </span><span class="s">&quot;${CMAKE_SYSTEM_NAME}&quot;</span>
+<span class="w">     </span><span class="no">STREQUAL</span>
+<span class="w">     </span><span class="s">&quot;Windows&quot;</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">set(</span><span class="no">ENABLE_SANITIZER_ADDRESS</span><span class="w"> </span><span class="s">&quot;ENABLE_SANITIZER_ADDRESS&quot;</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">set(</span><span class="no">ENABLE_SANITIZER_UNDEFINED_BEHAVIOR</span><span class="w"> </span><span class="s">&quot;ENABLE_SANITIZER_UNDEFINED_BEHAVIOR&quot;</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">else()</span>
 <span class="w">    </span><span class="c"># or it is MSVC and has run vcvarsall</span>
-<span class="w">    </span><span class="nf">string(</span><span class="no">FIND</span><span class="w"> </span><span class="s">&quot;$ENV{PATH}&quot;</span><span class="w"> </span><span class="s">&quot;$ENV{VSINSTALLDIR}&quot;</span><span class="w"> </span><span class="nb">index_of_vs_install_dir</span><span class="nf">)</span><span class="w"></span>
-<span class="w">    </span><span class="nf">if(</span><span class="no">MSVC</span><span class="w"> </span><span class="no">AND</span><span class="w"> </span><span class="s">&quot;${index_of_vs_install_dir}&quot;</span><span class="w"> </span><span class="no">STREQUAL</span><span class="w"> </span><span class="s">&quot;-1&quot;</span><span class="nf">)</span><span class="w"></span>
-<span class="w">      </span><span class="nf">set(</span><span class="no">ENABLE_SANITIZER_ADDRESS</span><span class="w"> </span><span class="s">&quot;ENABLE_SANITIZER_ADDRESS&quot;</span><span class="nf">)</span><span class="w"></span>
-<span class="w">    </span><span class="nf">endif()</span><span class="w"></span>
-<span class="w">  </span><span class="nf">endif()</span><span class="w"></span>
-<span class="nf">endif()</span><span class="w"></span>
+<span class="w">    </span><span class="nf">string(</span><span class="no">FIND</span><span class="w"> </span><span class="s">&quot;$ENV{PATH}&quot;</span><span class="w"> </span><span class="s">&quot;$ENV{VSINSTALLDIR}&quot;</span><span class="w"> </span><span class="nb">index_of_vs_install_dir</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">if(</span><span class="no">MSVC</span><span class="w"> </span><span class="no">AND</span><span class="w"> </span><span class="s">&quot;${index_of_vs_install_dir}&quot;</span><span class="w"> </span><span class="no">STREQUAL</span><span class="w"> </span><span class="s">&quot;-1&quot;</span><span class="nf">)</span>
+<span class="w">      </span><span class="nf">set(</span><span class="no">ENABLE_SANITIZER_ADDRESS</span><span class="w"> </span><span class="s">&quot;ENABLE_SANITIZER_ADDRESS&quot;</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">endif()</span>
+<span class="w">  </span><span class="nf">endif()</span>
+<span class="nf">endif()</span>
 
-<span class="nf">if(</span><span class="no">FEATURE_DOCS</span><span class="nf">)</span><span class="w"></span>
-<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_DOXYGEN</span><span class="w"> </span><span class="s">&quot;ENABLE_DOXYGEN&quot;</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">else()</span><span class="w"></span>
-<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_DOXYGEN</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">endif()</span><span class="w"></span>
+<span class="nf">if(</span><span class="no">FEATURE_DOCS</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_DOXYGEN</span><span class="w"> </span><span class="s">&quot;ENABLE_DOXYGEN&quot;</span><span class="nf">)</span>
+<span class="nf">else()</span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_DOXYGEN</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span>
+<span class="nf">endif()</span>
 
 <span class="c"># Initialize project_options variable related to this project</span>
 <span class="c"># This overwrites `project_options` and sets `project_warnings`</span>
 <span class="c"># uncomment to enable the options. Some of them accept one or more inputs:</span>
-<span class="nf">project_options(</span><span class="w"></span>
-<span class="w">      </span><span class="no">ENABLE_CACHE</span><span class="w"></span>
-<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_CPPCHECK</span><span class="o">}</span><span class="w"></span>
-<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_CLANG_TIDY</span><span class="o">}</span><span class="w"></span>
-<span class="w">      </span><span class="no">ENABLE_VS_ANALYSIS</span><span class="w"></span>
+<span class="nf">project_options(</span>
+<span class="w">      </span><span class="no">PREFIX</span><span class="w"> </span><span class="s">&quot;myproject&quot;</span>
+<span class="w">      </span><span class="no">ENABLE_CACHE</span>
+<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_CPPCHECK</span><span class="o">}</span>
+<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_CLANG_TIDY</span><span class="o">}</span>
+<span class="w">      </span><span class="no">ENABLE_VS_ANALYSIS</span>
 <span class="w">      </span><span class="c"># ENABLE_CONAN</span>
 <span class="w">      </span><span class="c"># ENABLE_INTERPROCEDURAL_OPTIMIZATION</span>
 <span class="w">      </span><span class="c"># ENABLE_NATIVE_OPTIMIZATION</span>
-<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_DOXYGEN</span><span class="o">}</span><span class="w"></span>
-<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_COVERAGE</span><span class="o">}</span><span class="w"></span>
-<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_SANITIZER_ADDRESS</span><span class="o">}</span><span class="w"></span>
-<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_SANITIZER_UNDEFINED_BEHAVIOR</span><span class="o">}</span><span class="w"></span>
+<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_DOXYGEN</span><span class="o">}</span>
+<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_COVERAGE</span><span class="o">}</span>
+<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_SANITIZER_ADDRESS</span><span class="o">}</span>
+<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_SANITIZER_UNDEFINED_BEHAVIOR</span><span class="o">}</span>
 <span class="w">      </span><span class="c"># ENABLE_SANITIZER_THREAD</span>
 <span class="w">      </span><span class="c"># ENABLE_SANITIZER_MEMORY</span>
 <span class="w">      </span><span class="c"># ENABLE_PCH</span>
@@ -174,102 +185,109 @@
 <span class="w">      </span><span class="c"># ENABLE_UNITY</span>
 <span class="w">      </span><span class="c"># LINKER &quot;lld&quot;</span>
 <span class="w">      </span><span class="c"># CONAN_PROFILE ${profile_path}  # passes a profile to conan: see https://docs.conan.io/en/latest/reference/profiles.html</span>
-<span class="nf">)</span><span class="w"></span>
+<span class="nf">)</span>
 </pre></div>
 </div>
 <p>Then add the executables or libraries to the project:</p>
-<section id="executable">
-<h2><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe">Executable</a><a class="headerlink" href="#executable" title="Permalink to this heading"></a></h2>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">main</span><span class="w"> </span><span class="nb">main.cpp</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">target_link_libraries(</span><span class="nb">main</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">project_options</span><span class="w"> </span><span class="nb">project_warnings</span><span class="nf">)</span><span class="w"> </span><span class="c"># link project_options/warnings</span>
+</section>
+<section id="executable-usage">
+<h2><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe">executable usage</a><a class="headerlink" href="#executable-usage" title="Permalink to this heading"></a></h2>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">main</span><span class="w"> </span><span class="nb">main.cpp</span><span class="nf">)</span>
+
+<span class="c"># link project_options/warnings</span>
+<span class="nf">target_link_libraries(</span><span class="nb">main</span>
+<span class="w">  </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">myproject_project_options</span><span class="w"> </span><span class="nb">myproject_project_warnings</span>
+<span class="nf">)</span>
 
 <span class="c"># Find dependencies:</span>
-<span class="nf">set(</span><span class="no">DEPENDENCIES_CONFIGURED</span><span class="w"> </span><span class="nb">fmt</span><span class="w"> </span><span class="nb">Eigen3</span><span class="nf">)</span><span class="w"></span>
-
-<span class="nf">foreach(</span><span class="no">DEPENDENCY</span><span class="w"> </span><span class="o">${</span><span class="nt">DEPENDENCIES_CONFIGURED</span><span class="o">}</span><span class="nf">)</span><span class="w"></span>
-<span class="w">  </span><span class="nf">find_package(</span><span class="o">${</span><span class="nt">DEPENDENCY</span><span class="o">}</span><span class="w"> </span><span class="no">CONFIG</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">endforeach()</span><span class="w"></span>
+<span class="nf">target_find_dependencies(</span><span class="nb">main</span>
+<span class="w">  </span><span class="no">PRIVATE_CONFIG</span>
+<span class="w">  </span><span class="nb">fmt</span>
+<span class="w">  </span><span class="nb">Eigen3</span>
+<span class="nf">)</span>
 
 <span class="c"># Link dependencies</span>
-<span class="nf">target_link_system_libraries(</span><span class="w"></span>
-<span class="w">  </span><span class="nb">main</span><span class="w"></span>
-<span class="w">  </span><span class="no">PRIVATE</span><span class="w"></span>
-<span class="w">  </span><span class="nb">fmt</span><span class="o">::</span><span class="nb">fmt</span><span class="w"></span>
-<span class="w">  </span><span class="nb">Eigen3</span><span class="o">::</span><span class="nb">Eigen</span><span class="w"></span>
-<span class="nf">)</span><span class="w"></span>
+<span class="nf">target_link_system_libraries(</span><span class="nb">main</span>
+<span class="w">  </span><span class="no">PRIVATE</span>
+<span class="w">  </span><span class="nb">fmt</span><span class="o">::</span><span class="nb">fmt</span>
+<span class="w">  </span><span class="nb">Eigen3</span><span class="o">::</span><span class="nb">Eigen</span>
+<span class="nf">)</span>
 
 <span class="c"># Package the project</span>
-<span class="nf">package_project(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">main</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">package_project(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">main</span><span class="nf">)</span>
 </pre></div>
 </div>
 </section>
-<section id="header-only-library">
-<h2><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib">Header-only library</a><a class="headerlink" href="#header-only-library" title="Permalink to this heading"></a></h2>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">my_header_lib</span><span class="w"> </span><span class="no">INTERFACE</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">target_link_libraries(</span><span class="nb">my_header_lib</span><span class="w"> </span><span class="no">INTERFACE</span><span class="w"> </span><span class="nb">project_options</span><span class="w"> </span><span class="nb">project_warnings</span><span class="nf">)</span><span class="w"> </span><span class="c"># link project_options/warnings</span>
+<section id="library-usage">
+<h2><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib">library usage</a><a class="headerlink" href="#library-usage" title="Permalink to this heading"></a></h2>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">my_lib</span><span class="w"> </span><span class="s">&quot;./src/my_lib/lib.cpp&quot;</span><span class="nf">)</span>
 
-<span class="c"># Includes</span>
-<span class="nf">set(</span><span class="no">INCLUDE_DIR</span><span class="w"> </span><span class="s">&quot;include&quot;</span><span class="nf">)</span><span class="w"> </span><span class="c"># must be relative paths</span>
-<span class="nf">target_include_directories(</span><span class="nb">my_header_lib</span><span class="w"> </span><span class="no">INTERFACE</span><span class="w"> </span><span class="s">&quot;$&lt;BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}&gt;&quot;</span><span class="w"></span>
-<span class="w">                                          </span><span class="s">&quot;$&lt;INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}&gt;&quot;</span><span class="nf">)</span><span class="w"></span>
+<span class="c"># link project_options/warnings</span>
+<span class="nf">target_link_libraries(</span><span class="nb">my_lib</span>
+<span class="w">  </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">myproject_project_options</span><span class="w"> </span><span class="nb">myproject_project_warnings</span>
+<span class="nf">)</span>
+
+<span class="c"># Includes:</span>
+<span class="nf">target_include_interface_directories(</span><span class="nb">my_lib</span><span class="w"> </span><span class="s">&quot;${CMAKE_CURRENT_SOURCE_DIR}/include&quot;</span><span class="nf">)</span>
 
 <span class="c"># Find dependencies:</span>
-<span class="nf">set(</span><span class="no">DEPENDENCIES_CONFIGURED</span><span class="w"> </span><span class="nb">fmt</span><span class="w"> </span><span class="nb">Eigen3</span><span class="nf">)</span><span class="w"></span>
-
-<span class="nf">foreach(</span><span class="no">DEPENDENCY</span><span class="w"> </span><span class="o">${</span><span class="nt">DEPENDENCIES_CONFIGURED</span><span class="o">}</span><span class="nf">)</span><span class="w"></span>
-<span class="w">  </span><span class="nf">find_package(</span><span class="o">${</span><span class="nt">DEPENDENCY</span><span class="o">}</span><span class="w"> </span><span class="no">CONFIG</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">endforeach()</span><span class="w"></span>
+<span class="nf">target_find_dependencies(</span><span class="nb">my_lib</span>
+<span class="w">  </span><span class="no">PRIVATE_CONFIG</span>
+<span class="w">  </span><span class="nb">fmt</span>
+<span class="w">  </span><span class="nb">Eigen3</span>
+<span class="nf">)</span>
 
 <span class="c"># Link dependencies:</span>
-<span class="nf">target_link_system_libraries(</span><span class="w"></span>
-<span class="w">  </span><span class="nb">my_header_lib</span><span class="w"></span>
-<span class="w">  </span><span class="no">INTERFACE</span><span class="w"></span>
-<span class="w">  </span><span class="nb">fmt</span><span class="o">::</span><span class="nb">fmt</span><span class="w"></span>
-<span class="w">  </span><span class="nb">Eigen3</span><span class="o">::</span><span class="nb">Eigen</span><span class="w"></span>
-<span class="nf">)</span><span class="w"></span>
+<span class="nf">target_link_system_libraries(</span><span class="nb">my_lib</span>
+<span class="w">  </span><span class="no">PRIVATE</span>
+<span class="w">  </span><span class="nb">fmt</span><span class="o">::</span><span class="nb">fmt</span>
+<span class="w">  </span><span class="nb">Eigen3</span><span class="o">::</span><span class="nb">Eigen</span>
+<span class="nf">)</span>
 
 <span class="c"># Package the project</span>
-<span class="nf">package_project(</span><span class="w"></span>
-<span class="w">  </span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">my_header_lib</span><span class="w"> </span><span class="nb">project_options</span><span class="w"> </span><span class="nb">project_warnings</span><span class="w"></span>
-<span class="w">  </span><span class="no">INTERFACE_DEPENDENCIES_CONFIGURED</span><span class="w"> </span><span class="o">${</span><span class="nt">DEPENDENCIES_CONFIGURED</span><span class="o">}</span><span class="w"></span>
-<span class="w">  </span><span class="no">INTERFACE_INCLUDES</span><span class="w"> </span><span class="o">${</span><span class="nt">INCLUDE_DIR</span><span class="o">}</span><span class="w"></span>
-<span class="nf">)</span><span class="w"></span>
+<span class="nf">package_project(</span>
+<span class="w">  </span><span class="c"># Note that you must export `myproject_project_options` and `myproject_project_warnings` for `my_lib`</span>
+<span class="w">  </span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">my_lib</span><span class="w"> </span><span class="nb">myproject_project_options</span><span class="w"> </span><span class="nb">myproject_project_warnings</span>
+<span class="nf">)</span>
 </pre></div>
 </div>
 </section>
-<section id="library-with-source-files">
-<h2><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib">Library with source files</a><a class="headerlink" href="#library-with-source-files" title="Permalink to this heading"></a></h2>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">my_lib</span><span class="w"> </span><span class="s">&quot;./src/my_lib/lib.cpp&quot;</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">target_link_libraries(</span><span class="nb">my_lib</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">project_options</span><span class="w"> </span><span class="nb">project_warnings</span><span class="nf">)</span><span class="w"> </span><span class="c"># link project_options/warnings</span>
+<section id="header-only-library-usage">
+<h2><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib">header-only library usage</a><a class="headerlink" href="#header-only-library-usage" title="Permalink to this heading"></a></h2>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">my_header_lib</span><span class="w"> </span><span class="no">INTERFACE</span><span class="nf">)</span>
 
-<span class="c"># Includes</span>
-<span class="nf">set(</span><span class="no">INCLUDE_DIR</span><span class="w"> </span><span class="s">&quot;include&quot;</span><span class="nf">)</span><span class="w"> </span><span class="c"># must be relative paths</span>
-<span class="nf">target_include_directories(</span><span class="nb">my_lib</span><span class="w"> </span><span class="no">PUBLIC</span><span class="w"> </span><span class="s">&quot;$&lt;BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}&gt;&quot;</span><span class="w"></span>
-<span class="w">                                         </span><span class="s">&quot;$&lt;INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}&gt;&quot;</span><span class="nf">)</span><span class="w"></span>
+<span class="c"># link project_options/warnings</span>
+<span class="nf">target_link_libraries(</span><span class="nb">my_header_lib</span>
+<span class="w">  </span><span class="no">INTERFACE</span><span class="w"> </span><span class="nb">myproject_project_options</span><span class="w"> </span><span class="nb">myproject_project_warnings</span>
+<span class="nf">)</span>
+
+<span class="c"># Includes:</span>
+<span class="nf">target_include_interface_directories(</span><span class="nb">my_header_lib</span><span class="w"> </span><span class="s">&quot;${CMAKE_CURRENT_SOURCE_DIR}/include&quot;</span><span class="nf">)</span>
 
 <span class="c"># Find dependencies:</span>
-<span class="nf">set(</span><span class="no">DEPENDENCIES_CONFIGURED</span><span class="w"> </span><span class="nb">fmt</span><span class="w"> </span><span class="nb">Eigen3</span><span class="nf">)</span><span class="w"></span>
-
-<span class="nf">foreach(</span><span class="no">DEPENDENCY</span><span class="w"> </span><span class="o">${</span><span class="nt">DEPENDENCIES_CONFIGURED</span><span class="o">}</span><span class="nf">)</span><span class="w"></span>
-<span class="w">  </span><span class="nf">find_package(</span><span class="o">${</span><span class="nt">DEPENDENCY</span><span class="o">}</span><span class="w"> </span><span class="no">CONFIG</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">endforeach()</span><span class="w"></span>
+<span class="nf">target_find_dependencies(</span><span class="nb">my_header_lib</span>
+<span class="w">  </span><span class="no">INTERFACE_CONFIG</span>
+<span class="w">  </span><span class="nb">fmt</span>
+<span class="w">  </span><span class="nb">Eigen3</span>
+<span class="nf">)</span>
 
 <span class="c"># Link dependencies:</span>
-<span class="nf">target_link_system_libraries(</span><span class="w"></span>
-<span class="w">  </span><span class="nb">my_lib</span><span class="w"></span>
-<span class="w">  </span><span class="no">PRIVATE</span><span class="w"></span>
-<span class="w">  </span><span class="nb">fmt</span><span class="o">::</span><span class="nb">fmt</span><span class="w"></span>
-<span class="w">  </span><span class="nb">Eigen3</span><span class="o">::</span><span class="nb">Eigen</span><span class="w"></span>
-<span class="nf">)</span><span class="w"></span>
+<span class="nf">target_link_system_libraries(</span><span class="nb">my_header_lib</span>
+<span class="w">  </span><span class="no">INTERFACE</span>
+<span class="w">  </span><span class="nb">fmt</span><span class="o">::</span><span class="nb">fmt</span>
+<span class="w">  </span><span class="nb">Eigen3</span><span class="o">::</span><span class="nb">Eigen</span>
+<span class="nf">)</span>
 
 <span class="c"># Package the project</span>
-<span class="nf">package_project(</span><span class="w"></span>
-<span class="w">  </span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">my_lib</span><span class="w"></span>
-<span class="w">  </span><span class="no">PUBLIC_INCLUDES</span><span class="w"> </span><span class="o">${</span><span class="nt">INCLUDE_DIR</span><span class="o">}</span><span class="w"></span>
-<span class="nf">)</span><span class="w"></span>
+<span class="nf">package_project(</span>
+<span class="w">  </span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">my_header_lib</span><span class="w"> </span><span class="nb">myproject_project_options</span><span class="w"> </span><span class="nb">myproject_project_warnings</span>
+<span class="nf">)</span>
 </pre></div>
 </div>
 </section>
+</section>
+<section id="project-options-parameters">
+<h1><code class="docutils literal notranslate"><span class="pre">project_options</span></code> parameters<a class="headerlink" href="#project-options-parameters" title="Permalink to this heading"></a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">project_options</span></code> function accepts the following named flags:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_CACHE</span></code>: Enable cache if available</p></li>
@@ -313,18 +331,19 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">VS_ANALYSIS_RULESET</span></code>: Override the defaults for the code analysis rule set in Visual Studio.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">CONAN_OPTIONS</span></code>: Extra Conan options</p></li>
 </ul>
+</section>
 <section id="run-vcpkg">
-<h2><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code><a class="headerlink" href="#run-vcpkg" title="Permalink to this heading"></a></h2>
+<h1><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code><a class="headerlink" href="#run-vcpkg" title="Permalink to this heading"></a></h1>
 <p>Install vcpkg and vcpkg dependencies:</p>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">run_vcpkg()</span><span class="w"></span>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">run_vcpkg()</span>
 </pre></div>
 </div>
 <p>Or by specifying the options</p>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">run_vcpkg(</span><span class="w"></span>
-<span class="w">    </span><span class="no">VCPKG_URL</span><span class="w"> </span><span class="s">&quot;https://github.com/microsoft/vcpkg.git&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="no">VCPKG_REV</span><span class="w"> </span><span class="s">&quot;33c8f025390f8682811629b6830d2d66ecedcaa5&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="no">ENABLE_VCPKG_UPDATE</span><span class="w"></span>
-<span class="nf">)</span><span class="w"></span>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">run_vcpkg(</span>
+<span class="w">    </span><span class="no">VCPKG_URL</span><span class="w"> </span><span class="s">&quot;https://github.com/microsoft/vcpkg.git&quot;</span>
+<span class="w">    </span><span class="no">VCPKG_REV</span><span class="w"> </span><span class="s">&quot;33c8f025390f8682811629b6830d2d66ecedcaa5&quot;</span>
+<span class="w">    </span><span class="no">ENABLE_VCPKG_UPDATE</span>
+<span class="nf">)</span>
 </pre></div>
 </div>
 <p>Note that it should be called before defining <code class="docutils literal notranslate"><span class="pre">project()</span></code>.</p>
@@ -345,7 +364,7 @@ If <code class="docutils literal notranslate"><span class="pre">VCPKG_REV</span>
 </ul>
 </section>
 <section id="package-project">
-<h2><code class="docutils literal notranslate"><span class="pre">package_project</span></code><a class="headerlink" href="#package-project" title="Permalink to this heading"></a></h2>
+<h1><code class="docutils literal notranslate"><span class="pre">package_project</span></code><a class="headerlink" href="#package-project" title="Permalink to this heading"></a></h1>
 <p>A function that packages the project for external usage (e.g. from vcpkg, Conan, etc).</p>
 <p>The following arguments specify the package:</p>
 <ul>
@@ -367,13 +386,79 @@ If <code class="docutils literal notranslate"><span class="pre">VCPKG_REV</span>
 <li><p><code class="docutils literal notranslate"><span class="pre">CONFIG_INSTALL_DESTINATION</span></code>: the destination for installation of the configuration files. Defaults to <code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_DATADIR}/${NAME}</span></code></p></li>
 </ul>
 </section>
+<section id="target-include-interface-directories-function">
+<h1><code class="docutils literal notranslate"><span class="pre">target_include_interface_directories</span></code> function<a class="headerlink" href="#target-include-interface-directories-function" title="Permalink to this heading"></a></h1>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_include_interface_directories(</span><span class="nv">&lt;target_name&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;include_dir&gt;</span><span class="w"> </span><span class="p">...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>This function includes <code class="docutils literal notranslate"><span class="pre">include_dir</span></code> as the header interface directory of <code class="docutils literal notranslate"><span class="pre">target_name</span></code>.
+If the given <code class="docutils literal notranslate"><span class="pre">include_dir</span></code> path is relative, the function assumes the path is <code class="docutils literal notranslate"><span class="pre">${CMAKE_CURRENT_SOURCE_DIR}/${include_dir}</span></code>
+(i.e. the path is related to the path of CMakeLists.txt which calls the function).</p>
+<p>A property named <code class="docutils literal notranslate"><span class="pre">PROJECT_OPTIONS_INTERFACE_DIRECTORIES</span></code> will be created in <code class="docutils literal notranslate"><span class="pre">target_name</span></code> to represent the header directory path.
+When adding the target to <code class="docutils literal notranslate"><span class="pre">package_project</span></code>, directories in this property will be automatically added.</p>
+<p>You can call this function with the same <code class="docutils literal notranslate"><span class="pre">target_name</span></code> multiple times to add more header interface directories.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">my_header_lib</span><span class="w"> </span><span class="no">INTERFACE</span><span class="nf">)</span>
+<span class="nf">target_include_interface_directories(</span><span class="nb">my_header_lib</span><span class="w"> </span><span class="s">&quot;${CMAKE_CURRENT_SOURCE_DIR}/include&quot;</span><span class="nf">)</span>
+<span class="nf">target_include_interface_directories(</span><span class="nb">my_header_lib</span><span class="w"> </span><span class="p">..</span><span class="na">/include</span><span class="nf">)</span>
+
+<span class="nf">add_library(</span><span class="nb">my_lib</span><span class="nf">)</span>
+<span class="nf">target_sources(</span><span class="nb">my_lib</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">function.cpp</span><span class="nf">)</span>
+<span class="nf">target_include_interface_directories(</span><span class="nb">my_lib</span><span class="w"> </span><span class="nb">include</span><span class="w"> </span><span class="p">..</span><span class="na">/include</span><span class="nf">)</span>
+
+<span class="nf">package_project(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">my_header_lib</span><span class="w"> </span><span class="nb">my_lib</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="target-find-dependencies-function">
+<h1><code class="docutils literal notranslate"><span class="pre">target_find_dependencies</span></code> function<a class="headerlink" href="#target-find-dependencies-function" title="Permalink to this heading"></a></h1>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_find_dependencies(</span><span class="nv">&lt;target_name&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">INTERFACE</span><span class="w"> </span><span class="p">[</span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">PUBLIC</span><span class="w"> </span><span class="p">[</span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">PRIVATE</span><span class="w"> </span><span class="p">[</span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">INTERFACE_CONFIG</span><span class="w"> </span><span class="p">[</span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">PUBLIC_CONFIG</span><span class="w"> </span><span class="p">[</span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">PRIVATE_CONFIG</span><span class="w"> </span><span class="p">[</span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>This function calls <code class="docutils literal notranslate"><span class="pre">find_package(${dependency}</span> <span class="pre">[CONFIG]</span> <span class="pre">REQUIRED)</span></code> for all dependencies required and binds them to the target.</p>
+<p>Properties named <code class="docutils literal notranslate"><span class="pre">PROJECT_OPTIONS_&lt;PRIVATE|PUBLIC|INTERFACE&gt;[_CONFIG]_DEPENDENCIES</span></code> will be created in <code class="docutils literal notranslate"><span class="pre">target_name</span></code> to represent corresponding dependencies.
+When adding the target to <code class="docutils literal notranslate"><span class="pre">package_project</span></code>, directories in this property will be automatically added.</p>
+<p>You can call this function with the same <code class="docutils literal notranslate"><span class="pre">target_name</span></code> multiple times to add more dependencies.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">my_lib</span><span class="nf">)</span>
+<span class="nf">target_sources(</span><span class="nb">my_lib</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">function.cpp</span><span class="nf">)</span>
+<span class="nf">target_include_interface_directories(</span><span class="nb">my_lib</span><span class="w"> </span><span class="s">&quot;${CMAKE_CURRENT_SOURCE_DIR}/include&quot;</span><span class="nf">)</span>
+
+<span class="nf">target_find_dependencies(</span><span class="nb">my_lib</span>
+<span class="w">  </span><span class="no">PUBLIC_CONFIG</span>
+<span class="w">  </span><span class="nb">fmt</span>
+<span class="w">  </span><span class="no">PRIVATE_CONFIG</span>
+<span class="w">  </span><span class="nb">Microsoft.GSL</span>
+<span class="nf">)</span>
+<span class="nf">target_find_dependencies(</span><span class="nb">my_lib</span>
+<span class="w">  </span><span class="no">PRIVATE_CONFIG</span>
+<span class="w">  </span><span class="nb">range-v3</span>
+<span class="nf">)</span>
+
+<span class="nf">target_link_system_libraries(</span><span class="nb">my_lib</span>
+<span class="w">  </span><span class="no">PUBLIC</span>
+<span class="w">  </span><span class="nb">fmt</span><span class="o">::</span><span class="nb">fmt</span>
+<span class="w">  </span><span class="no">PRIVATE</span>
+<span class="w">  </span><span class="nb">Microsoft.GSL</span><span class="o">::</span><span class="no">GSL</span>
+<span class="w">  </span><span class="nb">range-v3</span><span class="o">::</span><span class="nb">range-v3</span>
+<span class="nf">)</span>
+
+<span class="nf">package_project(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">my_lib</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
 <section id="target-include-system-directories">
-<h2><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code><a class="headerlink" href="#target-include-system-directories" title="Permalink to this heading"></a></h2>
+<h1><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code><a class="headerlink" href="#target-include-system-directories" title="Permalink to this heading"></a></h1>
 <p>Include a system directory (which suppresses its warnings).</p>
 <p>The function accepts the same arguments as <code class="docutils literal notranslate"><span class="pre">target_include_directories</span></code>. It has the mentioned features of <code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code>.</p>
 </section>
 <section id="target-link-system-libraries">
-<h2><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code><a class="headerlink" href="#target-link-system-libraries" title="Permalink to this heading"></a></h2>
+<h1><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code><a class="headerlink" href="#target-link-system-libraries" title="Permalink to this heading"></a></h1>
 <p>Link multiple library targets as system libraries (which suppresses their warnings).</p>
 <p>The function accepts the same arguments as <code class="docutils literal notranslate"><span class="pre">target_link_libraries</span></code>. It has the following features:</p>
 <ul class="simple">
@@ -382,9 +467,9 @@ If <code class="docutils literal notranslate"><span class="pre">VCPKG_REV</span>
 </ul>
 </section>
 <section id="target-disable-static-analysis">
-<h2><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code><a class="headerlink" href="#target-disable-static-analysis" title="Permalink to this heading"></a></h2>
+<h1><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code><a class="headerlink" href="#target-disable-static-analysis" title="Permalink to this heading"></a></h1>
 <p>This function disables static analysis for the given target:</p>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_disable_static_analysis(</span><span class="nb">some_external_target</span><span class="nf">)</span><span class="w"></span>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_disable_static_analysis(</span><span class="nb">some_external_target</span><span class="nf">)</span>
 </pre></div>
 </div>
 <p>There is also individual functions to disable a specific analysis for the target:</p>
@@ -392,25 +477,158 @@ If <code class="docutils literal notranslate"><span class="pre">VCPKG_REV</span>
 <li><p><code class="docutils literal notranslate"><span class="pre">target_disable_cpp_check(target)</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">target_disable_vs_analysis(target)</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">target_disable_clang_tidy(target)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">target_disable_include_what_you_use(target)</span></code></p></li>
+</ul>
+</section>
+<section id="enable-cross-compiler">
+<h1><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code><a class="headerlink" href="#enable-cross-compiler" title="Permalink to this heading"></a></h1>
+<p><strong>NOTE</strong>: this feature is experimental and needs more documentation/examples. See the <code class="docutils literal notranslate"><span class="pre">tests/rpi3</span></code>, <code class="docutils literal notranslate"><span class="pre">tests/rpi4</span></code>, <code class="docutils literal notranslate"><span class="pre">tests/emscripten</span></code>, <code class="docutils literal notranslate"><span class="pre">tests-rpi4-vcpkg</span></code> directories in the <a class="reference external" href="https://github.com/aminya/project_options/tree/main/tests">repositpry</a> for full examples.</p>
+<p>The following calls <code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code> to enable the cross-compiler as the current toolchain.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">enable_cross_compiler(</span>
+<span class="w">  </span><span class="no">CC</span><span class="w"> </span><span class="s">&quot;arm-none-eabi-gcc&quot;</span>
+<span class="w">  </span><span class="no">CXX</span><span class="w"> </span><span class="s">&quot;arm-none-eabi-g++&quot;</span>
+<span class="w">  </span><span class="no">TARGET_ARCHITECTURE</span><span class="w"> </span><span class="s">&quot;arm&quot;</span>
+<span class="w">  </span><span class="no">CROSS_ROOT</span><span class="w"> </span><span class="s">&quot;/usr/arm-none-eabi-gcc&quot;</span>
+<span class="w">  </span><span class="no">CROSS_TRIPLET</span><span class="w"> </span><span class="s">&quot;arm-none-eabi-gcc&quot;</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>The following examples enables cross-compiling when it is opt-in.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># opt-in cross-compiling</span>
+<span class="nf">if(</span><span class="no">ENABLE_AARCH64_CROSS_COMPILING</span><span class="nf">)</span>
+<span class="w">  </span><span class="c"># my custom aarch64 settings</span>
+<span class="w">  </span><span class="nf">enable_cross_compiler(</span>
+<span class="w">    </span><span class="no">DEFAULT_TRIPLET</span><span class="w"> </span><span class="s">&quot;arm64-linux&quot;</span>
+<span class="w">    </span><span class="no">CC</span><span class="w"> </span><span class="s">&quot;aarch64-linux-gnu-gcc&quot;</span>
+<span class="w">    </span><span class="no">CXX</span><span class="w"> </span><span class="s">&quot;aarch64-linux-gnu-g++&quot;</span>
+<span class="w">    </span><span class="no">TARGET_ARCHITECTURE</span><span class="w"> </span><span class="s">&quot;arm64-linux&quot;</span>
+<span class="w">    </span><span class="no">CROSS_ROOT</span><span class="w"> </span><span class="s">&quot;/usr/gcc-aarch64-linux-gnu&quot;</span>
+<span class="w">    </span><span class="no">CROSS_TRIPLET</span><span class="w"> </span><span class="s">&quot;aarch64-linux-gnu&quot;</span>
+<span class="w">    </span><span class="c">#TOOLCHAIN_FILE &quot;${CMAKE_CURRENT_SOURCE_DIR}/cmake/my-toolchain.cmake&quot;</span>
+<span class="w">  </span><span class="nf">)</span>
+<span class="nf">else()</span>
+<span class="w">  </span><span class="nf">option(</span><span class="no">ENABLE_CROSS_COMPILING</span><span class="w"> </span><span class="s">&quot;Detect cross compiler and setup toolchain&quot;</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">if(</span><span class="no">ENABLE_CROSS_COMPILING</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">enable_cross_compiler()</span>
+<span class="w">  </span><span class="nf">endif()</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code> auto-detects the following cross-compilers, when setting <code class="docutils literal notranslate"><span class="pre">DEFAULT_TRIPLET</span></code>:</p>
+<ul class="simple">
+<li><p><em>mingw-w64</em> <a class="reference external" href="https://github.com/abeimler/project_options/blob/feature/open-closed-enable-cross-compiler/src/toolchains/x86_64-w64-mingw32.toolchain.cmake">x86_64-w64-mingw32.toolchain.cmake</a></p></li>
+<li><p><em>emscripten</em></p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_CROSS_COMPILING:BOOL=ON</span> <span class="pre">-DDEFAULT_TRIPLET=x64-mingw-dynamic</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_CROSS_COMPILING:BOOL=ON</span> <span class="pre">-DDEFAULT_TRIPLET=wasm32-emscripten</span></code></p></li>
+</ul>
+<p>For <code class="docutils literal notranslate"><span class="pre">arm-linux</span></code> or <code class="docutils literal notranslate"><span class="pre">arm64-linux</span></code>, you must set the compiler:</p>
+<ul class="simple">
+<li><p>aarch64-linux-gnu <a class="reference external" href="https://github.com/abeimler/project_options/blob/feature/open-closed-enable-cross-compiler/src/toolchains/aarch64-linux.toolchain.cmake">aarch64-linux.toolchain.cmake</a></p></li>
+<li><p>arm-linux-gnueabi, arm-linux-gnueabihf <a class="reference external" href="https://github.com/abeimler/project_options/blob/feature/open-closed-enable-cross-compiler/src/toolchains/arm-linux.toolchain.cmake">arm-linux.toolchain.cmake</a></p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_CROSS_COMPILING:BOOL=ON</span> <span class="pre">-DCMAKE_C_COMPILER=gcc-aarch64-linux-gnu-gcc</span> <span class="pre">-DCMAKE_CXX_COMPILER=gcc-aarch64-linux-gnu-g++</span> <span class="pre">-DDEFAULT_TRIPLET=arm64-linux</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_CROSS_COMPILING:BOOL=ON</span> <span class="pre">-DCMAKE_C_COMPILER=arm-linux-gnueabihf-gcc</span> <span class="pre">-DCMAKE_CXX_COMPILER=arm-linux-gnueabi-g++</span> <span class="pre">-DDEFAULT_TRIPLET=arm-linux</span> <span class="pre">-DCROSS_ROOT=/usr/gcc-arm-linux-gnueabihf</span></code></p></li>
+</ul>
+<p>For (bare-metal) you don’t need/can’t(?) set <code class="docutils literal notranslate"><span class="pre">arm-linux</span></code>/<code class="docutils literal notranslate"><span class="pre">arm64-linux</span></code> (for vcpkg):</p>
+<ul class="simple">
+<li><p>arm-none-eabi <a class="reference external" href="https://github.com/abeimler/project_options/blob/feature/open-closed-enable-cross-compiler/src/toolchains/arm.toolchain.cmake">arm.toolchain.cmake</a></p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_CROSS_COMPILING:BOOL=ON</span> <span class="pre">-DCMAKE_C_COMPILER=arm-none-eabi-gcc</span> <span class="pre">-DCMAKE_CXX_COMPILER=arm-none-eabi-g++</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_CROSS_COMPILING:BOOL=ON</span> <span class="pre">-DCMAKE_C_COMPILER=arm-none-eabi-gcc</span> <span class="pre">-DCMAKE_CXX_COMPILER=arm-none-eabi-g++</span> <span class="pre">-DTARGET_ARCHITECTURE:STRING=arm</span> <span class="pre">-DCROSS_ROOT:STRING=&quot;/usr/arm-none-eabi-gcc&quot;</span>&#160;&#160; <span class="pre">-DCROSS_TRIPLET:STRING=arm-none-eabi-gcc</span></code></p></li>
+</ul>
+<p>The option for <code class="docutils literal notranslate"><span class="pre">DEFAULT_TRIPLET</span></code> are the similarly to <a class="reference external" href="https://github.com/microsoft/vcpkg/tree/master/triplets/community/">vcpkg triplets</a></p>
+<ul class="simple">
+<li><p>x64-mingw-dynamic</p></li>
+<li><p>x64-mingw-static</p></li>
+<li><p>x86-mingw-dynamic</p></li>
+<li><p>x86-mingw-static</p></li>
+<li><p>wasm32-emscripten</p></li>
+<li><p>arm-linux</p></li>
+<li><p>arm64-linux</p></li>
 </ul>
 </section>
 <section id="target-link-cuda">
-<h2><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code><a class="headerlink" href="#target-link-cuda" title="Permalink to this heading"></a></h2>
+<h1><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code><a class="headerlink" href="#target-link-cuda" title="Permalink to this heading"></a></h1>
 <p>Link Cuda to the given target.</p>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">main_cuda</span><span class="w"> </span><span class="nb">main.cu</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">target_compile_features(</span><span class="nb">main_cuda</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">cxx_std_17</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">target_link_libraries(</span><span class="nb">main_cuda</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">project_options</span><span class="w"> </span><span class="nb">project_warnings</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">target_link_cuda(</span><span class="nb">main_cuda</span><span class="nf">)</span><span class="w"></span>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">main_cuda</span><span class="w"> </span><span class="nb">main.cu</span><span class="nf">)</span>
+<span class="nf">target_compile_features(</span><span class="nb">main_cuda</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">cxx_std_17</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">main_cuda</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">project_options</span><span class="w"> </span><span class="nb">project_warnings</span><span class="nf">)</span>
+<span class="nf">target_link_cuda(</span><span class="nb">main_cuda</span><span class="nf">)</span>
 </pre></div>
 </div>
 </section>
-</section>
+<section id="dynamic-project-options">
+<h1><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code><a class="headerlink" href="#dynamic-project-options" title="Permalink to this heading"></a></h1>
+<p>During the test and development, it can be useful to change options on the fly. For example, to enable sanitizers when running tests. You can include <code class="docutils literal notranslate"><span class="pre">DynamicOptions.cmake</span></code>, which imports the <code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code> function.</p>
+<p><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code> provides a dynamic set of defaults (all static analysis and runtime analysis enabled for platforms where that is possible) while also providing a high-level option <code class="docutils literal notranslate"><span class="pre">ENABLE_DEVELOPER_MODE</span></code> (defaulted to <code class="docutils literal notranslate"><span class="pre">ON</span></code>) which can be turned off for easy use by non-developers.</p>
+<p>The goal of the <code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code> is to give a safe and well-analyzed environment to the developer by default while simultaneously making it easy for a user of the project to compile while not having to worry about clang-tidy, sanitizers, cppcheck, etc.</p>
+<p>The defaults presented to the user can be modified with</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">set(&lt;featurename&gt;_DEFAULT</span> <span class="pre">value)</span></code> - for user and developer builds</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">set(&lt;featurename&gt;_USER_DEFAULT</span> <span class="pre">value)</span></code> - for user builds</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">set(&lt;featureoptionname&gt;_DEVELOPER_DEFAULT</span> <span class="pre">value)</span></code> - for developer builds</p></li>
+</ul>
+<p>If you need to fix a setting for the sake of a command-line configuration, you can use:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DOPT_&lt;featurename&gt;:BOOL<span class="o">=</span>value
+</pre></div>
+</div>
+<p>See <code class="docutils literal notranslate"><span class="pre">dynamic_project_options()</span></code> in action in <a class="reference external" href="https://github.com/aminya/cpp_boilerplate_project">this template repository</a>.</p>
+<details>
+<summary> 👉 Click to show the example:</summary>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.20</span><span class="nf">)</span>
+
+<span class="c"># set a default CXX standard for the tools and targets that do not specify them.</span>
+<span class="c"># If commented, the latest supported standard for your compiler is automatically set.</span>
+<span class="c"># set(CMAKE_CXX_STANDARD 20)</span>
+
+<span class="c"># Add project_options from https://github.com/aminya/project_options</span>
+<span class="c"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</span>
+<span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span><span class="nb">_project_options</span><span class="w"> </span><span class="no">URL</span>
+<span class="w">  </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/v0.27.0.zip</span>
+<span class="nf">)</span>
+<span class="nf">FetchContent_MakeAvailable(</span><span class="nb">_project_options</span><span class="nf">)</span>
+<span class="nf">include(</span><span class="o">${</span><span class="nt">_project_options_SOURCE_DIR</span><span class="o">}</span><span class="na">/Index.cmake</span><span class="nf">)</span>
+
+<span class="w"> </span><span class="c"># ❗ Add dynamic CMake options</span>
+<span class="nf">include(</span><span class="o">${</span><span class="nt">_project_options_SOURCE_DIR</span><span class="o">}</span><span class="na">/src/DynamicOptions.cmake</span><span class="nf">)</span>
+
+<span class="c"># install vcpkg dependencies: - should be called before defining project()</span>
+<span class="c"># run_vcpkg()</span>
+
+<span class="c"># Set the project name and language</span>
+<span class="nf">project(</span><span class="nb">myproject</span><span class="w"> </span><span class="no">LANGUAGES</span><span class="w"> </span><span class="no">CXX</span><span class="w"> </span><span class="no">C</span><span class="nf">)</span>
+
+<span class="c"># Set PCH to be on by default for all non-Developer Mode Builds</span>
+<span class="nf">set(</span><span class="no">ENABLE_PCH_USER_DEFAULT</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
+
+<span class="c"># enable Conan</span>
+<span class="nf">set(</span><span class="no">ENABLE_CONAN_DEFAULT</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
+
+<span class="c"># Initialize project_options variable related to this project</span>
+<span class="c"># This overwrites `project_options` and sets `project_warnings`</span>
+<span class="c"># This also accepts the same arguments as `project_options`.</span>
+<span class="nf">dynamic_project_options(</span>
+<span class="w">  </span><span class="c"># set the common headers you want to precompile</span>
+<span class="w">  </span><span class="no">PCH_HEADERS</span><span class="w"> </span><span class="nv">&lt;vector&gt;</span><span class="w"> </span><span class="nv">&lt;string&gt;</span><span class="w"> </span><span class="nv">&lt;fmt/format.h&gt;</span><span class="w"> </span><span class="nv">&lt;Eigen/Dense&gt;</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>Add your executables, etc., as described above.</p>
+</details></section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../index.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../index.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

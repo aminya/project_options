@@ -14,12 +14,16 @@
 #
 import os
 import sys
-sys.path.insert(0, r'/home/aminya/GitHub/Cpp/project_options/docs')
+sys.path.insert(0, r'/home/aminya/project_options/docs')
 from sphinx.builders.html import StandaloneHTMLBuilder
 import subprocess, os
 
 
-source_suffix = '.rst'
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'markdown',
+}
+
 # Doxygen
 subprocess.call('doxygen ./Doxyfile.doxygen-docs', shell=True)
 
@@ -28,8 +32,8 @@ subprocess.call('doxygen ./Doxyfile.doxygen-docs', shell=True)
 project = 'project_options'
 author = 'Amin Yahyaabadi'
 copyright = 'MIT - Copyright (c) 2022-2100 Amin Yahyaabadi'
-version = '0.26.3' # feature version
-release = '0.26.3' # full version string
+version = '0.27.0' # feature version
+release = '0.27.0' # full version string
 
 
 # -- General configuration ---------------------------------------------------
@@ -40,7 +44,7 @@ release = '0.26.3' # full version string
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
-    'sphinx.ext.autosectionlabel',
+   #  'sphinx.ext.autosectionlabel', # Detects duplicate labels
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
@@ -54,12 +58,12 @@ extensions = [
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['/home/aminya/GitHub/Cpp/project_options/docs/templates']
+templates_path = ['/home/aminya/project_options/docs/templates']
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', "./compile_commands.json", "**/build/**"]
 
 highlight_language = 'c++'
 
@@ -92,7 +96,7 @@ html_theme_options = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-# html_static_path = ['/home/aminya/GitHub/Cpp/project_options/docs/static']
+# html_static_path = ['/home/aminya/project_options/docs/static']
 # html_style = 'css/cmake.css'
 #
 # html_js_files = [
@@ -104,7 +108,7 @@ html_theme_options = {
 master_doc = 'index'
 
 breathe_projects = {
-	'C++ Sphinx Doxygen Breathe': "/home/aminya/GitHub/Cpp/project_options/docs/build/xml/"
+	'C++ Sphinx Doxygen Breathe': "/home/aminya/project_options/docs/build/xml/"
 }
 breathe_default_project = 'C++ Sphinx Doxygen Breathe'
 breathe_default_members = ('members', 'undoc-members')

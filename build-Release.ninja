@@ -16,7 +16,7 @@ build doxygen-docs: phony doxygen-docs$:Release
 
 
 #############################################
-# Folder: /home/aminya/GitHub/Cpp/project_options/docs/build
+# Folder: /home/aminya/project_options/docs/build
 
 build all: phony all$:Release
 

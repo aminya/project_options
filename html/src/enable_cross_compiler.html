@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>enable_cross_compiler &mdash; project_options 0.27.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<link href="../css/company_style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            project_options
+          </a>
+              <div class="version">
+                main
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html"><code class="docutils literal notranslate"><span class="pre">project_options</span></code> function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#project-options-parameters"><code class="docutils literal notranslate"><span class="pre">project_options</span></code> parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#run-vcpkg"><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#package-project"><code class="docutils literal notranslate"><span class="pre">package_project</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-include-interface-directories-function"><code class="docutils literal notranslate"><span class="pre">target_include_interface_directories</span></code> function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-find-dependencies-function"><code class="docutils literal notranslate"><span class="pre">target_find_dependencies</span></code> function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-include-system-directories"><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-link-system-libraries"><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-disable-static-analysis"><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#enable-cross-compiler"><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-link-cuda"><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#dynamic-project-options"><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">project_options</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/src/enable_cross_compiler.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="enable-cross-compiler">
+<h1><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code><a class="headerlink" href="#enable-cross-compiler" title="Permalink to this heading"></a></h1>
+<p><strong>NOTE</strong>: this feature is experimental and needs more documentation/examples. See the <code class="docutils literal notranslate"><span class="pre">tests/rpi3</span></code>, <code class="docutils literal notranslate"><span class="pre">tests/rpi4</span></code>, <code class="docutils literal notranslate"><span class="pre">tests/emscripten</span></code>, <code class="docutils literal notranslate"><span class="pre">tests-rpi4-vcpkg</span></code> directories in the <a class="reference external" href="https://github.com/aminya/project_options/tree/main/tests">repositpry</a> for full examples.</p>
+<p>The following calls <code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code> to enable the cross-compiler as the current toolchain.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">enable_cross_compiler(</span>
+<span class="w">  </span><span class="no">CC</span><span class="w"> </span><span class="s">&quot;arm-none-eabi-gcc&quot;</span>
+<span class="w">  </span><span class="no">CXX</span><span class="w"> </span><span class="s">&quot;arm-none-eabi-g++&quot;</span>
+<span class="w">  </span><span class="no">TARGET_ARCHITECTURE</span><span class="w"> </span><span class="s">&quot;arm&quot;</span>
+<span class="w">  </span><span class="no">CROSS_ROOT</span><span class="w"> </span><span class="s">&quot;/usr/arm-none-eabi-gcc&quot;</span>
+<span class="w">  </span><span class="no">CROSS_TRIPLET</span><span class="w"> </span><span class="s">&quot;arm-none-eabi-gcc&quot;</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>The following examples enables cross-compiling when it is opt-in.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># opt-in cross-compiling</span>
+<span class="nf">if(</span><span class="no">ENABLE_AARCH64_CROSS_COMPILING</span><span class="nf">)</span>
+<span class="w">  </span><span class="c"># my custom aarch64 settings</span>
+<span class="w">  </span><span class="nf">enable_cross_compiler(</span>
+<span class="w">    </span><span class="no">DEFAULT_TRIPLET</span><span class="w"> </span><span class="s">&quot;arm64-linux&quot;</span>
+<span class="w">    </span><span class="no">CC</span><span class="w"> </span><span class="s">&quot;aarch64-linux-gnu-gcc&quot;</span>
+<span class="w">    </span><span class="no">CXX</span><span class="w"> </span><span class="s">&quot;aarch64-linux-gnu-g++&quot;</span>
+<span class="w">    </span><span class="no">TARGET_ARCHITECTURE</span><span class="w"> </span><span class="s">&quot;arm64-linux&quot;</span>
+<span class="w">    </span><span class="no">CROSS_ROOT</span><span class="w"> </span><span class="s">&quot;/usr/gcc-aarch64-linux-gnu&quot;</span>
+<span class="w">    </span><span class="no">CROSS_TRIPLET</span><span class="w"> </span><span class="s">&quot;aarch64-linux-gnu&quot;</span>
+<span class="w">    </span><span class="c">#TOOLCHAIN_FILE &quot;${CMAKE_CURRENT_SOURCE_DIR}/cmake/my-toolchain.cmake&quot;</span>
+<span class="w">  </span><span class="nf">)</span>
+<span class="nf">else()</span>
+<span class="w">  </span><span class="nf">option(</span><span class="no">ENABLE_CROSS_COMPILING</span><span class="w"> </span><span class="s">&quot;Detect cross compiler and setup toolchain&quot;</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">if(</span><span class="no">ENABLE_CROSS_COMPILING</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">enable_cross_compiler()</span>
+<span class="w">  </span><span class="nf">endif()</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code> auto-detects the following cross-compilers, when setting <code class="docutils literal notranslate"><span class="pre">DEFAULT_TRIPLET</span></code>:</p>
+<ul class="simple">
+<li><p><em>mingw-w64</em> <a class="reference external" href="https://github.com/abeimler/project_options/blob/feature/open-closed-enable-cross-compiler/src/toolchains/x86_64-w64-mingw32.toolchain.cmake">x86_64-w64-mingw32.toolchain.cmake</a></p></li>
+<li><p><em>emscripten</em></p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_CROSS_COMPILING:BOOL=ON</span> <span class="pre">-DDEFAULT_TRIPLET=x64-mingw-dynamic</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_CROSS_COMPILING:BOOL=ON</span> <span class="pre">-DDEFAULT_TRIPLET=wasm32-emscripten</span></code></p></li>
+</ul>
+<p>For <code class="docutils literal notranslate"><span class="pre">arm-linux</span></code> or <code class="docutils literal notranslate"><span class="pre">arm64-linux</span></code>, you must set the compiler:</p>
+<ul class="simple">
+<li><p>aarch64-linux-gnu <a class="reference external" href="https://github.com/abeimler/project_options/blob/feature/open-closed-enable-cross-compiler/src/toolchains/aarch64-linux.toolchain.cmake">aarch64-linux.toolchain.cmake</a></p></li>
+<li><p>arm-linux-gnueabi, arm-linux-gnueabihf <a class="reference external" href="https://github.com/abeimler/project_options/blob/feature/open-closed-enable-cross-compiler/src/toolchains/arm-linux.toolchain.cmake">arm-linux.toolchain.cmake</a></p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_CROSS_COMPILING:BOOL=ON</span> <span class="pre">-DCMAKE_C_COMPILER=gcc-aarch64-linux-gnu-gcc</span> <span class="pre">-DCMAKE_CXX_COMPILER=gcc-aarch64-linux-gnu-g++</span> <span class="pre">-DDEFAULT_TRIPLET=arm64-linux</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_CROSS_COMPILING:BOOL=ON</span> <span class="pre">-DCMAKE_C_COMPILER=arm-linux-gnueabihf-gcc</span> <span class="pre">-DCMAKE_CXX_COMPILER=arm-linux-gnueabi-g++</span> <span class="pre">-DDEFAULT_TRIPLET=arm-linux</span> <span class="pre">-DCROSS_ROOT=/usr/gcc-arm-linux-gnueabihf</span></code></p></li>
+</ul>
+<p>For (bare-metal) you don’t need/can’t(?) set <code class="docutils literal notranslate"><span class="pre">arm-linux</span></code>/<code class="docutils literal notranslate"><span class="pre">arm64-linux</span></code> (for vcpkg):</p>
+<ul class="simple">
+<li><p>arm-none-eabi <a class="reference external" href="https://github.com/abeimler/project_options/blob/feature/open-closed-enable-cross-compiler/src/toolchains/arm.toolchain.cmake">arm.toolchain.cmake</a></p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_CROSS_COMPILING:BOOL=ON</span> <span class="pre">-DCMAKE_C_COMPILER=arm-none-eabi-gcc</span> <span class="pre">-DCMAKE_CXX_COMPILER=arm-none-eabi-g++</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_CROSS_COMPILING:BOOL=ON</span> <span class="pre">-DCMAKE_C_COMPILER=arm-none-eabi-gcc</span> <span class="pre">-DCMAKE_CXX_COMPILER=arm-none-eabi-g++</span> <span class="pre">-DTARGET_ARCHITECTURE:STRING=arm</span> <span class="pre">-DCROSS_ROOT:STRING=&quot;/usr/arm-none-eabi-gcc&quot;</span>&#160;&#160; <span class="pre">-DCROSS_TRIPLET:STRING=arm-none-eabi-gcc</span></code></p></li>
+</ul>
+<p>The option for <code class="docutils literal notranslate"><span class="pre">DEFAULT_TRIPLET</span></code> are the similarly to <a class="reference external" href="https://github.com/microsoft/vcpkg/tree/master/triplets/community/">vcpkg triplets</a></p>
+<ul class="simple">
+<li><p>x64-mingw-dynamic</p></li>
+<li><p>x64-mingw-static</p></li>
+<li><p>x86-mingw-dynamic</p></li>
+<li><p>x86-mingw-static</p></li>
+<li><p>wasm32-emscripten</p></li>
+<li><p>arm-linux</p></li>
+<li><p>arm64-linux</p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright MIT - Copyright (c) 2022-2100 Amin Yahyaabadi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Read the Docs</span>
+      v: main
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <!-- The content here is replaced in the version_switcher.js -->
+    </div>
+</div>
+<script src="../js/versions.js"></script>
+<script src="../js/version_switcher.js"></script>
+<script>
+    window.addEventListener('load', (event) => {
+        ar_updateVersionList('main');
+    });
+</script>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

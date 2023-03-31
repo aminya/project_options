@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tips &amp; Tricks &mdash; project_options 0.26.3 documentation</title>
+  <title>Tips &amp; Tricks &mdash; project_options 0.27.0 documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
@@ -13,9 +13,6 @@
   <![endif]-->
   
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
         <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
@@ -30,22 +27,37 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../../index.html" class="icon icon-home"> project_options
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            project_options
           </a>
               <div class="version">
                 main
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../src/index.html">project_options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src/index.html"><code class="docutils literal notranslate"><span class="pre">project_options</span></code> function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src/index.html#project-options-parameters"><code class="docutils literal notranslate"><span class="pre">project_options</span></code> parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src/index.html#run-vcpkg"><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src/index.html#package-project"><code class="docutils literal notranslate"><span class="pre">package_project</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src/index.html#target-include-interface-directories-function"><code class="docutils literal notranslate"><span class="pre">target_include_interface_directories</span></code> function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src/index.html#target-find-dependencies-function"><code class="docutils literal notranslate"><span class="pre">target_find_dependencies</span></code> function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src/index.html#target-include-system-directories"><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src/index.html#target-link-system-libraries"><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src/index.html#target-disable-static-analysis"><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src/index.html#enable-cross-compiler"><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src/index.html#target-link-cuda"><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src/index.html#dynamic-project-options"><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code></a></li>
 </ul>
 
         </div>
@@ -61,7 +73,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Tips &amp; Tricks</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../../_sources/build/_deps/_doxygen_theme-src/docs/tricks.md.txt" rel="nofollow"> View page source</a>
@@ -79,9 +91,9 @@
 <h2>Class Diagrams with Graphviz<a class="headerlink" href="#class-diagrams-with-graphviz" title="Permalink to this heading"></a></h2>
 <p>To get the best looking class diagrams for your documentation, generate them with Graphviz as vector graphics with transparent background:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp"># Doxyfile</span>
-<span class="n">HAVE_DOT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">YES</span><span class="w"></span>
-<span class="n">DOT_IMAGE_FORMAT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">svg</span><span class="w"></span>
-<span class="n">DOT_TRANSPARENT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">YES</span><span class="w"></span>
+<span class="n">HAVE_DOT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">YES</span>
+<span class="n">DOT_IMAGE_FORMAT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">svg</span>
+<span class="n">DOT_TRANSPARENT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">YES</span>
 </pre></div>
 </div>
 </section>
@@ -103,15 +115,15 @@ you can disable dark mode by adding the <code class="docutils literal notranslat
 <p>If you have enabled the sidebar-only theme variant, make sure to carefully choose a proper width for your sidebar.
 It should be wide enough to hold the icon, project title and version number. If the content is too wide, it will be
 cut off.</p>
-<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">html</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="c">/* Make sure sidebar is wide enough to contain the page title (logo + title + version) */</span><span class="w"></span>
-<span class="w">    </span><span class="nv">--side-nav-fixed-width</span><span class="p">:</span><span class="w"> </span><span class="mi">335</span><span class="kt">px</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">html</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c">/* Make sure sidebar is wide enough to contain the page title (logo + title + version) */</span>
+<span class="w">    </span><span class="nv">--side-nav-fixed-width</span><span class="p">:</span><span class="w"> </span><span class="mi">335</span><span class="kt">px</span><span class="p">;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>The choosen width should also be set in the Doxyfile:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp"># Doxyfile</span>
-<span class="n">TREEVIEW_WIDTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">335</span><span class="w"></span>
+<span class="n">TREEVIEW_WIDTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">335</span>
 </pre></div>
 </div>
 <span class="next_section_button">

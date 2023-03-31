@@ -10,7 +10,7 @@ build _doxygen_theme-populate: phony _doxygen_theme-populate$:Debug
 
 
 #############################################
-# Folder: /home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild
+# Folder: /home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild
 
 build all: phony all$:Debug
 

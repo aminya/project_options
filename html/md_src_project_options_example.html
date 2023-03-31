@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>project_options_docs: project_options_example</title>
+<title>project_options_docs: &lt;tt&gt;project_options&lt;/tt&gt; function</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">project_options_docs<span id="projectnumber">&#160;0.26.3</span>
+   <div id="projectname">project_options_docs<span id="projectnumber">&#160;0.27.0</span>
    </div>
    <div id="projectbrief">Documentation</div>
   </td>
@@ -92,10 +92,12 @@ $(document).ready(function(){initNavTree('md_src_project_options_example.html','
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">project_options_example </div></div>
+  <div class="headertitle"><div class="title"><code>project_options</code> function </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>See the <code>project_options()</code> in action in <a href="https://github.com/aminya/cpp_vcpkg_project">this template repository</a>. <a href="https://github.com/aminya/cpp_vcpkg_project">cpp_vcpkg_project</a> has prepared all the best practices for a production-ready C++ project.</p>
+<h2><a class="anchor" id="autotoc_md6"></a>
+&lt;tt&gt;project&lt;/tt&gt; and &lt;tt&gt;project_options&lt;/tt&gt;</h2>
 <p>Here is an example of the usage:</p>
 <div class="fragment"><div class="line">cmake_minimum_required(VERSION 3.20)</div>
 <div class="line"> </div>
@@ -103,11 +105,12 @@ $(document).ready(function(){initNavTree('md_src_project_options_example.html','
 <div class="line"># If commented, the latest supported standard for your compiler is automatically set.</div>
 <div class="line"># set(CMAKE_CXX_STANDARD 20)</div>
 <div class="line"> </div>
-<div class="line"># Add project_options v0.26.3</div>
-<div class="line"># https://github.com/aminya/project_options</div>
+<div class="line"># Add project_options from https://github.com/aminya/project_options</div>
 <div class="line"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</div>
 <div class="line">include(FetchContent)</div>
-<div class="line">FetchContent_Declare(_project_options URL https://github.com/aminya/project_options/archive/refs/tags/v0.26.3.zip)</div>
+<div class="line">FetchContent_Declare(_project_options URL</div>
+<div class="line">  https://github.com/aminya/project_options/archive/refs/tags/v0.27.0.zip</div>
+<div class="line">)</div>
 <div class="line">FetchContent_MakeAvailable(_project_options)</div>
 <div class="line">include(${_project_options_SOURCE_DIR}/Index.cmake)</div>
 <div class="line"> </div>
@@ -162,6 +165,7 @@ $(document).ready(function(){initNavTree('md_src_project_options_example.html','
 <div class="line"># This overwrites `project_options` and sets `project_warnings`</div>
 <div class="line"># uncomment to enable the options. Some of them accept one or more inputs:</div>
 <div class="line">project_options(</div>
+<div class="line">      PREFIX &quot;myproject&quot;</div>
 <div class="line">      ENABLE_CACHE</div>
 <div class="line">      ${ENABLE_CPPCHECK}</div>
 <div class="line">      ${ENABLE_CLANG_TIDY}</div>
@@ -185,21 +189,24 @@ $(document).ready(function(){initNavTree('md_src_project_options_example.html','
 <div class="line">      # CONAN_PROFILE ${profile_path}  # passes a profile to conan: see https://docs.conan.io/en/latest/reference/profiles.html</div>
 <div class="line">)</div>
 </div><!-- fragment --><p>Then add the executables or libraries to the project:</p>
-<h4><a class="anchor" id="autotoc_md4"></a>
-&lt;a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe" &gt;Executable&lt;/a&gt;</h4>
+<h2><a class="anchor" id="autotoc_md7"></a>
+&lt;a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe" &gt;executable usage&lt;/a&gt;</h2>
 <div class="fragment"><div class="line">add_executable(main main.cpp)</div>
-<div class="line">target_link_libraries(main PRIVATE project_options project_warnings) # link project_options/warnings</div>
+<div class="line"> </div>
+<div class="line"># link project_options/warnings</div>
+<div class="line">target_link_libraries(main</div>
+<div class="line">  PRIVATE myproject_project_options myproject_project_warnings</div>
+<div class="line">)</div>
 <div class="line"> </div>
 <div class="line"># Find dependencies:</div>
-<div class="line">set(DEPENDENCIES_CONFIGURED fmt Eigen3)</div>
-<div class="line"> </div>
-<div class="line">foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})</div>
-<div class="line">  find_package(${DEPENDENCY} CONFIG REQUIRED)</div>
-<div class="line">endforeach()</div>
+<div class="line">target_find_dependencies(main</div>
+<div class="line">  PRIVATE_CONFIG</div>
+<div class="line">  fmt</div>
+<div class="line">  Eigen3</div>
+<div class="line">)</div>
 <div class="line"> </div>
 <div class="line"># Link dependencies</div>
-<div class="line">target_link_system_libraries(</div>
-<div class="line">  main</div>
+<div class="line">target_link_system_libraries(main</div>
 <div class="line">  PRIVATE</div>
 <div class="line">  fmt::fmt</div>
 <div class="line">  Eigen3::Eigen</div>
@@ -207,57 +214,27 @@ $(document).ready(function(){initNavTree('md_src_project_options_example.html','
 <div class="line"> </div>
 <div class="line"># Package the project</div>
 <div class="line">package_project(TARGETS main)</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md5"></a>
-&lt;a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib" &gt;Header-only library&lt;/a&gt;</h4>
-<div class="fragment"><div class="line">add_library(my_header_lib INTERFACE)</div>
-<div class="line">target_link_libraries(my_header_lib INTERFACE project_options project_warnings) # link project_options/warnings</div>
-<div class="line"> </div>
-<div class="line"># Includes</div>
-<div class="line">set(INCLUDE_DIR &quot;include&quot;) # must be relative paths</div>
-<div class="line">target_include_directories(my_header_lib INTERFACE &quot;$&lt;BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}&gt;&quot;</div>
-<div class="line">                                          &quot;$&lt;INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}&gt;&quot;)</div>
-<div class="line"> </div>
-<div class="line"># Find dependencies:</div>
-<div class="line">set(DEPENDENCIES_CONFIGURED fmt Eigen3)</div>
-<div class="line"> </div>
-<div class="line">foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})</div>
-<div class="line">  find_package(${DEPENDENCY} CONFIG REQUIRED)</div>
-<div class="line">endforeach()</div>
-<div class="line"> </div>
-<div class="line"># Link dependencies:</div>
-<div class="line">target_link_system_libraries(</div>
-<div class="line">  my_header_lib</div>
-<div class="line">  INTERFACE</div>
-<div class="line">  fmt::fmt</div>
-<div class="line">  Eigen3::Eigen</div>
-<div class="line">)</div>
-<div class="line"> </div>
-<div class="line"># Package the project</div>
-<div class="line">package_project(</div>
-<div class="line">  TARGETS my_header_lib project_options project_warnings</div>
-<div class="line">  INTERFACE_DEPENDENCIES_CONFIGURED ${DEPENDENCIES_CONFIGURED}</div>
-<div class="line">  INTERFACE_INCLUDES ${INCLUDE_DIR}</div>
-<div class="line">)</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md6"></a>
-&lt;a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib" &gt;Library with source files&lt;/a&gt;</h4>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md8"></a>
+&lt;a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib" &gt;library usage&lt;/a&gt;</h2>
 <div class="fragment"><div class="line">add_library(my_lib &quot;./src/my_lib/lib.cpp&quot;)</div>
-<div class="line">target_link_libraries(my_lib PRIVATE project_options project_warnings) # link project_options/warnings</div>
 <div class="line"> </div>
-<div class="line"># Includes</div>
-<div class="line">set(INCLUDE_DIR &quot;include&quot;) # must be relative paths</div>
-<div class="line">target_include_directories(my_lib PUBLIC &quot;$&lt;BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}&gt;&quot;</div>
-<div class="line">                                         &quot;$&lt;INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}&gt;&quot;)</div>
+<div class="line"># link project_options/warnings</div>
+<div class="line">target_link_libraries(my_lib</div>
+<div class="line">  PRIVATE myproject_project_options myproject_project_warnings</div>
+<div class="line">)</div>
+<div class="line"> </div>
+<div class="line"># Includes:</div>
+<div class="line">target_include_interface_directories(my_lib &quot;${CMAKE_CURRENT_SOURCE_DIR}/include&quot;)</div>
 <div class="line"> </div>
 <div class="line"># Find dependencies:</div>
-<div class="line">set(DEPENDENCIES_CONFIGURED fmt Eigen3)</div>
-<div class="line"> </div>
-<div class="line">foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})</div>
-<div class="line">  find_package(${DEPENDENCY} CONFIG REQUIRED)</div>
-<div class="line">endforeach()</div>
+<div class="line">target_find_dependencies(my_lib</div>
+<div class="line">  PRIVATE_CONFIG</div>
+<div class="line">  fmt</div>
+<div class="line">  Eigen3</div>
+<div class="line">)</div>
 <div class="line"> </div>
 <div class="line"># Link dependencies:</div>
-<div class="line">target_link_system_libraries(</div>
-<div class="line">  my_lib</div>
+<div class="line">target_link_system_libraries(my_lib</div>
 <div class="line">  PRIVATE</div>
 <div class="line">  fmt::fmt</div>
 <div class="line">  Eigen3::Eigen</div>
@@ -265,8 +242,38 @@ $(document).ready(function(){initNavTree('md_src_project_options_example.html','
 <div class="line"> </div>
 <div class="line"># Package the project</div>
 <div class="line">package_project(</div>
-<div class="line">  TARGETS my_lib</div>
-<div class="line">  PUBLIC_INCLUDES ${INCLUDE_DIR}</div>
+<div class="line">  # Note that you must export `myproject_project_options` and `myproject_project_warnings` for `my_lib`</div>
+<div class="line">  TARGETS my_lib myproject_project_options myproject_project_warnings</div>
+<div class="line">)</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md9"></a>
+&lt;a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib" &gt;header-only library usage&lt;/a&gt;</h2>
+<div class="fragment"><div class="line">add_library(my_header_lib INTERFACE)</div>
+<div class="line"> </div>
+<div class="line"># link project_options/warnings</div>
+<div class="line">target_link_libraries(my_header_lib</div>
+<div class="line">  INTERFACE myproject_project_options myproject_project_warnings</div>
+<div class="line">)</div>
+<div class="line"> </div>
+<div class="line"># Includes:</div>
+<div class="line">target_include_interface_directories(my_header_lib &quot;${CMAKE_CURRENT_SOURCE_DIR}/include&quot;)</div>
+<div class="line"> </div>
+<div class="line"># Find dependencies:</div>
+<div class="line">target_find_dependencies(my_header_lib</div>
+<div class="line">  INTERFACE_CONFIG</div>
+<div class="line">  fmt</div>
+<div class="line">  Eigen3</div>
+<div class="line">)</div>
+<div class="line"> </div>
+<div class="line"># Link dependencies:</div>
+<div class="line">target_link_system_libraries(my_header_lib</div>
+<div class="line">  INTERFACE</div>
+<div class="line">  fmt::fmt</div>
+<div class="line">  Eigen3::Eigen</div>
+<div class="line">)</div>
+<div class="line"> </div>
+<div class="line"># Package the project</div>
+<div class="line">package_project(</div>
+<div class="line">  TARGETS my_header_lib myproject_project_options myproject_project_warnings</div>
 <div class="line">)</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->

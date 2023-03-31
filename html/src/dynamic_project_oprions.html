@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dynamic_project_options &mdash; project_options 0.26.3 documentation</title>
@@ -13,9 +13,6 @@
   <![endif]-->
   
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
@@ -30,22 +27,35 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> project_options
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            project_options
           </a>
               <div class="version">
-                main
+                docs
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../index.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html">project_options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html"><code class="docutils literal notranslate"><span class="pre">project_options</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#project-options-parameters"><code class="docutils literal notranslate"><span class="pre">project_options</span></code> parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#run-vcpkg"><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#package-project"><code class="docutils literal notranslate"><span class="pre">package_project</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-include-interface-directories-function"><code class="docutils literal notranslate"><span class="pre">target_include_interface_directories</span></code> function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-find-dependencies-function"><code class="docutils literal notranslate"><span class="pre">target_find_dependencies</span></code> function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-include-system-directories"><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-link-system-libraries"><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-disable-static-analysis"><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-link-cuda"><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code></a></li>
 </ul>
 
         </div>
@@ -61,7 +71,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code></li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/src/dynamic_project_oprions.md.txt" rel="nofollow"> View page source</a>
@@ -84,13 +94,13 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">set(&lt;featureoptionname&gt;_DEVELOPER_DEFAULT</span> <span class="pre">value)</span></code> - for developer builds</p></li>
 </ul>
 <p>If you need to fix a setting for the sake of a command-line configuration, you can use:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake -DOPT_&lt;featurename&gt;:BOOL<span class="o">=</span>value
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DOPT_&lt;featurename&gt;:BOOL<span class="o">=</span>value
 </pre></div>
 </div>
 <p>See <code class="docutils literal notranslate"><span class="pre">dynamic_project_options()</span></code> in action in <a class="reference external" href="https://github.com/aminya/cpp_boilerplate_project">this template repository</a>.</p>
 <details>
 <summary> 👉 Click to show the example:</summary>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.20</span><span class="nf">)</span><span class="w"></span>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.20</span><span class="nf">)</span>
 
 <span class="c"># set a default CXX standard for the tools and targets that do not specify them.</span>
 <span class="c"># If commented, the latest supported standard for your compiler is automatically set.</span>
@@ -99,33 +109,33 @@
 <span class="c"># Add project_options v0.26.3</span>
 <span class="c"># https://github.com/aminya/project_options</span>
 <span class="c"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</span>
-<span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">FetchContent_Declare(</span><span class="nb">_project_options</span><span class="w"> </span><span class="no">URL</span><span class="w"> </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/v0.26.3.zip</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">FetchContent_MakeAvailable(</span><span class="nb">_project_options</span><span class="nf">)</span><span class="w"></span>
-<span class="nf">include(</span><span class="o">${</span><span class="nt">_project_options_SOURCE_DIR</span><span class="o">}</span><span class="na">/Index.cmake</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span><span class="nb">_project_options</span><span class="w"> </span><span class="no">URL</span><span class="w"> </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/v0.26.3.zip</span><span class="nf">)</span>
+<span class="nf">FetchContent_MakeAvailable(</span><span class="nb">_project_options</span><span class="nf">)</span>
+<span class="nf">include(</span><span class="o">${</span><span class="nt">_project_options_SOURCE_DIR</span><span class="o">}</span><span class="na">/Index.cmake</span><span class="nf">)</span>
 
 <span class="w"> </span><span class="c"># ❗ Add dynamic CMake options</span>
-<span class="nf">include(</span><span class="o">${</span><span class="nt">_project_options_SOURCE_DIR</span><span class="o">}</span><span class="na">/src/DynamicOptions.cmake</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">include(</span><span class="o">${</span><span class="nt">_project_options_SOURCE_DIR</span><span class="o">}</span><span class="na">/src/DynamicOptions.cmake</span><span class="nf">)</span>
 
 <span class="c"># install vcpkg dependencies: - should be called before defining project()</span>
 <span class="c"># run_vcpkg()</span>
 
 <span class="c"># Set the project name and language</span>
-<span class="nf">project(</span><span class="nb">myproject</span><span class="w"> </span><span class="no">LANGUAGES</span><span class="w"> </span><span class="no">CXX</span><span class="w"> </span><span class="no">C</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">project(</span><span class="nb">myproject</span><span class="w"> </span><span class="no">LANGUAGES</span><span class="w"> </span><span class="no">CXX</span><span class="w"> </span><span class="no">C</span><span class="nf">)</span>
 
 <span class="c"># Set PCH to be on by default for all non-Developer Mode Builds</span>
-<span class="nf">set(</span><span class="no">ENABLE_PCH_USER_DEFAULT</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">set(</span><span class="no">ENABLE_PCH_USER_DEFAULT</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
 
 <span class="c"># enable Conan</span>
-<span class="nf">set(</span><span class="no">ENABLE_CONAN_DEFAULT</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span><span class="w"></span>
+<span class="nf">set(</span><span class="no">ENABLE_CONAN_DEFAULT</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
 
 <span class="c"># Initialize project_options variable related to this project</span>
 <span class="c"># This overwrites `project_options` and sets `project_warnings`</span>
 <span class="c"># This also accepts the same arguments as `project_options`.</span>
-<span class="nf">dynamic_project_options(</span><span class="w"></span>
+<span class="nf">dynamic_project_options(</span>
 <span class="w">  </span><span class="c"># set the common headers you want to precompile</span>
-<span class="w">  </span><span class="no">PCH_HEADERS</span><span class="w"> </span><span class="nv">&lt;vector&gt;</span><span class="w"> </span><span class="nv">&lt;string&gt;</span><span class="w"> </span><span class="nv">&lt;fmt/format.h&gt;</span><span class="w"> </span><span class="nv">&lt;Eigen/Dense&gt;</span><span class="w"></span>
-<span class="nf">)</span><span class="w"></span>
+<span class="w">  </span><span class="no">PCH_HEADERS</span><span class="w"> </span><span class="nv">&lt;vector&gt;</span><span class="w"> </span><span class="nv">&lt;string&gt;</span><span class="w"> </span><span class="nv">&lt;fmt/format.h&gt;</span><span class="w"> </span><span class="nv">&lt;Eigen/Dense&gt;</span>
+<span class="nf">)</span>
 </pre></div>
 </div>
 <p>Add your executables, etc., as described above.</p>
@@ -158,7 +168,7 @@
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"> Read the Docs</span>
-      v: main
+      v: docs
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">
@@ -169,7 +179,7 @@
 <script src="../js/version_switcher.js"></script>
 <script>
     window.addEventListener('load', (event) => {
-        ar_updateVersionList('main');
+        ar_updateVersionList('docs');
     });
 </script>
 <script>

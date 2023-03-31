@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; project_options 0.26.3 documentation</title>
+  <title>project_options parameters &mdash; project_options 0.27.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -13,9 +13,6 @@
   <![endif]-->
   
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
@@ -30,22 +27,37 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> project_options
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            project_options
           </a>
               <div class="version">
                 main
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../index.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html">project_options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html"><code class="docutils literal notranslate"><span class="pre">project_options</span></code> function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#project-options-parameters"><code class="docutils literal notranslate"><span class="pre">project_options</span></code> parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#run-vcpkg"><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#package-project"><code class="docutils literal notranslate"><span class="pre">package_project</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-include-interface-directories-function"><code class="docutils literal notranslate"><span class="pre">target_include_interface_directories</span></code> function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-find-dependencies-function"><code class="docutils literal notranslate"><span class="pre">target_find_dependencies</span></code> function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-include-system-directories"><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-link-system-libraries"><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-disable-static-analysis"><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#enable-cross-compiler"><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#target-link-cuda"><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#dynamic-project-options"><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code></a></li>
 </ul>
 
         </div>
@@ -61,8 +73,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
-      <li class="breadcrumb-item active">&lt;no title&gt;</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">project_options</span></code> parameters</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/src/project_options_api.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -72,7 +84,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <p><code class="docutils literal notranslate"><span class="pre">project_options</span></code> function accepts the following named flags:</p>
+  <section id="project-options-parameters">
+<h1><code class="docutils literal notranslate"><span class="pre">project_options</span></code> parameters<a class="headerlink" href="#project-options-parameters" title="Permalink to this heading"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">project_options</span></code> function accepts the following named flags:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_CACHE</span></code>: Enable cache if available</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_CPPCHECK</span></code>: Enable static analysis with Cppcheck</p></li>
@@ -115,6 +129,7 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">VS_ANALYSIS_RULESET</span></code>: Override the defaults for the code analysis rule set in Visual Studio.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">CONAN_OPTIONS</span></code>: Extra Conan options</p></li>
 </ul>
+</section>
 
 
            </div>

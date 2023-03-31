@@ -25,22 +25,23 @@
 var NAVTREE =
 [
   [ "project_options_docs", "index.html", [
-    [ "<tt>dynamic_project_options</tt>", "md__home_aminya_GitHub_Cpp_project_options_docs_src_dynamic_project_oprions.html", null ],
-    [ "License", "md__home_aminya_GitHub_Cpp_project_options_docs_src_License.html", null ],
-    [ "<tt>package_project</tt>", "md__home_aminya_GitHub_Cpp_project_options_docs_src_package_project.html", null ],
-    [ "project_options_api", "md__home_aminya_GitHub_Cpp_project_options_docs_src_project_options_api.html", null ],
-    [ "project_options_example", "md__home_aminya_GitHub_Cpp_project_options_docs_src_project_options_example.html", [
-      [ "Usage", "index.html#autotoc_md0", null ]
+    [ "<tt>dynamic_project_options</tt>", "md__home_aminya_project_options_docs_src_dynamic_project_options.html", null ],
+    [ "<tt>enable_cross_compiler</tt>", "md__home_aminya_project_options_docs_src_enable_cross_compiler.html", null ],
+    [ "License", "md__home_aminya_project_options_docs_src_License.html", null ],
+    [ "<tt>package_project</tt>", "md__home_aminya_project_options_docs_src_package_project.html", null ],
+    [ "<tt>project_options</tt> parameters", "md__home_aminya_project_options_docs_src_project_options_api.html", null ],
+    [ "<tt>project_options</tt> function", "md__home_aminya_project_options_docs_src_project_options_example.html", null ],
+    [ "project_options", "md__home_aminya_project_options_docs_src_Readme_top.html", [
+      [ "Features", "md__home_aminya_project_options_docs_src_Readme_top.html#autotoc_md11", null ],
+      [ "Documentation", "md__home_aminya_project_options_docs_src_Readme_top.html#autotoc_md12", null ]
     ] ],
-    [ "project_options", "md__home_aminya_GitHub_Cpp_project_options_docs_src_Readme_top.html", [
-      [ "Features", "md__home_aminya_GitHub_Cpp_project_options_docs_src_Readme_top.html#autotoc_md8", null ],
-      [ "Documentation", "md__home_aminya_GitHub_Cpp_project_options_docs_src_Readme_top.html#autotoc_md9", null ]
-    ] ],
-    [ "<tt>run_vcpkg</tt>", "md__home_aminya_GitHub_Cpp_project_options_docs_src_run_vcpkg.html", null ],
-    [ "<tt>target_disable_static_analysis</tt>", "md__home_aminya_GitHub_Cpp_project_options_docs_src_target_disable_static_analysis.html", null ],
-    [ "<tt>target_include_system_directories</tt>", "md__home_aminya_GitHub_Cpp_project_options_docs_src_target_include_system_directories.html", null ],
-    [ "<tt>target_link_cuda</tt>", "md__home_aminya_GitHub_Cpp_project_options_docs_src_target_link_cuda.html", null ],
-    [ "<tt>target_link_system_libraries</tt>", "md__home_aminya_GitHub_Cpp_project_options_docs_src_target_link_system_libraries.html", null ],
+    [ "<tt>run_vcpkg</tt>", "md__home_aminya_project_options_docs_src_run_vcpkg.html", null ],
+    [ "<tt>target_disable_static_analysis</tt>", "md__home_aminya_project_options_docs_src_target_disable_static_analysis.html", null ],
+    [ "<tt>target_find_dependencies</tt> function", "md__home_aminya_project_options_docs_src_target_find_dependencies.html", null ],
+    [ "<tt>target_include_interface_directories</tt> function", "md__home_aminya_project_options_docs_src_target_include_interface_directories.html", null ],
+    [ "<tt>target_include_system_directories</tt>", "md__home_aminya_project_options_docs_src_target_include_system_directories.html", null ],
+    [ "<tt>target_link_cuda</tt>", "md__home_aminya_project_options_docs_src_target_link_cuda.html", null ],
+    [ "<tt>target_link_system_libraries</tt>", "md__home_aminya_project_options_docs_src_target_link_system_libraries.html", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [

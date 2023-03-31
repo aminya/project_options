@@ -23,7 +23,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /home/aminya/cmake/cmake-3.25.1-linux-x86_64/bin/cmake --regenerate-during-build -S/home/aminya/GitHub/Cpp/project_options/docs -B/home/aminya/GitHub/Cpp/project_options/docs/build
+  command = /home/aminya/cmake/cmake-3.25.1-linux-x86_64/bin/cmake --regenerate-during-build -S/home/aminya/project_options/docs -B/home/aminya/project_options/docs/build
   description = Re-running CMake...
   generator = 1
 

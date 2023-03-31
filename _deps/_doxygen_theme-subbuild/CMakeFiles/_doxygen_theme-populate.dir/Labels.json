@@ -2,37 +2,37 @@
 	"sources" : 
 	[
 		{
-			"file" : "/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild/CMakeFiles/_doxygen_theme-populate-Debug"
+			"file" : "/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild/CMakeFiles/_doxygen_theme-populate-Debug"
 		},
 		{
-			"file" : "/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild/CMakeFiles/_doxygen_theme-populate-(CONFIG).rule"
+			"file" : "/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild/CMakeFiles/_doxygen_theme-populate-(CONFIG).rule"
 		},
 		{
-			"file" : "/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild/CMakeFiles/(CONFIG)/_doxygen_theme-populate-complete.rule"
+			"file" : "/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild/CMakeFiles/(CONFIG)/_doxygen_theme-populate-complete.rule"
 		},
 		{
-			"file" : "/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild/_doxygen_theme-populate-prefix/src/_doxygen_theme-populate-stamp/(CONFIG)/_doxygen_theme-populate-build.rule"
+			"file" : "/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild/_doxygen_theme-populate-prefix/src/_doxygen_theme-populate-stamp/(CONFIG)/_doxygen_theme-populate-build.rule"
 		},
 		{
-			"file" : "/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild/_doxygen_theme-populate-prefix/src/_doxygen_theme-populate-stamp/(CONFIG)/_doxygen_theme-populate-configure.rule"
+			"file" : "/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild/_doxygen_theme-populate-prefix/src/_doxygen_theme-populate-stamp/(CONFIG)/_doxygen_theme-populate-configure.rule"
 		},
 		{
-			"file" : "/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild/_doxygen_theme-populate-prefix/src/_doxygen_theme-populate-stamp/(CONFIG)/_doxygen_theme-populate-download.rule"
+			"file" : "/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild/_doxygen_theme-populate-prefix/src/_doxygen_theme-populate-stamp/(CONFIG)/_doxygen_theme-populate-download.rule"
 		},
 		{
-			"file" : "/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild/_doxygen_theme-populate-prefix/src/_doxygen_theme-populate-stamp/(CONFIG)/_doxygen_theme-populate-install.rule"
+			"file" : "/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild/_doxygen_theme-populate-prefix/src/_doxygen_theme-populate-stamp/(CONFIG)/_doxygen_theme-populate-install.rule"
 		},
 		{
-			"file" : "/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild/_doxygen_theme-populate-prefix/src/_doxygen_theme-populate-stamp/(CONFIG)/_doxygen_theme-populate-mkdir.rule"
+			"file" : "/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild/_doxygen_theme-populate-prefix/src/_doxygen_theme-populate-stamp/(CONFIG)/_doxygen_theme-populate-mkdir.rule"
 		},
 		{
-			"file" : "/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild/_doxygen_theme-populate-prefix/src/_doxygen_theme-populate-stamp/(CONFIG)/_doxygen_theme-populate-patch.rule"
+			"file" : "/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild/_doxygen_theme-populate-prefix/src/_doxygen_theme-populate-stamp/(CONFIG)/_doxygen_theme-populate-patch.rule"
 		},
 		{
-			"file" : "/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild/_doxygen_theme-populate-prefix/src/_doxygen_theme-populate-stamp/(CONFIG)/_doxygen_theme-populate-test.rule"
+			"file" : "/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild/_doxygen_theme-populate-prefix/src/_doxygen_theme-populate-stamp/(CONFIG)/_doxygen_theme-populate-test.rule"
 		},
 		{
-			"file" : "/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild/_doxygen_theme-populate-prefix/src/_doxygen_theme-populate-stamp/(CONFIG)/_doxygen_theme-populate-update.rule"
+			"file" : "/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild/_doxygen_theme-populate-prefix/src/_doxygen_theme-populate-stamp/(CONFIG)/_doxygen_theme-populate-update.rule"
 		}
 	],
 	"target" : 

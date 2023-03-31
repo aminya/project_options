@@ -51,8 +51,8 @@ build documentation$:Release: phony CMakeFiles/documentation-Release doc_format_
 # Custom command for CMakeFiles/doxygen-docs-Release
 
 build CMakeFiles/doxygen-docs-Release | ${cmake_ninja_workdir}CMakeFiles/doxygen-docs-Release: CUSTOM_COMMAND Doxyfile.doxygen-docs
-  COMMAND = cd /home/aminya/GitHub/Cpp/project_options/docs && /home/aminya/cmake/cmake-3.25.1-linux-x86_64/bin/cmake -E make_directory /home/aminya/GitHub/Cpp/project_options/docs/build && /home/aminya/doxygen/doxygen-1.9.6/bin/doxygen /home/aminya/GitHub/Cpp/project_options/docs/build/Doxyfile.doxygen-docs
-  DESC = Generating documentation - entry file: /home/aminya/GitHub/Cpp/project_options/docs/build/html/index.html
+  COMMAND = cd /home/aminya/project_options/docs && /home/aminya/cmake/cmake-3.25.1-linux-x86_64/bin/cmake -E make_directory /home/aminya/project_options/docs/build && /home/aminya/doxygen/doxygen-1.9.6/bin/doxygen /home/aminya/project_options/docs/build/Doxyfile.doxygen-docs
+  DESC = Generating documentation - entry file: /home/aminya/project_options/docs/build/html/index.html
 
 
 #############################################
@@ -65,12 +65,12 @@ build CMakeFiles/documentation-Release | ${cmake_ninja_workdir}CMakeFiles/docume
 # Custom command for doc_format_html
 
 build doc_format_html | ${cmake_ninja_workdir}doc_format_html: CUSTOM_COMMAND
-  COMMAND = cd /home/aminya/GitHub/Cpp/project_options/docs/build && /home/aminya/.local/bin/sphinx-build -c /home/aminya/GitHub/Cpp/project_options/docs/build -d /home/aminya/GitHub/Cpp/project_options/docs/build/doctrees -b html /home/aminya/GitHub/Cpp/project_options/docs /home/aminya/GitHub/Cpp/project_options/docs/build/html > /home/aminya/GitHub/Cpp/project_options/docs/build/build-html.log && /home/aminya/cmake/cmake-3.25.1-linux-x86_64/bin/cmake -E copy_directory /home/aminya/GitHub/Cpp/project_options/docs/root/ /home/aminya/GitHub/Cpp/project_options/docs/build
-  DESC = sphinx-build html: see /home/aminya/GitHub/Cpp/project_options/docs/build/build-html.log
+  COMMAND = cd /home/aminya/project_options/docs/build && /home/aminya/.local/bin/sphinx-build -c /home/aminya/project_options/docs/build -d /home/aminya/project_options/docs/build/doctrees -b html /home/aminya/project_options/docs /home/aminya/project_options/docs/build/html > /home/aminya/project_options/docs/build/build-html.log && /home/aminya/cmake/cmake-3.25.1-linux-x86_64/bin/cmake -E copy_directory /home/aminya/project_options/docs/root/ /home/aminya/project_options/docs/build
+  DESC = sphinx-build html: see /home/aminya/project_options/docs/build/build-html.log
 
 
 #############################################
-# Folder: /home/aminya/GitHub/Cpp/project_options/docs/build
+# Folder: /home/aminya/project_options/docs/build
 
 build all$:Release: phony doxygen-docs$:Release documentation$:Release
 

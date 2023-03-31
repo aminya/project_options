@@ -1,4 +1,4 @@
-# Install script for directory: /home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild
+# Install script for directory: /home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

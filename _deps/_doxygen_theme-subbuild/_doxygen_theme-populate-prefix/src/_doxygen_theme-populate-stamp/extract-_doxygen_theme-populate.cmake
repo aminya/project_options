@@ -5,8 +5,8 @@ cmake_minimum_required(VERSION 3.5)
 
 # Make file names absolute:
 #
-get_filename_component(filename "/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild/_doxygen_theme-populate-prefix/src/v2.0.2.zip" ABSOLUTE)
-get_filename_component(directory "/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-src" ABSOLUTE)
+get_filename_component(filename "/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild/_doxygen_theme-populate-prefix/src/v2.0.2.zip" ABSOLUTE)
+get_filename_component(directory "/home/aminya/project_options/docs/build/_deps/_doxygen_theme-src" ABSOLUTE)
 
 message(STATUS "extracting...
      src='${filename}'

@@ -21,7 +21,7 @@ var namespaces_dup =
       [ "repo", "namespaceconf.html#a35fa2d94ab255198dffac5df0e345111", null ],
       [ "REPO_NAME", "namespaceconf.html#a7dcb56741015154fbf577264845b66d5", null ],
       [ "shell", "namespaceconf.html#a332f430461432dc465213f884a1e4967", null ],
-      [ "source_suffix", "namespaceconf.html#ad15efa571aa0827e142708247b74ee13", null ],
+      [ "source_suffix", "namespaceconf.html#a522f87436bac0f83cd3e3427e4198daf", null ],
       [ "templates_path", "namespaceconf.html#ae850ae634911b713e036b43894fdd525", null ],
       [ "try", "namespaceconf.html#a0408c0d1bff5339675e317be48b56761", null ],
       [ "version", "namespaceconf.html#a082ce7a1be62a491bf884702146210d3", null ]

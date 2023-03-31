@@ -20,7 +20,7 @@ var conf_8py =
     [ "repo", "conf_8py.html#a35fa2d94ab255198dffac5df0e345111", null ],
     [ "REPO_NAME", "conf_8py.html#a7dcb56741015154fbf577264845b66d5", null ],
     [ "shell", "conf_8py.html#a332f430461432dc465213f884a1e4967", null ],
-    [ "source_suffix", "conf_8py.html#ad15efa571aa0827e142708247b74ee13", null ],
+    [ "source_suffix", "conf_8py.html#a522f87436bac0f83cd3e3427e4198daf", null ],
     [ "templates_path", "conf_8py.html#ae850ae634911b713e036b43894fdd525", null ],
     [ "try", "conf_8py.html#a0408c0d1bff5339675e317be48b56761", null ],
     [ "version", "conf_8py.html#a082ce7a1be62a491bf884702146210d3", null ]

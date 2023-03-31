@@ -1,3 +1,5 @@
+## `project_options` parameters
+
 `project_options` function accepts the following named flags:
 
 - `ENABLE_CACHE`: Enable cache if available
