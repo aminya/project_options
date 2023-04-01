@@ -325,7 +325,7 @@ endfunction()
    :parser: myst_parser.sphinx_
 
 #]]
-function(target_find_dependencies target)
+macro(target_find_dependencies target)
   set(_options)
   set(_oneValueArgs)
   set(_MultiValueArgs
@@ -363,4 +363,4 @@ function(target_find_dependencies target)
   _property_for(PRIVATE_CONFIG)
   _property_for(PUBLIC_CONFIG)
   _property_for(INTERFACE_CONFIG)
-endfunction()
+endmacro()
