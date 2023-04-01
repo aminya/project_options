@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>project_options function &mdash; project_options 0.27.0 documentation</title>
+  <title>project_options function &mdash; project_options 0.27.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -107,7 +107,7 @@
 <span class="c"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</span>
 <span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
 <span class="nf">FetchContent_Declare(</span><span class="nb">_project_options</span><span class="w"> </span><span class="no">URL</span>
-<span class="w">  </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/v0.27.0.zip</span>
+<span class="w">  </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/v0.27.1.zip</span>
 <span class="nf">)</span>
 <span class="nf">FetchContent_MakeAvailable(</span><span class="nb">_project_options</span><span class="nf">)</span>
 <span class="nf">include(</span><span class="o">${</span><span class="nt">_project_options_SOURCE_DIR</span><span class="o">}</span><span class="na">/Index.cmake</span><span class="nf">)</span>
@@ -421,7 +421,7 @@ When adding the target to <code class="docutils literal notranslate"><span class
 <span class="nf">)</span>
 </pre></div>
 </div>
-<p>This function calls <code class="docutils literal notranslate"><span class="pre">find_package(${dependency}</span> <span class="pre">[CONFIG]</span> <span class="pre">REQUIRED)</span></code> for all dependencies required and binds them to the target.</p>
+<p>This macro calls <code class="docutils literal notranslate"><span class="pre">find_package(${dependency}</span> <span class="pre">[CONFIG]</span> <span class="pre">REQUIRED)</span></code> for all dependencies required and binds them to the target.</p>
 <p>Properties named <code class="docutils literal notranslate"><span class="pre">PROJECT_OPTIONS_&lt;PRIVATE|PUBLIC|INTERFACE&gt;[_CONFIG]_DEPENDENCIES</span></code> will be created in <code class="docutils literal notranslate"><span class="pre">target_name</span></code> to represent corresponding dependencies.
 When adding the target to <code class="docutils literal notranslate"><span class="pre">package_project</span></code>, directories in this property will be automatically added.</p>
 <p>You can call this function with the same <code class="docutils literal notranslate"><span class="pre">target_name</span></code> multiple times to add more dependencies.</p>
@@ -591,7 +591,7 @@ When adding the target to <code class="docutils literal notranslate"><span class
 <span class="c"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</span>
 <span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
 <span class="nf">FetchContent_Declare(</span><span class="nb">_project_options</span><span class="w"> </span><span class="no">URL</span>
-<span class="w">  </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/v0.27.0.zip</span>
+<span class="w">  </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/v0.27.1.zip</span>
 <span class="nf">)</span>
 <span class="nf">FetchContent_MakeAvailable(</span><span class="nb">_project_options</span><span class="nf">)</span>
 <span class="nf">include(</span><span class="o">${</span><span class="nt">_project_options_SOURCE_DIR</span><span class="o">}</span><span class="na">/Index.cmake</span><span class="nf">)</span>

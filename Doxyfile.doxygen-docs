@@ -4,7 +4,7 @@
 
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = project_options_docs
-PROJECT_NUMBER         = 0.27.0
+PROJECT_NUMBER         = 0.27.1
 PROJECT_BRIEF          = Documentation
 PROJECT_LOGO           = 
 OUTPUT_DIRECTORY       = /home/aminya/project_options/docs/build

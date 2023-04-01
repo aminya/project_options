@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>target_find_dependencies function &mdash; project_options 0.27.0 documentation</title>
+  <title>target_find_dependencies function &mdash; project_options 0.27.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -96,7 +96,7 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
-<p>This function calls <code class="docutils literal notranslate"><span class="pre">find_package(${dependency}</span> <span class="pre">[CONFIG]</span> <span class="pre">REQUIRED)</span></code> for all dependencies required and binds them to the target.</p>
+<p>This macro calls <code class="docutils literal notranslate"><span class="pre">find_package(${dependency}</span> <span class="pre">[CONFIG]</span> <span class="pre">REQUIRED)</span></code> for all dependencies required and binds them to the target.</p>
 <p>Properties named <code class="docutils literal notranslate"><span class="pre">PROJECT_OPTIONS_&lt;PRIVATE|PUBLIC|INTERFACE&gt;[_CONFIG]_DEPENDENCIES</span></code> will be created in <code class="docutils literal notranslate"><span class="pre">target_name</span></code> to represent corresponding dependencies.
 When adding the target to <code class="docutils literal notranslate"><span class="pre">package_project</span></code>, directories in this property will be automatically added.</p>
 <p>You can call this function with the same <code class="docutils literal notranslate"><span class="pre">target_name</span></code> multiple times to add more dependencies.</p>

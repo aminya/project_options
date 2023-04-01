@@ -11,7 +11,7 @@ target_find_dependencies(<target_name>
 )
 ```
 
-This function calls `find_package(${dependency} [CONFIG] REQUIRED)` for all dependencies required and binds them to the target.
+This macro calls `find_package(${dependency} [CONFIG] REQUIRED)` for all dependencies required and binds them to the target.
 
 Properties named `PROJECT_OPTIONS_<PRIVATE|PUBLIC|INTERFACE>[_CONFIG]_DEPENDENCIES` will be created in `target_name` to represent corresponding dependencies.
 When adding the target to `package_project`, directories in this property will be automatically added.

@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">project_options_docs<span id="projectnumber">&#160;0.27.0</span>
+   <div id="projectname">project_options_docs<span id="projectnumber">&#160;0.27.1</span>
    </div>
    <div id="projectbrief">Documentation</div>
   </td>
@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('md__home_aminya_project_options_docs_s
 <div class="line">  [PUBLIC_CONFIG [dependency ...]]</div>
 <div class="line">  [PRIVATE_CONFIG [dependency ...]]</div>
 <div class="line">)</div>
-</div><!-- fragment --><p>This function calls <code>find_package(${dependency} [CONFIG] REQUIRED)</code> for all dependencies required and binds them to the target.</p>
+</div><!-- fragment --><p>This macro calls <code>find_package(${dependency} [CONFIG] REQUIRED)</code> for all dependencies required and binds them to the target.</p>
 <p>Properties named <code>PROJECT_OPTIONS_&lt;PRIVATE|PUBLIC|INTERFACE&gt;[_CONFIG]_DEPENDENCIES</code> will be created in <code>target_name</code> to represent corresponding dependencies. When adding the target to <code>package_project</code>, directories in this property will be automatically added.</p>
 <p>You can call this function with the same <code>target_name</code> multiple times to add more dependencies.</p>
 <div class="fragment"><div class="line">add_library(my_lib)</div>
