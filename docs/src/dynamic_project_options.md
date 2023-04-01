@@ -20,8 +20,8 @@ cmake -DOPT_<featurename>:BOOL=value
 
 See `dynamic_project_options()` in action in [this template repository](https://github.com/aminya/cpp_boilerplate_project).
 
-<details>
-<summary> 👉 Click to show the example:</summary>
+Here is an example of how to use `dynamic_project_options`:
+
 
 ```cmake
 cmake_minimum_required(VERSION 3.20)
@@ -64,5 +64,3 @@ dynamic_project_options(
 ```
 
 Add your executables, etc., as described above.
-
-</details>
