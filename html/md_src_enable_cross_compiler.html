@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('md_src_enable_cross_compiler.html','')
   <div class="headertitle"><div class="title"><code>enable_cross_compiler</code> </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><b>NOTE</b>: this feature is experimental and needs more documentation/examples. See the <code>tests/rpi3</code>, <code>tests/rpi4</code>, <code>tests/emscripten</code>, <code>tests-rpi4-vcpkg</code> directories in the <a href="https://github.com/aminya/project_options/tree/main/tests">repositpry</a> for full examples.</p>
+<div class="textblock"><p><b>NOTE</b>: more documentation/examples for this feature is welcome. See the <code>tests/rpi3</code>, <code>tests/rpi4</code>, <code>tests/emscripten</code>, <code>tests-rpi4-vcpkg</code> directories in the <a href="https://github.com/aminya/project_options/tree/main/tests">repositpry</a> for full examples.</p>
 <p>The following calls <code>enable_cross_compiler</code> to enable the cross-compiler as the current toolchain.</p>
 <div class="fragment"><div class="line">enable_cross_compiler(</div>
 <div class="line">  CC &quot;arm-none-eabi-gcc&quot;</div>
@@ -143,7 +143,7 @@ $(document).ready(function(){initNavTree('md_src_enable_cross_compiler.html','')
 <li><code>-DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER=gcc-aarch64-linux-gnu-gcc -DCMAKE_CXX_COMPILER=gcc-aarch64-linux-gnu-g++ -DDEFAULT_TRIPLET=arm64-linux</code></li>
 <li><code>-DENABLE_CROSS_COMPILING:BOOL=ON -DCMAKE_C_COMPILER=arm-linux-gnueabihf-gcc -DCMAKE_CXX_COMPILER=arm-linux-gnueabi-g++ -DDEFAULT_TRIPLET=arm-linux -DCROSS_ROOT=/usr/gcc-arm-linux-gnueabihf</code></li>
 </ul>
-<p>For (bare-metal) you don't need/can't(?) set <code>arm-linux</code>/<code>arm64-linux</code> (for vcpkg):</p>
+<p>For (bare-metal) you don't need/can't set <code>arm-linux</code>/<code>arm64-linux</code> for vcpkg:</p>
 <ul>
 <li>arm-none-eabi <a href="https://github.com/abeimler/project_options/blob/feature/open-closed-enable-cross-compiler/src/toolchains/arm.toolchain.cmake">arm.toolchain.cmake</a></li>
 </ul>

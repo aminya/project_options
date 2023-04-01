@@ -107,10 +107,7 @@ $(document).ready(function(){initNavTree('md_src_dynamic_project_options.html','
 <p>If you need to fix a setting for the sake of a command-line configuration, you can use:</p>
 <div class="fragment"><div class="line">cmake -DOPT_&lt;featurename&gt;:BOOL=value</div>
 </div><!-- fragment --><p>See <code>dynamic_project_options()</code> in action in <a href="https://github.com/aminya/cpp_boilerplate_project">this template repository</a>.</p>
-<details >
-<summary >
-👉 Click to show the example:</summary>
-<p></p>
+<p>Here is an example of how to use <code>dynamic_project_options</code>:</p>
 <div class="fragment"><div class="line">cmake_minimum_required(VERSION 3.20)</div>
 <div class="line"> </div>
 <div class="line"># set a default CXX standard for the tools and targets that do not specify them.</div>
@@ -148,9 +145,7 @@ $(document).ready(function(){initNavTree('md_src_dynamic_project_options.html','
 <div class="line">  # set the common headers you want to precompile</div>
 <div class="line">  PCH_HEADERS &lt;vector&gt; &lt;string&gt; &lt;fmt/format.h&gt; &lt;Eigen/Dense&gt;</div>
 <div class="line">)</div>
-</div><!-- fragment --><p>Add your executables, etc., as described above.</p>
-<p></p>
-</details>
+</div><!-- fragment --><p>Add your executables, etc., as described above. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

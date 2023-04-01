@@ -482,7 +482,7 @@ When adding the target to <code class="docutils literal notranslate"><span class
 </section>
 <section id="enable-cross-compiler">
 <h1><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code><a class="headerlink" href="#enable-cross-compiler" title="Permalink to this heading"></a></h1>
-<p><strong>NOTE</strong>: this feature is experimental and needs more documentation/examples. See the <code class="docutils literal notranslate"><span class="pre">tests/rpi3</span></code>, <code class="docutils literal notranslate"><span class="pre">tests/rpi4</span></code>, <code class="docutils literal notranslate"><span class="pre">tests/emscripten</span></code>, <code class="docutils literal notranslate"><span class="pre">tests-rpi4-vcpkg</span></code> directories in the <a class="reference external" href="https://github.com/aminya/project_options/tree/main/tests">repositpry</a> for full examples.</p>
+<p><strong>NOTE</strong>: more documentation/examples for this feature is welcome. See the <code class="docutils literal notranslate"><span class="pre">tests/rpi3</span></code>, <code class="docutils literal notranslate"><span class="pre">tests/rpi4</span></code>, <code class="docutils literal notranslate"><span class="pre">tests/emscripten</span></code>, <code class="docutils literal notranslate"><span class="pre">tests-rpi4-vcpkg</span></code> directories in the <a class="reference external" href="https://github.com/aminya/project_options/tree/main/tests">repositpry</a> for full examples.</p>
 <p>The following calls <code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code> to enable the cross-compiler as the current toolchain.</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">enable_cross_compiler(</span>
 <span class="w">  </span><span class="no">CC</span><span class="w"> </span><span class="s">&quot;arm-none-eabi-gcc&quot;</span>
@@ -534,7 +534,7 @@ When adding the target to <code class="docutils literal notranslate"><span class
 <li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_CROSS_COMPILING:BOOL=ON</span> <span class="pre">-DCMAKE_C_COMPILER=gcc-aarch64-linux-gnu-gcc</span> <span class="pre">-DCMAKE_CXX_COMPILER=gcc-aarch64-linux-gnu-g++</span> <span class="pre">-DDEFAULT_TRIPLET=arm64-linux</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_CROSS_COMPILING:BOOL=ON</span> <span class="pre">-DCMAKE_C_COMPILER=arm-linux-gnueabihf-gcc</span> <span class="pre">-DCMAKE_CXX_COMPILER=arm-linux-gnueabi-g++</span> <span class="pre">-DDEFAULT_TRIPLET=arm-linux</span> <span class="pre">-DCROSS_ROOT=/usr/gcc-arm-linux-gnueabihf</span></code></p></li>
 </ul>
-<p>For (bare-metal) you don’t need/can’t(?) set <code class="docutils literal notranslate"><span class="pre">arm-linux</span></code>/<code class="docutils literal notranslate"><span class="pre">arm64-linux</span></code> (for vcpkg):</p>
+<p>For (bare-metal) you don’t need/can’t set <code class="docutils literal notranslate"><span class="pre">arm-linux</span></code>/<code class="docutils literal notranslate"><span class="pre">arm64-linux</span></code> for vcpkg:</p>
 <ul class="simple">
 <li><p>arm-none-eabi <a class="reference external" href="https://github.com/abeimler/project_options/blob/feature/open-closed-enable-cross-compiler/src/toolchains/arm.toolchain.cmake">arm.toolchain.cmake</a></p></li>
 </ul>
@@ -580,8 +580,7 @@ When adding the target to <code class="docutils literal notranslate"><span class
 </pre></div>
 </div>
 <p>See <code class="docutils literal notranslate"><span class="pre">dynamic_project_options()</span></code> in action in <a class="reference external" href="https://github.com/aminya/cpp_boilerplate_project">this template repository</a>.</p>
-<details>
-<summary> 👉 Click to show the example:</summary>
+<p>Here is an example of how to use <code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code>:</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.20</span><span class="nf">)</span>
 
 <span class="c"># set a default CXX standard for the tools and targets that do not specify them.</span>
@@ -622,7 +621,7 @@ When adding the target to <code class="docutils literal notranslate"><span class
 </pre></div>
 </div>
 <p>Add your executables, etc., as described above.</p>
-</details></section>
+</section>
 
 
            </div>
