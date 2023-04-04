@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.25)
 
 project(
   project_options_docs
-  VERSION 0.27.1
+  VERSION 0.27.2
   DESCRIPTION "Documentation"
   LANGUAGES NONE)
 
