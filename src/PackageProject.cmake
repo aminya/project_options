@@ -123,7 +123,7 @@ function(package_project)
       OUTPUT
       "PROPERTY_${property}")
   endmacro()
-  _get_property(INTERFACE_INCLUDES)
+  _get_property(INTERFACE_DIRECTORIES)
   _get_property(INTERFACE_DEPENDENCIES)
   _get_property(PUBLIC_DEPENDENCIES)
   _get_property(PRIVATE_DEPENDENCIES)
