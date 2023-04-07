@@ -117,7 +117,12 @@ macro(dynamic_project_options)
     endif()
 
     if(OPT_${option_name})
-      option(OPT_${option_name} "${option_description}" ${option_user_default})
+      if(ENABLE_DEVELOPER_MODE)
+        set(option_implicit_default ${option_developer_default})
+      else()
+        set(option_implicit_default ${option_user_default})
+      endif()
+      option(OPT_${option_name} "${option_description}" ${option_implicit_default})
     else()
       cmake_dependent_option(
         OPT_${option_name}
