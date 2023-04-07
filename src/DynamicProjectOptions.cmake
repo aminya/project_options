@@ -50,50 +50,70 @@ macro(dynamic_project_options)
 
   include(CMakeDependentOption)
 
-  # <option name>;<user mode default>;<developer mode default>;<description>
+  # <option type>;<option name>;<user mode default>;<developer mode default>;<description>
   set(options
-      "ENABLE_CACHE\;${MAKEFILE_OR_NINJA}\;${MAKEFILE_OR_NINJA}\;Enable ccache on Unix"
-      "WARNINGS_AS_ERRORS\;OFF\;ON\;Treat warnings as Errors"
-      "ENABLE_CLANG_TIDY\;OFF\;${MAKEFILE_OR_NINJA}\;Enable clang-tidy analysis during compilation"
-      "ENABLE_VS_ANALYSIS\;ON\;ON\;Enable Visual Studio IDE code analysis if the generator is Visual Studio."
-      "ENABLE_CONAN\;OFF\;OFF\;Automatically integrate Conan for package management"
-      "ENABLE_COVERAGE\;OFF\;OFF\;Analyze and report on coverage"
-      "ENABLE_SANITIZER_ADDRESS\;OFF\;${SUPPORTS_ASAN}\;Make memory errors into hard runtime errors (windows/linux/macos)"
-      "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR\;OFF\;${SUPPORTS_UBSAN}\;Make certain types (numeric mostly) of undefined behavior into runtime errors"
-      "ENABLE_CPPCHECK\;OFF\;${MAKEFILE_OR_NINJA}\;Enable cppcheck analysis during compilation"
-      "ENABLE_INTERPROCEDURAL_OPTIMIZATION\;OFF\;OFF\;Enable whole-program optimization (e.g. LTO)"
-      "ENABLE_NATIVE_OPTIMIZATION\;OFF\;OFF\;Enable the optimizations specific to the build machine (e.g. SSE4_1, AVX2, etc.)."
-      "DISABLE_EXCEPTIONS\;OFF\;OFF\;Disable Exceptions (no-exceptions and no-unwind-tables flag)"
-      "DISABLE_RTTI\;OFF\;OFF\;Disable RTTI (no-rtti flag)"
-      "ENABLE_INCLUDE_WHAT_YOU_USE\;OFF\;OFF\;Enable include-what-you-use analysis during compilation"
-      "ENABLE_PCH\;OFF\;OFF\;Enable pre-compiled-headers support"
-      "ENABLE_DOXYGEN\;OFF\;OFF\;Build documentation with Doxygen"
-      "ENABLE_BUILD_WITH_TIME_TRACE\;OFF\;OFF\;Generates report of where compile-time is spent"
-      "ENABLE_UNITY\;OFF\;OFF\;Merge C++ files into larger C++ files, can speed up compilation sometimes"
-      "ENABLE_SANITIZER_LEAK\;OFF\;OFF\;Make memory leaks into hard runtime errors"
-      "ENABLE_SANITIZER_THREAD\;OFF\;OFF\;Make thread race conditions into hard runtime errors"
-      "ENABLE_SANITIZER_MEMORY\;OFF\;OFF\;Make other memory errors into runtime errors")
+      "0\;WARNINGS_AS_ERRORS\;OFF\;ON\;Treat warnings as Errors"
+      "0\;ENABLE_COVERAGE\;OFF\;OFF\;Analyze and report on coverage"
+      "0\;ENABLE_CPPCHECK\;OFF\;${MAKEFILE_OR_NINJA}\;Enable cppcheck analysis during compilation"
+      "0\;ENABLE_CLANG_TIDY\;OFF\;${MAKEFILE_OR_NINJA}\;Enable clang-tidy analysis during compilation"
+      "0\;ENABLE_VS_ANALYSIS\;ON\;ON\;Enable Visual Studio IDE code analysis if the generator is Visual Studio."
+      "0\;ENABLE_INCLUDE_WHAT_YOU_USE\;OFF\;OFF\;Enable include-what-you-use analysis during compilation"
+      "0\;ENABLE_CACHE\;${MAKEFILE_OR_NINJA}\;${MAKEFILE_OR_NINJA}\;Enable ccache on Unix"
+      "0\;ENABLE_PCH\;OFF\;OFF\;Enable pre-compiled-headers support"
+      "0\;ENABLE_CONAN\;OFF\;OFF\;Automatically integrate Conan for package management"
+      "0\;ENABLE_VCPKG\;OFF\;OFF\;Automatically integrate vcpkg for package management"
+      "0\;ENABLE_DOXYGEN\;OFF\;OFF\;Build documentation with Doxygen"
+      "0\;ENABLE_INTERPROCEDURAL_OPTIMIZATION\;OFF\;OFF\;Enable whole-program optimization (e.g. LTO)"
+      "0\;ENABLE_NATIVE_OPTIMIZATION\;OFF\;OFF\;Enable the optimizations specific to the build machine (e.g. SSE4_1, AVX2, etc.)."
+      "0\;DISABLE_EXCEPTIONS\;OFF\;OFF\;Disable Exceptions (no-exceptions and no-unwind-tables flag)"
+      "0\;DISABLE_RTTI\;OFF\;OFF\;Disable RTTI (no-rtti flag)"
+      "0\;ENABLE_BUILD_WITH_TIME_TRACE\;OFF\;OFF\;Generates report of where compile-time is spent"
+      "0\;ENABLE_UNITY\;OFF\;OFF\;Merge C++ files into larger C++ files, can speed up compilation sometimes"
+      "0\;ENABLE_SANITIZER_ADDRESS\;OFF\;${SUPPORTS_ASAN}\;Make memory errors into hard runtime errors (windows/linux/macos)"
+      "0\;ENABLE_SANITIZER_LEAK\;OFF\;OFF\;Make memory leaks into hard runtime errors"
+      "0\;ENABLE_SANITIZER_UNDEFINED_BEHAVIOR\;OFF\;${SUPPORTS_UBSAN}\;Make certain types (numeric mostly) of undefined behavior into runtime errors"
+      "0\;ENABLE_SANITIZER_THREAD\;OFF\;OFF\;Make thread race conditions into hard runtime errors"
+      "0\;ENABLE_SANITIZER_MEMORY\;OFF\;OFF\;Make other memory errors into runtime errors"
+      "1\;LINKER\;\;\;Choose a specific linker"
+      "1\;VS_ANALYSIS_RULESET\;\;\;Override the defaults for the code analysis rule set in Visual Studio"
+      "1\;CONAN_PROFILE\;\;\;Use specific Conan profile"
+      "1\;CONAN_HOST_PROFILE\;\;\;Use specific Conan host profile"
+      "1\;CONAN_BUILD_PROFILE\;\;\;Use specific Conan build profile"
+      "2\;DOXYGEN_THEME\;\;\;Name of the Doxygen theme to use"
+      "2\;MSVC_WARNINGS\;\;\;Override the defaults for the MSVC warnings"
+      "2\;CLANG_WARNINGS\;\;\;Override the defaults for the CLANG warnings"
+      "2\;GCC_WARNINGS\;\;\;Override the defaults for the GCC warnings"
+      "2\;CUDA_WARNINGS\;\;\;Override the defaults for the CUDA warnings"
+      "2\;CPPCHECK_OPTIONS\;\;\;Override the defaults for the options passed to cppcheck"
+      "2\;CLANG_TIDY_EXTRA_ARGUMENTS\;\;\;Additiona arguments to use for clang-tidy invokation"
+      "2\;PCH_HEADERS\;\;\;List of the headers to precompile"
+      "2\;CONAN_OPTIONS\;\;\;Extra Conan options")
 
   foreach(option ${options})
     list(
       GET
       option
       0
-      option_name)
+      option_type)
     list(
       GET
       option
       1
-      option_user_default)
+      option_name)
     list(
       GET
       option
       2
-      option_developer_default)
+      option_user_default)
     list(
       GET
       option
       3
+      option_developer_default)
+    list(
+      GET
+      option
+      4
       option_description)
 
     if(DEFINED ${option_name}_DEFAULT)
@@ -122,38 +142,58 @@ macro(dynamic_project_options)
       else()
         set(option_implicit_default ${option_user_default})
       endif()
-      option(OPT_${option_name} "${option_description}" ${option_implicit_default})
+      if(option_type EQUAL 0)
+        option(OPT_${option_name} "${option_description}" ${option_implicit_default})
+      else()
+        option(OPT_${option_name} "${option_description}" "${option_implicit_default}")
+      endif()
     else()
-      cmake_dependent_option(
-        OPT_${option_name}
-        "${option_description}"
-        ${option_developer_default}
-        ENABLE_DEVELOPER_MODE
-        ${option_user_default})
+      if(option_type EQUAL 0)
+        cmake_dependent_option(
+          OPT_${option_name}
+          "${option_description}"
+          ${option_developer_default}
+          ENABLE_DEVELOPER_MODE
+          ${option_user_default})
+      else()
+        cmake_dependent_option(
+          OPT_${option_name}
+          "${option_description}"
+          "${option_developer_default}"
+          ENABLE_DEVELOPER_MODE
+          "${option_user_default}")
+      endif()
     endif()
 
     if(OPT_${option_name})
-      set(${option_name}_VALUE ${option_name})
+      if(option_type EQUAL 0)
+        set(${option_name}_VALUE ${option_name})
+      elseif(option_type EQUAL 1)
+        set(${option_name}_VALUE ${option_name} "${OPT_${option_name}}")
+      elseif(option_type EQUAL 2)
+        set(${option_name}_VALUE ${option_name} ${OPT_${option_name}})
+      endif()
     else()
       unset(${option_name}_VALUE)
     endif()
   endforeach()
 
   project_options(
-    ${ENABLE_CONAN_VALUE}
-    ${ENABLE_CACHE_VALUE}
     ${WARNINGS_AS_ERRORS_VALUE}
+    ${ENABLE_COVERAGE_VALUE}
     ${ENABLE_CPPCHECK_VALUE}
     ${ENABLE_CLANG_TIDY_VALUE}
     ${ENABLE_VS_ANALYSIS_VALUE}
-    ${ENABLE_COVERAGE_VALUE}
+    ${ENABLE_INCLUDE_WHAT_YOU_USE_VALUE}
+    ${ENABLE_CACHE_VALUE}
+    ${ENABLE_PCH_VALUE}
+    ${ENABLE_CONAN_VALUE}
+    ${ENABLE_VCPKG_VALUE}
+    ${ENABLE_DOXYGEN_VALUE}
     ${ENABLE_INTERPROCEDURAL_OPTIMIZATION_VALUE}
     ${ENABLE_NATIVE_OPTIMIZATION_VALUE}
     ${DISABLE_EXCEPTIONS_VALUE}
     ${DISABLE_RTTI_VALUE}
-    ${ENABLE_INCLUDE_WHAT_YOU_USE_VALUE}
-    ${ENABLE_PCH_VALUE}
-    ${ENABLE_DOXYGEN_VALUE}
     ${ENABLE_BUILD_WITH_TIME_TRACE_VALUE}
     ${ENABLE_UNITY_VALUE}
     ${ENABLE_SANITIZER_ADDRESS_VALUE}
@@ -161,5 +201,19 @@ macro(dynamic_project_options)
     ${ENABLE_SANITIZER_UNDEFINED_BEHAVIOR_VALUE}
     ${ENABLE_SANITIZER_THREAD_VALUE}
     ${ENABLE_SANITIZER_MEMORY_VALUE}
+    ${LINKER_VALUE}
+    ${VS_ANALYSIS_RULESET_VALUE}
+    ${CONAN_PROFILE_VALUE}
+    ${CONAN_HOST_PROFILE_VALUE}
+    ${CONAN_BUILD_PROFILE_VALUE}
+    ${DOXYGEN_THEME_VALUE}
+    ${MSVC_WARNINGS_VALUE}
+    ${CLANG_WARNINGS_VALUE}
+    ${GCC_WARNINGS_VALUE}
+    ${CUDA_WARNINGS_VALUE}
+    ${CPPCHECK_OPTIONS_VALUE}
+    ${CLANG_TIDY_EXTRA_ARGUMENTS_VALUE}
+    ${PCH_HEADERS_VALUE}
+    ${CONAN_OPTIONS_VALUE}
     ${ARGN})
 endmacro()
