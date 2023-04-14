@@ -116,12 +116,21 @@ macro(dynamic_project_options)
       set(option_developer_default ${${option_name}_DEVELOPER_DEFAULT})
     endif()
 
-    cmake_dependent_option(
-      OPT_${option_name}
-      "${option_description}"
-      ${option_developer_default}
-      ENABLE_DEVELOPER_MODE
-      ${option_user_default})
+    if(OPT_${option_name})
+      if(ENABLE_DEVELOPER_MODE)
+        set(option_implicit_default ${option_developer_default})
+      else()
+        set(option_implicit_default ${option_user_default})
+      endif()
+      option(OPT_${option_name} "${option_description}" ${option_implicit_default})
+    else()
+      cmake_dependent_option(
+        OPT_${option_name}
+        "${option_description}"
+        ${option_developer_default}
+        ENABLE_DEVELOPER_MODE
+        ${option_user_default})
+    endif()
 
     if(OPT_${option_name})
       set(${option_name}_VALUE ${option_name})
