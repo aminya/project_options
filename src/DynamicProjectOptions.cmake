@@ -58,6 +58,7 @@ macro(dynamic_project_options)
       "0\;ENABLE_CLANG_TIDY\;OFF\;${MAKEFILE_OR_NINJA}\;Enable clang-tidy analysis during compilation"
       "0\;ENABLE_VS_ANALYSIS\;ON\;ON\;Enable Visual Studio IDE code analysis if the generator is Visual Studio."
       "0\;ENABLE_INCLUDE_WHAT_YOU_USE\;OFF\;OFF\;Enable include-what-you-use analysis during compilation"
+      "0\;ENABLE_GCC_ANALYZER\;OFF\;OFF\;Enable GCC (10+) analyzer during compilation"
       "0\;ENABLE_CACHE\;${MAKEFILE_OR_NINJA}\;${MAKEFILE_OR_NINJA}\;Enable ccache on Unix"
       "0\;ENABLE_PCH\;OFF\;OFF\;Enable pre-compiled-headers support"
       "0\;ENABLE_CONAN\;OFF\;OFF\;Automatically integrate Conan for package management"
@@ -86,6 +87,7 @@ macro(dynamic_project_options)
       "2\;CUDA_WARNINGS\;\;\;Override the defaults for the CUDA warnings"
       "2\;CPPCHECK_OPTIONS\;\;\;Override the defaults for the options passed to cppcheck"
       "2\;CLANG_TIDY_EXTRA_ARGUMENTS\;\;\;Additiona arguments to use for clang-tidy invokation"
+      "2\;GCC_ANALYZER_EXTRA_ARGUMENTS\;\;\;Additional arguments to use for GCC static analysis"
       "2\;PCH_HEADERS\;\;\;List of the headers to precompile"
       "2\;CONAN_OPTIONS\;\;\;Extra Conan options")
 
@@ -185,6 +187,7 @@ macro(dynamic_project_options)
     ${ENABLE_CLANG_TIDY_VALUE}
     ${ENABLE_VS_ANALYSIS_VALUE}
     ${ENABLE_INCLUDE_WHAT_YOU_USE_VALUE}
+    ${ENABLE_GCC_ANALYZER_VALUE}
     ${ENABLE_CACHE_VALUE}
     ${ENABLE_PCH_VALUE}
     ${ENABLE_CONAN_VALUE}
@@ -213,6 +216,7 @@ macro(dynamic_project_options)
     ${CUDA_WARNINGS_VALUE}
     ${CPPCHECK_OPTIONS_VALUE}
     ${CLANG_TIDY_EXTRA_ARGUMENTS_VALUE}
+    ${GCC_ANALYZER_EXTRA_ARGUMENTS_VALUE}
     ${PCH_HEADERS_VALUE}
     ${CONAN_OPTIONS_VALUE}
     ${ARGN})

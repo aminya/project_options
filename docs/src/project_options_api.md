@@ -19,6 +19,7 @@
 - `ENABLE_SANITIZER_MEMORY`: Enable memory sanitizer
 - `ENABLE_PCH`: Enable Precompiled Headers
 - `ENABLE_INCLUDE_WHAT_YOU_USE`: Enable static analysis with include-what-you-use
+- `ENABLE_GCC_ANALYZER`: Enable static analysis with GCC (10+) analyzer
 - `ENABLE_BUILD_WITH_TIME_TRACE`: Enable `-ftime-trace` to generate time tracing `.json` files on clang
 - `ENABLE_UNITY`: Enable Unity builds of projects
 

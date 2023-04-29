@@ -18,6 +18,7 @@ project_options(
   ENABLE_CPPCHECK
   ENABLE_CLANG_TIDY
   # ENABLE_INCLUDE_WHAT_YOU_USE
+  # ENABLE_GCC_ANALYZER
   # ENABLE_COVERAGE
   # ENABLE_PCH
   # PCH_HEADERS <Eigen/Dense> <fmt/core.h> <vector> <utility> <string> <string_view>
