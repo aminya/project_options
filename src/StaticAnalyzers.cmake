@@ -239,19 +239,23 @@ endmacro()
 macro(target_disable_gcc_analyzer TARGET)
   if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
     get_target_property(_compile_options ${TARGET} INTERFACE_COMPILE_OPTIONS)
-    string(REGEX REPLACE
-           "-fanalyzer|-Wanalyzer-[0-9a-zA-Z-]+"
-           ""
-           _compile_options_no_gcc_analyzer
-           "${_compile_options}")
-    set_target_properties(${TARGET} PROPERTIES INTERFACE_COMPILE_OPTIONS "${_compile_options_no_gcc_analyzer}")
+    if(_compile_options)
+      string(REGEX REPLACE
+             "-fanalyzer|-Wanalyzer-[0-9a-zA-Z-]+"
+             ""
+             _compile_options_no_gcc_analyzer
+             "${_compile_options}")
+      set_target_properties(${TARGET} PROPERTIES INTERFACE_COMPILE_OPTIONS "${_compile_options_no_gcc_analyzer}")
+    endif()
     get_target_property(_compile_options ${TARGET} COMPILE_OPTIONS)
-    string(REGEX REPLACE
-           "-fanalyzer|-Wanalyzer-[0-9a-zA-Z-]+"
-           ""
-           _compile_options_no_gcc_analyzer
-           "${_compile_options}")
-    set_target_properties(${TARGET} PROPERTIES COMPILE_OPTIONS "${_compile_options_no_gcc_analyzer}")
+    if(_compile_options)
+      string(REGEX REPLACE
+             "-fanalyzer|-Wanalyzer-[0-9a-zA-Z-]+"
+             ""
+             _compile_options_no_gcc_analyzer
+             "${_compile_options}")
+      set_target_properties(${TARGET} PROPERTIES COMPILE_OPTIONS "${_compile_options_no_gcc_analyzer}")
+    endif()
   endif()
 endmacro()
 
