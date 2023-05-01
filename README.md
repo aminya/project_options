@@ -138,6 +138,7 @@ project_options(
       # PCH_HEADERS
       # WARNINGS_AS_ERRORS
       # ENABLE_INCLUDE_WHAT_YOU_USE
+      # ENABLE_GCC_ANALYZER
       # ENABLE_BUILD_WITH_TIME_TRACE
       # ENABLE_UNITY
       # LINKER "lld"

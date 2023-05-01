@@ -31,6 +31,7 @@ project_options(
   ENABLE_CPPCHECK
   ENABLE_CLANG_TIDY
   # ENABLE_INCLUDE_WHAT_YOU_USE
+  # ENABLE_GCC_ANALYZER
 )
 
 find_package(magic_enum CONFIG REQUIRED)

@@ -162,6 +162,41 @@ macro(enable_include_what_you_use)
   endif()
 endmacro()
 
+# Enable static analysis inside GCC
+macro(
+  enable_gcc_analyzer
+  _project_name
+  GCC_ANALYZER_EXTRA_ARGUMENTS)
+  # gcc analyzer only works with GCC 10 and only for the C language
+  if(NOT
+     CMAKE_C_COMPILER_ID
+     STREQUAL
+     "GNU"
+     OR (CMAKE_C_COMPILER_ID
+         STREQUAL
+         "GNU"
+         AND
+         CMAKE_C_COMPILER_VERSION
+         VERSION_LESS
+         "10"
+         )
+     )
+    message(
+      ${WARNING_MESSAGE}
+      "gcc analyzer cannot be enabled with non-gcc and any language other than C or with a gcc of version lower than 10"
+    )
+  else()
+    set(_gcc_analyzer_flags
+        -fanalyzer
+        ${GCC_ANALYZER_EXTRA_ARGUMENTS}
+    )
+
+    target_compile_options(
+      ${_project_name}
+      INTERFACE $<$<COMPILE_LANGUAGE:C>:${_gcc_analyzer_flags}>)
+  endif()
+endmacro()
+
 # Disable clang-tidy for target
 macro(target_disable_clang_tidy TARGET)
   find_program(CLANGTIDY clang-tidy)
@@ -200,6 +235,30 @@ macro(target_disable_include_what_you_use TARGET)
   endif()
 endmacro()
 
+# Disable gcc analyzer for target
+macro(target_disable_gcc_analyzer TARGET)
+  if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+    get_target_property(_compile_options ${TARGET} INTERFACE_COMPILE_OPTIONS)
+    if(_compile_options)
+      string(REGEX REPLACE
+             "-fanalyzer|-Wanalyzer-[0-9a-zA-Z-]+"
+             ""
+             _compile_options_no_gcc_analyzer
+             "${_compile_options}")
+      set_target_properties(${TARGET} PROPERTIES INTERFACE_COMPILE_OPTIONS "${_compile_options_no_gcc_analyzer}")
+    endif()
+    get_target_property(_compile_options ${TARGET} COMPILE_OPTIONS)
+    if(_compile_options)
+      string(REGEX REPLACE
+             "-fanalyzer|-Wanalyzer-[0-9a-zA-Z-]+"
+             ""
+             _compile_options_no_gcc_analyzer
+             "${_compile_options}")
+      set_target_properties(${TARGET} PROPERTIES COMPILE_OPTIONS "${_compile_options_no_gcc_analyzer}")
+    endif()
+  endif()
+endmacro()
+
 #[[.rst:
 
 .. include:: ../../docs/src/target_disable_static_analysis.md
@@ -213,6 +272,7 @@ macro(target_disable_static_analysis TARGET)
      "Visual Studio")
     target_disable_clang_tidy(${TARGET})
     target_disable_cpp_check(${TARGET})
+    target_disable_gcc_analyzer(${TARGET})
   endif()
   target_disable_vs_analysis(${TARGET})
   target_disable_include_what_you_use(${TARGET})

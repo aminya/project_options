@@ -50,6 +50,7 @@ macro(project_options)
       ENABLE_CLANG_TIDY
       ENABLE_VS_ANALYSIS
       ENABLE_INCLUDE_WHAT_YOU_USE
+      ENABLE_GCC_ANALYZER
       ENABLE_CACHE
       ENABLE_PCH
       ENABLE_CONAN
@@ -81,6 +82,7 @@ macro(project_options)
       CUDA_WARNINGS
       CPPCHECK_OPTIONS
       CLANG_TIDY_EXTRA_ARGUMENTS
+      GCC_ANALYZER_EXTRA_ARGUMENTS
       PCH_HEADERS
       CONAN_OPTIONS)
   cmake_parse_arguments(
@@ -202,6 +204,10 @@ macro(project_options)
 
   if(${ProjectOptions_ENABLE_INCLUDE_WHAT_YOU_USE})
     enable_include_what_you_use()
+  endif()
+
+  if(${ProjectOptions_ENABLE_GCC_ANALYZER})
+    enable_gcc_analyzer(${_options_target} "${ProjectOptions_GCC_ANALYZER_EXTRA_ARGUMENTS}")
   endif()
 
   if(${ProjectOptions_ENABLE_PCH})
