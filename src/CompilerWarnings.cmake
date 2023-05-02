@@ -1,5 +1,16 @@
 include_guard()
 
+function(
+  _set_project_warnings_add_target_link_option
+  TARGET
+  OPTIONS)
+  target_link_options(
+    ${_project_name}
+    INTERFACE
+             ${OPTIONS}
+    )
+endfunction()
+
 # Set the compiler warnings
 #
 # https://clang.llvm.org/docs/DiagnosticsReference.html
@@ -129,4 +140,18 @@ function(
               $<$<COMPILE_LANGUAGE:C>:${PROJECT_WARNINGS_C}>
               # Cuda warnings
               $<$<COMPILE_LANGUAGE:CUDA>:${PROJECT_WARNINGS_CUDA}>)
+
+  # If we are using the compiler as a linker driver pass the warnings to it
+  # (most useful when using LTO or warnings as errors)
+  if(CMAKE_CXX_LINK_EXECUTABLE MATCHES "^<CMAKE_CXX_COMPILER>")
+    _set_project_warnings_add_target_link_option(${_project_name} "$<$<COMPILE_LANGUAGE:CXX>:${PROJECT_WARNINGS_CXX}>")
+  endif()
+
+  if(CMAKE_C_LINK_EXECUTABLE MATCHES "^<CMAKE_C_COMPILER>")
+    _set_project_warnings_add_target_link_option(${_project_name} "$<$<COMPILE_LANGUAGE:C>:${PROJECT_WARNINGS_C}>")
+  endif()
+
+  if(CMAKE_CUDA_LINK_EXECUTABLE MATCHES "^<CMAKE_CUDA_COMPILER>")
+    _set_project_warnings_add_target_link_option(${_project_name} "$<$<COMPILE_LANGUAGE:CUDA>:${PROJECT_WARNINGS_CUDA}>")
+  endif()
 endfunction()
