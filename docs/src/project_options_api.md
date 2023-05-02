@@ -17,6 +17,7 @@
 - `ENABLE_SANITIZER_UNDEFINED_BEHAVIOR`: Enable undefined behavior sanitizer
 - `ENABLE_SANITIZER_THREAD`: Enable thread sanitizer
 - `ENABLE_SANITIZER_MEMORY`: Enable memory sanitizer
+- `DISABLE_COMPILE_COMMANDS_SYMLINK`: Disable compile_commands.json symlink creation
 - `ENABLE_PCH`: Enable Precompiled Headers
 - `ENABLE_INCLUDE_WHAT_YOU_USE`: Enable static analysis with include-what-you-use
 - `ENABLE_GCC_ANALYZER`: Enable static analysis with GCC (10+) analyzer

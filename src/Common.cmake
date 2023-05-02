@@ -12,7 +12,7 @@ macro(set_project_options_src_dir)
 endmacro()
 
 # Common project settings run by default for all the projects that call `project_options()`
-macro(common_project_options)
+macro(common_project_options DISABLE_COMPILE_COMMANDS_SYMLINK)
   set_project_options_src_dir()
   message(DEBUG "${ProjectOptions_SRC_DIR}")
 
@@ -74,51 +74,57 @@ macro(common_project_options)
     # Enable generate compile_commands.json
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-    # Make a symbol link of compile_commands.json on the source dir to help clang based tools find it
-    if(WIN32)
-      # Detect whether cmake is run as administrator (only administrator can read the LOCAL SERVICE account reg key)
-      execute_process(
-        COMMAND reg query "HKU\\S-1-5-19"
-        ERROR_VARIABLE IS_NONADMINISTRATOR
-        OUTPUT_QUIET)
-    else()
-      set(IS_NONADMINISTRATOR "")
-    endif()
+    if(NOT ${DISABLE_COMPILE_COMMANDS_SYMLINK})
+      # Make a symbol link of compile_commands.json on the source dir to help clang based tools find it
+      if(WIN32)
+        # Detect whether cmake is run as administrator (only administrator can read the LOCAL SERVICE account reg key)
+        execute_process(
+          COMMAND reg query "HKU\\S-1-5-19"
+          ERROR_VARIABLE IS_NONADMINISTRATOR
+          OUTPUT_QUIET)
+      else()
+        set(IS_NONADMINISTRATOR "")
+      endif()
 
-    if(IS_NONADMINISTRATOR)
-      # For non-administrator, create an auxiliary target and ask user to run it
-      add_custom_command(
-        OUTPUT ${CMAKE_SOURCE_DIR}/compile_commands.json
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/compile_commands.json
-                ${CMAKE_SOURCE_DIR}/compile_commands.json
-        DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
-        VERBATIM)
-      add_custom_target(
-        _copy_compile_commands
-        DEPENDS ${CMAKE_SOURCE_DIR}/compile_commands.json
-        VERBATIM)
-      message(
-        STATUS
-          "compile_commands.json was not symlinked to the root. Run `cmake --build <build_dir> -t _copy_compile_commands` if needed."
-      )
-    else()
-      file(
-        CREATE_LINK
-        ${CMAKE_BINARY_DIR}/compile_commands.json
-        ${CMAKE_SOURCE_DIR}/compile_commands.json
-        SYMBOLIC)
-      message(TRACE "compile_commands.json was symlinked to the root.")
-    endif()
+      if(IS_NONADMINISTRATOR)
+        # For non-administrator, create an auxiliary target and ask user to run it
+        add_custom_command(
+          OUTPUT ${CMAKE_SOURCE_DIR}/compile_commands.json
+          COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/compile_commands.json
+                  ${CMAKE_SOURCE_DIR}/compile_commands.json
+          DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
+          VERBATIM)
+        add_custom_target(
+          _copy_compile_commands
+          DEPENDS ${CMAKE_SOURCE_DIR}/compile_commands.json
+          VERBATIM)
+        message(
+          STATUS
+            "compile_commands.json was not symlinked to the root. Run `cmake --build <build_dir> -t _copy_compile_commands` if needed."
+        )
+      else()
+        file(
+          CREATE_LINK
+          ${CMAKE_BINARY_DIR}/compile_commands.json
+          ${CMAKE_SOURCE_DIR}/compile_commands.json
+          SYMBOLIC RESULT _compile_commands_symlink_result)
+        if(_compile_commands_symlink_result EQUAL 0)
+          message(TRACE "compile_commands.json was symlinked to the root.")
+        else()
+          message(WARNING "failed to create compile_commands.json symlink to the root.")
+        endif()
+      endif()
 
-    # Add compile_commans.json to .gitignore if .gitignore exists
-    set(GITIGNORE_FILE "${CMAKE_SOURCE_DIR}/.gitignore")
+      # Add compile_commans.json to .gitignore if .gitignore exists
+      set(GITIGNORE_FILE "${CMAKE_SOURCE_DIR}/.gitignore")
 
-    if(EXISTS ${GITIGNORE_FILE})
-      file(STRINGS ${GITIGNORE_FILE} HAS_IGNORED REGEX "^compile_commands.json")
+      if(EXISTS ${GITIGNORE_FILE})
+        file(STRINGS ${GITIGNORE_FILE} HAS_IGNORED REGEX "^compile_commands.json")
 
-      if(NOT HAS_IGNORED)
-        message(TRACE "Adding compile_commands.json to .gitignore")
-        file(APPEND ${GITIGNORE_FILE} "\ncompile_commands.json")
+        if(NOT HAS_IGNORED)
+          message(TRACE "Adding compile_commands.json to .gitignore")
+          file(APPEND ${GITIGNORE_FILE} "\ncompile_commands.json")
+        endif()
       endif()
     endif()
   endif()
