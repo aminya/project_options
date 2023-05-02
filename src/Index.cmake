@@ -32,6 +32,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/MinGW.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/DetectCompiler.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/CrossCompiler.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/DynamicProjectOptions.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/Hardening.cmake")
 
 # Include msvc toolchain on windows if the generator is not visual studio. Should be called before run_vcpkg and run_conan to be effective
 msvc_toolchain()
@@ -138,6 +139,11 @@ macro(project_options)
       ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       ENABLE_SANITIZER_THREAD
       ENABLE_SANITIZER_MEMORY
+      ENABLE_CONTROL_FLOW_PROTECTION
+      ENABLE_STACK_PROTECTION
+      ENABLE_OVERFLOW_PROTECTION
+      ENABLE_ELF_PROTECTION
+      ENABLE_RUNTIME_SYMBOLS_RESOLUTION
       ENABLE_COMPILE_COMMANDS_SYMLINK
   )
   set(oneValueArgs
@@ -248,6 +254,15 @@ macro(project_options)
     ${ProjectOptions_ENABLE_SANITIZER_UNDEFINED_BEHAVIOR}
     ${ProjectOptions_ENABLE_SANITIZER_THREAD}
     ${ProjectOptions_ENABLE_SANITIZER_MEMORY}
+  )
+
+  enable_hardening(
+    ${_options_target}
+    ${ProjectOptions_ENABLE_CONTROL_FLOW_PROTECTION}
+    ${ProjectOptions_ENABLE_STACK_PROTECTION}
+    ${ProjectOptions_ENABLE_OVERFLOW_PROTECTION}
+    ${ProjectOptions_ENABLE_ELF_PROTECTION}
+    ${ProjectOptions_ENABLE_RUNTIME_SYMBOLS_RESOLUTION}
   )
 
   if(${ProjectOptions_ENABLE_DOXYGEN})

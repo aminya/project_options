@@ -16,6 +16,13 @@ function(
 
     if(${ENABLE_SANITIZER_ADDRESS})
       list(APPEND SANITIZERS "address")
+      if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        list(APPEND SANITIZERS "pointer-compare" "pointer-subtract")
+        message(
+          STATUS
+          "Enabling -fsanitize=pointer-compare,pointer-subtract: By default the checks are disabled at run time. To enable them, add detect_invalid_pointer_pairs=2 to the environment variable ASAN_OPTIONS."
+        )
+      endif()
     endif()
 
     if(${ENABLE_SANITIZER_LEAK})

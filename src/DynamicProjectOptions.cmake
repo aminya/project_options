@@ -161,6 +161,11 @@ macro(dynamic_project_options)
       "0\;ENABLE_SANITIZER_UNDEFINED_BEHAVIOR\;OFF\;${SUPPORTS_UBSAN}\;Make certain types (numeric mostly) of undefined behavior into runtime errors"
       "0\;ENABLE_SANITIZER_THREAD\;OFF\;OFF\;Make thread race conditions into hard runtime errors"
       "0\;ENABLE_SANITIZER_MEMORY\;OFF\;OFF\;Make other memory errors into runtime errors"
+      "0\;ENABLE_CONTROL_FLOW_PROTECTION\;OFF\;OFF\;Enable control flow protection instrumentation"
+      "0\;ENABLE_STACK_PROTECTION\;OFF\;OFF\;Enable stack protection instrumentation"
+      "0\;ENABLE_OVERFLOW_PROTECTION\;OFF\;OFF\;Enable overflow protection instrumentation"
+      "0\;ENABLE_ELF_PROTECTION\;OFF\;OFF\;Enable ELF protection instrumentation"
+      "0\;ENABLE_RUNTIME_SYMBOLS_RESOLUTION\;OFF\;OFF\;When ELF protection is enabled, allow resolving symbols at runtime"
       "0\;ENABLE_COMPILE_COMMANDS_SYMLINK\;OFF\;OFF\;Don't create a symlink for compile_commands.json"
       "1\;LINKER\;\;\;Choose a specific linker"
       "1\;VS_ANALYSIS_RULESET\;\;\;Override the defaults for the code analysis rule set in Visual Studio"
@@ -268,6 +273,11 @@ macro(dynamic_project_options)
     ${ENABLE_SANITIZER_UNDEFINED_BEHAVIOR_VALUE}
     ${ENABLE_SANITIZER_THREAD_VALUE}
     ${ENABLE_SANITIZER_MEMORY_VALUE}
+    ${ENABLE_CONTROL_FLOW_PROTECTION_VALUE}
+    ${ENABLE_STACK_PROTECTION_VALUE}
+    ${ENABLE_OVERFLOW_PROTECTION_VALUE}
+    ${ENABLE_ELF_PROTECTION_VALUE}
+    ${ENABLE_RUNTIME_SYMBOLS_RESOLUTION_VALUE}
     ${ENABLE_COMPILE_COMMANDS_SYMLINK_VALUE}
     ${LINKER_VALUE}
     ${VS_ANALYSIS_RULESET_VALUE}
