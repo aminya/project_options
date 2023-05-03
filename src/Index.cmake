@@ -66,7 +66,8 @@ macro(project_options)
       ENABLE_SANITIZER_LEAK
       ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       ENABLE_SANITIZER_THREAD
-      ENABLE_SANITIZER_MEMORY)
+      ENABLE_SANITIZER_MEMORY
+      ENABLE_COMPILE_COMMANDS_SYMLINK)
   set(oneValueArgs
       PREFIX
       LINKER
@@ -100,7 +101,7 @@ macro(project_options)
     set(WARNING_MESSAGE WARNING)
   endif()
 
-  common_project_options()
+  common_project_options(${ProjectOptions_ENABLE_COMPILE_COMMANDS_SYMLINK})
 
   # Add an interface library for the options
   set(_options_target project_options)
