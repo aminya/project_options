@@ -12,7 +12,7 @@ macro(set_project_options_src_dir)
 endmacro()
 
 # Common project settings run by default for all the projects that call `project_options()`
-macro(common_project_options DISABLE_COMPILE_COMMANDS_SYMLINK)
+macro(common_project_options ENABLE_COMPILE_COMMANDS_SYMLINK)
   set_project_options_src_dir()
   message(DEBUG "${ProjectOptions_SRC_DIR}")
 
@@ -74,7 +74,7 @@ macro(common_project_options DISABLE_COMPILE_COMMANDS_SYMLINK)
     # Enable generate compile_commands.json
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-    if(NOT ${DISABLE_COMPILE_COMMANDS_SYMLINK})
+    if(${ENABLE_COMPILE_COMMANDS_SYMLINK})
       # Make a symbol link of compile_commands.json on the source dir to help clang based tools find it
       if(WIN32)
         # Detect whether cmake is run as administrator (only administrator can read the LOCAL SERVICE account reg key)

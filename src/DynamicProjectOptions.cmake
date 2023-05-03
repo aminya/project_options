@@ -75,7 +75,7 @@ macro(dynamic_project_options)
       "0\;ENABLE_SANITIZER_UNDEFINED_BEHAVIOR\;OFF\;${SUPPORTS_UBSAN}\;Make certain types (numeric mostly) of undefined behavior into runtime errors"
       "0\;ENABLE_SANITIZER_THREAD\;OFF\;OFF\;Make thread race conditions into hard runtime errors"
       "0\;ENABLE_SANITIZER_MEMORY\;OFF\;OFF\;Make other memory errors into runtime errors"
-      "0\;DISABLE_COMPILE_COMMANDS_SYMLINK\;OFF\;OFF\;Don't create a symlink for compile_commands.json"
+      "0\;ENABLE_COMPILE_COMMANDS_SYMLINK\;OFF\;OFF\;Don't create a symlink for compile_commands.json"
       "1\;LINKER\;\;\;Choose a specific linker"
       "1\;VS_ANALYSIS_RULESET\;\;\;Override the defaults for the code analysis rule set in Visual Studio"
       "1\;CONAN_PROFILE\;\;\;Use specific Conan profile"
@@ -205,7 +205,7 @@ macro(dynamic_project_options)
     ${ENABLE_SANITIZER_UNDEFINED_BEHAVIOR_VALUE}
     ${ENABLE_SANITIZER_THREAD_VALUE}
     ${ENABLE_SANITIZER_MEMORY_VALUE}
-    ${DISABLE_COMPILE_COMMANDS_SYMLINK_VALUE}
+    ${ENABLE_COMPILE_COMMANDS_SYMLINK_VALUE}
     ${LINKER_VALUE}
     ${VS_ANALYSIS_RULESET_VALUE}
     ${CONAN_PROFILE_VALUE}
