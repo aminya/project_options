@@ -1,6 +1,8 @@
 name: docs
 on:
-  pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
   Test:
@@ -30,7 +32,9 @@ jobs:
           rm pandoc-3.1.2-1-amd64.deb
 
       - name: Build Documentation
-        run: task docs
+        run: |
+          git checkout main
+          task docs
 
       # TODO Automatic deploys fail
       # - name: Deploy Documentation
