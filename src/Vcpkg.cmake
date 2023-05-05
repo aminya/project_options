@@ -28,10 +28,12 @@ macro(_check_vcpkg_remote)
     WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}" COMMAND_ERROR_IS_FATAL LAST
     OUTPUT_VARIABLE _vcpkg_git_remote_info)
   string(FIND "${_vcpkg_git_remote_info}" "${_vcpkg_args_VCPKG_URL}" _vcpkg_has_remote)
-  if(NOT ${_vcpkg_has_remote})
-    message(
-      FATAL
-      "The current vcpkg remote at ${_vcpkg_args_VCPKG_DIR} does not match the given URL ${_vcpkg_args_VCPKG_URL}")
+  if(${_vcpkg_has_remote} EQUAL -1)
+    # Add the given remote as `project_options` remote
+    execute_process(COMMAND "${GIT_EXECUTABLE}" "remote" "add" "project_options" "${_vcpkg_args_VCPKG_URL}"
+                    WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}" COMMAND_ERROR_IS_FATAL LAST)
+    execute_process(COMMAND "${GIT_EXECUTABLE}" "fetch" "project_options" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
+                                                                                            COMMAND_ERROR_IS_FATAL LAST)
   endif()
 endmacro()
 
