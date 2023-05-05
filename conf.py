@@ -32,8 +32,8 @@ subprocess.call('doxygen ./Doxyfile.doxygen-docs', shell=True)
 project = 'project_options'
 author = 'Amin Yahyaabadi'
 copyright = 'MIT - Copyright (c) 2022-2100 Amin Yahyaabadi'
-version = '0.27.1' # feature version
-release = '0.27.1' # full version string
+version = '0.28.0' # feature version
+release = '0.28.0' # full version string
 
 
 # -- General configuration ---------------------------------------------------

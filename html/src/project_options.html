@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>project_options function &mdash; project_options 0.27.1 documentation</title>
+  <title>project_options function &mdash; project_options 0.28.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -96,12 +96,17 @@
 <span class="c"># If commented, the latest supported standard for your compiler is automatically set.</span>
 <span class="c"># set(CMAKE_CXX_STANDARD 20)</span>
 
+<span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
+<span class="nf">if(</span><span class="no">CMAKE_VERSION</span><span class="w"> </span><span class="no">VERSION_GREATER_EQUAL</span><span class="w"> </span><span class="s">&quot;3.24.0&quot;</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">cmake_policy(</span><span class="no">SET</span><span class="w"> </span><span class="no">CMP0135</span><span class="w"> </span><span class="no">NEW</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+
 <span class="c"># Add project_options from https://github.com/aminya/project_options</span>
 <span class="c"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</span>
-<span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
-<span class="nf">FetchContent_Declare(</span><span class="nb">_project_options</span><span class="w"> </span><span class="no">URL</span>
-<span class="w">  </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/v0.27.1.zip</span>
-<span class="nf">)</span>
+<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.28.0&quot;</span><span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">_project_options</span>
+<span class="w">  </span><span class="no">URL</span><span class="w"> </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/</span><span class="o">${</span><span class="nt">PROJECT_OPTIONS_VERSION</span><span class="o">}</span><span class="p">.</span><span class="nb">zip</span><span class="nf">)</span>
 <span class="nf">FetchContent_MakeAvailable(</span><span class="nb">_project_options</span><span class="nf">)</span>
 <span class="nf">include(</span><span class="o">${</span><span class="nt">_project_options_SOURCE_DIR</span><span class="o">}</span><span class="na">/Index.cmake</span><span class="nf">)</span>
 
@@ -170,10 +175,12 @@
 <span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_SANITIZER_UNDEFINED_BEHAVIOR</span><span class="o">}</span>
 <span class="w">      </span><span class="c"># ENABLE_SANITIZER_THREAD</span>
 <span class="w">      </span><span class="c"># ENABLE_SANITIZER_MEMORY</span>
+<span class="w">      </span><span class="c"># ENABLE_COMPILE_COMMANDS_SYMLINK</span>
 <span class="w">      </span><span class="c"># ENABLE_PCH</span>
 <span class="w">      </span><span class="c"># PCH_HEADERS</span>
 <span class="w">      </span><span class="c"># WARNINGS_AS_ERRORS</span>
 <span class="w">      </span><span class="c"># ENABLE_INCLUDE_WHAT_YOU_USE</span>
+<span class="w">      </span><span class="c"># ENABLE_GCC_ANALYZER</span>
 <span class="w">      </span><span class="c"># ENABLE_BUILD_WITH_TIME_TRACE</span>
 <span class="w">      </span><span class="c"># ENABLE_UNITY</span>
 <span class="w">      </span><span class="c"># LINKER &quot;lld&quot;</span>
@@ -298,8 +305,10 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_SANITIZER_UNDEFINED_BEHAVIOR</span></code>: Enable undefined behavior sanitizer</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_SANITIZER_THREAD</span></code>: Enable thread sanitizer</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_SANITIZER_MEMORY</span></code>: Enable memory sanitizer</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_COMPILE_COMMANDS_SYMLINK</span></code>: Enable compile_commands.json symlink creation</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_PCH</span></code>: Enable Precompiled Headers</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_INCLUDE_WHAT_YOU_USE</span></code>: Enable static analysis with include-what-you-use</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_GCC_ANALYZER</span></code>: Enable static analysis with GCC (10+) analyzer</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_BUILD_WITH_TIME_TRACE</span></code>: Enable <code class="docutils literal notranslate"><span class="pre">-ftime-trace</span></code> to generate time tracing <code class="docutils literal notranslate"><span class="pre">.json</span></code> files on clang</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_UNITY</span></code>: Enable Unity builds of projects</p></li>
 </ul>
