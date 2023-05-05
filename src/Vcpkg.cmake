@@ -21,6 +21,35 @@ macro(_find_vcpkg_repository)
   endif()
 endmacro()
 
+macro(_check_vcpkg_remote)
+  # ensure that the given vcpkg remote is the current remote
+  execute_process(
+    COMMAND "${GIT_EXECUTABLE}" "remote" "-v"
+    WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}" COMMAND_ERROR_IS_FATAL LAST
+    OUTPUT_VARIABLE _vcpkg_git_remote_info)
+  string(FIND "${_vcpkg_git_remote_info}" "${_vcpkg_args_VCPKG_URL}" _vcpkg_has_remote)
+  if(NOT ${_vcpkg_has_remote})
+    message(
+      FATAL
+      "The current vcpkg remote at ${_vcpkg_args_VCPKG_DIR} does not match the given URL ${_vcpkg_args_VCPKG_URL}")
+  endif()
+endmacro()
+
+macro(_clone_vcpkg_repository)
+  if(NOT EXISTS "${_vcpkg_args_VCPKG_DIR}")
+    message(STATUS "Installing vcpkg at ${_vcpkg_args_VCPKG_DIR}")
+    # clone vcpkg from Github
+    if("${_vcpkg_args_VCPKG_URL}" STREQUAL "")
+      set(_vcpkg_args_VCPKG_URL "https://github.com/microsoft/vcpkg.git")
+    endif()
+    execute_process(COMMAND "${GIT_EXECUTABLE}" "clone" "${_vcpkg_args_VCPKG_URL}"
+                    WORKING_DIRECTORY "${VCPKG_PARENT_DIR}" COMMAND_ERROR_IS_FATAL LAST)
+  else()
+    message(STATUS "vcpkg folder already exists at ${_vcpkg_args_VCPKG_DIR}.")
+    _check_vcpkg_remote()
+  endif()
+endmacro()
+
 # Detect if the head is detached, if so, switch back before calling git pull on a detached head
 macro(_switch_back_vcpkg_repository)
   if(NOT
@@ -49,37 +78,15 @@ macro(_update_vcpkg_repository)
   endif()
 endmacro()
 
-macro(_install_and_update_vcpkg)
-  # check if vcpkg is installed
+macro(_bootstrap_vcpkg)
   if(WIN32 AND "${CMAKE_EXECUTABLE_SUFFIX}" STREQUAL "")
     set(CMAKE_EXECUTABLE_SUFFIX ".exe")
   endif()
-  if(EXISTS "${_vcpkg_args_VCPKG_DIR}" AND EXISTS "${_vcpkg_args_VCPKG_DIR}/vcpkg${CMAKE_EXECUTABLE_SUFFIX}")
-    message(STATUS "vcpkg is already installed at ${_vcpkg_args_VCPKG_DIR}.")
-    _update_vcpkg_repository()
-  else()
-    message(STATUS "Installing vcpkg at ${_vcpkg_args_VCPKG_DIR}")
-    # clone vcpkg from Github
-    if("${_vcpkg_args_VCPKG_URL}" STREQUAL "")
-      set(_vcpkg_args_VCPKG_URL "https://github.com/microsoft/vcpkg.git")
-    endif()
-    if(NOT EXISTS "${_vcpkg_args_VCPKG_DIR}")
-      execute_process(COMMAND "${GIT_EXECUTABLE}" "clone" "${_vcpkg_args_VCPKG_URL}"
-                      WORKING_DIRECTORY "${VCPKG_PARENT_DIR}" COMMAND_ERROR_IS_FATAL LAST)
-    else()
-      # ensure that the given vcpkg remote is the current remote
-      execute_process(
-        COMMAND "${GIT_EXECUTABLE}" "remote" "-v"
-        WORKING_DIRECTORY "${VCPKG_PARENT_DIR}" COMMAND_ERROR_IS_FATAL LAST
-        OUTPUT_VARIABLE _vcpkg_git_remote_info)
-      string(FIND "${_vcpkg_git_remote_info}" "${_vcpkg_args_VCPKG_URL}" _vcpkg_has_remote)
-      if(NOT ${_vcpkg_has_remote})
-        message(
-          FATAL
-          "The current vcpkg remote at ${_vcpkg_args_VCPKG_DIR} does not match the given URL ${_vcpkg_args_VCPKG_URL}")
-      endif()
-    endif()
-    # Run vcpkg bootstrap
+
+  # if vcpkg executable does not exists
+  # or if the user wants to update vcpkg
+  if(NOT EXISTS "${_vcpkg_args_VCPKG_DIR}/vcpkg${CMAKE_EXECUTABLE_SUFFIX}" OR ${_vcpkg_args_ENABLE_VCPKG_UPDATE})
+    # Run the vcpkg bootstrap
     if(WIN32)
       execute_process(COMMAND "bootstrap-vcpkg.bat" "-disableMetrics" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
                                                                                         COMMAND_ERROR_IS_FATAL LAST)
@@ -88,6 +95,12 @@ macro(_install_and_update_vcpkg)
                                                                                          COMMAND_ERROR_IS_FATAL LAST)
     endif()
   endif()
+endmacro()
+
+macro(_install_and_update_vcpkg)
+  _clone_vcpkg_repository()
+  _update_vcpkg_repository()
+  _bootstrap_vcpkg()
 endmacro()
 
 macro(_checkout_vcpkg_repository)
