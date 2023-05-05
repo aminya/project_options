@@ -1,8 +1,6 @@
 name: docs
 on:
-  push:
-    tags:
-      - "*"
+  pull_request:
 
 jobs:
   Test:
@@ -34,11 +32,12 @@ jobs:
       - name: Build Documentation
         run: task docs
 
-      - name: Deploy Documentation
-        uses: Cecilapp/GitHub-Pages-deploy@v3
-        with:
-          build_dir: docs/build/html/
-          branch: gh-pages
-          email: aminyahyaabadi74@gmail.com
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # TODO Automatic deploys fail
+      # - name: Deploy Documentation
+      #   uses: Cecilapp/GitHub-Pages-deploy@v3
+      #   with:
+      #     build_dir: docs/build/html/
+      #     branch: gh-pages
+      #     email: aminyahyaabadi74@gmail.com
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
