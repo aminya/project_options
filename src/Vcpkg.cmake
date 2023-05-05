@@ -2,26 +2,7 @@ include_guard()
 
 include(FetchContent)
 
-#[[.rst:
-
-.. include:: ../../docs/src/run_vcpkg.md
-   :parser: myst_parser.sphinx_
-
-#]]
-macro(run_vcpkg)
-  # named boolean ENABLE_VCPKG_UPDATE arguments
-  set(options ENABLE_VCPKG_UPDATE)
-  # optional named VCPKG_DIR, VCPKG_URL, and VCPKG_REV arguments
-  set(oneValueArgs VCPKG_DIR VCPKG_URL VCPKG_REV)
-  cmake_parse_arguments(
-    _vcpkg_args
-    "${options}"
-    "${oneValueArgs}"
-    ""
-    ${ARGN})
-
-  find_program(GIT_EXECUTABLE "git" REQUIRED)
-
+macro(_find_vcpkg_repository)
   if(NOT
      "${_vcpkg_args_VCPKG_DIR}"
      STREQUAL
@@ -38,58 +19,76 @@ macro(run_vcpkg)
       set(_vcpkg_args_VCPKG_DIR "${VCPKG_PARENT_DIR}/vcpkg")
     endif()
   endif()
+endmacro()
 
-  # check if vcpkg is installed
-  if(WIN32 AND "${CMAKE_EXECUTABLE_SUFFIX}" STREQUAL "")
-    set(CMAKE_EXECUTABLE_SUFFIX ".exe")
+macro(_check_vcpkg_remote)
+  # ensure that the given vcpkg remote is the current remote
+  execute_process(
+    COMMAND "${GIT_EXECUTABLE}" "remote" "-v"
+    WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}" COMMAND_ERROR_IS_FATAL LAST
+    OUTPUT_VARIABLE _vcpkg_git_remote_info)
+  string(FIND "${_vcpkg_git_remote_info}" "${_vcpkg_args_VCPKG_URL}" _vcpkg_has_remote)
+  if(${_vcpkg_has_remote} EQUAL -1)
+    # Add the given remote as `project_options` remote
+    execute_process(COMMAND "${GIT_EXECUTABLE}" "remote" "add" "project_options" "${_vcpkg_args_VCPKG_URL}"
+                    WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}" COMMAND_ERROR_IS_FATAL LAST)
+    execute_process(COMMAND "${GIT_EXECUTABLE}" "fetch" "project_options" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
+                                                                                            COMMAND_ERROR_IS_FATAL LAST)
   endif()
-  if(EXISTS "${_vcpkg_args_VCPKG_DIR}" AND EXISTS "${_vcpkg_args_VCPKG_DIR}/vcpkg${CMAKE_EXECUTABLE_SUFFIX}")
-    message(STATUS "vcpkg is already installed at ${_vcpkg_args_VCPKG_DIR}.")
-    if(${_vcpkg_args_ENABLE_VCPKG_UPDATE})
+endmacro()
 
-      if(NOT
-         "${_vcpkg_args_VCPKG_REV}"
-         STREQUAL
-         "")
-        # detect if the head is detached, if so, switch back before calling git pull on a detached head
-        set(_vcpkg_git_status "")
-        execute_process(
-          COMMAND "${GIT_EXECUTABLE}" "rev-parse" "--abbrev-ref" "--symbolic-full-name" "HEAD"
-          OUTPUT_VARIABLE _vcpkg_git_status
-          WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
-          OUTPUT_STRIP_TRAILING_WHITESPACE)
-        if("${_vcpkg_git_status}" STREQUAL "HEAD")
-          message(STATUS "Switching back before updating")
-          execute_process(COMMAND "${GIT_EXECUTABLE}" "switch" "-" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
-        endif()
-      endif()
-
-      message(STATUS "Updating the repository...")
-      execute_process(COMMAND "${GIT_EXECUTABLE}" "pull" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
-    endif()
-  else()
+macro(_clone_vcpkg_repository)
+  if(NOT EXISTS "${_vcpkg_args_VCPKG_DIR}")
     message(STATUS "Installing vcpkg at ${_vcpkg_args_VCPKG_DIR}")
     # clone vcpkg from Github
     if("${_vcpkg_args_VCPKG_URL}" STREQUAL "")
       set(_vcpkg_args_VCPKG_URL "https://github.com/microsoft/vcpkg.git")
     endif()
-    if(NOT EXISTS "${_vcpkg_args_VCPKG_DIR}")
-      execute_process(COMMAND "${GIT_EXECUTABLE}" "clone" "${_vcpkg_args_VCPKG_URL}"
-                      WORKING_DIRECTORY "${VCPKG_PARENT_DIR}" COMMAND_ERROR_IS_FATAL LAST)
-    else()
-      # ensure that the given vcpkg remote is the current remote
-      execute_process(
-        COMMAND "${GIT_EXECUTABLE}" "remote" "-v"
-        WORKING_DIRECTORY "${VCPKG_PARENT_DIR}" COMMAND_ERROR_IS_FATAL LAST
-        OUTPUT_VARIABLE _vcpkg_git_remote_info)
-      string(FIND "${_vcpkg_git_remote_info}" "${_vcpkg_args_VCPKG_URL}" _vcpkg_has_remote)
-      if(NOT ${_vcpkg_has_remote})
-        message(
-          FATAL
-          "The current vcpkg remote at ${_vcpkg_args_VCPKG_DIR} does not match the given URL ${_vcpkg_args_VCPKG_URL}")
-      endif()
+    execute_process(COMMAND "${GIT_EXECUTABLE}" "clone" "${_vcpkg_args_VCPKG_URL}"
+                    WORKING_DIRECTORY "${VCPKG_PARENT_DIR}" COMMAND_ERROR_IS_FATAL LAST)
+  else()
+    message(STATUS "vcpkg folder already exists at ${_vcpkg_args_VCPKG_DIR}.")
+    _check_vcpkg_remote()
+  endif()
+endmacro()
+
+# Detect if the head is detached, if so, switch back before calling git pull on a detached head
+macro(_switch_back_vcpkg_repository)
+  if(NOT
+     "${_vcpkg_args_VCPKG_REV}"
+     STREQUAL
+     "")
+    set(_vcpkg_git_status "")
+    execute_process(
+      COMMAND "${GIT_EXECUTABLE}" "rev-parse" "--abbrev-ref" "--symbolic-full-name" "HEAD"
+      OUTPUT_VARIABLE _vcpkg_git_status
+      WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
+      OUTPUT_STRIP_TRAILING_WHITESPACE)
+    if("${_vcpkg_git_status}" STREQUAL "HEAD")
+      message(STATUS "Switching back before updating")
+      execute_process(COMMAND "${GIT_EXECUTABLE}" "switch" "-" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
     endif()
-    # Run vcpkg bootstrap
+  endif()
+endmacro()
+
+macro(_update_vcpkg_repository)
+  if(${_vcpkg_args_ENABLE_VCPKG_UPDATE})
+    _switch_back_vcpkg_repository()
+
+    message(STATUS "Updating the repository...")
+    execute_process(COMMAND "${GIT_EXECUTABLE}" "pull" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
+  endif()
+endmacro()
+
+macro(_bootstrap_vcpkg)
+  if(WIN32 AND "${CMAKE_EXECUTABLE_SUFFIX}" STREQUAL "")
+    set(CMAKE_EXECUTABLE_SUFFIX ".exe")
+  endif()
+
+  # if vcpkg executable does not exists
+  # or if the user wants to update vcpkg
+  if(NOT EXISTS "${_vcpkg_args_VCPKG_DIR}/vcpkg${CMAKE_EXECUTABLE_SUFFIX}" OR ${_vcpkg_args_ENABLE_VCPKG_UPDATE})
+    # Run the vcpkg bootstrap
     if(WIN32)
       execute_process(COMMAND "bootstrap-vcpkg.bat" "-disableMetrics" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
                                                                                         COMMAND_ERROR_IS_FATAL LAST)
@@ -98,25 +97,33 @@ macro(run_vcpkg)
                                                                                          COMMAND_ERROR_IS_FATAL LAST)
     endif()
   endif()
+endmacro()
 
+macro(_install_and_update_vcpkg)
+  _clone_vcpkg_repository()
+  _update_vcpkg_repository()
+  _bootstrap_vcpkg()
+endmacro()
+
+macro(_checkout_vcpkg_repository)
   if(NOT
      "${_vcpkg_args_VCPKG_REV}"
      STREQUAL
      "")
-    execute_process(COMMAND "${GIT_EXECUTABLE}" "checkout" "${_vcpkg_args_VCPKG_REV}"
+    execute_process(COMMAND "${GIT_EXECUTABLE}" "-c" "advice.detachedHead=false" "checkout" "${_vcpkg_args_VCPKG_REV}"
                     WORKING_DIRECTORY "${VCPKG_PARENT_DIR}/vcpkg" COMMAND_ERROR_IS_FATAL LAST)
   endif()
+endmacro()
 
-  configure_mingw_vcpkg()
-
+macro(_add_vcpkg_toolchain)
   # Setting up vcpkg toolchain
   list(APPEND VCPKG_FEATURE_FLAGS "versions")
   set(CMAKE_TOOLCHAIN_FILE
       ${_vcpkg_args_VCPKG_DIR}/scripts/buildsystems/vcpkg.cmake
       CACHE STRING "vcpkg toolchain file" FORCE)
+endmacro()
 
-  configure_mingw_vcpkg_after()
-
+macro(_cross_compiling_vcpkg)
   if(CROSSCOMPILING)
     if(NOT MINGW)
       if(NOT
@@ -162,4 +169,44 @@ macro(run_vcpkg)
     message(STATUS "Setup cross-compiler for ${VCPKG_TARGET_TRIPLET}")
     message(STATUS "Use cross-compiler toolchain for vcpkg: ${VCPKG_CHAINLOAD_TOOLCHAIN_FILE}")
   endif()
+endmacro()
+
+#[[.rst:
+
+.. include:: ../../docs/src/run_vcpkg.md
+   :parser: myst_parser.sphinx_
+
+#]]
+macro(run_vcpkg)
+  # named boolean ENABLE_VCPKG_UPDATE arguments
+  set(options ENABLE_VCPKG_UPDATE)
+  # optional named VCPKG_DIR, VCPKG_URL, and VCPKG_REV arguments
+  set(oneValueArgs VCPKG_DIR VCPKG_URL VCPKG_REV)
+  cmake_parse_arguments(
+    _vcpkg_args
+    "${options}"
+    "${oneValueArgs}"
+    ""
+    ${ARGN})
+
+  find_program(GIT_EXECUTABLE "git" REQUIRED)
+
+  # find the vcpkg directory
+  _find_vcpkg_repository()
+
+  # install and update vcpkg if necessary
+  _install_and_update_vcpkg()
+
+  # checkout the given revision if necessary
+  _checkout_vcpkg_repository()
+
+  configure_mingw_vcpkg()
+
+  # add the vcpkg toolchain
+  _add_vcpkg_toolchain()
+
+  configure_mingw_vcpkg_after()
+
+  # setup cross-compiling if necessary
+  _cross_compiling_vcpkg()
 endmacro()
