@@ -22,27 +22,16 @@ macro(_find_vcpkg_repository)
   endif()
 endmacro()
 
-macro(_vcpkg_add_remote)
-  git_add_remote(
-    REMOTE_URL
-    "${_vcpkg_args_VCPKG_URL}"
-    REPOSITORY_PATH
-    "${_vcpkg_args_VCPKG_DIR}")
-endmacro()
-
 macro(_clone_vcpkg_repository)
   if("${_vcpkg_args_VCPKG_URL}" STREQUAL "")
     set(_vcpkg_args_VCPKG_URL "https://github.com/microsoft/vcpkg.git")
   endif()
-  if(NOT EXISTS "${_vcpkg_args_VCPKG_DIR}")
-    message(STATUS "Installing vcpkg at ${_vcpkg_args_VCPKG_DIR}")
-    # clone vcpkg from Github
-    execute_process(COMMAND "${GIT_EXECUTABLE}" "clone" "${_vcpkg_args_VCPKG_URL}"
-                    WORKING_DIRECTORY "${VCPKG_PARENT_DIR}" COMMAND_ERROR_IS_FATAL LAST)
-  else()
-    message(STATUS "vcpkg folder already exists at ${_vcpkg_args_VCPKG_DIR}.")
-    _vcpkg_add_remote()
-  endif()
+
+  git_clone(
+    REPOSITORY_PATH
+    "${_vcpkg_args_VCPKG_DIR}"
+    REMOTE_URL
+    "${_vcpkg_args_VCPKG_URL}")
 endmacro()
 
 # Detect if the head is detached, if so, switch back before calling git pull on a detached head
