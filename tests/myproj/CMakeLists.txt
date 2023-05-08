@@ -16,7 +16,7 @@ option(ENABLE_CROSS_COMPILING "Detect cross compiler and setup toolchain" OFF)
 if(ENABLE_CROSS_COMPILING)
   enable_cross_compiler()
 endif()
-run_vcpkg()
+run_vcpkg(ENABLE_VCPKG_UPDATE)
 
 project(
   myproj

@@ -34,31 +34,9 @@ macro(_clone_vcpkg_repository)
     "${_vcpkg_args_VCPKG_URL}")
 endmacro()
 
-# Detect if the head is detached, if so, switch back before calling git pull on a detached head
-macro(_switch_back_vcpkg_repository)
-  if(NOT
-     "${_vcpkg_args_VCPKG_REV}"
-     STREQUAL
-     "")
-    set(_vcpkg_git_status "")
-    execute_process(
-      COMMAND "${GIT_EXECUTABLE}" "rev-parse" "--abbrev-ref" "--symbolic-full-name" "HEAD"
-      OUTPUT_VARIABLE _vcpkg_git_status
-      WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
-      OUTPUT_STRIP_TRAILING_WHITESPACE)
-    if("${_vcpkg_git_status}" STREQUAL "HEAD")
-      message(STATUS "Switching back before updating")
-      execute_process(COMMAND "${GIT_EXECUTABLE}" "switch" "-" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
-    endif()
-  endif()
-endmacro()
-
 macro(_update_vcpkg_repository)
   if(${_vcpkg_args_ENABLE_VCPKG_UPDATE})
-    _switch_back_vcpkg_repository()
-
-    message(STATUS "Updating the repository...")
-    execute_process(COMMAND "${GIT_EXECUTABLE}" "pull" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}")
+    git_pull(REPOSITORY_PATH "${_vcpkg_args_VCPKG_DIR}")
   endif()
 endmacro()
 
