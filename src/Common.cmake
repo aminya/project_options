@@ -107,7 +107,8 @@ macro(common_project_options ENABLE_COMPILE_COMMANDS_SYMLINK)
           CREATE_LINK
           ${CMAKE_BINARY_DIR}/compile_commands.json
           ${CMAKE_SOURCE_DIR}/compile_commands.json
-          SYMBOLIC RESULT _compile_commands_symlink_result)
+          SYMBOLIC
+          RESULT _compile_commands_symlink_result)
         if(_compile_commands_symlink_result EQUAL 0)
           message(TRACE "compile_commands.json was symlinked to the root.")
         else()

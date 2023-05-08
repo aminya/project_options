@@ -12,6 +12,7 @@ enableGlobDot: true
 words:
   - aarch
   - aminya
+  - dpkg
   - Amnet
   - anotherproj
   - applellvm
@@ -54,6 +55,7 @@ words:
   - emcmake
   - emscripten
   - EMSDK
+  - fanalyzer
   - fargs
   - fcolor
   - fdiagnostics
@@ -127,6 +129,7 @@ words:
   - VSCMD
   - VSINSTALLDIR
   - vsversion
+  - Wanalyzer
   - Wcast
   - Wconversion
   - Wdouble

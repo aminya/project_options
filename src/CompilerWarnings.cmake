@@ -1,14 +1,7 @@
 include_guard()
 
-function(
-  _set_project_warnings_add_target_link_option
-  TARGET
-  OPTIONS)
-  target_link_options(
-    ${_project_name}
-    INTERFACE
-             ${OPTIONS}
-    )
+function(_set_project_warnings_add_target_link_option TARGET OPTIONS)
+  target_link_options(${_project_name} INTERFACE ${OPTIONS})
 endfunction()
 
 # Set the compiler warnings
@@ -152,6 +145,7 @@ function(
   endif()
 
   if(CMAKE_CUDA_LINK_EXECUTABLE MATCHES "^<CMAKE_CUDA_COMPILER>")
-    _set_project_warnings_add_target_link_option(${_project_name} "$<$<COMPILE_LANGUAGE:CUDA>:${PROJECT_WARNINGS_CUDA}>")
+    _set_project_warnings_add_target_link_option(${_project_name}
+                                                 "$<$<COMPILE_LANGUAGE:CUDA>:${PROJECT_WARNINGS_CUDA}>")
   endif()
 endfunction()
