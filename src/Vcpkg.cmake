@@ -1,6 +1,7 @@
 include_guard()
 
 include(FetchContent)
+include("${CMAKE_CURRENT_LIST_DIR}/Git.cmake")
 
 macro(_find_vcpkg_repository)
   if(NOT
@@ -21,34 +22,26 @@ macro(_find_vcpkg_repository)
   endif()
 endmacro()
 
-macro(_check_vcpkg_remote)
-  # ensure that the given vcpkg remote is the current remote
-  execute_process(
-    COMMAND "${GIT_EXECUTABLE}" "remote" "-v"
-    WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}" COMMAND_ERROR_IS_FATAL LAST
-    OUTPUT_VARIABLE _vcpkg_git_remote_info)
-  string(FIND "${_vcpkg_git_remote_info}" "${_vcpkg_args_VCPKG_URL}" _vcpkg_has_remote)
-  if(${_vcpkg_has_remote} EQUAL -1)
-    # Add the given remote as `project_options` remote
-    execute_process(COMMAND "${GIT_EXECUTABLE}" "remote" "add" "project_options" "${_vcpkg_args_VCPKG_URL}"
-                    WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}" COMMAND_ERROR_IS_FATAL LAST)
-    execute_process(COMMAND "${GIT_EXECUTABLE}" "fetch" "project_options" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
-                                                                                            COMMAND_ERROR_IS_FATAL LAST)
-  endif()
+macro(_vcpkg_add_remote)
+  git_add_remote(
+    REMOTE_URL
+    "${_vcpkg_args_VCPKG_URL}"
+    REPOSITORY_PATH
+    "${_vcpkg_args_VCPKG_DIR}")
 endmacro()
 
 macro(_clone_vcpkg_repository)
+  if("${_vcpkg_args_VCPKG_URL}" STREQUAL "")
+    set(_vcpkg_args_VCPKG_URL "https://github.com/microsoft/vcpkg.git")
+  endif()
   if(NOT EXISTS "${_vcpkg_args_VCPKG_DIR}")
     message(STATUS "Installing vcpkg at ${_vcpkg_args_VCPKG_DIR}")
     # clone vcpkg from Github
-    if("${_vcpkg_args_VCPKG_URL}" STREQUAL "")
-      set(_vcpkg_args_VCPKG_URL "https://github.com/microsoft/vcpkg.git")
-    endif()
     execute_process(COMMAND "${GIT_EXECUTABLE}" "clone" "${_vcpkg_args_VCPKG_URL}"
                     WORKING_DIRECTORY "${VCPKG_PARENT_DIR}" COMMAND_ERROR_IS_FATAL LAST)
   else()
     message(STATUS "vcpkg folder already exists at ${_vcpkg_args_VCPKG_DIR}.")
-    _check_vcpkg_remote()
+    _vcpkg_add_remote()
   endif()
 endmacro()
 

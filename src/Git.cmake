@@ -12,29 +12,29 @@ include_guard()
 # - REMOTE_PROTOCOL: The protocol of the url (http, https, ssh, etc)
 # - REMOTE_HOST: The host of the url (github, gitlab, etc)
 # - REMOTE_USER: The user of the url (username, organization, etc)
-# - REMOTE_NAME: The repository of the url (project name)
+# - REMOTE_REPOSITORY_NAME: The repository of the url (project name)
 # - REMOTE_FULL_URL: The url of the repository (protocol + host + user + repo)
 function(
   git_parse_url
-  URL
+  INPUT_URL
   # output variables
   REMOTE_PROTOCOL
   REMOTE_HOST
   REMOTE_USER
-  REMOTE_NAME
+  REMOTE_REPOSITORY_NAME
   REMOTE_FULL_URL)
   # https://regex101.com/r/jfU0cz/1
   string(
     REGEX MATCH
           "([a-z]+://)?([^/]*)/([^/]*)/(.*)(\\.git)?"
           _
-          ${URL})
+          ${INPUT_URL})
   set(REMOTE_PROTOCOL ${CMAKE_MATCH_1})
   set(REMOTE_HOST ${CMAKE_MATCH_2})
   set(REMOTE_USER ${CMAKE_MATCH_3})
-  set(REMOTE_NAME ${CMAKE_MATCH_4})
+  set(REMOTE_REPOSITORY_NAME ${CMAKE_MATCH_4})
 
-  if(NOT REMOTE_USER OR NOT REMOTE_NAME)
+  if(NOT REMOTE_USER OR NOT REMOTE_REPOSITORY_NAME)
     message(SEND_ERROR "Could not parse git url: ${URL}")
     return()
   endif()
@@ -47,7 +47,7 @@ function(
     set(REMOTE_HOST "github.com")
   endif()
 
-  set(REMOTE_FULL_URL "${REMOTE_PROTOCOL}${REMOTE_HOST}/${REMOTE_USER}/${REMOTE_NAME}.git")
+  set(REMOTE_FULL_URL "${REMOTE_PROTOCOL}${REMOTE_HOST}/${REMOTE_USER}/${REMOTE_REPOSITORY_NAME}.git")
 
   set(${REMOTE_PROTOCOL}
       ${REMOTE_PROTOCOL}
@@ -81,15 +81,12 @@ function(git_add_remote)
     ""
     ${ARGN})
 
-  if(NOT _fun_REMOTE_NAME)
-    git_parse_url(
-      "${_fun_REMOTE_URL}"
-      GIT_PROTOCOL
-      GIT_HOST
-      GIT_USER
-      GIT_REPO
-      GIT_URL)
-    set(_fun_REMOTE_NAME "${GIT_USER}")
+  if("${_fun_REPOSITORY_PATH}" STREQUAL "")
+    message(FATAL_ERROR "REPOSITORY_PATH is required")
+  endif()
+
+  if("${_fun_REMOTE_URL}" STREQUAL "")
+    message(FATAL_ERROR "REMOTE_URL is required")
   endif()
 
   find_program(GIT_EXECUTABLE "git" REQUIRED)
@@ -101,8 +98,20 @@ function(git_add_remote)
     OUTPUT_VARIABLE _remote_output)
   string(FIND "${_remote_output}" "${_fun_REMOTE_URL}" _find_index)
 
+  # Add the given remote if it doesn't exist
   if(${_find_index} EQUAL -1)
-    # Add the given remote
+    if("${_fun_REMOTE_NAME}" STREQUAL "")
+      # use the remote user as the remote name if it's not given
+      git_parse_url(
+        "${_fun_REMOTE_URL}"
+        _REMOTE_PROTOCOL
+        _REMOTE_HOST
+        _REMOTE_USER
+        _REMOTE_REPOSITORY_NAME
+        _REMOTE_FULL_URL)
+      set(_fun_REMOTE_NAME "${_REMOTE_USER}")
+    endif()
+
     execute_process(COMMAND "${GIT_EXECUTABLE}" "remote" "add" "${_fun_REMOTE_NAME}" "${_fun_REMOTE_URL}"
                     WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}" COMMAND_ERROR_IS_FATAL LAST)
     execute_process(COMMAND "${GIT_EXECUTABLE}" "fetch" "${_fun_REMOTE_NAME}"
