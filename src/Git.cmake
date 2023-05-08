@@ -169,11 +169,43 @@ function(git_clone)
   endif()
 endfunction()
 
-# Detect if the head is detached, if so, switch back before calling git pull on a detached head
+# Find the current git revision of the given repository
 #
 # Input variables:
 # - REPOSITORY_PATH: The path to the repository
-function(git_switch_back)
+# Output variables:
+# - REVISION: The variable to store the revision in
+function(git_revision REVISION)
+  set(oneValueArgs REPOSITORY_PATH)
+  cmake_parse_arguments(
+    _fun
+    ""
+    "${oneValueArgs}"
+    ""
+    ${ARGN})
+
+  if("${_fun_REPOSITORY_PATH}" STREQUAL "")
+    message(FATAL_ERROR "REPOSITORY_PATH is required")
+  endif()
+
+  find_program(GIT_EXECUTABLE "git" REQUIRED)
+  execute_process(
+    COMMAND "${GIT_EXECUTABLE}" "rev-parse" "HEAD"
+    OUTPUT_VARIABLE _git_revision
+    WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+  set(${REVISION}
+      ${_git_revision}
+      PARENT_SCOPE)
+endfunction()
+
+# Check if the given repository is in a detached state
+#
+# Input variables:
+# - REPOSITORY_PATH: The path to the repository
+# Output variables:
+# - IS_DETACHED: The variable to store the result in
+function(git_is_detached IS_DETACHED)
   set(oneValueArgs REPOSITORY_PATH)
   cmake_parse_arguments(
     _fun
@@ -194,6 +226,36 @@ function(git_switch_back)
     WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
     OUTPUT_STRIP_TRAILING_WHITESPACE)
   if("${_git_status}" STREQUAL "HEAD")
+    set(${IS_DETACHED}
+        TRUE
+        PARENT_SCOPE)
+  else()
+    set(${IS_DETACHED}
+        FALSE
+        PARENT_SCOPE)
+  endif()
+endfunction()
+
+# Detect if the head is detached, if so, switch back before calling git pull on a detached head
+#
+# Input variables:
+# - REPOSITORY_PATH: The path to the repository
+function(git_switch_back)
+  set(oneValueArgs REPOSITORY_PATH)
+  cmake_parse_arguments(
+    _fun
+    ""
+    "${oneValueArgs}"
+    ""
+    ${ARGN})
+
+  if("${_fun_REPOSITORY_PATH}" STREQUAL "")
+    message(FATAL_ERROR "REPOSITORY_PATH is required")
+  endif()
+
+  git_is_detached(IS_DETACHED REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
+
+  if(${IS_DETACHED})
     message(STATUS "Switch back ${_fun_REPOSITORY_PATH}")
     execute_process(COMMAND "${GIT_EXECUTABLE}" "switch" "-" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}")
   endif()
@@ -218,11 +280,21 @@ function(git_pull)
     message(FATAL_ERROR "REPOSITORY_PATH is required")
   endif()
 
+  # store the current revision
+  git_revision(REVISION REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
+
   git_switch_back(REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
 
   message(STATUS "Updating ${_fun_REPOSITORY_PATH}")
   find_program(GIT_EXECUTABLE "git" REQUIRED)
   execute_process(COMMAND "${GIT_EXECUTABLE}" "pull" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}")
+
+  # restore the revision
+  git_checkout(
+    REPOSITORY_PATH
+    "${_fun_REPOSITORY_PATH}"
+    REVISION
+    "${REVISION}")
 endfunction()
 
 # Checkout the given revision
