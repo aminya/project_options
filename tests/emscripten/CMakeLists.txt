@@ -20,10 +20,7 @@ endif()
 run_vcpkg()
 
 # Set the project name to your project name, my project isn't very descriptive
-project(
-  myapp
-  VERSION 0.1.0
-  LANGUAGES C CXX)
+project(myapp VERSION 0.1.0 LANGUAGES C CXX)
 
 project_options(
   ENABLE_CACHE
@@ -48,5 +45,7 @@ if(EMSCRIPTEN)
   set(CMAKE_EXECUTABLE_SUFFIX ".wasm")
 
   set_target_properties(myapp PROPERTIES COMPILE_FLAGS "-Os -s SIDE_MODULE=1 ")
-  set_target_properties(myapp PROPERTIES LINK_FLAGS "-Os -s WASM=1 -s SIDE_MODULE=1 -s STANDALONE_WASM --no-entry")
+  set_target_properties(
+    myapp PROPERTIES LINK_FLAGS "-Os -s WASM=1 -s SIDE_MODULE=1 -s STANDALONE_WASM --no-entry"
+  )
 endif()

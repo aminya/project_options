@@ -6,12 +6,7 @@ function(get_property_of_targets)
   set(_options)
   set(_oneValueArgs OUTPUT PROPERTY)
   set(_multiValueArgs TARGETS)
-  cmake_parse_arguments(
-    args
-    "${_options}"
-    "${_oneValueArgs}"
-    "${_multiValueArgs}"
-    ${ARGN})
+  cmake_parse_arguments(args "${_options}" "${_oneValueArgs}" "${_multiValueArgs}" ${ARGN})
 
   set(_Value)
   foreach(_Target IN LISTS args_TARGETS)
@@ -21,9 +16,7 @@ function(get_property_of_targets)
     endif()
   endforeach()
   list(REMOVE_DUPLICATES _Current_property)
-  set(${args_OUTPUT}
-      ${_Value}
-      PARENT_SCOPE)
+  set(${args_OUTPUT} ${_Value} PARENT_SCOPE)
 endfunction()
 
 #[[.rst:
@@ -46,7 +39,8 @@ function(package_project)
       # default to ${CMAKE_BINARY_DIR}/${NAME}
       CONFIG_EXPORT_DESTINATION
       # default to ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/${NAME} suitable for vcpkg, etc.
-      CONFIG_INSTALL_DESTINATION)
+      CONFIG_INSTALL_DESTINATION
+  )
   set(_multiValueArgs
       # recursively found for the current folder if not specified
       TARGETS
@@ -63,22 +57,23 @@ function(package_project)
       # the names of the PRIVATE dependencies that are found using `CONFIG`. Only included when BUILD_SHARED_LIBS is OFF.
       PRIVATE_DEPENDENCIES_CONFIGURED
       # PRIVATE dependencies that are only included when BUILD_SHARED_LIBS is OFF
-      PRIVATE_DEPENDENCIES)
+      PRIVATE_DEPENDENCIES
+  )
 
   cmake_parse_arguments(
-    _PackageProject
-    "${_options}"
-    "${_oneValueArgs}"
-    "${_multiValueArgs}"
-    "${ARGN}")
+    _PackageProject "${_options}" "${_oneValueArgs}" "${_multiValueArgs}" "${ARGN}"
+  )
 
   # Set default options
-  include(GNUInstallDirs) # Define GNU standard installation directories such as CMAKE_INSTALL_DATADIR
+  include(GNUInstallDirs
+  )# Define GNU standard installation directories such as CMAKE_INSTALL_DATADIR
 
   # set default packaged targets
   if(NOT _PackageProject_TARGETS)
     get_all_installable_targets(_PackageProject_TARGETS)
-    message(STATUS "package_project: considering ${_PackageProject_TARGETS} as the exported targets")
+    message(
+      STATUS "package_project: considering ${_PackageProject_TARGETS} as the exported targets"
+    )
   endif()
 
   # default to the name of the project or the given name
@@ -108,7 +103,9 @@ function(package_project)
 
   # use datadir (works better with vcpkg, etc)
   if("${_PackageProject_CONFIG_INSTALL_DESTINATION}" STREQUAL "")
-    set(_PackageProject_CONFIG_INSTALL_DESTINATION "${CMAKE_INSTALL_DATADIR}/${_PackageProject_NAME}")
+    set(_PackageProject_CONFIG_INSTALL_DESTINATION
+        "${CMAKE_INSTALL_DATADIR}/${_PackageProject_NAME}"
+    )
   endif()
   # ycm args
   set(_PackageProject_INSTALL_DESTINATION "${_PackageProject_CONFIG_INSTALL_DESTINATION}")
@@ -121,7 +118,8 @@ function(package_project)
       PROPERTY
       "PROJECT_OPTIONS_${property}"
       OUTPUT
-      "PROPERTY_${property}")
+      "PROPERTY_${property}"
+    )
   endmacro()
   _get_property(INTERFACE_DIRECTORIES)
   _get_property(INTERFACE_DEPENDENCIES)
@@ -132,12 +130,11 @@ function(package_project)
   _get_property(PRIVATE_CONFIG_DEPENDENCIES)
 
   # Installation of the public/interface includes
-  set(_PackageProject_PUBLIC_INCLUDES "${_PackageProject_PUBLIC_INCLUDES}" "${_PackageProject_INTERFACE_INCLUDES}"
-                                      "${PROPERTY_INTERFACE_DIRECTORIES}")
-  if(NOT
-     "${_PackageProject_PUBLIC_INCLUDES}"
-     STREQUAL
-     "")
+  set(_PackageProject_PUBLIC_INCLUDES
+      "${_PackageProject_PUBLIC_INCLUDES}" "${_PackageProject_INTERFACE_INCLUDES}"
+      "${PROPERTY_INTERFACE_DIRECTORIES}"
+  )
+  if(NOT "${_PackageProject_PUBLIC_INCLUDES}" STREQUAL "")
     foreach(_INC ${_PackageProject_PUBLIC_INCLUDES})
       # make include absolute
       if(NOT IS_ABSOLUTE ${_INC})
@@ -155,50 +152,44 @@ function(package_project)
 
   # Append the configured public dependencies
   set(_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED
-      "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}"
-      "${PROPERTY_PUBLIC_CONFIG_DEPENDENCIES}"
+      "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}" "${PROPERTY_PUBLIC_CONFIG_DEPENDENCIES}"
       "${_PackageProject_INTERFACE_DEPENDENCIES_CONFIGURED}"
-      "${PROPERTY_INTERFACE_CONFIG_DEPENDENCIES}")
+      "${PROPERTY_INTERFACE_CONFIG_DEPENDENCIES}"
+  )
   list(REMOVE_DUPLICATES _PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED)
-  if(NOT
-     "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}"
-     STREQUAL
-     "")
+  if(NOT "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}" STREQUAL "")
     set(_PUBLIC_DEPENDENCIES_CONFIG)
     foreach(DEP ${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED})
       list(APPEND _PUBLIC_DEPENDENCIES_CONFIG "${DEP} CONFIG")
     endforeach()
   endif()
 
-  list(
-    APPEND
-    _PackageProject_PUBLIC_DEPENDENCIES
-    ${_PUBLIC_DEPENDENCIES_CONFIG}
-    ${PROPERTY_PUBLIC_DEPENDENCIES})
+  list(APPEND _PackageProject_PUBLIC_DEPENDENCIES ${_PUBLIC_DEPENDENCIES_CONFIG}
+       ${PROPERTY_PUBLIC_DEPENDENCIES}
+  )
 
   # ycm arg
-  set(_PackageProject_DEPENDENCIES ${_PackageProject_PUBLIC_DEPENDENCIES} ${_PackageProject_INTERFACE_DEPENDENCIES}
-                                   ${PROPERTY_INTERFACE_DEPENDENCIES})
+  set(_PackageProject_DEPENDENCIES
+      ${_PackageProject_PUBLIC_DEPENDENCIES} ${_PackageProject_INTERFACE_DEPENDENCIES}
+      ${PROPERTY_INTERFACE_DEPENDENCIES}
+  )
 
   # Append the configured private dependencies
-  set(_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED "${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED}"
-                                                      "${PROPERTY_PRIVATE_CONFIG_DEPENDENCIES}")
+  set(_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED
+      "${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED}"
+      "${PROPERTY_PRIVATE_CONFIG_DEPENDENCIES}"
+  )
   list(REMOVE_DUPLICATES _PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED)
-  if(NOT
-     "${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED}"
-     STREQUAL
-     "")
+  if(NOT "${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED}" STREQUAL "")
     set(_PRIVATE_DEPENDENCIES_CONFIG)
     foreach(DEP ${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED})
       list(APPEND _PRIVATE_DEPENDENCIES_CONFIG "${DEP} CONFIG")
     endforeach()
   endif()
   # ycm arg
-  list(
-    APPEND
-    _PackageProject_PRIVATE_DEPENDENCIES
-    ${_PRIVATE_DEPENDENCIES_CONFIG}
-    ${PROPERTY_PRIVATE_DEPENDENCIES})
+  list(APPEND _PackageProject_PRIVATE_DEPENDENCIES ${_PRIVATE_DEPENDENCIES_CONFIG}
+       ${PROPERTY_PRIVATE_DEPENDENCIES}
+  )
 
   # Installation of package (compatible with vcpkg, etc)
   set(_targets_list ${_PackageProject_TARGETS})
@@ -215,13 +206,14 @@ function(package_project)
     LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
     ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT lib
     RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
-    PUBLIC_HEADER
-      DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_PackageProject_NAME}"
-      COMPONENT dev
-      ${FILE_SET_ARGS})
+    PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_PackageProject_NAME}" COMPONENT dev
+                  ${FILE_SET_ARGS}
+  )
 
   # download ForwardArguments
-  FetchContent_Declare(_fargs URL https://github.com/polysquare/cmake-forward-arguments/archive/refs/tags/v1.0.0.zip)
+  FetchContent_Declare(
+    _fargs URL https://github.com/polysquare/cmake-forward-arguments/archive/refs/tags/v1.0.0.zip
+  )
   FetchContent_GetProperties(_fargs)
   if(NOT _fargs_POPULATED)
     FetchContent_Populate(_fargs)
@@ -238,7 +230,8 @@ function(package_project)
     SINGLEVAR_ARGS
     "${_oneValueArgs};EXPORT_DESTINATION;INSTALL_DESTINATION;NAMESPACE;VARS_PREFIX;EXPORT"
     MULTIVAR_ARGS
-    "${_multiValueArgs};DEPENDENCIES;PRIVATE_DEPENDENCIES")
+    "${_multiValueArgs};DEPENDENCIES;PRIVATE_DEPENDENCIES"
+  )
 
   # download ycm
   FetchContent_Declare(_ycm URL https://github.com/robotology/ycm/archive/refs/tags/v0.13.0.zip)
@@ -260,20 +253,18 @@ function(package_project)
 
     find_package(${_PackageProject_NAME} CONFIG REQUIRED)
     target_link_libraries(main PRIVATE ${_targets_str})
-  ")
+  "
+  )
   file(WRITE "${_PackageProject_EXPORT_DESTINATION}/usage" "${USAGE_FILE_CONTENT}")
   install(FILES "${_PackageProject_EXPORT_DESTINATION}/usage"
-          DESTINATION "${_PackageProject_CONFIG_INSTALL_DESTINATION}")
+          DESTINATION "${_PackageProject_CONFIG_INSTALL_DESTINATION}"
+  )
   install(CODE "MESSAGE(STATUS \"${USAGE_FILE_CONTENT}\")")
 
   include("${_ycm_SOURCE_DIR}/modules/AddUninstallTarget.cmake")
 endfunction()
 
-function(
-  set_or_append_target_property
-  target
-  property
-  new_values)
+function(set_or_append_target_property target property new_values)
   get_target_property(_AllValues ${target} ${property})
 
   if(NOT _AllValues) # If the property hasn't set
@@ -306,11 +297,15 @@ function(target_include_interface_directories target)
     # Include the interface directory
     get_target_property(_HasSourceFiles ${target} SOURCES)
     if(NOT _HasSourceFiles) # header-only library, aka `add_library(<name> INTERFACE)`
-      target_include_directories(${target} INTERFACE $<BUILD_INTERFACE:${include_dir}>
-                                                     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+      target_include_directories(
+        ${target} INTERFACE $<BUILD_INTERFACE:${include_dir}>
+                            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+      )
     else()
-      target_include_directories(${target} PUBLIC $<BUILD_INTERFACE:${include_dir}>
-                                                  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+      target_include_directories(
+        ${target} PUBLIC $<BUILD_INTERFACE:${include_dir}>
+                         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+      )
     endif()
   endfunction()
 
@@ -334,13 +329,9 @@ macro(target_find_dependencies target)
       INTERFACE
       PRIVATE_CONFIG
       PUBLIC_CONFIG
-      INTERFACE_CONFIG)
-  cmake_parse_arguments(
-    args
-    "${_options}"
-    "${_oneValueArgs}"
-    "${_MultiValueArgs}"
-    ${ARGN})
+      INTERFACE_CONFIG
+  )
+  cmake_parse_arguments(args "${_options}" "${_oneValueArgs}" "${_MultiValueArgs}" ${ARGN})
 
   macro(_property_for property)
     # Call find_package to all newly added dependencies
@@ -354,7 +345,9 @@ macro(target_find_dependencies target)
     endforeach()
 
     # Append to target property
-    set_or_append_target_property(${target} "PROJECT_OPTIONS_${property}_DEPENDENCIES" "${args_${property}}")
+    set_or_append_target_property(
+      ${target} "PROJECT_OPTIONS_${property}_DEPENDENCIES" "${args_${property}}"
+    )
   endmacro()
 
   _property_for(PRIVATE)

@@ -15,7 +15,8 @@ function(
   MSVC_WARNINGS
   CLANG_WARNINGS
   GCC_WARNINGS
-  CUDA_WARNINGS)
+  CUDA_WARNINGS
+)
   if("${MSVC_WARNINGS}" STREQUAL "")
     set(MSVC_WARNINGS
         /W4 # Baseline reasonable warnings
@@ -78,13 +79,8 @@ function(
   endif()
 
   if("${CUDA_WARNINGS}" STREQUAL "")
-    set(_CUDA_WARNINGS
-        -Wall
-        -Wextra
-        -Wunused
-        -Wconversion
-        -Wshadow
-        # TODO add more Cuda warnings
+    set(_CUDA_WARNINGS -Wall -Wextra -Wunused -Wconversion -Wshadow
+                       # TODO add more Cuda warnings
     )
 
     # append -Xcompiler= to each warning
@@ -121,7 +117,8 @@ function(
     -Wold-style-cast
     -Woverloaded-virtual
     -Wuseless-cast
-    -Wextra-semi)
+    -Wextra-semi
+  )
 
   set(PROJECT_WARNINGS_CUDA "${CUDA_WARNINGS}")
 
@@ -132,20 +129,26 @@ function(
               # C warnings
               $<$<COMPILE_LANGUAGE:C>:${PROJECT_WARNINGS_C}>
               # Cuda warnings
-              $<$<COMPILE_LANGUAGE:CUDA>:${PROJECT_WARNINGS_CUDA}>)
+              $<$<COMPILE_LANGUAGE:CUDA>:${PROJECT_WARNINGS_CUDA}>
+  )
 
   # If we are using the compiler as a linker driver pass the warnings to it
   # (most useful when using LTO or warnings as errors)
   if(CMAKE_CXX_LINK_EXECUTABLE MATCHES "^<CMAKE_CXX_COMPILER>")
-    _set_project_warnings_add_target_link_option(${_project_name} "$<$<COMPILE_LANGUAGE:CXX>:${PROJECT_WARNINGS_CXX}>")
+    _set_project_warnings_add_target_link_option(
+      ${_project_name} "$<$<COMPILE_LANGUAGE:CXX>:${PROJECT_WARNINGS_CXX}>"
+    )
   endif()
 
   if(CMAKE_C_LINK_EXECUTABLE MATCHES "^<CMAKE_C_COMPILER>")
-    _set_project_warnings_add_target_link_option(${_project_name} "$<$<COMPILE_LANGUAGE:C>:${PROJECT_WARNINGS_C}>")
+    _set_project_warnings_add_target_link_option(
+      ${_project_name} "$<$<COMPILE_LANGUAGE:C>:${PROJECT_WARNINGS_C}>"
+    )
   endif()
 
   if(CMAKE_CUDA_LINK_EXECUTABLE MATCHES "^<CMAKE_CUDA_COMPILER>")
-    _set_project_warnings_add_target_link_option(${_project_name}
-                                                 "$<$<COMPILE_LANGUAGE:CUDA>:${PROJECT_WARNINGS_CUDA}>")
+    _set_project_warnings_add_target_link_option(
+      ${_project_name} "$<$<COMPILE_LANGUAGE:CUDA>:${PROJECT_WARNINGS_CUDA}>"
+    )
   endif()
 endfunction()

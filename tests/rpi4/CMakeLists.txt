@@ -38,10 +38,7 @@ else()
 endif()
 
 # Set the project name to your project name, my project isn't very descriptive
-project(
-  example
-  VERSION 0.1.0
-  LANGUAGES C CXX ASM)
+project(example VERSION 0.1.0 LANGUAGES C CXX ASM)
 
 set(ENABLE_CLANG_TIDY OFF)
 set(ENABLE_CPPCHECK OFF)
@@ -71,10 +68,7 @@ if(ENABLE_TESTING)
   endif()
 
   if(NOT DISABLE_SANITIZER)
-    if(NOT
-       "${CMAKE_SYSTEM_NAME}"
-       STREQUAL
-       "Windows")
+    if(NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
       set(ENABLE_SANITIZER_ADDRESS "ENABLE_SANITIZER_ADDRESS")
       set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR")
     else()
@@ -119,7 +113,8 @@ project_options(
   --suppress=unmatchedSuppression
   --suppress=passedByValue
   --suppress=syntaxError
-  --inconclusive)
+  --inconclusive
+)
 
 add_executable(example)
 target_sources(example PRIVATE main.cpp)

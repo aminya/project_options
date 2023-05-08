@@ -5,10 +5,7 @@ include(../../src/Index.cmake)
 
 run_vcpkg()
 
-project(
-  anotherproj
-  VERSION 0.1.0
-  LANGUAGES CXX C)
+project(anotherproj VERSION 0.1.0 LANGUAGES CXX C)
 
 # Initialize project_options
 project_options(

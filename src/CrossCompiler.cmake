@@ -15,23 +15,18 @@ macro(enable_cross_compiler)
       TARGET_ARCHITECTURE
       CROSS_ROOT
       CROSS_TRIPLET
-      TOOLCHAIN_FILE)
+      TOOLCHAIN_FILE
+  )
   set(multiValueArgs)
   cmake_parse_arguments(
-    EnableCrossCompiler
-    "${options}"
-    "${oneValueArgs}"
-    "${multiValueArgs}"
-    ${ARGN})
+    EnableCrossCompiler "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN}
+  )
 
   include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
   detect_architecture(_arch)
 
   set(_default_triplet ${DEFAULT_TRIPLET})
-  if(NOT
-     "${EnableCrossCompiler_DEFAULT_TRIPLET}"
-     STREQUAL
-     "")
+  if(NOT "${EnableCrossCompiler_DEFAULT_TRIPLET}" STREQUAL "")
     set(_default_triplet ${EnableCrossCompiler_DEFAULT_TRIPLET})
   endif()
 
@@ -40,40 +35,25 @@ macro(enable_cross_compiler)
   endif()
   set(_cc ${CMAKE_C_COMPILER})
   set(_cxx ${CMAKE_CXX_COMPILER})
-  if(NOT
-     "${EnableCrossCompiler_CC}"
-     STREQUAL
-     "")
+  if(NOT "${EnableCrossCompiler_CC}" STREQUAL "")
     set(_cc ${EnableCrossCompiler_CC})
   endif()
-  if(NOT
-     "${EnableCrossCompiler_CXX}"
-     STREQUAL
-     "")
+  if(NOT "${EnableCrossCompiler_CXX}" STREQUAL "")
     set(_cxx ${EnableCrossCompiler_CXX})
   endif()
 
   set(_target_architecture ${TARGET_ARCHITECTURE})
-  if(NOT
-     "${EnableCrossCompiler_TARGET_ARCHITECTURE}"
-     STREQUAL
-     "")
+  if(NOT "${EnableCrossCompiler_TARGET_ARCHITECTURE}" STREQUAL "")
     set(_target_architecture ${EnableCrossCompiler_TARGET_ARCHITECTURE})
   endif()
 
   set(_cross_root ${CROSS_ROOT})
-  if(NOT
-     "${EnableCrossCompiler_CROSS_ROOT}"
-     STREQUAL
-     "")
+  if(NOT "${EnableCrossCompiler_CROSS_ROOT}" STREQUAL "")
     set(_cross_root ${EnableCrossCompiler_CROSS_ROOT})
   endif()
 
   set(_cross_triplet ${CROSS_TRIPLET})
-  if(NOT
-     "${EnableCrossCompiler_CROSS_TRIPLET}"
-     STREQUAL
-     "")
+  if(NOT "${EnableCrossCompiler_CROSS_TRIPLET}" STREQUAL "")
     set(_cross_triplet ${EnableCrossCompiler_CROSS_TRIPLET})
   endif()
 
@@ -83,11 +63,17 @@ macro(enable_cross_compiler)
       set(_default_triplet "x64-mingw-dynamic")
     elseif(_cc MATCHES "i686(-w64)?-mingw32-[gc]..?" OR _cxx MATCHES "i686(-w64)?-mingw32-[gc]..?")
       set(_default_triplet "i686-mingw-dynamic")
-    elseif(_cc MATCHES "(gcc-)?arm-linux-gnueabi-[gc]..?" OR _cxx MATCHES "(gcc-)?arm-linux-gnueabi-[gc]..?")
+    elseif(_cc MATCHES "(gcc-)?arm-linux-gnueabi-[gc]..?" OR _cxx MATCHES
+                                                             "(gcc-)?arm-linux-gnueabi-[gc]..?"
+    )
       set(_default_triplet "arm-linux")
-    elseif(_cc MATCHES "(gcc-)?arm-linux-gnueabihf-[gc]..?" OR _cxx MATCHES "(gcc-)?arm-linux-gnueabihf-[gc]..?")
+    elseif(_cc MATCHES "(gcc-)?arm-linux-gnueabihf-[gc]..?" OR _cxx MATCHES
+                                                               "(gcc-)?arm-linux-gnueabihf-[gc]..?"
+    )
       set(_default_triplet "arm-linux")
-    elseif(_cc MATCHES "(gcc-)?aarch64-linux-(gnu-)?[gc]..?" OR _cxx MATCHES "(gcc-)?aarch64-linux-(gnu-)?[gc]..?")
+    elseif(_cc MATCHES "(gcc-)?aarch64-linux-(gnu-)?[gc]..?"
+           OR _cxx MATCHES "(gcc-)?aarch64-linux-(gnu-)?[gc]..?"
+    )
       set(_default_triplet "arm64-linux")
     elseif(_cc MATCHES "emcc" OR _cxx MATCHES "em..")
       set(_default_triplet "wasm32-emscripten")
@@ -95,7 +81,9 @@ macro(enable_cross_compiler)
   endif()
 
   # detect compiler and target_architecture by triplet
-  if("${_default_triplet}" STREQUAL "x64-mingw-dynamic" OR "${_default_triplet}" STREQUAL "x64-mingw-static")
+  if("${_default_triplet}" STREQUAL "x64-mingw-dynamic" OR "${_default_triplet}" STREQUAL
+                                                           "x64-mingw-static"
+  )
     if("${_cc}" STREQUAL "")
       set(_cc "x86_64-w64-mingw32-gcc")
     endif()
@@ -105,7 +93,9 @@ macro(enable_cross_compiler)
     if("${_target_architecture}" STREQUAL "")
       set(_target_architecture "x64")
     endif()
-  elseif("${_default_triplet}" STREQUAL "x86-mingw-dynamic" OR "${_default_triplet}" STREQUAL "x86-mingw-static")
+  elseif("${_default_triplet}" STREQUAL "x86-mingw-dynamic" OR "${_default_triplet}" STREQUAL
+                                                               "x86-mingw-static"
+  )
     if("${_cc}" STREQUAL "")
       set(_cc "i686-w64-mingw32-gcc")
     endif()
@@ -171,7 +161,9 @@ macro(enable_cross_compiler)
   set(USE_CROSSCOMPILER_ARM64_LINUX)
   set(USE_CROSSCOMPILER_AARCH64_LINUX)
   set(USE_CROSSCOMPILER_ARM_NONE)
-  if(_cc MATCHES "(x86_64|i686)(-w64)?-mingw32-[gc]..?" OR _cxx MATCHES "(x86_64|i686)(-w64)?-mingw32-[gc]..?")
+  if(_cc MATCHES "(x86_64|i686)(-w64)?-mingw32-[gc]..?" OR _cxx MATCHES
+                                                           "(x86_64|i686)(-w64)?-mingw32-[gc]..?"
+  )
     set(MINGW TRUE)
     set(USE_CROSSCOMPILER_MINGW TRUE)
   elseif(_cc MATCHES "emcc" OR _cxx MATCHES "em..")
@@ -187,13 +179,19 @@ macro(enable_cross_compiler)
   set(LIBRARY_LINKAGE)
   if(BUILD_SHARED_LIBS)
     set(LIBRARY_LINKAGE "dynamic")
-    if("${_default_triplet}" STREQUAL "x64-mingw-static" OR "${_default_triplet}" STREQUAL "x86-mingw-static")
+    if("${_default_triplet}" STREQUAL "x64-mingw-static" OR "${_default_triplet}" STREQUAL
+                                                            "x86-mingw-static"
+    )
       message(WARNING "cross-compiler triplet is set to 'static' but BUILD_SHARED_LIBS is enabled")
     endif()
   else()
-    if("${_default_triplet}" STREQUAL "x64-mingw-dynamic" OR "${_default_triplet}" STREQUAL "x86-mingw-dynamic")
+    if("${_default_triplet}" STREQUAL "x64-mingw-dynamic" OR "${_default_triplet}" STREQUAL
+                                                             "x86-mingw-dynamic"
+    )
       set(LIBRARY_LINKAGE "dynamic")
-    elseif("${_default_triplet}" STREQUAL "x64-mingw-static" OR "${_default_triplet}" STREQUAL "x86-mingw-static")
+    elseif("${_default_triplet}" STREQUAL "x64-mingw-static" OR "${_default_triplet}" STREQUAL
+                                                                "x86-mingw-static"
+    )
       set(LIBRARY_LINKAGE "static")
     else()
       set(LIBRARY_LINKAGE "static")
@@ -212,21 +210,27 @@ macro(enable_cross_compiler)
     endif()
     set(MINGW TRUE)
     set(USE_CROSSCOMPILER_MINGW TRUE)
-  elseif(_cc MATCHES "(gcc-)?arm-linux-gnueabi-[gc]..?" OR _cxx MATCHES "(gcc-)?arm-linux-gnueabi-[gc]..?")
+  elseif(_cc MATCHES "(gcc-)?arm-linux-gnueabi-[gc]..?" OR _cxx MATCHES
+                                                           "(gcc-)?arm-linux-gnueabi-[gc]..?"
+  )
     if("${_cross_root}" STREQUAL "")
       set(_cross_root "/usr/gcc-arm-linux-gnueabi")
     endif()
     if("${_cross_triplet}" STREQUAL "")
       set(_cross_triplet "arm-linux-gnueabi")
     endif()
-  elseif(_cc MATCHES "(gcc-)?arm-linux-gnueabihf-[gc]..?" OR _cxx MATCHES "(gcc-)?arm-linux-gnueabihf-[gc]..?")
+  elseif(_cc MATCHES "(gcc-)?arm-linux-gnueabihf-[gc]..?" OR _cxx MATCHES
+                                                             "(gcc-)?arm-linux-gnueabihf-[gc]..?"
+  )
     if("${_cross_root}" STREQUAL "")
       set(_cross_root "/usr/gcc-arm-linux-gnueabihf")
     endif()
     if("${_cross_triplet}" STREQUAL "")
       set(_cross_triplet "arm-linux-gnueabihf")
     endif()
-  elseif(_cc MATCHES "(gcc-)?aarch64-linux-(gnu-)?[gc]..?" OR _cxx MATCHES "(gcc-)?aarch64-linux-(gnu-)?[gc]..?")
+  elseif(_cc MATCHES "(gcc-)?aarch64-linux-(gnu-)?[gc]..?" OR _cxx MATCHES
+                                                              "(gcc-)?aarch64-linux-(gnu-)?[gc]..?"
+  )
     if("${_cross_root}" STREQUAL "")
       set(_cross_root "/usr/gcc-aarch64-linux-gnu")
     endif()
@@ -244,11 +248,7 @@ macro(enable_cross_compiler)
     set(USE_CROSSCOMPILER_ARM_NONE TRUE)
   endif()
   # TODO: check if path is right, check for header files or something
-  if(NOT
-     "${_cross_root}"
-     STREQUAL
-     ""
-     AND "${_cross_triplet}" STREQUAL "")
+  if(NOT "${_cross_root}" STREQUAL "" AND "${_cross_triplet}" STREQUAL "")
     message(WARNING "CROSS_ROOT (${_cross_root}) is set, but CROSS_TRIPLET is not")
   endif()
 
@@ -260,29 +260,22 @@ macro(enable_cross_compiler)
   set(TARGET_ARCHITECTURE ${_target_architecture})
 
   if(USE_CROSSCOMPILER_EMSCRIPTEN)
-    if(NOT
-       "$ENV{EMSCRIPTEN}"
-       STREQUAL
-       "")
+    if(NOT "$ENV{EMSCRIPTEN}" STREQUAL "")
       set(EMSCRIPTEN_ROOT $ENV{EMSCRIPTEN})
     else()
       if(NOT DEFINED EMSCRIPTEN_ROOT)
         include(FetchContent)
         message(STATUS "fetch emscripten repo. ...")
         FetchContent_Declare(
-          emscripten
-          GIT_REPOSITORY https://github.com/emscripten-core/emscripten
-          GIT_TAG main)
+          emscripten GIT_REPOSITORY https://github.com/emscripten-core/emscripten GIT_TAG main
+        )
         if(NOT emscripten_POPULATED)
           FetchContent_Populate(emscripten)
           set(EMSCRIPTEN_ROOT "${emscripten_SOURCE_DIR}")
         endif()
       endif()
     endif()
-    if(NOT
-       "$ENV{EMSDK}"
-       STREQUAL
-       "")
+    if(NOT "$ENV{EMSDK}" STREQUAL "")
       set(EMSCRIPTEN_PREFIX "$ENV{EMSDK}/upstream/emscripten")
       set(EMSCRIPTEN_ROOT_PATH "$ENV{EMSDK}/upstream/emscripten")
     endif()
@@ -297,10 +290,7 @@ macro(enable_cross_compiler)
   endif()
 
   set(_toolchain_file)
-  if(NOT
-     "${EnableCrossCompiler_TOOLCHAIN_FILE}"
-     STREQUAL
-     "")
+  if(NOT "${EnableCrossCompiler_TOOLCHAIN_FILE}" STREQUAL "")
     set(_toolchain_file ${EnableCrossCompiler_TOOLCHAIN_FILE})
   else()
     get_toolchain_file(_toolchain_file)
@@ -332,25 +322,16 @@ macro(enable_cross_compiler)
     #message(STATUS "EMSDK: $ENV{EMSDK}")
     message(STATUS "use emscripten cross-compiler emulator: ${CMAKE_CROSSCOMPILING_EMULATOR}")
   else()
-    if(NOT
-       "${CROSS_ROOT}"
-       STREQUAL
-       "")
+    if(NOT "${CROSS_ROOT}" STREQUAL "")
       message(STATUS "use SYSROOT: ${CROSS_ROOT}")
     endif()
   endif()
   message(STATUS "Target Architecture: ${TARGET_ARCHITECTURE}")
-  if(NOT
-     "${DEFAULT_TRIPLET}"
-     STREQUAL
-     "")
+  if(NOT "${DEFAULT_TRIPLET}" STREQUAL "")
     message(STATUS "Default Triplet: ${DEFAULT_TRIPLET}")
   endif()
   message(STATUS "Host Triplet: ${HOST_TRIPLET}")
-  if(NOT
-     "${CMAKE_TOOLCHAIN_FILE}"
-     STREQUAL
-     "")
+  if(NOT "${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
     message(STATUS "Toolchain File: ${CMAKE_TOOLCHAIN_FILE}")
   else()
     if(NOT DEFINED VCPKG_CHAINLOAD_TOOLCHAIN_FILE)
@@ -373,33 +354,23 @@ function(get_toolchain_file value)
   endif()
 
   if(USE_CROSSCOMPILER_MINGW)
-    set(${value}
-        ${ProjectOptions_SRC_DIR}/toolchains/${_arch}-w64-mingw32.toolchain.cmake
-        PARENT_SCOPE)
+    set(${value} ${ProjectOptions_SRC_DIR}/toolchains/${_arch}-w64-mingw32.toolchain.cmake
+        PARENT_SCOPE
+    )
   elseif(USE_CROSSCOMPILER_EMSCRIPTEN)
     if(EMSCRIPTEN_ROOT)
-      set(${value}
-          ${EMSCRIPTEN_ROOT}/cmake/Modules/Platform/Emscripten.cmake
-          PARENT_SCOPE)
+      set(${value} ${EMSCRIPTEN_ROOT}/cmake/Modules/Platform/Emscripten.cmake PARENT_SCOPE)
     else()
       message(ERROR "EMSCRIPTEN_ROOT is not set, please define EMSCRIPTEN_ROOT (emscripten repo)")
     endif()
   elseif(USE_CROSSCOMPILER_AARCH64_LINUX)
-    set(${value}
-        ${ProjectOptions_SRC_DIR}/toolchains/aarch64-linux.toolchain.cmake
-        PARENT_SCOPE)
+    set(${value} ${ProjectOptions_SRC_DIR}/toolchains/aarch64-linux.toolchain.cmake PARENT_SCOPE)
   elseif(USE_CROSSCOMPILER_ARM_LINUX)
-    set(${value}
-        ${ProjectOptions_SRC_DIR}/toolchains/arm-linux.toolchain.cmake
-        PARENT_SCOPE)
+    set(${value} ${ProjectOptions_SRC_DIR}/toolchains/arm-linux.toolchain.cmake PARENT_SCOPE)
   elseif(USE_CROSSCOMPILER_ARM64_LINUX)
-    set(${value}
-        ${ProjectOptions_SRC_DIR}/toolchains/arm64-linux.toolchain.cmake
-        PARENT_SCOPE)
+    set(${value} ${ProjectOptions_SRC_DIR}/toolchains/arm64-linux.toolchain.cmake PARENT_SCOPE)
   elseif(USE_CROSSCOMPILER_ARM_NONE)
-    set(${value}
-        ${ProjectOptions_SRC_DIR}/toolchains/arm.toolchain.cmake
-        PARENT_SCOPE)
+    set(${value} ${ProjectOptions_SRC_DIR}/toolchains/arm.toolchain.cmake PARENT_SCOPE)
   elseif(DEFAULT_TRIPLET MATCHES "arm")
     message(STATUS "Don't forget to provide an cmake-toolchain file (for ${DEFAULT_TRIPLET})")
   endif()

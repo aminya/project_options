@@ -7,7 +7,8 @@ project(
   project_options_docs
   VERSION 0.28.0
   DESCRIPTION "Documentation"
-  LANGUAGES NONE)
+  LANGUAGES NONE
+)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
@@ -23,9 +24,7 @@ option(SPHINX_HTML "Build html help with Sphinx" ON)
 option(SPHINX_SINGLEHTML "Build html single page help with Sphinx" OFF)
 set(COMPONENT "documentation")
 
-set(SPHINX_FLAGS
-    ""
-    CACHE STRING "Flags to pass to sphinx-build")
+set(SPHINX_FLAGS "" CACHE STRING "Flags to pass to sphinx-build")
 separate_arguments(sphinx_flags UNIX_COMMAND "${SPHINX_FLAGS}")
 
 mark_as_advanced(SPHINX_TEXT)
@@ -36,7 +35,8 @@ if(NOT SPHINX_INFO
    AND NOT SPHINX_HTML
    AND NOT SPHINX_SINGLEHTML
    AND NOT SPHINX_QTHELP
-   AND NOT SPHINX_TEXT)
+   AND NOT SPHINX_TEXT
+)
   return()
 elseif(NOT SPHINX_EXECUTABLE)
   message(FATAL_ERROR "SPHINX_EXECUTABLE (sphinx-build) is not found!")
@@ -58,16 +58,19 @@ set(conf_doxygen_input
   \"${CMAKE_SOURCE_DIR}/include\" \
   \"${CMAKE_SOURCE_DIR}/src\" \
   \"${CMAKE_SOURCE_DIR}/cmake\" \
-")
+"
+)
 configure_file(conf.py.in conf.py @ONLY)
 
 set(doc_formats "")
 if(SPHINX_HTML)
   list(APPEND doc_formats html)
-  set(html_extra_commands COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/root/
-                          ${CMAKE_CURRENT_BINARY_DIR})
+  set(html_extra_commands COMMAND ${CMAKE_COMMAND} -E copy_directory
+                          ${CMAKE_CURRENT_LIST_DIR}/root/ ${CMAKE_CURRENT_BINARY_DIR}
+  )
   file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/js/versions.js
-       "var ar_versions = [{\"version\": \"build\", \"folder\": \"html\", \"has_pdf\": false}]")
+       "var ar_versions = [{\"version\": \"build\", \"folder\": \"html\", \"has_pdf\": false}]"
+  )
 endif()
 if(SPHINX_MAN)
   list(APPEND doc_formats man)
@@ -79,10 +82,7 @@ if(SPHINX_TEXT)
   list(APPEND doc_formats text)
 endif()
 if(SPHINX_INFO)
-  find_program(
-    MAKEINFO_EXECUTABLE
-    NAMES makeinfo
-    DOC "makeinfo tool")
+  find_program(MAKEINFO_EXECUTABLE NAMES makeinfo DOC "makeinfo tool")
   if(NOT MAKEINFO_EXECUTABLE)
     message(FATAL_ERROR "MAKEINFO_EXECUTABLE (makeinfo) not found!")
   endif()
@@ -92,7 +92,8 @@ if(SPHINX_INFO)
   # SPHINX_INFO controls the .info output.
   set(texinfo_extra_commands
       COMMAND ${MAKEINFO_EXECUTABLE} --no-split -o ${CMAKE_CURRENT_BINARY_DIR}/texinfo/cmake.info
-      ${CMAKE_CURRENT_BINARY_DIR}/texinfo/cmake.texi)
+      ${CMAKE_CURRENT_BINARY_DIR}/texinfo/cmake.texi
+  )
 endif()
 
 set(doc_format_outputs "")
@@ -103,13 +104,14 @@ foreach(format ${doc_formats})
   add_custom_command(
     OUTPUT ${doc_format_output}
     COMMAND
-      ${SPHINX_EXECUTABLE} -c ${CMAKE_CURRENT_BINARY_DIR} -d ${CMAKE_CURRENT_BINARY_DIR}/doctrees -b ${format}
-      ${sphinx_flags} ${CMAKE_CURRENT_LIST_DIR} ${CMAKE_CURRENT_BINARY_DIR}/${format} >
+      ${SPHINX_EXECUTABLE} -c ${CMAKE_CURRENT_BINARY_DIR} -d ${CMAKE_CURRENT_BINARY_DIR}/doctrees -b
+      ${format} ${sphinx_flags} ${CMAKE_CURRENT_LIST_DIR} ${CMAKE_CURRENT_BINARY_DIR}/${format} >
       ${CMAKE_CURRENT_BINARY_DIR}/${doc_format_log} # log stdout, pass stderr
       ${${format}_extra_commands}
     DEPENDS ${doc_format_last}
     COMMENT "sphinx-build ${format}: see ${CMAKE_CURRENT_BINARY_DIR}/${doc_format_log}"
-    VERBATIM)
+    VERBATIM
+  )
   set_property(SOURCE ${doc_format_output} PROPERTY SYMBOLIC 1)
   list(APPEND doc_format_outputs ${doc_format_output})
   set(doc_format_last ${doc_format_output})
@@ -118,17 +120,15 @@ endforeach()
 add_custom_target(documentation ALL DEPENDS ${doc_format_outputs})
 
 if(SPHINX_INFO)
-  install(
-    FILES ${CMAKE_CURRENT_BINARY_DIR}/texinfo/cmake.info
-    DESTINATION ${CMAKE_INFO_DIR}
-    ${COMPONENT})
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/texinfo/cmake.info DESTINATION ${CMAKE_INFO_DIR}
+          ${COMPONENT}
+  )
 endif()
 
 if(SPHINX_MAN)
-  file(
-    GLOB man_rst
-    RELATIVE ${CMAKE_SOURCE_DIR}/Help/manual
-    ${CMAKE_SOURCE_DIR}/Help/manual/*.[1-9].rst)
+  file(GLOB man_rst RELATIVE ${CMAKE_SOURCE_DIR}/Help/manual
+       ${CMAKE_SOURCE_DIR}/Help/manual/*.[1-9].rst
+  )
   foreach(m ${man_rst})
     if("x${m}" MATCHES "^x(.+)\\.([1-9])\\.rst$")
       set(name "${CMAKE_MATCH_1}")
@@ -142,10 +142,9 @@ if(SPHINX_MAN)
         endif()
       endif()
       if(NOT skip)
-        install(
-          FILES ${CMAKE_CURRENT_BINARY_DIR}/man/${name}.${sec}
-          DESTINATION ${CMAKE_MAN_DIR}/man${sec}
-          ${COMPONENT})
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/man/${name}.${sec}
+                DESTINATION ${CMAKE_MAN_DIR}/man${sec} ${COMPONENT}
+        )
       endif()
       unset(skip)
     endif()
@@ -157,7 +156,8 @@ if(SPHINX_HTML)
     DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html
     DESTINATION ${CMAKE_DOC_DIR}
     ${COMPONENT}
-    PATTERN .buildinfo EXCLUDE)
+    PATTERN .buildinfo EXCLUDE
+  )
 endif()
 
 if(SPHINX_SINGLEHTML)
@@ -165,5 +165,6 @@ if(SPHINX_SINGLEHTML)
     DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/singlehtml
     DESTINATION ${CMAKE_DOC_DIR}
     ${COMPONENT}
-    PATTERN .buildinfo EXCLUDE)
+    PATTERN .buildinfo EXCLUDE
+  )
 endif()

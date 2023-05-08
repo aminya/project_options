@@ -9,7 +9,8 @@ macro(run_conan)
       DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/0.17.0/conan.cmake"
       "${CMAKE_BINARY_DIR}/conan.cmake"
       EXPECTED_HASH SHA256=3bef79da16c2e031dc429e1dac87a08b9226418b300ce004cc125a82687baeef
-      TLS_VERIFY ON)
+      TLS_VERIFY ON
+    )
   endif()
 
   set(ENV{CONAN_REVISIONS_ENABLED} 1)
@@ -26,12 +27,11 @@ macro(run_conan)
     URL
     https://center.conan.io
     INDEX
-    0)
+    0
+  )
   conan_add_remote(
-    NAME
-    bincrafters
-    URL
-    https://bincrafters.jfrog.io/artifactory/api/conan/public-conan)
+    NAME bincrafters URL https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
+  )
 
   if(CONAN_EXPORTED)
     # standard conan installation, in which deps will be defined in conanfile. It is not necessary to call conan again, as it is already running.
@@ -39,7 +39,9 @@ macro(run_conan)
       include(${CMAKE_BINARY_DIR}/../conanbuildinfo.cmake)
     else()
       message(
-        FATAL_ERROR "Could not set up conan because \"${CMAKE_BINARY_DIR}/../conanbuildinfo.cmake\" does not exist")
+        FATAL_ERROR
+          "Could not set up conan because \"${CMAKE_BINARY_DIR}/../conanbuildinfo.cmake\" does not exist"
+      )
     endif()
     conan_basic_setup()
   else()
@@ -69,11 +71,7 @@ macro(run_conan)
         set(CONAN_ENV ENV "CC=${CMAKE_C_COMPILER}" "CXX=${CMAKE_CXX_COMPILER}")
       else()
         # Derive all conan settings from a conan profile
-        set(CONAN_SETTINGS
-            PROFILE
-            ${ProjectOptions_CONAN_PROFILE}
-            SETTINGS
-            "build_type=${TYPE}")
+        set(CONAN_SETTINGS PROFILE ${ProjectOptions_CONAN_PROFILE} SETTINGS "build_type=${TYPE}")
         # CONAN_ENV should be redundant, since the profile can set CC & CXX
       endif()
 
@@ -113,7 +111,8 @@ macro(run_conan)
         ${CONAN_BUILD_PROFILE}
         # Pass either autodetected settings or a conan profile
         ${CONAN_SETTINGS}
-        ${OUTPUT_QUIET})
+        ${OUTPUT_QUIET}
+      )
     endforeach()
   endif()
 

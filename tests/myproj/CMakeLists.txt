@@ -17,17 +17,11 @@ if(ENABLE_CROSS_COMPILING)
   enable_cross_compiler()
 endif()
 
-run_vcpkg(
-  VCPKG_URL
-  "https://github.com/microsoft/vcpkg.git"
-  VCPKG_REV
-  "6a3dd0874f153f8b375ec26210ea6d41dee3bb26"
-  ENABLE_VCPKG_UPDATE)
+run_vcpkg(VCPKG_URL "https://github.com/microsoft/vcpkg.git" VCPKG_REV
+          "6a3dd0874f153f8b375ec26210ea6d41dee3bb26" ENABLE_VCPKG_UPDATE
+)
 
-project(
-  myproj
-  VERSION 0.2.0
-  LANGUAGES CXX C)
+project(myproj VERSION 0.2.0 LANGUAGES CXX C)
 
 set(PCH_HEADERS
     <Eigen/Dense>
@@ -35,15 +29,13 @@ set(PCH_HEADERS
     <vector>
     <utility>
     <string>
-    <string_view>)
+    <string_view>
+)
 
 # Enable sanitizers and static analyzers when running the tests
 set(ENABLE_SANITIZER_ADDRESS OFF)
 set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR OFF)
-if(NOT
-   "${CMAKE_SYSTEM_NAME}"
-   STREQUAL
-   "Windows")
+if(NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
   set(ENABLE_SANITIZER_ADDRESS "ENABLE_SANITIZER_ADDRESS")
   set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR")
 else()
@@ -95,11 +87,7 @@ foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
   find_package(${DEPENDENCY} CONFIG REQUIRED)
 endforeach()
 
-target_link_system_libraries(
-  main
-  PRIVATE
-  fmt::fmt
-  Eigen3::Eigen)
+target_link_system_libraries(main PRIVATE fmt::fmt Eigen3::Eigen)
 
 add_subdirectory(libs)
 
@@ -110,26 +98,22 @@ add_test(NAME main COMMAND main)
 # Header-only library
 add_library(lib INTERFACE)
 set(lib_INCLUDE_DIR "include")
-target_include_directories(lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${lib_INCLUDE_DIR}>"
-                                         "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
+target_include_directories(
+  lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${lib_INCLUDE_DIR}>"
+                "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>"
+) # TODO(refactor)
 target_link_libraries(lib INTERFACE myproj_project_options myproj_project_warnings)
-target_link_system_libraries(
-  lib
-  INTERFACE
-  fmt::fmt
-  Eigen3::Eigen)
+target_link_system_libraries(lib INTERFACE fmt::fmt Eigen3::Eigen)
 
 # Library
 add_library(lib2 "./src/mylib2/lib.cpp")
 set(lib2_INCLUDE_DIR2 "include")
-target_include_directories(lib2 PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${lib2_INCLUDE_DIR2}>"
-                                       "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>") # TODO(refactor)
+target_include_directories(
+  lib2 PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${lib2_INCLUDE_DIR2}>"
+              "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>"
+) # TODO(refactor)
 target_link_libraries(lib2 PRIVATE myproj_project_options myproj_project_warnings)
-target_link_system_libraries(
-  lib2
-  PRIVATE
-  fmt::fmt
-  Eigen3::Eigen)
+target_link_system_libraries(lib2 PRIVATE fmt::fmt Eigen3::Eigen)
 target_link_system_libraries(lib2 PRIVATE mythirdpartylib)
 
 # package everything automatically
@@ -146,7 +130,8 @@ package_project(
   INTERFACE_INCLUDES
   ${lib_INCLUDE_DIR2}
   PUBLIC_INCLUDES
-  ${lib2_INCLUDE_DIR2})
+  ${lib2_INCLUDE_DIR2}
+)
 
 # package separately (for testing)
 package_project(
@@ -159,7 +144,8 @@ package_project(
   INTERFACE_DEPENDENCIES_CONFIGURED
   ${DEPENDENCIES_CONFIGURED}
   INTERFACE_INCLUDES
-  ${lib_INCLUDE_DIR})
+  ${lib_INCLUDE_DIR}
+)
 
 package_project(
   NAME
@@ -169,10 +155,7 @@ package_project(
   myproj_project_options
   myproj_project_warnings
   PUBLIC_INCLUDES
-  ${lib2_INCLUDE_DIR22})
+  ${lib2_INCLUDE_DIR22}
+)
 
-package_project(
-  NAME
-  myproj_main
-  TARGETS
-  main)
+package_project(NAME myproj_main TARGETS main)

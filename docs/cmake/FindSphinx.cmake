@@ -10,7 +10,8 @@ find_program(
   SPHINX_EXECUTABLE
   NAMES sphinx-build
   PATHS /usr/bin /usr/local/bin /opt/local/bin
-  DOC "Sphinx documentation generator")
+  DOC "Sphinx documentation generator"
+)
 
 if(NOT SPHINX_EXECUTABLE)
   set(_Python_VERSIONS
@@ -23,14 +24,16 @@ if(NOT SPHINX_EXECUTABLE)
       2.1
       2.0
       1.6
-      1.5)
+      1.5
+  )
   foreach(_version ${_Python_VERSIONS})
     set(_sphinx_NAMES sphinx-build-${_version})
     find_program(
       SPHINX_EXECUTABLE
       NAMES ${_sphinx_NAMES}
       PATHS /usr/bin /usr/local/bin /opt/local/bin
-      DOC "Sphinx documentation generator")
+      DOC "Sphinx documentation generator"
+    )
   endforeach()
 endif()
 
@@ -44,16 +47,14 @@ function(
   builder
   conf
   source
-  destination)
+  destination
+)
 
   add_custom_target(
-    ${target_name} ALL
-    COMMAND ${SPHINX_EXECUTABLE} -b ${builder} -c ${conf} ${source} ${destination}
-    COMMENT "Generating sphinx documentation: ${builder}")
+    ${target_name} ALL COMMAND ${SPHINX_EXECUTABLE} -b ${builder} -c ${conf} ${source}
+                               ${destination} COMMENT "Generating sphinx documentation: ${builder}"
+  )
 
-  set_property(
-    DIRECTORY
-    APPEND
-    PROPERTY ADDITIONAL_MAKE_CLEAN_FILES ${destination})
+  set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES ${destination})
 
 endfunction()

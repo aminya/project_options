@@ -68,14 +68,16 @@ macro(project_options)
       ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
       ENABLE_SANITIZER_THREAD
       ENABLE_SANITIZER_MEMORY
-      ENABLE_COMPILE_COMMANDS_SYMLINK)
+      ENABLE_COMPILE_COMMANDS_SYMLINK
+  )
   set(oneValueArgs
       PREFIX
       LINKER
       VS_ANALYSIS_RULESET
       CONAN_PROFILE
       CONAN_HOST_PROFILE
-      CONAN_BUILD_PROFILE)
+      CONAN_BUILD_PROFILE
+  )
   set(multiValueArgs
       DOXYGEN_THEME
       MSVC_WARNINGS
@@ -86,13 +88,9 @@ macro(project_options)
       CLANG_TIDY_EXTRA_ARGUMENTS
       GCC_ANALYZER_EXTRA_ARGUMENTS
       PCH_HEADERS
-      CONAN_OPTIONS)
-  cmake_parse_arguments(
-    ProjectOptions
-    "${options}"
-    "${oneValueArgs}"
-    "${multiValueArgs}"
-    ${ARGN})
+      CONAN_OPTIONS
+  )
+  cmake_parse_arguments(ProjectOptions "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
   # set warning message level
   if(${ProjectOptions_WARNINGS_AS_ERRORS})
@@ -107,10 +105,7 @@ macro(project_options)
   # Add an interface library for the options
   set(_options_target project_options)
   set(_warnings_target project_warnings)
-  if(NOT
-     "${ProjectOptions_PREFIX}"
-     STREQUAL
-     "")
+  if(NOT "${ProjectOptions_PREFIX}" STREQUAL "")
     set(_options_target "${ProjectOptions_PREFIX}_project_options")
     set(_warnings_target "${ProjectOptions_PREFIX}_project_warnings")
   else()
@@ -128,10 +123,7 @@ macro(project_options)
   # fix mingw
   mingw_unicode()
 
-  if(NOT
-     "${ProjectOptions_ENABLE_IPO}"
-     STREQUAL
-     "")
+  if(NOT "${ProjectOptions_ENABLE_IPO}" STREQUAL "")
     message(WARNING "Deprecation: Use ENABLE_INTERPROCEDURAL_OPTIMIZATION instead of ENABLE_IPO")
     set(ProjectOptions_ENABLE_INTERPROCEDURAL_OPTIMIZATION ${ProjectOptions_ENABLE_IPO})
   endif()
@@ -171,7 +163,8 @@ macro(project_options)
     "${ProjectOptions_MSVC_WARNINGS}"
     "${ProjectOptions_CLANG_WARNINGS}"
     "${ProjectOptions_GCC_WARNINGS}"
-    "${ProjectOptions_CUDA_WARNINGS}")
+    "${ProjectOptions_CUDA_WARNINGS}"
+  )
 
   if(${ProjectOptions_ENABLE_COVERAGE})
     enable_coverage(${_options_target})
@@ -184,7 +177,8 @@ macro(project_options)
     ${ProjectOptions_ENABLE_SANITIZER_LEAK}
     ${ProjectOptions_ENABLE_SANITIZER_UNDEFINED_BEHAVIOR}
     ${ProjectOptions_ENABLE_SANITIZER_THREAD}
-    ${ProjectOptions_ENABLE_SANITIZER_MEMORY})
+    ${ProjectOptions_ENABLE_SANITIZER_MEMORY}
+  )
 
   if(${ProjectOptions_ENABLE_DOXYGEN})
     # enable doxygen
@@ -214,11 +208,7 @@ macro(project_options)
 
   if(${ProjectOptions_ENABLE_PCH})
     if(NOT ProjectOptions_PCH_HEADERS)
-      set(ProjectOptions_PCH_HEADERS
-          <vector>
-          <string>
-          <map>
-          <utility>)
+      set(ProjectOptions_PCH_HEADERS <vector> <string> <map> <utility>)
     endif()
     target_precompile_headers(${_options_target} INTERFACE ${ProjectOptions_PCH_HEADERS})
   endif()

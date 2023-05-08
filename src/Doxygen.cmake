@@ -34,7 +34,9 @@ function(enable_doxygen DOXYGEN_THEME)
 
   # If not specified, exclude the vcpkg files and the files CMake downloads under _deps (like project_options)
   if(NOT DOXYGEN_EXCLUDE_PATTERNS)
-    set(DOXYGEN_EXCLUDE_PATTERNS "${CMAKE_CURRENT_BINARY_DIR}/vcpkg_installed/*" "${CMAKE_CURRENT_BINARY_DIR}/_deps/*")
+    set(DOXYGEN_EXCLUDE_PATTERNS "${CMAKE_CURRENT_BINARY_DIR}/vcpkg_installed/*"
+                                 "${CMAKE_CURRENT_BINARY_DIR}/_deps/*"
+    )
   endif()
 
   if("${DOXYGEN_THEME}" STREQUAL "")
@@ -44,15 +46,19 @@ function(enable_doxygen DOXYGEN_THEME)
   if("${DOXYGEN_THEME}" STREQUAL "awesome" OR "${DOXYGEN_THEME}" STREQUAL "awesome-sidebar")
     # use a modern doxygen theme
     # https://github.com/jothepro/doxygen-awesome-css v2.0.2
-    FetchContent_Declare(_doxygen_theme
-                         URL https://github.com/jothepro/doxygen-awesome-css/archive/refs/tags/v2.0.2.zip)
+    FetchContent_Declare(
+      _doxygen_theme
+      URL https://github.com/jothepro/doxygen-awesome-css/archive/refs/tags/v2.0.2.zip
+    )
     FetchContent_MakeAvailable(_doxygen_theme)
     if("${DOXYGEN_THEME}" STREQUAL "awesome" OR "${DOXYGEN_THEME}" STREQUAL "awesome-sidebar")
       set(DOXYGEN_HTML_EXTRA_STYLESHEET "${_doxygen_theme_SOURCE_DIR}/doxygen-awesome.css")
     endif()
     if("${DOXYGEN_THEME}" STREQUAL "awesome-sidebar")
-      set(DOXYGEN_HTML_EXTRA_STYLESHEET ${DOXYGEN_HTML_EXTRA_STYLESHEET}
-                                        "${_doxygen_theme_SOURCE_DIR}/doxygen-awesome-sidebar-only.css")
+      set(DOXYGEN_HTML_EXTRA_STYLESHEET
+          ${DOXYGEN_HTML_EXTRA_STYLESHEET}
+          "${_doxygen_theme_SOURCE_DIR}/doxygen-awesome-sidebar-only.css"
+      )
     endif()
   elseif("${DOXYGEN_THEME}" STREQUAL "original")
     # use the original doxygen theme
@@ -77,6 +83,8 @@ function(enable_doxygen DOXYGEN_THEME)
 
   # add doxygen-docs target
   message(STATUS "Adding `doxygen-docs` target that builds the documentation.")
-  doxygen_add_docs(doxygen-docs ALL ${PROJECT_SOURCE_DIR}
-                   COMMENT "Generating documentation - entry file: ${CMAKE_CURRENT_BINARY_DIR}/html/index.html")
+  doxygen_add_docs(
+    doxygen-docs ALL ${PROJECT_SOURCE_DIR}
+    COMMENT "Generating documentation - entry file: ${CMAKE_CURRENT_BINARY_DIR}/html/index.html"
+  )
 endfunction()

@@ -25,15 +25,16 @@ if(ENABLE_BARE_METAL_CROSS_COMPILING)
     CROSS_ROOT
     "/usr/arm-none-eabi-gcc"
     CROSS_TRIPLET
-    "arm-none-eabi")
+    "arm-none-eabi"
+  )
 
   # some more custom compiler settings
   # -Wl,--gc-sections     Perform the dead code elimination.
   # --specs=nano.specs    Link with newlib-nano.
   # --specs=nosys.specs   No syscalls, provide empty implementations for the POSIX system calls.
-  set(CMAKE_EXE_LINKER_FLAGS
-      "-Wl,--gc-sections --specs=nano.specs --specs=nosys.specs -mthumb"
-      CACHE INTERNAL "Linker options")
+  set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections --specs=nano.specs --specs=nosys.specs -mthumb"
+      CACHE INTERNAL "Linker options"
+  )
 else()
   option(ENABLE_CROSS_COMPILING "Detect cross compiler and setup toolchain" OFF)
   if(ENABLE_CROSS_COMPILING)
@@ -42,10 +43,7 @@ else()
 endif()
 
 # Set the project name to your project name, my project isn't very descriptive
-project(
-  example
-  VERSION 0.1.0
-  LANGUAGES C CXX ASM)
+project(example VERSION 0.1.0 LANGUAGES C CXX ASM)
 
 set(ENABLE_CLANG_TIDY OFF)
 set(ENABLE_CPPCHECK OFF)
@@ -75,10 +73,7 @@ if(ENABLE_TESTING)
   endif()
 
   if(NOT DISABLE_SANITIZER)
-    if(NOT
-       "${CMAKE_SYSTEM_NAME}"
-       STREQUAL
-       "Windows")
+    if(NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
       set(ENABLE_SANITIZER_ADDRESS "ENABLE_SANITIZER_ADDRESS")
       set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR")
     else()
@@ -128,7 +123,8 @@ project_options(
   --suppress=unmatchedSuppression
   --suppress=passedByValue
   --suppress=syntaxError
-  --inconclusive)
+  --inconclusive
+)
 
 #add_executable(example)
 #target_sources(example PRIVATE main.cpp)
@@ -152,7 +148,8 @@ if(ENABLE_BARE_METAL_CROSS_COMPILING OR ENABLE_CROSS_COMPILING)
     -lgcc
     -lc
     -lm
-    -Wl,--end-group)
+    -Wl,--end-group
+  )
 
   # custom raspberry pi 3 options
   target_compile_options(project_options INTERFACE -march=armv8-a -mfpu=neon-fp-armv8 -mthumb)

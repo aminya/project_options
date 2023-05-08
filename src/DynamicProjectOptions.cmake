@@ -7,7 +7,9 @@ include_guard()
 
 #]]
 macro(dynamic_project_options)
-  option(ENABLE_DEVELOPER_MODE "Set up defaults for a developer of the project, and let developer change options" OFF)
+  option(ENABLE_DEVELOPER_MODE
+         "Set up defaults for a developer of the project, and let developer change options" OFF
+  )
   if(NOT ${ENABLE_DEVELOPER_MODE})
     message(
       STATUS
@@ -20,13 +22,17 @@ macro(dynamic_project_options)
     )
   endif()
 
-  if((CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*") AND NOT WIN32)
+  if((CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*")
+     AND NOT WIN32
+  )
     set(SUPPORTS_UBSAN ON)
   else()
     set(SUPPORTS_UBSAN OFF)
   endif()
 
-  if((CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*") AND WIN32)
+  if((CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*")
+     AND WIN32
+  )
     set(SUPPORTS_ASAN OFF)
   else()
     set(SUPPORTS_ASAN ON)
@@ -90,34 +96,15 @@ macro(dynamic_project_options)
       "2\;CLANG_TIDY_EXTRA_ARGUMENTS\;\;\;Additional arguments to use for clang-tidy invocation"
       "2\;GCC_ANALYZER_EXTRA_ARGUMENTS\;\;\;Additional arguments to use for GCC static analysis"
       "2\;PCH_HEADERS\;\;\;List of the headers to precompile"
-      "2\;CONAN_OPTIONS\;\;\;Extra Conan options")
+      "2\;CONAN_OPTIONS\;\;\;Extra Conan options"
+  )
 
   foreach(option ${options})
-    list(
-      GET
-      option
-      0
-      option_type)
-    list(
-      GET
-      option
-      1
-      option_name)
-    list(
-      GET
-      option
-      2
-      option_user_default)
-    list(
-      GET
-      option
-      3
-      option_developer_default)
-    list(
-      GET
-      option
-      4
-      option_description)
+    list(GET option 0 option_type)
+    list(GET option 1 option_name)
+    list(GET option 2 option_user_default)
+    list(GET option 3 option_developer_default)
+    list(GET option 4 option_description)
 
     if(DEFINED ${option_name}_DEFAULT)
       if(DEFINED ${option_name}_DEVELOPER_DEFAULT OR DEFINED ${option_name}_USER_DEFAULT)
@@ -153,18 +140,14 @@ macro(dynamic_project_options)
     else()
       if(option_type EQUAL 0)
         cmake_dependent_option(
-          OPT_${option_name}
-          "${option_description}"
-          ${option_developer_default}
-          ENABLE_DEVELOPER_MODE
-          ${option_user_default})
+          OPT_${option_name} "${option_description}" ${option_developer_default}
+          ENABLE_DEVELOPER_MODE ${option_user_default}
+        )
       else()
         cmake_dependent_option(
-          OPT_${option_name}
-          "${option_description}"
-          "${option_developer_default}"
-          ENABLE_DEVELOPER_MODE
-          "${option_user_default}")
+          OPT_${option_name} "${option_description}" "${option_developer_default}"
+          ENABLE_DEVELOPER_MODE "${option_user_default}"
+        )
       endif()
     endif()
 
@@ -221,5 +204,6 @@ macro(dynamic_project_options)
     ${GCC_ANALYZER_EXTRA_ARGUMENTS_VALUE}
     ${PCH_HEADERS_VALUE}
     ${CONAN_OPTIONS_VALUE}
-    ${ARGN})
+    ${ARGN}
+  )
 endmacro()

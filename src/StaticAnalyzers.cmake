@@ -23,7 +23,8 @@ macro(enable_cppcheck CPPCHECK_OPTIONS)
           --suppress=internalAstError
           # if a file does not have an internalAstError, we get an unmatchedSuppression error
           --suppress=unmatchedSuppression
-          --inconclusive)
+          --inconclusive
+      )
     else()
       # if the user provides a CPPCHECK_OPTIONS with a template specified, it will override this template
       set(CMAKE_CXX_CPPCHECK ${CPPCHECK} --template=${CPPCHECK_TEMPLATE} ${CPPCHECK_OPTIONS})
@@ -36,17 +37,11 @@ macro(enable_cppcheck CPPCHECK_OPTIONS)
     # C cppcheck
     set(CMAKE_C_CPPCHECK ${CMAKE_CXX_CPPCHECK})
 
-    if(NOT
-       "${CMAKE_CXX_STANDARD}"
-       STREQUAL
-       "")
+    if(NOT "${CMAKE_CXX_STANDARD}" STREQUAL "")
       set(CMAKE_CXX_CPPCHECK ${CMAKE_CXX_CPPCHECK} --std=c++${CMAKE_CXX_STANDARD})
     endif()
 
-    if(NOT
-       "${CMAKE_C_STANDARD}"
-       STREQUAL
-       "")
+    if(NOT "${CMAKE_C_STANDARD}" STREQUAL "")
       set(CMAKE_C_CPPCHECK ${CMAKE_C_CPPCHECK} --std=c${CMAKE_C_STANDARD})
     endif()
 
@@ -61,17 +56,9 @@ macro(enable_clang_tidy CLANG_TIDY_EXTRA_ARGUMENTS)
   if(CLANGTIDY)
 
     # clang-tidy only works with clang when PCH is enabled
-    if((NOT
-        CMAKE_CXX_COMPILER_ID
-        MATCHES
-        ".*Clang"
-        OR (NOT
-            CMAKE_C_COMPILER_ID
-            MATCHES
-            ".*Clang"
-           )
-       )
-       AND ${ProjectOptions_ENABLE_PCH})
+    if((NOT CMAKE_CXX_COMPILER_ID MATCHES ".*Clang" OR (NOT CMAKE_C_COMPILER_ID MATCHES ".*Clang"))
+       AND ${ProjectOptions_ENABLE_PCH}
+    )
       message(
         ${WARNING_MESSAGE}
         "clang-tidy cannot be enabled with non-clang compiler and PCH, clang-tidy fails to handle gcc's PCH file. Disabling PCH..."
@@ -91,10 +78,7 @@ macro(enable_clang_tidy CLANG_TIDY_EXTRA_ARGUMENTS)
     set(CMAKE_C_CLANG_TIDY ${CMAKE_CXX_CLANG_TIDY})
 
     # set C++ standard
-    if(NOT
-       "${CMAKE_CXX_STANDARD}"
-       STREQUAL
-       "")
+    if(NOT "${CMAKE_CXX_STANDARD}" STREQUAL "")
       if("${CMAKE_CXX_CLANG_TIDY_DRIVER_MODE}" STREQUAL "cl")
         set(CMAKE_CXX_CLANG_TIDY ${CMAKE_CXX_CLANG_TIDY} -extra-arg=/std:c++${CMAKE_CXX_STANDARD})
       else()
@@ -103,10 +87,7 @@ macro(enable_clang_tidy CLANG_TIDY_EXTRA_ARGUMENTS)
     endif()
 
     # set C standard
-    if(NOT
-       "${CMAKE_C_STANDARD}"
-       STREQUAL
-       "")
+    if(NOT "${CMAKE_C_STANDARD}" STREQUAL "")
       if("${CMAKE_C_CLANG_TIDY_DRIVER_MODE}" STREQUAL "cl")
         set(CMAKE_C_CLANG_TIDY ${CMAKE_C_CLANG_TIDY} -extra-arg=/std:c${CMAKE_C_STANDARD})
       else()
@@ -128,10 +109,7 @@ macro(enable_vs_analysis VS_ANALYSIS_RULESET)
     # See for other rulesets: C:\Program Files (x86)\Microsoft Visual Studio\20xx\xx\Team Tools\Static Analysis Tools\Rule Sets\
     set(VS_ANALYSIS_RULESET "AllRules.ruleset")
   endif()
-  if(NOT
-     "${CMAKE_CXX_CLANG_TIDY}"
-     STREQUAL
-     "")
+  if(NOT "${CMAKE_CXX_CLANG_TIDY}" STREQUAL "")
     set(_VS_CLANG_TIDY "true")
   else()
     set(_VS_CLANG_TIDY "false")
@@ -165,11 +143,9 @@ endmacro()
 # Enable static analysis inside GCC
 macro(enable_gcc_analyzer _project_name GCC_ANALYZER_EXTRA_ARGUMENTS)
   # gcc analyzer only works with GCC 10 and only for the C language
-  if(NOT
-     CMAKE_C_COMPILER_ID
-     STREQUAL
-     "GNU"
-     OR (CMAKE_C_COMPILER_ID STREQUAL "GNU" AND CMAKE_C_COMPILER_VERSION VERSION_LESS "10"))
+  if(NOT CMAKE_C_COMPILER_ID STREQUAL "GNU" OR (CMAKE_C_COMPILER_ID STREQUAL "GNU"
+                                                AND CMAKE_C_COMPILER_VERSION VERSION_LESS "10")
+  )
     message(
       ${WARNING_MESSAGE}
       "gcc analyzer cannot be enabled with non-gcc and any language other than C or with a gcc of version lower than 10"
@@ -177,7 +153,9 @@ macro(enable_gcc_analyzer _project_name GCC_ANALYZER_EXTRA_ARGUMENTS)
   else()
     set(_gcc_analyzer_flags -fanalyzer ${GCC_ANALYZER_EXTRA_ARGUMENTS})
 
-    target_compile_options(${_project_name} INTERFACE $<$<COMPILE_LANGUAGE:C>:${_gcc_analyzer_flags}>)
+    target_compile_options(
+      ${_project_name} INTERFACE $<$<COMPILE_LANGUAGE:C>:${_gcc_analyzer_flags}>
+    )
   endif()
 endmacro()
 
@@ -204,9 +182,9 @@ macro(target_disable_vs_analysis TARGET)
   if(CMAKE_GENERATOR MATCHES "Visual Studio")
     set_target_properties(
       ${TARGET}
-      PROPERTIES VS_GLOBAL_EnableMicrosoftCodeAnalysis false
-                 VS_GLOBAL_CodeAnalysisRuleSet ""
-                 VS_GLOBAL_EnableClangTidyCodeAnalysis "")
+      PROPERTIES VS_GLOBAL_EnableMicrosoftCodeAnalysis false VS_GLOBAL_CodeAnalysisRuleSet ""
+                 VS_GLOBAL_EnableClangTidyCodeAnalysis ""
+    )
   endif()
 endmacro()
 
@@ -224,23 +202,21 @@ macro(target_disable_gcc_analyzer TARGET)
   if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
     get_target_property(_compile_options ${TARGET} INTERFACE_COMPILE_OPTIONS)
     if(_compile_options)
-      string(
-        REGEX
-        REPLACE "-fanalyzer|-Wanalyzer-[0-9a-zA-Z-]+"
-                ""
-                _compile_options_no_gcc_analyzer
-                "${_compile_options}")
-      set_target_properties(${TARGET} PROPERTIES INTERFACE_COMPILE_OPTIONS "${_compile_options_no_gcc_analyzer}")
+      string(REGEX REPLACE "-fanalyzer|-Wanalyzer-[0-9a-zA-Z-]+" ""
+                           _compile_options_no_gcc_analyzer "${_compile_options}"
+      )
+      set_target_properties(
+        ${TARGET} PROPERTIES INTERFACE_COMPILE_OPTIONS "${_compile_options_no_gcc_analyzer}"
+      )
     endif()
     get_target_property(_compile_options ${TARGET} COMPILE_OPTIONS)
     if(_compile_options)
-      string(
-        REGEX
-        REPLACE "-fanalyzer|-Wanalyzer-[0-9a-zA-Z-]+"
-                ""
-                _compile_options_no_gcc_analyzer
-                "${_compile_options}")
-      set_target_properties(${TARGET} PROPERTIES COMPILE_OPTIONS "${_compile_options_no_gcc_analyzer}")
+      string(REGEX REPLACE "-fanalyzer|-Wanalyzer-[0-9a-zA-Z-]+" ""
+                           _compile_options_no_gcc_analyzer "${_compile_options}"
+      )
+      set_target_properties(
+        ${TARGET} PROPERTIES COMPILE_OPTIONS "${_compile_options_no_gcc_analyzer}"
+      )
     endif()
   endif()
 endmacro()
@@ -252,10 +228,7 @@ endmacro()
 
 #]]
 macro(target_disable_static_analysis TARGET)
-  if(NOT
-     CMAKE_GENERATOR
-     MATCHES
-     "Visual Studio")
+  if(NOT CMAKE_GENERATOR MATCHES "Visual Studio")
     target_disable_clang_tidy(${TARGET})
     target_disable_cpp_check(${TARGET})
     target_disable_gcc_analyzer(${TARGET})

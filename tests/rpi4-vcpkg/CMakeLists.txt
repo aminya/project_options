@@ -20,10 +20,7 @@ endif()
 run_vcpkg()
 
 # Set the project name to your project name, my project isn't very descriptive
-project(
-  example
-  VERSION 0.1.0
-  LANGUAGES C CXX ASM)
+project(example VERSION 0.1.0 LANGUAGES C CXX ASM)
 
 set(ENABLE_CLANG_TIDY OFF)
 set(ENABLE_CPPCHECK OFF)
@@ -53,10 +50,7 @@ if(ENABLE_TESTING)
   endif()
 
   if(NOT DISABLE_SANITIZER)
-    if(NOT
-       "${CMAKE_SYSTEM_NAME}"
-       STREQUAL
-       "Windows")
+    if(NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
       set(ENABLE_SANITIZER_ADDRESS "ENABLE_SANITIZER_ADDRESS")
       set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR")
     else()
@@ -101,7 +95,8 @@ project_options(
   --suppress=unmatchedSuppression
   --suppress=passedByValue
   --suppress=syntaxError
-  --inconclusive)
+  --inconclusive
+)
 
 find_package(Microsoft.GSL CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
@@ -110,11 +105,7 @@ add_executable(example)
 target_sources(example PRIVATE main.cpp)
 target_include_directories(example PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(example PRIVATE project_options project_warnings)
-target_link_system_libraries(
-  example
-  PRIVATE
-  Microsoft.GSL::GSL
-  fmt::fmt-header-only)
+target_link_system_libraries(example PRIVATE Microsoft.GSL::GSL fmt::fmt-header-only)
 
 if(ENABLE_CROSS_COMPILING)
   # custom raspberry pi 4 options
