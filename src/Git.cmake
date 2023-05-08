@@ -71,7 +71,7 @@ endfunction()
 # Input variables:
 # - REPOSITORY_PATH: The path to the repository
 # - REMOTE_URL: The url of the remote to add
-# - REMOTE_NAME: The name of the remote to add
+# - REMOTE_NAME: The name of the remote to add (defaults to the remote user)
 function(git_add_remote)
   set(oneValueArgs REPOSITORY_PATH REMOTE_URL REMOTE_NAME)
   cmake_parse_arguments(
@@ -116,5 +116,39 @@ function(git_add_remote)
                     WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}" COMMAND_ERROR_IS_FATAL LAST)
     execute_process(COMMAND "${GIT_EXECUTABLE}" "fetch" "${_fun_REMOTE_NAME}"
                     WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}" COMMAND_ERROR_IS_FATAL LAST)
+  endif()
+endfunction()
+
+# Clone the given repository to the given path
+#
+# Input variables:
+# - REPOSITORY_PATH: The path to the repository
+# - REMOTE_URL: The url of the remote to add
+# - REMOTE_NAME: The name of the remote to add (defaults to the remote user)
+function(git_clone)
+  set(oneValueArgs REPOSITORY_PATH REMOTE_URL REMOTE_NAME)
+  cmake_parse_arguments(
+    _fun
+    ""
+    "${oneValueArgs}"
+    ""
+    ${ARGN})
+
+  if(NOT EXISTS "${_fun_REPOSITORY_PATH}")
+    message(STATUS "Cloning at ${_fun_REPOSITORY_PATH}")
+
+    find_program(GIT_EXECUTABLE "git" REQUIRED)
+    get_filename_component(_fun_REPOSITORY_PARENT_PATH "${_fun_REPOSITORY_PATH}" DIRECTORY)
+    execute_process(COMMAND "${GIT_EXECUTABLE}" "clone" "${_fun_REMOTE_URL}"
+                    WORKING_DIRECTORY "${_fun_REPOSITORY_PARENT_PATH}" COMMAND_ERROR_IS_FATAL LAST)
+  else()
+    message(STATUS "Repository already exists at ${_fun_REPOSITORY_PATH}.")
+    git_add_remote(
+      REMOTE_URL
+      "${_fun_REMOTE_URL}"
+      REPOSITORY_PATH
+      "${_fun_REPOSITORY_PATH}"
+      REMOTE_NAME
+      "${_fun_REMOTE_NAME}")
   endif()
 endfunction()
