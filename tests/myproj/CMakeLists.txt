@@ -16,7 +16,13 @@ option(ENABLE_CROSS_COMPILING "Detect cross compiler and setup toolchain" OFF)
 if(ENABLE_CROSS_COMPILING)
   enable_cross_compiler()
 endif()
-run_vcpkg()
+
+run_vcpkg(
+  VCPKG_URL
+  "https://github.com/microsoft/vcpkg.git"
+  VCPKG_REV
+  "6a3dd0874f153f8b375ec26210ea6d41dee3bb26"
+  ENABLE_VCPKG_UPDATE)
 
 project(
   myproj
