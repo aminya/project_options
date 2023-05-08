@@ -152,3 +152,51 @@ function(git_clone)
       "${_fun_REMOTE_NAME}")
   endif()
 endfunction()
+
+# Detect if the head is detached, if so, switch back before calling git pull on a detached head
+#
+# Input variables:
+# - REPOSITORY_PATH: The path to the repository
+function(git_switch_back)
+  set(oneValueArgs REPOSITORY_PATH)
+  cmake_parse_arguments(
+    _fun
+    ""
+    "${oneValueArgs}"
+    ""
+    ${ARGN})
+
+  set(_git_status "")
+  find_program(GIT_EXECUTABLE "git" REQUIRED)
+  execute_process(
+    COMMAND "${GIT_EXECUTABLE}" "rev-parse" "--abbrev-ref" "--symbolic-full-name" "HEAD"
+    OUTPUT_VARIABLE _git_status
+    WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+  if("${_git_status}" STREQUAL "HEAD")
+    message(STATUS "Switch back ${_fun_REPOSITORY_PATH}")
+    execute_process(COMMAND "${GIT_EXECUTABLE}" "switch" "-" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}")
+  endif()
+endfunction()
+
+# Pull the given repository
+#
+# It will switch back to the previous branch if the head is detached for updating
+#
+# Input variables:
+# - REPOSITORY_PATH: The path to the repository
+function(git_pull)
+  set(oneValueArgs REPOSITORY_PATH)
+  cmake_parse_arguments(
+    _fun
+    ""
+    "${oneValueArgs}"
+    ""
+    ${ARGN})
+
+  git_switch_back(REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
+
+  message(STATUS "Updating ${_fun_REPOSITORY_PATH}")
+  find_program(GIT_EXECUTABLE "git" REQUIRED)
+  execute_process(COMMAND "${GIT_EXECUTABLE}" "pull" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}")
+endfunction()
