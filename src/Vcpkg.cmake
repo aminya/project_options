@@ -70,8 +70,12 @@ macro(_checkout_vcpkg_repository)
      "${_vcpkg_args_VCPKG_REV}"
      STREQUAL
      "")
-    execute_process(COMMAND "${GIT_EXECUTABLE}" "-c" "advice.detachedHead=false" "checkout" "${_vcpkg_args_VCPKG_REV}"
-                    WORKING_DIRECTORY "${VCPKG_PARENT_DIR}/vcpkg" COMMAND_ERROR_IS_FATAL LAST)
+
+    git_checkout(
+      REPOSITORY_PATH
+      "${_vcpkg_args_VCPKG_DIR}"
+      REVISION
+      "${_vcpkg_args_VCPKG_REV}")
   endif()
 endmacro()
 

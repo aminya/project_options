@@ -200,3 +200,26 @@ function(git_pull)
   find_program(GIT_EXECUTABLE "git" REQUIRED)
   execute_process(COMMAND "${GIT_EXECUTABLE}" "pull" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}")
 endfunction()
+
+# Checkout the given revision
+#
+# Input variables:
+# - REPOSITORY_PATH: The path to the repository
+# - REVISION: The revision to checkout
+function(git_checkout)
+  set(oneValueArgs REPOSITORY_PATH REVISION)
+  cmake_parse_arguments(
+    _fun
+    ""
+    "${oneValueArgs}"
+    ""
+    ${ARGN})
+
+  if("${_fun_REPOSITORY_PATH}" STREQUAL "" OR "${_fun_REVISION}" STREQUAL "")
+    message(FATAL_ERROR "REPOSITORY_PATH and REVISION are required")
+  endif()
+
+  find_program(GIT_EXECUTABLE "git" REQUIRED)
+  execute_process(COMMAND "${GIT_EXECUTABLE}" "-c" "advice.detachedHead=false" "checkout" "${_fun_REVISION}"
+                  WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}" COMMAND_ERROR_IS_FATAL LAST)
+endfunction()
