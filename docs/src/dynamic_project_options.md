@@ -44,9 +44,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(_project_options)
 include(${_project_options_SOURCE_DIR}/Index.cmake)
 
- # ❗ Add dynamic CMake options
-include(${_project_options_SOURCE_DIR}/src/DynamicOptions.cmake)
-
 # install vcpkg dependencies: - should be called before defining project()
 # run_vcpkg()
 
