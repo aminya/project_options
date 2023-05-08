@@ -65,3 +65,47 @@ function(
       ${REMOTE_FULL_URL}
       PARENT_SCOPE)
 endfunction()
+
+# Add a remote to the given repository on the given path
+#
+# Input variables:
+# - REPOSITORY_PATH: The path to the repository
+# - REMOTE_URL: The url of the remote to add
+# - REMOTE_NAME: The name of the remote to add
+function(git_add_remote)
+  set(oneValueArgs REPOSITORY_PATH REMOTE_URL REMOTE_NAME)
+  cmake_parse_arguments(
+    _fun
+    ""
+    "${oneValueArgs}"
+    ""
+    ${ARGN})
+
+  if(NOT _fun_REMOTE_NAME)
+    git_parse_url(
+      "${_fun_REMOTE_URL}"
+      GIT_PROTOCOL
+      GIT_HOST
+      GIT_USER
+      GIT_REPO
+      GIT_URL)
+    set(_fun_REMOTE_NAME "${GIT_USER}")
+  endif()
+
+  find_program(GIT_EXECUTABLE "git" REQUIRED)
+
+  # ensure that the given repository's remote is the current remote
+  execute_process(
+    COMMAND "${GIT_EXECUTABLE}" "remote" "-v"
+    WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}" COMMAND_ERROR_IS_FATAL LAST
+    OUTPUT_VARIABLE _remote_output)
+  string(FIND "${_remote_output}" "${_fun_REMOTE_URL}" _find_index)
+
+  if(${_find_index} EQUAL -1)
+    # Add the given remote
+    execute_process(COMMAND "${GIT_EXECUTABLE}" "remote" "add" "${_fun_REMOTE_NAME}" "${_fun_REMOTE_URL}"
+                    WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}" COMMAND_ERROR_IS_FATAL LAST)
+    execute_process(COMMAND "${GIT_EXECUTABLE}" "fetch" "${_fun_REMOTE_NAME}"
+                    WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}" COMMAND_ERROR_IS_FATAL LAST)
+  endif()
+endfunction()
