@@ -34,7 +34,7 @@
             project_options
           </a>
               <div class="version">
-                main
+                docs
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -50,14 +50,6 @@
 <li class="toctree-l1"><a class="reference internal" href="index.html#project-options-parameters"><code class="docutils literal notranslate"><span class="pre">project_options</span></code> parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#run-vcpkg"><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#package-project"><code class="docutils literal notranslate"><span class="pre">package_project</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#target-include-interface-directories-function"><code class="docutils literal notranslate"><span class="pre">target_include_interface_directories</span></code> function</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#target-find-dependencies-function"><code class="docutils literal notranslate"><span class="pre">target_find_dependencies</span></code> function</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#target-include-system-directories"><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#target-link-system-libraries"><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#dynamic-project-options"><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#target-disable-static-analysis"><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#enable-cross-compiler"><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#target-link-cuda"><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code></a></li>
 </ul>
 
         </div>
@@ -76,7 +68,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">package_project</span></code></li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/src/package_project.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/src/package_project.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -86,25 +78,46 @@
              
   <section id="package-project">
 <h1><code class="docutils literal notranslate"><span class="pre">package_project</span></code><a class="headerlink" href="#package-project" title="Permalink to this heading"></a></h1>
-<p>A function that packages the project for external usage (e.g. from vcpkg, Conan, etc).</p>
+<p>A function that packages the project for external usage (e.g. from
+vcpkg, Conan, etc).</p>
 <p>The following arguments specify the package:</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">TARGETS</span></code>: the targets you want to package. It is recursively found for the current folder if not specified</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">INTERFACE_INCLUDES</span></code> or <code class="docutils literal notranslate"><span class="pre">PUBLIC_INCLUDES</span></code>: a list of interface/public include directories or files.</p>
-<p><sub>NOTE: The given include directories are directly installed to the install destination. To have an <code class="docutils literal notranslate"><span class="pre">include</span></code> folder in the install destination with the content of your include directory, name your directory <code class="docutils literal notranslate"><span class="pre">include</span></code>.</sub></p>
+<li><p><code class="docutils literal notranslate"><span class="pre">TARGETS</span></code>: the targets you want to package. It is recursively found
+for the current folder if not specified</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INTERFACE_INCLUDES</span></code> or <code class="docutils literal notranslate"><span class="pre">PUBLIC_INCLUDES</span></code>: a list of
+interface/public include directories or files.</p>
+<p>NOTE: The given include directories are directly installed to the
+install destination. To have an <code class="docutils literal notranslate"><span class="pre">include</span></code> folder in the install
+destination with the content of your include directory, name your
+directory <code class="docutils literal notranslate"><span class="pre">include</span></code>.</p>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">INTERFACE_DEPENDENCIES_CONFIGURED</span></code> or <code class="docutils literal notranslate"><span class="pre">PUBLIC_DEPENDENCIES_CONFIGURED</span></code>: the names of the interface/public dependencies that are found using <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">INTERFACE_DEPENDENCIES</span></code> or <code class="docutils literal notranslate"><span class="pre">PUBLIC_DEPENDENCIES</span></code>: the interface/public dependencies that will be found by any means using <code class="docutils literal notranslate"><span class="pre">find_dependency</span></code>. The arguments must be specified within quotes (e.g.<code class="docutils literal notranslate"><span class="pre">&quot;&lt;dependency&gt;</span> <span class="pre">1.0.0</span> <span class="pre">EXACT&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;&lt;dependency&gt;</span> <span class="pre">CONFIG&quot;</span></code>).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">PRIVATE_DEPENDENCIES_CONFIGURED</span></code>: the names of the PRIVATE dependencies found using <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code>. Only included when <code class="docutils literal notranslate"><span class="pre">BUILD_SHARED_LIBS</span></code> is <code class="docutils literal notranslate"><span class="pre">OFF</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">PRIVATE_DEPENDENCIES</span></code>: the PRIVATE dependencies found by any means using <code class="docutils literal notranslate"><span class="pre">find_dependency</span></code>. Only included when <code class="docutils literal notranslate"><span class="pre">BUILD_SHARED_LIBS</span></code> is <code class="docutils literal notranslate"><span class="pre">OFF</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INTERFACE_DEPENDENCIES_CONFIGURED</span></code> or
+<code class="docutils literal notranslate"><span class="pre">PUBLIC_DEPENDENCIES_CONFIGURED</span></code>: the names of the interface/public
+dependencies that are found using <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INTERFACE_DEPENDENCIES</span></code> or <code class="docutils literal notranslate"><span class="pre">PUBLIC_DEPENDENCIES</span></code>: the
+interface/public dependencies that will be found by any means using
+<code class="docutils literal notranslate"><span class="pre">find_dependency</span></code>. The arguments must be specified within quotes
+(e.g.<code class="docutils literal notranslate"><span class="pre">&quot;&lt;dependency&gt;</span> <span class="pre">1.0.0</span> <span class="pre">EXACT&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;&lt;dependency&gt;</span> <span class="pre">CONFIG&quot;</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PRIVATE_DEPENDENCIES_CONFIGURED</span></code>: the names of the PRIVATE
+dependencies found using <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code>. Only included when
+<code class="docutils literal notranslate"><span class="pre">BUILD_SHARED_LIBS</span></code> is <code class="docutils literal notranslate"><span class="pre">OFF</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PRIVATE_DEPENDENCIES</span></code>: the PRIVATE dependencies found by any means
+using <code class="docutils literal notranslate"><span class="pre">find_dependency</span></code>. Only included when <code class="docutils literal notranslate"><span class="pre">BUILD_SHARED_LIBS</span></code>
+is <code class="docutils literal notranslate"><span class="pre">OFF</span></code></p></li>
 </ul>
-<p>Other arguments that are automatically found and manually specifying them is not recommended:</p>
+<p>Other arguments that are automatically found and manually specifying
+them is not recommended:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">NAME</span></code>: the name of the package. Defaults to <code class="docutils literal notranslate"><span class="pre">${PROJECT_NAME}</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">VERSION</span></code>: the version of the package. Defaults to <code class="docutils literal notranslate"><span class="pre">${PROJECT_VERSION}</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">COMPATIBILITY</span></code>: the compatibility version of the package. Defaults to <code class="docutils literal notranslate"><span class="pre">SameMajorVersion</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CONFIG_EXPORT_DESTINATION</span></code>: the destination for exporting the configuration files. Defaults to <code class="docutils literal notranslate"><span class="pre">${CMAKE_BINARY_DIR}/${NAME}</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CONFIG_INSTALL_DESTINATION</span></code>: the destination for installation of the configuration files. Defaults to <code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_DATADIR}/${NAME}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VERSION</span></code>: the version of the package. Defaults to
+<code class="docutils literal notranslate"><span class="pre">${PROJECT_VERSION}</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">COMPATIBILITY</span></code>: the compatibility version of the package. Defaults
+to <code class="docutils literal notranslate"><span class="pre">SameMajorVersion</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CONFIG_EXPORT_DESTINATION</span></code>: the destination for exporting the
+configuration files. Defaults to <code class="docutils literal notranslate"><span class="pre">${CMAKE_BINARY_DIR}/${NAME}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CONFIG_INSTALL_DESTINATION</span></code>: the destination for installation of
+the configuration files. Defaults to
+<code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_DATADIR}/${NAME}</span></code></p></li>
 </ul>
 </section>
 
@@ -134,7 +147,7 @@
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"> Read the Docs</span>
-      v: main
+      v: docs
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">
@@ -145,7 +158,7 @@
 <script src="../js/version_switcher.js"></script>
 <script>
     window.addEventListener('load', (event) => {
-        ar_updateVersionList('main');
+        ar_updateVersionList('docs');
     });
 </script>
 <script>

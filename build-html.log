@@ -4,57 +4,33 @@ failed: [Errno 2] No such file or directory
 myst v1.0.0: MdParserConfig(commonmark_only=False, gfm_only=False, enable_extensions=set(), disable_syntax=[], all_links_external=False, url_schemes=('http', 'https', 'mailto', 'ftp'), ref_domains=None, fence_as_directive=set(), number_code_blocks=[], title_to_header=False, heading_anchors=0, heading_slug_func=None, html_meta={}, footnote_transition=True, words_per_minute=200, substitutions={}, linkify_fuzzy_links=True, dmath_allow_labels=True, dmath_allow_space=True, dmath_allow_digits=True, dmath_double_inline=False, update_mathjax=True, mathjax_classes='tex2jax_process|mathjax_process|math|output_area', enable_checkboxes=False, suppress_warnings=[], highlight_code_blocks=True)
 building [mo]: targets for 0 po files that are out of date
 writing output... 
-building [html]: targets for 22 source files that are out of date
-updating environment: [new config] 22 added, 0 changed, 0 removed
-reading sources... [  4%] README
-reading sources... [  9%] build/_deps/_doxygen_theme-src/README
-reading sources... [ 13%] build/_deps/_doxygen_theme-src/docs/customization
-reading sources... [ 18%] build/_deps/_doxygen_theme-src/docs/extensions
-reading sources... [ 22%] build/_deps/_doxygen_theme-src/docs/tricks
-reading sources... [ 27%] index
-reading sources... [ 31%] src/License
-reading sources... [ 36%] src/Readme_top
-reading sources... [ 40%] src/dynamic_project_options
-reading sources... [ 45%] src/enable_cross_compiler
-reading sources... [ 50%] src/index
-reading sources... [ 54%] src/package_project
-reading sources... [ 59%] src/project_options
-reading sources... [ 63%] src/project_options_api
-reading sources... [ 68%] src/project_options_example
-reading sources... [ 72%] src/run_vcpkg
-reading sources... [ 77%] src/target_disable_static_analysis
-reading sources... [ 81%] src/target_find_dependencies
-reading sources... [ 86%] src/target_include_interface_directories
-reading sources... [ 90%] src/target_include_system_directories
-reading sources... [ 95%] src/target_link_cuda
-reading sources... [100%] src/target_link_system_libraries
+building [html]: targets for 10 source files that are out of date
+updating environment: [new config] 10 added, 0 changed, 0 removed
+reading sources... [ 10%] README
+reading sources... [ 20%] build/_deps/_doxygen_theme-src/README
+reading sources... [ 30%] build/_deps/_doxygen_theme-src/docs/customization
+reading sources... [ 40%] build/_deps/_doxygen_theme-src/docs/extensions
+reading sources... [ 50%] build/_deps/_doxygen_theme-src/docs/tricks
+reading sources... [ 60%] index
+reading sources... [ 70%] src/License
+reading sources... [ 80%] src/Readme_top
+reading sources... [ 90%] src/index
+reading sources... [100%] src/project_options_example
 
 looking for now-outdated files... none found
 pickling environment... done
 checking consistency... done
 preparing documents... done
-writing output... [  4%] README
-writing output... [  9%] build/_deps/_doxygen_theme-src/README
-writing output... [ 13%] build/_deps/_doxygen_theme-src/docs/customization
-writing output... [ 18%] build/_deps/_doxygen_theme-src/docs/extensions
-writing output... [ 22%] build/_deps/_doxygen_theme-src/docs/tricks
-writing output... [ 27%] index
-writing output... [ 31%] src/License
-writing output... [ 36%] src/Readme_top
-writing output... [ 40%] src/dynamic_project_options
-writing output... [ 45%] src/enable_cross_compiler
-writing output... [ 50%] src/index
-writing output... [ 54%] src/package_project
-writing output... [ 59%] src/project_options
-writing output... [ 63%] src/project_options_api
-writing output... [ 68%] src/project_options_example
-writing output... [ 72%] src/run_vcpkg
-writing output... [ 77%] src/target_disable_static_analysis
-writing output... [ 81%] src/target_find_dependencies
-writing output... [ 86%] src/target_include_interface_directories
-writing output... [ 90%] src/target_include_system_directories
-writing output... [ 95%] src/target_link_cuda
-writing output... [100%] src/target_link_system_libraries
+writing output... [ 10%] README
+writing output... [ 20%] build/_deps/_doxygen_theme-src/README
+writing output... [ 30%] build/_deps/_doxygen_theme-src/docs/customization
+writing output... [ 40%] build/_deps/_doxygen_theme-src/docs/extensions
+writing output... [ 50%] build/_deps/_doxygen_theme-src/docs/tricks
+writing output... [ 60%] index
+writing output... [ 70%] src/License
+writing output... [ 80%] src/Readme_top
+writing output... [ 90%] src/index
+writing output... [100%] src/project_options_example
 
 generating indices... genindex done
 highlighting module code... 
@@ -69,6 +45,6 @@ copying static files... done
 copying extra files... done
 dumping search index in English (code: en)... done
 dumping object inventory... done
-build succeeded, 15 warnings.
+build succeeded, 14 warnings.
 
 The HTML pages are in html.

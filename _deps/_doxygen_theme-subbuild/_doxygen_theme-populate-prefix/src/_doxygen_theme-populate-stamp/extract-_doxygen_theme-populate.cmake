@@ -1,8 +1,3 @@
-# Distributed under the OSI-approved BSD 3-Clause License.  See accompanying
-# file Copyright.txt or https://cmake.org/licensing for details.
-
-cmake_minimum_required(VERSION 3.5)
-
 # Make file names absolute:
 #
 get_filename_component(filename "/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild/_doxygen_theme-populate-prefix/src/v2.0.2.zip" ABSOLUTE)
@@ -10,11 +5,10 @@ get_filename_component(directory "/home/aminya/project_options/docs/build/_deps/
 
 message(STATUS "extracting...
      src='${filename}'
-     dst='${directory}'"
-)
+     dst='${directory}'")
 
 if(NOT EXISTS "${filename}")
-  message(FATAL_ERROR "File to extract does not exist: '${filename}'")
+  message(FATAL_ERROR "error: file to extract does not exist: '${filename}'")
 endif()
 
 # Prepare a space for extracting:
@@ -29,15 +23,14 @@ file(MAKE_DIRECTORY "${ut_dir}")
 # Extract it:
 #
 message(STATUS "extracting... [tar xfz]")
-execute_process(COMMAND ${CMAKE_COMMAND} -E tar xfz ${filename} --touch
+execute_process(COMMAND ${CMAKE_COMMAND} -E tar xfz ${filename}
   WORKING_DIRECTORY ${ut_dir}
-  RESULT_VARIABLE rv
-)
+  RESULT_VARIABLE rv)
 
 if(NOT rv EQUAL 0)
   message(STATUS "extracting... [error clean up]")
   file(REMOVE_RECURSE "${ut_dir}")
-  message(FATAL_ERROR "Extract of '${filename}' failed")
+  message(FATAL_ERROR "error: extract of '${filename}' failed")
 endif()
 
 # Analyze what came out of the tar file:

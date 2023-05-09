@@ -65,6 +65,14 @@
 <li class="toctree-l1"><a class="reference internal" href="#target-disable-static-analysis"><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#enable-cross-compiler"><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#target-link-cuda"><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#git-clone"><code class="docutils literal notranslate"><span class="pre">git_clone</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#git-pull"><code class="docutils literal notranslate"><span class="pre">git_pull</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#git-checkout"><code class="docutils literal notranslate"><span class="pre">git_checkout</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#git-parse-url"><code class="docutils literal notranslate"><span class="pre">git_parse_url</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#git-add-remote"><code class="docutils literal notranslate"><span class="pre">git_add_remote</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#git-revision"><code class="docutils literal notranslate"><span class="pre">git_revision</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#git-is-detached"><code class="docutils literal notranslate"><span class="pre">git_is_detached</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#git-switch-back"><code class="docutils literal notranslate"><span class="pre">git_switch_back</span></code></a></li>
 </ul>
 
         </div>
@@ -110,7 +118,7 @@
 
 <span class="c"># Add project_options from https://github.com/aminya/project_options</span>
 <span class="c"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</span>
-<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.28.0&quot;</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.29.0&quot;</span><span class="nf">)</span>
 <span class="nf">FetchContent_Declare(</span>
 <span class="w">  </span><span class="nb">_project_options</span>
 <span class="w">  </span><span class="no">URL</span><span class="w"> </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/</span><span class="o">${</span><span class="nt">PROJECT_OPTIONS_VERSION</span><span class="o">}</span><span class="p">.</span><span class="nb">zip</span><span class="nf">)</span>
@@ -304,44 +312,64 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_CACHE</span></code>: Enable cache if available</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_CPPCHECK</span></code>: Enable static analysis with Cppcheck</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_CLANG_TIDY</span></code>: Enable static analysis with clang-tidy</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_VS_ANALYSIS</span></code>: Enable Visual Studio IDE code analysis if the generator is Visual Studio.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_VS_ANALYSIS</span></code>: Enable Visual Studio IDE code analysis if the
+generator is Visual Studio.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_CONAN</span></code>: Use Conan for dependency management</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_INTERPROCEDURAL_OPTIMIZATION</span></code>: Enable Interprocedural Optimization (Link Time Optimization, LTO) in the release build</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_NATIVE_OPTIMIZATION</span></code>: Enable the optimizations specific to the build machine (e.g. SSE4_1, AVX2, etc.).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_INTERPROCEDURAL_OPTIMIZATION</span></code>: Enable Interprocedural
+Optimization (Link Time Optimization, LTO) in the release build</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_NATIVE_OPTIMIZATION</span></code>: Enable the optimizations specific to
+the build machine (e.g. SSE4_1, AVX2, etc.).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_COVERAGE</span></code>: Enable coverage reporting for gcc/clang</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_DOXYGEN</span></code>: Enable Doxygen documentation. The added <code class="docutils literal notranslate"><span class="pre">doxygen-docs</span></code> target can be built via <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span> <span class="pre">./build</span> <span class="pre">--target</span> <span class="pre">doxygen-docs</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">WARNINGS_AS_ERRORS</span></code>: Treat compiler and static code analyzer warnings as errors. This also affects CMake warnings related to those.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_DOXYGEN</span></code>: Enable Doxygen documentation. The added
+<code class="docutils literal notranslate"><span class="pre">doxygen-docs</span></code> target can be built via
+<code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span> <span class="pre">./build</span> <span class="pre">--target</span> <span class="pre">doxygen-docs</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">WARNINGS_AS_ERRORS</span></code>: Treat compiler and static code analyzer
+warnings as errors. This also affects CMake warnings related to
+those.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_SANITIZER_ADDRESS</span></code>: Enable address sanitizer</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_SANITIZER_LEAK</span></code>: Enable leak sanitizer</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_SANITIZER_UNDEFINED_BEHAVIOR</span></code>: Enable undefined behavior sanitizer</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_SANITIZER_UNDEFINED_BEHAVIOR</span></code>: Enable undefined behavior
+sanitizer</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_SANITIZER_THREAD</span></code>: Enable thread sanitizer</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_SANITIZER_MEMORY</span></code>: Enable memory sanitizer</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_COMPILE_COMMANDS_SYMLINK</span></code>: Enable compile_commands.json symlink creation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_COMPILE_COMMANDS_SYMLINK</span></code>: Enable compile_commands.json
+symlink creation</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_PCH</span></code>: Enable Precompiled Headers</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_INCLUDE_WHAT_YOU_USE</span></code>: Enable static analysis with include-what-you-use</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_GCC_ANALYZER</span></code>: Enable static analysis with GCC (10+) analyzer</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_BUILD_WITH_TIME_TRACE</span></code>: Enable <code class="docutils literal notranslate"><span class="pre">-ftime-trace</span></code> to generate time tracing <code class="docutils literal notranslate"><span class="pre">.json</span></code> files on clang</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_INCLUDE_WHAT_YOU_USE</span></code>: Enable static analysis with
+include-what-you-use</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_GCC_ANALYZER</span></code>: Enable static analysis with GCC (10+)
+analyzer</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_BUILD_WITH_TIME_TRACE</span></code>: Enable <code class="docutils literal notranslate"><span class="pre">-ftime-trace</span></code> to generate
+time tracing <code class="docutils literal notranslate"><span class="pre">.json</span></code> files on clang</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_UNITY</span></code>: Enable Unity builds of projects</p></li>
 </ul>
-<p>It gets the following named parameters that can have different values in front of them:</p>
+<p>It gets the following named parameters that can have different values in
+front of them:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">PREFIX</span></code>: the optional prefix that is used to define <code class="docutils literal notranslate"><span class="pre">${PREFIX}_project_options</span></code> and <code class="docutils literal notranslate"><span class="pre">${PREFIX}_project_warnings</span></code> targets when the function is used in a multi-project fashion.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">DOXYGEN_THEME</span></code>: the name of the Doxygen theme to use. Supported themes:</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">PREFIX</span></code>: the optional prefix that is used to define
+<code class="docutils literal notranslate"><span class="pre">${PREFIX}_project_options</span></code> and <code class="docutils literal notranslate"><span class="pre">${PREFIX}_project_warnings</span></code>
+targets when the function is used in a multi-project fashion.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DOXYGEN_THEME</span></code>: the name of the Doxygen theme to use. Supported
+themes:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">awesome-sidebar</span></code> (default)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">awesome</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">original</span></code></p></li>
-<li><p>Alternatively you can supply a list of css files to be added to <a class="reference external" href="https://www.doxygen.nl/manual/config.html#cfg_html_extra_stylesheet">DOXYGEN_HTML_EXTRA_STYLESHEET</a></p></li>
+<li><p>Alternatively you can supply a list of css files to be added to
+<a class="reference external" href="https://www.doxygen.nl/manual/config.html#cfg_html_extra_stylesheet">DOXYGEN_HTML_EXTRA_STYLESHEET</a></p></li>
 </ul>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">LINKER</span></code>: choose a specific linker (e.g. lld, gold, bfd). If set to OFF (default), the linker is automatically chosen.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LINKER</span></code>: choose a specific linker (e.g. lld, gold, bfd). If set to
+OFF (default), the linker is automatically chosen.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">PCH_HEADERS</span></code>: the list of the headers to precompile</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">MSVC_WARNINGS</span></code>: Override the defaults for the MSVC warnings</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">CLANG_WARNINGS</span></code>: Override the defaults for the CLANG warnings</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">GCC_WARNINGS</span></code>: Override the defaults for the GCC warnings</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">CUDA_WARNINGS</span></code>: Override the defaults for the CUDA warnings</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CPPCHECK_OPTIONS</span></code>: Override the defaults for the options passed to cppcheck</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">VS_ANALYSIS_RULESET</span></code>: Override the defaults for the code analysis rule set in Visual Studio.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CPPCHECK_OPTIONS</span></code>: Override the defaults for the options passed to
+cppcheck</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VS_ANALYSIS_RULESET</span></code>: Override the defaults for the code analysis
+rule set in Visual Studio.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">CONAN_OPTIONS</span></code>: Extra Conan options</p></li>
 </ul>
 </section>
@@ -362,41 +390,72 @@
 <p>Note that it should be called before defining <code class="docutils literal notranslate"><span class="pre">project()</span></code>.</p>
 <p>Named Option:</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_VCPKG_UPDATE</span></code>: (Disabled by default). If enabled, the vcpkg registry is updated before building (using <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span></code>).</p>
-<p>If <code class="docutils literal notranslate"><span class="pre">VCPKG_REV</span></code> is set to a specific commit sha, no rebuilds are triggered.
-If <code class="docutils literal notranslate"><span class="pre">VCPKG_REV</span></code> is not specified or is a branch, enabling <code class="docutils literal notranslate"><span class="pre">ENABLE_VCPKG_UPDATE</span></code> will rebuild your updated vcpkg dependencies.</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_VCPKG_UPDATE</span></code>: (Disabled by default). If enabled, the vcpkg
+registry is updated before building (using <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span></code>).</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">VCPKG_REV</span></code> is set to a specific commit sha, no rebuilds are
+triggered. If <code class="docutils literal notranslate"><span class="pre">VCPKG_REV</span></code> is not specified or is a branch, enabling
+<code class="docutils literal notranslate"><span class="pre">ENABLE_VCPKG_UPDATE</span></code> will rebuild your updated vcpkg dependencies.</p>
 </li>
 </ul>
 <p>Named String:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">VCPKG_DIR</span></code>: (Defaults to <code class="docutils literal notranslate"><span class="pre">~/vcpkg</span></code>). You can provide the vcpkg installation directory using this optional parameter.
-If the directory does not exist, it will automatically install vcpkg in this directory.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">VCPKG_URL</span></code>: (Defaults to <code class="docutils literal notranslate"><span class="pre">https://github.com/microsoft/vcpkg.git</span></code>). This option allows setting the URL of the vcpkg repository. By default, the official vcpkg repository is used.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">VCPKG_REV</span></code>: This option allows checking out a specific branch name or a commit sha.
-If <code class="docutils literal notranslate"><span class="pre">VCPKG_REV</span></code> is set to a specific commit sha, the builds will become reproducible because that exact commit is always used for the builds. To make sure that this commit sha is pulled, enable <code class="docutils literal notranslate"><span class="pre">ENABLE_VCPKG_UPDATE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VCPKG_DIR</span></code>: (Defaults to <code class="docutils literal notranslate"><span class="pre">~/vcpkg</span></code>). You can provide the vcpkg
+installation directory using this optional parameter. If the
+directory does not exist, it will automatically install vcpkg in this
+directory.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VCPKG_URL</span></code>: (Defaults to
+<code class="docutils literal notranslate"><span class="pre">https://github.com/microsoft/vcpkg.git</span></code>). This option allows
+setting the URL of the vcpkg repository. By default, the official
+vcpkg repository is used.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VCPKG_REV</span></code>: This option allows checking out a specific branch name
+or a commit sha. If <code class="docutils literal notranslate"><span class="pre">VCPKG_REV</span></code> is set to a specific commit sha,
+the builds will become reproducible because that exact commit is
+always used for the builds. To make sure that this commit sha is
+pulled, enable <code class="docutils literal notranslate"><span class="pre">ENABLE_VCPKG_UPDATE</span></code></p></li>
 </ul>
 </section>
 <section id="package-project">
 <h1><code class="docutils literal notranslate"><span class="pre">package_project</span></code><a class="headerlink" href="#package-project" title="Permalink to this heading"></a></h1>
-<p>A function that packages the project for external usage (e.g. from vcpkg, Conan, etc).</p>
+<p>A function that packages the project for external usage (e.g. from
+vcpkg, Conan, etc).</p>
 <p>The following arguments specify the package:</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">TARGETS</span></code>: the targets you want to package. It is recursively found for the current folder if not specified</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">INTERFACE_INCLUDES</span></code> or <code class="docutils literal notranslate"><span class="pre">PUBLIC_INCLUDES</span></code>: a list of interface/public include directories or files.</p>
-<p><sub>NOTE: The given include directories are directly installed to the install destination. To have an <code class="docutils literal notranslate"><span class="pre">include</span></code> folder in the install destination with the content of your include directory, name your directory <code class="docutils literal notranslate"><span class="pre">include</span></code>.</sub></p>
+<li><p><code class="docutils literal notranslate"><span class="pre">TARGETS</span></code>: the targets you want to package. It is recursively found
+for the current folder if not specified</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INTERFACE_INCLUDES</span></code> or <code class="docutils literal notranslate"><span class="pre">PUBLIC_INCLUDES</span></code>: a list of
+interface/public include directories or files.</p>
+<p>NOTE: The given include directories are directly installed to the
+install destination. To have an <code class="docutils literal notranslate"><span class="pre">include</span></code> folder in the install
+destination with the content of your include directory, name your
+directory <code class="docutils literal notranslate"><span class="pre">include</span></code>.</p>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">INTERFACE_DEPENDENCIES_CONFIGURED</span></code> or <code class="docutils literal notranslate"><span class="pre">PUBLIC_DEPENDENCIES_CONFIGURED</span></code>: the names of the interface/public dependencies that are found using <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">INTERFACE_DEPENDENCIES</span></code> or <code class="docutils literal notranslate"><span class="pre">PUBLIC_DEPENDENCIES</span></code>: the interface/public dependencies that will be found by any means using <code class="docutils literal notranslate"><span class="pre">find_dependency</span></code>. The arguments must be specified within quotes (e.g.<code class="docutils literal notranslate"><span class="pre">&quot;&lt;dependency&gt;</span> <span class="pre">1.0.0</span> <span class="pre">EXACT&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;&lt;dependency&gt;</span> <span class="pre">CONFIG&quot;</span></code>).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">PRIVATE_DEPENDENCIES_CONFIGURED</span></code>: the names of the PRIVATE dependencies found using <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code>. Only included when <code class="docutils literal notranslate"><span class="pre">BUILD_SHARED_LIBS</span></code> is <code class="docutils literal notranslate"><span class="pre">OFF</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">PRIVATE_DEPENDENCIES</span></code>: the PRIVATE dependencies found by any means using <code class="docutils literal notranslate"><span class="pre">find_dependency</span></code>. Only included when <code class="docutils literal notranslate"><span class="pre">BUILD_SHARED_LIBS</span></code> is <code class="docutils literal notranslate"><span class="pre">OFF</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INTERFACE_DEPENDENCIES_CONFIGURED</span></code> or
+<code class="docutils literal notranslate"><span class="pre">PUBLIC_DEPENDENCIES_CONFIGURED</span></code>: the names of the interface/public
+dependencies that are found using <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INTERFACE_DEPENDENCIES</span></code> or <code class="docutils literal notranslate"><span class="pre">PUBLIC_DEPENDENCIES</span></code>: the
+interface/public dependencies that will be found by any means using
+<code class="docutils literal notranslate"><span class="pre">find_dependency</span></code>. The arguments must be specified within quotes
+(e.g.<code class="docutils literal notranslate"><span class="pre">&quot;&lt;dependency&gt;</span> <span class="pre">1.0.0</span> <span class="pre">EXACT&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;&lt;dependency&gt;</span> <span class="pre">CONFIG&quot;</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PRIVATE_DEPENDENCIES_CONFIGURED</span></code>: the names of the PRIVATE
+dependencies found using <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code>. Only included when
+<code class="docutils literal notranslate"><span class="pre">BUILD_SHARED_LIBS</span></code> is <code class="docutils literal notranslate"><span class="pre">OFF</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PRIVATE_DEPENDENCIES</span></code>: the PRIVATE dependencies found by any means
+using <code class="docutils literal notranslate"><span class="pre">find_dependency</span></code>. Only included when <code class="docutils literal notranslate"><span class="pre">BUILD_SHARED_LIBS</span></code>
+is <code class="docutils literal notranslate"><span class="pre">OFF</span></code></p></li>
 </ul>
-<p>Other arguments that are automatically found and manually specifying them is not recommended:</p>
+<p>Other arguments that are automatically found and manually specifying
+them is not recommended:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">NAME</span></code>: the name of the package. Defaults to <code class="docutils literal notranslate"><span class="pre">${PROJECT_NAME}</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">VERSION</span></code>: the version of the package. Defaults to <code class="docutils literal notranslate"><span class="pre">${PROJECT_VERSION}</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">COMPATIBILITY</span></code>: the compatibility version of the package. Defaults to <code class="docutils literal notranslate"><span class="pre">SameMajorVersion</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CONFIG_EXPORT_DESTINATION</span></code>: the destination for exporting the configuration files. Defaults to <code class="docutils literal notranslate"><span class="pre">${CMAKE_BINARY_DIR}/${NAME}</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CONFIG_INSTALL_DESTINATION</span></code>: the destination for installation of the configuration files. Defaults to <code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_DATADIR}/${NAME}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VERSION</span></code>: the version of the package. Defaults to
+<code class="docutils literal notranslate"><span class="pre">${PROJECT_VERSION}</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">COMPATIBILITY</span></code>: the compatibility version of the package. Defaults
+to <code class="docutils literal notranslate"><span class="pre">SameMajorVersion</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CONFIG_EXPORT_DESTINATION</span></code>: the destination for exporting the
+configuration files. Defaults to <code class="docutils literal notranslate"><span class="pre">${CMAKE_BINARY_DIR}/${NAME}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CONFIG_INSTALL_DESTINATION</span></code>: the destination for installation of
+the configuration files. Defaults to
+<code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_DATADIR}/${NAME}</span></code></p></li>
 </ul>
 </section>
 <section id="target-include-interface-directories-function">
@@ -404,12 +463,17 @@ If <code class="docutils literal notranslate"><span class="pre">VCPKG_REV</span>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_include_interface_directories(</span><span class="nv">&lt;target_name&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;include_dir&gt;</span><span class="w"> </span><span class="p">...]</span><span class="nf">)</span>
 </pre></div>
 </div>
-<p>This function includes <code class="docutils literal notranslate"><span class="pre">include_dir</span></code> as the header interface directory of <code class="docutils literal notranslate"><span class="pre">target_name</span></code>.
-If the given <code class="docutils literal notranslate"><span class="pre">include_dir</span></code> path is relative, the function assumes the path is <code class="docutils literal notranslate"><span class="pre">${CMAKE_CURRENT_SOURCE_DIR}/${include_dir}</span></code>
-(i.e. the path is related to the path of CMakeLists.txt which calls the function).</p>
-<p>A property named <code class="docutils literal notranslate"><span class="pre">PROJECT_OPTIONS_INTERFACE_DIRECTORIES</span></code> will be created in <code class="docutils literal notranslate"><span class="pre">target_name</span></code> to represent the header directory path.
-When adding the target to <code class="docutils literal notranslate"><span class="pre">package_project</span></code>, directories in this property will be automatically added.</p>
-<p>You can call this function with the same <code class="docutils literal notranslate"><span class="pre">target_name</span></code> multiple times to add more header interface directories.</p>
+<p>This function includes <code class="docutils literal notranslate"><span class="pre">include_dir</span></code> as the header interface directory
+of <code class="docutils literal notranslate"><span class="pre">target_name</span></code>. If the given <code class="docutils literal notranslate"><span class="pre">include_dir</span></code> path is relative, the
+function assumes the path is
+<code class="docutils literal notranslate"><span class="pre">${CMAKE_CURRENT_SOURCE_DIR}/${include_dir}</span></code> (i.e. the path is related
+to the path of CMakeLists.txt which calls the function).</p>
+<p>A property named <code class="docutils literal notranslate"><span class="pre">PROJECT_OPTIONS_INTERFACE_DIRECTORIES</span></code> will be
+created in <code class="docutils literal notranslate"><span class="pre">target_name</span></code> to represent the header directory path. When
+adding the target to <code class="docutils literal notranslate"><span class="pre">package_project</span></code>, directories in this property
+will be automatically added.</p>
+<p>You can call this function with the same <code class="docutils literal notranslate"><span class="pre">target_name</span></code> multiple times
+to add more header interface directories.</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">my_header_lib</span><span class="w"> </span><span class="no">INTERFACE</span><span class="nf">)</span>
 <span class="nf">target_include_interface_directories(</span><span class="nb">my_header_lib</span><span class="w"> </span><span class="s">&quot;${CMAKE_CURRENT_SOURCE_DIR}/include&quot;</span><span class="nf">)</span>
 <span class="nf">target_include_interface_directories(</span><span class="nb">my_header_lib</span><span class="w"> </span><span class="p">..</span><span class="na">/include</span><span class="nf">)</span>
@@ -425,19 +489,24 @@ When adding the target to <code class="docutils literal notranslate"><span class
 <section id="target-find-dependencies-function">
 <h1><code class="docutils literal notranslate"><span class="pre">target_find_dependencies</span></code> function<a class="headerlink" href="#target-find-dependencies-function" title="Permalink to this heading"></a></h1>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_find_dependencies(</span><span class="nv">&lt;target_name&gt;</span>
-<span class="w">  </span><span class="p">[</span><span class="no">INTERFACE</span><span class="w"> </span><span class="p">[</span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]]</span>
-<span class="w">  </span><span class="p">[</span><span class="no">PUBLIC</span><span class="w"> </span><span class="p">[</span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]]</span>
-<span class="w">  </span><span class="p">[</span><span class="no">PRIVATE</span><span class="w"> </span><span class="p">[</span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]]</span>
-<span class="w">  </span><span class="p">[</span><span class="no">INTERFACE_CONFIG</span><span class="w"> </span><span class="p">[</span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]]</span>
-<span class="w">  </span><span class="p">[</span><span class="no">PUBLIC_CONFIG</span><span class="w"> </span><span class="p">[</span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]]</span>
-<span class="w">  </span><span class="p">[</span><span class="no">PRIVATE_CONFIG</span><span class="w"> </span><span class="p">[</span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">INTERFACE</span><span class="w"> </span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">PUBLIC</span><span class="w"> </span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">INTERFACE_CONFIG</span><span class="w"> </span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">PUBLIC_CONFIG</span><span class="w"> </span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">PRIVATE_CONFIG</span><span class="w"> </span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]</span>
 <span class="nf">)</span>
 </pre></div>
 </div>
-<p>This macro calls <code class="docutils literal notranslate"><span class="pre">find_package(${dependency}</span> <span class="pre">[CONFIG]</span> <span class="pre">REQUIRED)</span></code> for all dependencies required and binds them to the target.</p>
-<p>Properties named <code class="docutils literal notranslate"><span class="pre">PROJECT_OPTIONS_&lt;PRIVATE|PUBLIC|INTERFACE&gt;[_CONFIG]_DEPENDENCIES</span></code> will be created in <code class="docutils literal notranslate"><span class="pre">target_name</span></code> to represent corresponding dependencies.
-When adding the target to <code class="docutils literal notranslate"><span class="pre">package_project</span></code>, directories in this property will be automatically added.</p>
-<p>You can call this function with the same <code class="docutils literal notranslate"><span class="pre">target_name</span></code> multiple times to add more dependencies.</p>
+<p>This macro calls <code class="docutils literal notranslate"><span class="pre">find_package(${dependency}</span> <span class="pre">[CONFIG]</span> <span class="pre">REQUIRED)</span></code> for
+all dependencies required and binds them to the target.</p>
+<p>Properties named
+<code class="docutils literal notranslate"><span class="pre">PROJECT_OPTIONS_&lt;PRIVATE|PUBLIC|INTERFACE&gt;[_CONFIG]_DEPENDENCIES</span></code>
+will be created in <code class="docutils literal notranslate"><span class="pre">target_name</span></code> to represent corresponding
+dependencies. When adding the target to <code class="docutils literal notranslate"><span class="pre">package_project</span></code>, directories
+in this property will be automatically added.</p>
+<p>You can call this function with the same <code class="docutils literal notranslate"><span class="pre">target_name</span></code> multiple times
+to add more dependencies.</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">my_lib</span><span class="nf">)</span>
 <span class="nf">target_sources(</span><span class="nb">my_lib</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">function.cpp</span><span class="nf">)</span>
 <span class="nf">target_include_interface_directories(</span><span class="nb">my_lib</span><span class="w"> </span><span class="s">&quot;${CMAKE_CURRENT_SOURCE_DIR}/include&quot;</span><span class="nf">)</span>
@@ -468,33 +537,53 @@ When adding the target to <code class="docutils literal notranslate"><span class
 <section id="target-include-system-directories">
 <h1><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code><a class="headerlink" href="#target-include-system-directories" title="Permalink to this heading"></a></h1>
 <p>Include a system directory (which suppresses its warnings).</p>
-<p>The function accepts the same arguments as <code class="docutils literal notranslate"><span class="pre">target_include_directories</span></code>. It has the mentioned features of <code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code>.</p>
+<p>The function accepts the same arguments as
+<code class="docutils literal notranslate"><span class="pre">target_include_directories</span></code>. It has the mentioned features of
+<code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code>.</p>
 </section>
 <section id="target-link-system-libraries">
 <h1><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code><a class="headerlink" href="#target-link-system-libraries" title="Permalink to this heading"></a></h1>
-<p>Link multiple library targets as system libraries (which suppresses their warnings).</p>
-<p>The function accepts the same arguments as <code class="docutils literal notranslate"><span class="pre">target_link_libraries</span></code>. It has the following features:</p>
+<p>Link multiple library targets as system libraries (which suppresses
+their warnings).</p>
+<p>The function accepts the same arguments as <code class="docutils literal notranslate"><span class="pre">target_link_libraries</span></code>. It
+has the following features:</p>
 <ul class="simple">
-<li><p>The include directories of the library are included as <code class="docutils literal notranslate"><span class="pre">SYSTEM</span></code> to suppress their warnings. This helps in enabling <code class="docutils literal notranslate"><span class="pre">WARNINGS_AS_ERRORS</span></code> for your own source code.</p></li>
-<li><p>For installation of the package, the includes are considered to be at <code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_INCLUDEDIR}</span></code>.</p></li>
+<li><p>The include directories of the library are included as <code class="docutils literal notranslate"><span class="pre">SYSTEM</span></code> to
+suppress their warnings. This helps in enabling
+<code class="docutils literal notranslate"><span class="pre">WARNINGS_AS_ERRORS</span></code> for your own source code.</p></li>
+<li><p>For installation of the package, the includes are considered to be at
+<code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_INCLUDEDIR}</span></code>.</p></li>
 </ul>
 </section>
 <section id="dynamic-project-options">
 <h1><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code><a class="headerlink" href="#dynamic-project-options" title="Permalink to this heading"></a></h1>
-<p>During the test and development, it can be useful to change options on the fly. For example, to enable sanitizers when running tests. You can include <code class="docutils literal notranslate"><span class="pre">DynamicOptions.cmake</span></code>, which imports the <code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code> function.</p>
-<p><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code> provides a dynamic set of defaults (all static analysis and runtime analysis enabled for platforms where that is possible) while also providing a high-level option <code class="docutils literal notranslate"><span class="pre">ENABLE_DEVELOPER_MODE</span></code> (defaulted to <code class="docutils literal notranslate"><span class="pre">ON</span></code>) which can be turned off for easy use by non-developers.</p>
-<p>The goal of the <code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code> is to give a safe and well-analyzed environment to the developer by default while simultaneously making it easy for a user of the project to compile while not having to worry about clang-tidy, sanitizers, cppcheck, etc.</p>
+<p>During the test and development, it can be useful to change options on
+the fly. For example, to enable sanitizers when running tests. You can
+include <code class="docutils literal notranslate"><span class="pre">DynamicOptions.cmake</span></code>, which imports the
+<code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code> function.</p>
+<p><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code> provides a dynamic set of defaults (all
+static analysis and runtime analysis enabled for platforms where that is
+possible) while also providing a high-level option
+<code class="docutils literal notranslate"><span class="pre">ENABLE_DEVELOPER_MODE</span></code> (defaulted to <code class="docutils literal notranslate"><span class="pre">ON</span></code>) which can be turned off
+for easy use by non-developers.</p>
+<p>The goal of the <code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code> is to give a safe and
+well-analyzed environment to the developer by default while
+simultaneously making it easy for a user of the project to compile while
+not having to worry about clang-tidy, sanitizers, cppcheck, etc.</p>
 <p>The defaults presented to the user can be modified with</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">set(&lt;featurename&gt;_DEFAULT</span> <span class="pre">value)</span></code> - for user and developer builds</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">set(&lt;featurename&gt;_USER_DEFAULT</span> <span class="pre">value)</span></code> - for user builds</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">set(&lt;featureoptionname&gt;_DEVELOPER_DEFAULT</span> <span class="pre">value)</span></code> - for developer builds</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">set(&lt;featureoptionname&gt;_DEVELOPER_DEFAULT</span> <span class="pre">value)</span></code> - for developer
+builds</p></li>
 </ul>
-<p>If you need to fix a setting for the sake of a command-line configuration, you can use:</p>
+<p>If you need to fix a setting for the sake of a command-line
+configuration, you can use:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DOPT_&lt;featurename&gt;:BOOL<span class="o">=</span>value
 </pre></div>
 </div>
-<p>See <code class="docutils literal notranslate"><span class="pre">dynamic_project_options()</span></code> in action in <a class="reference external" href="https://github.com/aminya/cpp_boilerplate_project">this template repository</a>.</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">dynamic_project_options()</span></code> in action in <a class="reference external" href="https://github.com/aminya/cpp_boilerplate_project">this template
+repository</a>.</p>
 <p>Here is an example of how to use <code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code>:</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.20</span><span class="nf">)</span>
 
@@ -509,7 +598,7 @@ When adding the target to <code class="docutils literal notranslate"><span class
 
 <span class="c"># Add project_options from https://github.com/aminya/project_options</span>
 <span class="c"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</span>
-<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.28.0&quot;</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.29.0&quot;</span><span class="nf">)</span>
 <span class="nf">FetchContent_Declare(</span>
 <span class="w">  </span><span class="nb">_project_options</span>
 <span class="w">  </span><span class="no">URL</span><span class="w"> </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/</span><span class="o">${</span><span class="nt">PROJECT_OPTIONS_VERSION</span><span class="o">}</span><span class="p">.</span><span class="nb">zip</span><span class="nf">)</span>
@@ -545,7 +634,8 @@ When adding the target to <code class="docutils literal notranslate"><span class
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_disable_static_analysis(</span><span class="nb">some_external_target</span><span class="nf">)</span>
 </pre></div>
 </div>
-<p>There is also individual functions to disable a specific analysis for the target:</p>
+<p>There is also individual functions to disable a specific analysis for
+the target:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">target_disable_cpp_check(target)</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">target_disable_vs_analysis(target)</span></code></p></li>
@@ -556,8 +646,13 @@ When adding the target to <code class="docutils literal notranslate"><span class
 </section>
 <section id="enable-cross-compiler">
 <h1><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code><a class="headerlink" href="#enable-cross-compiler" title="Permalink to this heading"></a></h1>
-<p><strong>NOTE</strong>: more documentation/examples for this feature is welcome. See the <code class="docutils literal notranslate"><span class="pre">tests/rpi3</span></code>, <code class="docutils literal notranslate"><span class="pre">tests/rpi4</span></code>, <code class="docutils literal notranslate"><span class="pre">tests/emscripten</span></code>, <code class="docutils literal notranslate"><span class="pre">tests-rpi4-vcpkg</span></code> directories in the <a class="reference external" href="https://github.com/aminya/project_options/tree/main/tests">repositpry</a> for full examples.</p>
-<p>The following calls <code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code> to enable the cross-compiler as the current toolchain.</p>
+<p><strong>NOTE</strong>: more documentation/examples for this feature is welcome. See
+the <code class="docutils literal notranslate"><span class="pre">tests/rpi3</span></code>, <code class="docutils literal notranslate"><span class="pre">tests/rpi4</span></code>, <code class="docutils literal notranslate"><span class="pre">tests/emscripten</span></code>,
+<code class="docutils literal notranslate"><span class="pre">tests-rpi4-vcpkg</span></code> directories in the
+<a class="reference external" href="https://github.com/aminya/project_options/tree/main/tests">repositpry</a>
+for full examples.</p>
+<p>The following calls <code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code> to enable the
+cross-compiler as the current toolchain.</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">enable_cross_compiler(</span>
 <span class="w">  </span><span class="no">CC</span><span class="w"> </span><span class="s">&quot;arm-none-eabi-gcc&quot;</span>
 <span class="w">  </span><span class="no">CXX</span><span class="w"> </span><span class="s">&quot;arm-none-eabi-g++&quot;</span>
@@ -588,9 +683,11 @@ When adding the target to <code class="docutils literal notranslate"><span class
 <span class="nf">endif()</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code> auto-detects the following cross-compilers, when setting <code class="docutils literal notranslate"><span class="pre">DEFAULT_TRIPLET</span></code>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code> auto-detects the following cross-compilers,
+when setting <code class="docutils literal notranslate"><span class="pre">DEFAULT_TRIPLET</span></code>:</p>
 <ul class="simple">
-<li><p><em>mingw-w64</em> <a class="reference external" href="https://github.com/abeimler/project_options/blob/feature/open-closed-enable-cross-compiler/src/toolchains/x86_64-w64-mingw32.toolchain.cmake">x86_64-w64-mingw32.toolchain.cmake</a></p></li>
+<li><p><em>mingw-w64</em>
+<a class="reference external" href="https://github.com/abeimler/project_options/blob/feature/open-closed-enable-cross-compiler/src/toolchains/x86_64-w64-mingw32.toolchain.cmake">x86_64-w64-mingw32.toolchain.cmake</a></p></li>
 <li><p><em>emscripten</em></p></li>
 </ul>
 <p><strong>Example:</strong></p>
@@ -600,24 +697,29 @@ When adding the target to <code class="docutils literal notranslate"><span class
 </ul>
 <p>For <code class="docutils literal notranslate"><span class="pre">arm-linux</span></code> or <code class="docutils literal notranslate"><span class="pre">arm64-linux</span></code>, you must set the compiler:</p>
 <ul class="simple">
-<li><p>aarch64-linux-gnu <a class="reference external" href="https://github.com/abeimler/project_options/blob/feature/open-closed-enable-cross-compiler/src/toolchains/aarch64-linux.toolchain.cmake">aarch64-linux.toolchain.cmake</a></p></li>
-<li><p>arm-linux-gnueabi, arm-linux-gnueabihf <a class="reference external" href="https://github.com/abeimler/project_options/blob/feature/open-closed-enable-cross-compiler/src/toolchains/arm-linux.toolchain.cmake">arm-linux.toolchain.cmake</a></p></li>
+<li><p>aarch64-linux-gnu
+<a class="reference external" href="https://github.com/abeimler/project_options/blob/feature/open-closed-enable-cross-compiler/src/toolchains/aarch64-linux.toolchain.cmake">aarch64-linux.toolchain.cmake</a></p></li>
+<li><p>arm-linux-gnueabi, arm-linux-gnueabihf
+<a class="reference external" href="https://github.com/abeimler/project_options/blob/feature/open-closed-enable-cross-compiler/src/toolchains/arm-linux.toolchain.cmake">arm-linux.toolchain.cmake</a></p></li>
 </ul>
 <p><strong>Example:</strong></p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_CROSS_COMPILING:BOOL=ON</span> <span class="pre">-DCMAKE_C_COMPILER=gcc-aarch64-linux-gnu-gcc</span> <span class="pre">-DCMAKE_CXX_COMPILER=gcc-aarch64-linux-gnu-g++</span> <span class="pre">-DDEFAULT_TRIPLET=arm64-linux</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_CROSS_COMPILING:BOOL=ON</span> <span class="pre">-DCMAKE_C_COMPILER=arm-linux-gnueabihf-gcc</span> <span class="pre">-DCMAKE_CXX_COMPILER=arm-linux-gnueabi-g++</span> <span class="pre">-DDEFAULT_TRIPLET=arm-linux</span> <span class="pre">-DCROSS_ROOT=/usr/gcc-arm-linux-gnueabihf</span></code></p></li>
 </ul>
-<p>For (bare-metal) you don’t need/can’t set <code class="docutils literal notranslate"><span class="pre">arm-linux</span></code>/<code class="docutils literal notranslate"><span class="pre">arm64-linux</span></code> for vcpkg:</p>
+<p>For (bare-metal) you don’t need/can’t set <code class="docutils literal notranslate"><span class="pre">arm-linux</span></code>/<code class="docutils literal notranslate"><span class="pre">arm64-linux</span></code>
+for vcpkg:</p>
 <ul class="simple">
-<li><p>arm-none-eabi <a class="reference external" href="https://github.com/abeimler/project_options/blob/feature/open-closed-enable-cross-compiler/src/toolchains/arm.toolchain.cmake">arm.toolchain.cmake</a></p></li>
+<li><p>arm-none-eabi
+<a class="reference external" href="https://github.com/abeimler/project_options/blob/feature/open-closed-enable-cross-compiler/src/toolchains/arm.toolchain.cmake">arm.toolchain.cmake</a></p></li>
 </ul>
 <p><strong>Example:</strong></p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_CROSS_COMPILING:BOOL=ON</span> <span class="pre">-DCMAKE_C_COMPILER=arm-none-eabi-gcc</span> <span class="pre">-DCMAKE_CXX_COMPILER=arm-none-eabi-g++</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_CROSS_COMPILING:BOOL=ON</span> <span class="pre">-DCMAKE_C_COMPILER=arm-none-eabi-gcc</span> <span class="pre">-DCMAKE_CXX_COMPILER=arm-none-eabi-g++</span> <span class="pre">-DTARGET_ARCHITECTURE:STRING=arm</span> <span class="pre">-DCROSS_ROOT:STRING=&quot;/usr/arm-none-eabi-gcc&quot;</span>&#160;&#160; <span class="pre">-DCROSS_TRIPLET:STRING=arm-none-eabi-gcc</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_CROSS_COMPILING:BOOL=ON</span> <span class="pre">-DCMAKE_C_COMPILER=arm-none-eabi-gcc</span> <span class="pre">-DCMAKE_CXX_COMPILER=arm-none-eabi-g++</span> <span class="pre">-DTARGET_ARCHITECTURE:STRING=arm</span> <span class="pre">-DCROSS_ROOT:STRING=&quot;/usr/arm-none-eabi-gcc&quot;</span>&#160;&#160;&#160;&#160; <span class="pre">-DCROSS_TRIPLET:STRING=arm-none-eabi-gcc</span></code></p></li>
 </ul>
-<p>The option for <code class="docutils literal notranslate"><span class="pre">DEFAULT_TRIPLET</span></code> are the similar to <a class="reference external" href="https://github.com/microsoft/vcpkg/tree/master/triplets/community/">vcpkg triplets</a></p>
+<p>The option for <code class="docutils literal notranslate"><span class="pre">DEFAULT_TRIPLET</span></code> are the similar to <a class="reference external" href="https://github.com/microsoft/vcpkg/tree/master/triplets/community/">vcpkg
+triplets</a></p>
 <ul class="simple">
 <li><p>x64-mingw-dynamic</p></li>
 <li><p>x64-mingw-static</p></li>
@@ -637,6 +739,94 @@ When adding the target to <code class="docutils literal notranslate"><span class
 <span class="nf">target_link_cuda(</span><span class="nb">main_cuda</span><span class="nf">)</span>
 </pre></div>
 </div>
+</section>
+<section id="git-clone">
+<h1><code class="docutils literal notranslate"><span class="pre">git_clone</span></code><a class="headerlink" href="#git-clone" title="Permalink to this heading"></a></h1>
+<p>Clone the given repository to the given path</p>
+<p>Input variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">REPOSITORY_PATH</span></code>: The path to the repository</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">REMOTE_URL</span></code>: The url of the remote to add</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">REMOTE_NAME</span></code>: The name of the remote to add (defaults to the remote user)</p></li>
+</ul>
+</section>
+<section id="git-pull">
+<h1><code class="docutils literal notranslate"><span class="pre">git_pull</span></code><a class="headerlink" href="#git-pull" title="Permalink to this heading"></a></h1>
+<p>Pull the given repository</p>
+<p>It will temporarily switch back to the previous branch if the head is detached for updating</p>
+<p>Input variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">REPOSITORY_PATH</span></code>: The path to the repository</p></li>
+</ul>
+</section>
+<section id="git-checkout">
+<h1><code class="docutils literal notranslate"><span class="pre">git_checkout</span></code><a class="headerlink" href="#git-checkout" title="Permalink to this heading"></a></h1>
+<p>Checkout the given revision</p>
+<p>Input variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">REPOSITORY_PATH</span></code>: The path to the repository</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">REVISION</span></code>: The revision to checkout</p></li>
+</ul>
+</section>
+<section id="git-parse-url">
+<h1><code class="docutils literal notranslate"><span class="pre">git_parse_url</span></code><a class="headerlink" href="#git-parse-url" title="Permalink to this heading"></a></h1>
+<p>Parse the given Git url into its components</p>
+<p>It expects the url to be in the form of:
+<cite>[protocol://][host]/user/repo[.git]</cite></p>
+<p>Input variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">INPUT_URL</span></code>: The url to parse</p></li>
+</ul>
+<p>Output variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PROTOCOL</span></code>: The protocol of the url (http, https, ssh, etc)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HOST</span></code>: The host of the url (github, gitlab, etc)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">USER</span></code>: The user of the url (username, organization, etc)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">REPOSITORY_NAME</span></code>: The repository of the url (project name)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FULL_URL</span></code>: The url of the repository (protocol + host + user + repo)</p></li>
+</ul>
+</section>
+<section id="git-add-remote">
+<h1><code class="docutils literal notranslate"><span class="pre">git_add_remote</span></code><a class="headerlink" href="#git-add-remote" title="Permalink to this heading"></a></h1>
+<p>Add a remote to the given repository on the given path</p>
+<p>Input variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">REPOSITORY_PATH</span></code>: The path to the repository</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">REMOTE_URL</span></code>: The url of the remote to add</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">REMOTE_NAME</span></code>: The name of the remote to add (defaults to the remote user)</p></li>
+</ul>
+</section>
+<section id="git-revision">
+<h1><code class="docutils literal notranslate"><span class="pre">git_revision</span></code><a class="headerlink" href="#git-revision" title="Permalink to this heading"></a></h1>
+<p>Find the current git revision of the given repository</p>
+<p>Input variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">REPOSITORY_PATH</span></code>: The path to the repository</p></li>
+</ul>
+<p>Output variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">REVISION</span></code>: The variable to store the revision in</p></li>
+</ul>
+</section>
+<section id="git-is-detached">
+<h1><code class="docutils literal notranslate"><span class="pre">git_is_detached</span></code><a class="headerlink" href="#git-is-detached" title="Permalink to this heading"></a></h1>
+<p>Check if the given repository is in a detached state</p>
+<p>Input variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">REPOSITORY_PATH</span></code>: The path to the repository</p></li>
+</ul>
+<p>Output variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">IS_DETACHED</span></code>: The variable to store the result in</p></li>
+</ul>
+</section>
+<section id="git-switch-back">
+<h1><code class="docutils literal notranslate"><span class="pre">git_switch_back</span></code><a class="headerlink" href="#git-switch-back" title="Permalink to this heading"></a></h1>
+<p>Detect if the head is detached, if so, switch back before calling git pull on a detached head</p>
+<p>Input variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">REPOSITORY_PATH</span></code>: The path to the repository</p></li>
+</ul>
 </section>
 
 

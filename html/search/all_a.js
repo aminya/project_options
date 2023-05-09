@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['license_0',['License',['../md__home_aminya_project_options_docs_src_License.html',1,'']]],
-  ['license_2emd_1',['License.md',['../License_8md.html',1,'']]]
+  ['new_5fjs_25',['new_js',['../namespaceupdate__versions.html#a8a68a7376bda269f18be470fb3dd9fb5',1,'update_versions']]]
 ];

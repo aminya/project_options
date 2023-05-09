@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['else_0',['else',['../namespaceconf.html#ab735ec65d689d29e004b81751f2099fd',1,'conf']]],
-  ['enable_5fcross_5fcompiler_2emd_1',['enable_cross_compiler.md',['../enable__cross__compiler_8md.html',1,'']]],
-  ['exclude_5fpatterns_2',['exclude_patterns',['../namespaceconf.html#a7ad48fb6f3e9b129c02346ea0d3527c1',1,'conf']]],
-  ['extensions_3',['extensions',['../namespaceconf.html#ae475e080536acb271a0a0efe56c3ba42',1,'conf']]]
+  ['help_13',['help',['../namespaceupdate__versions.html#a77304cb6a33fdf3280271f7a84e09b2d',1,'update_versions']]],
+  ['highlight_5flanguage_14',['highlight_language',['../namespaceconf.html#a3117edf4443d9b8c70a9f0f44294ba79',1,'conf']]],
+  ['html_5fcontext_15',['html_context',['../namespaceconf.html#ac5d5e7f6304da016672983ba9ce832e4',1,'conf']]],
+  ['html_5ftheme_16',['html_theme',['../namespaceconf.html#a6c3bfcc1a44546c1c75ce20f55bd0fd6',1,'conf']]],
+  ['html_5ftheme_5foptions_17',['html_theme_options',['../namespaceconf.html#aeaafa42217d24810edc9b116b88a4585',1,'conf']]]
 ];

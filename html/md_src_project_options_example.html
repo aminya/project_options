@@ -96,7 +96,7 @@ $(document).ready(function(){initNavTree('md_src_project_options_example.html','
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>See the <code>project_options()</code> in action in <a href="https://github.com/aminya/cpp_vcpkg_project">this template repository</a>. <a href="https://github.com/aminya/cpp_vcpkg_project">cpp_vcpkg_project</a> has prepared all the best practices for a production-ready C++ project.</p>
-<h2><a class="anchor" id="autotoc_md6"></a>
+<h2><a class="anchor" id="autotoc_md2"></a>
 &lt;tt&gt;project&lt;/tt&gt; and &lt;tt&gt;project_options&lt;/tt&gt;</h2>
 <p>Here is an example of the usage:</p>
 <div class="fragment"><div class="line">cmake_minimum_required(VERSION 3.20)</div>
@@ -112,7 +112,7 @@ $(document).ready(function(){initNavTree('md_src_project_options_example.html','
 <div class="line"> </div>
 <div class="line"># Add project_options from https://github.com/aminya/project_options</div>
 <div class="line"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</div>
-<div class="line">set(PROJECT_OPTIONS_VERSION &quot;v0.28.0&quot;)</div>
+<div class="line">set(PROJECT_OPTIONS_VERSION &quot;v0.29.0&quot;)</div>
 <div class="line">FetchContent_Declare(</div>
 <div class="line">  _project_options</div>
 <div class="line">  URL https://github.com/aminya/project_options/archive/refs/tags/${PROJECT_OPTIONS_VERSION}.zip)</div>
@@ -200,7 +200,7 @@ $(document).ready(function(){initNavTree('md_src_project_options_example.html','
 <div class="line">      # CONAN_PROFILE ${profile_path}  # passes a profile to conan: see https://docs.conan.io/en/latest/reference/profiles.html</div>
 <div class="line">)</div>
 </div><!-- fragment --><p>Then add the executables or libraries to the project:</p>
-<h2><a class="anchor" id="autotoc_md7"></a>
+<h2><a class="anchor" id="autotoc_md3"></a>
 &lt;a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe" &gt;executable usage&lt;/a&gt;</h2>
 <div class="fragment"><div class="line">add_executable(main main.cpp)</div>
 <div class="line"> </div>
@@ -225,7 +225,7 @@ $(document).ready(function(){initNavTree('md_src_project_options_example.html','
 <div class="line"> </div>
 <div class="line"># Package the project</div>
 <div class="line">package_project(TARGETS main)</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md8"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md4"></a>
 &lt;a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib" &gt;library usage&lt;/a&gt;</h2>
 <div class="fragment"><div class="line">add_library(my_lib &quot;./src/my_lib/lib.cpp&quot;)</div>
 <div class="line"> </div>
@@ -256,7 +256,7 @@ $(document).ready(function(){initNavTree('md_src_project_options_example.html','
 <div class="line">  # Note that you must export `myproject_project_options` and `myproject_project_warnings` for `my_lib`</div>
 <div class="line">  TARGETS my_lib myproject_project_options myproject_project_warnings</div>
 <div class="line">)</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md9"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md5"></a>
 &lt;a href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib" &gt;header-only library usage&lt;/a&gt;</h2>
 <div class="fragment"><div class="line">add_library(my_header_lib INTERFACE)</div>
 <div class="line"> </div>
