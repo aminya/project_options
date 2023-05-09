@@ -331,7 +331,7 @@ endfunction()
 
 #[[.rst:
 
-``target_include_interface_directories`` function
+``target_include_interface_directories``
 =================================================
 
 .. code:: cmake
@@ -399,7 +399,7 @@ endfunction()
 
 #[[.rst:
 
-``target_find_dependencies`` function
+``target_find_dependencies``
 =====================================
 
 .. code:: cmake
