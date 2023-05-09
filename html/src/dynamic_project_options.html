@@ -54,10 +54,10 @@
 <li class="toctree-l1"><a class="reference internal" href="index.html#target-find-dependencies-function"><code class="docutils literal notranslate"><span class="pre">target_find_dependencies</span></code> function</a></li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#target-include-system-directories"><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#target-link-system-libraries"><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#dynamic-project-options"><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#target-disable-static-analysis"><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#enable-cross-compiler"><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#target-link-cuda"><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#dynamic-project-options"><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code></a></li>
 </ul>
 
         </div>
@@ -120,9 +120,6 @@
 <span class="w">  </span><span class="no">URL</span><span class="w"> </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/</span><span class="o">${</span><span class="nt">PROJECT_OPTIONS_VERSION</span><span class="o">}</span><span class="p">.</span><span class="nb">zip</span><span class="nf">)</span>
 <span class="nf">FetchContent_MakeAvailable(</span><span class="nb">_project_options</span><span class="nf">)</span>
 <span class="nf">include(</span><span class="o">${</span><span class="nt">_project_options_SOURCE_DIR</span><span class="o">}</span><span class="na">/Index.cmake</span><span class="nf">)</span>
-
-<span class="w"> </span><span class="c"># ❗ Add dynamic CMake options</span>
-<span class="nf">include(</span><span class="o">${</span><span class="nt">_project_options_SOURCE_DIR</span><span class="o">}</span><span class="na">/src/DynamicOptions.cmake</span><span class="nf">)</span>
 
 <span class="c"># install vcpkg dependencies: - should be called before defining project()</span>
 <span class="c"># run_vcpkg()</span>

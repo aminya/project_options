@@ -11,7 +11,7 @@ Or by specifying the options
 ```cmake
 run_vcpkg(
     VCPKG_URL "https://github.com/microsoft/vcpkg.git"
-    VCPKG_REV "33c8f025390f8682811629b6830d2d66ecedcaa5"
+    VCPKG_REV "9a5e44fcc1d6d734f46e385245438afaa7e53e28"
     ENABLE_VCPKG_UPDATE
 )
 ```

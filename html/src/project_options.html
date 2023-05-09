@@ -54,10 +54,10 @@
 <li class="toctree-l1"><a class="reference internal" href="index.html#target-find-dependencies-function"><code class="docutils literal notranslate"><span class="pre">target_find_dependencies</span></code> function</a></li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#target-include-system-directories"><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#target-link-system-libraries"><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#dynamic-project-options"><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#target-disable-static-analysis"><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#enable-cross-compiler"><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#target-link-cuda"><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#dynamic-project-options"><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code></a></li>
 </ul>
 
         </div>
@@ -111,7 +111,11 @@
 <span class="nf">include(</span><span class="o">${</span><span class="nt">_project_options_SOURCE_DIR</span><span class="o">}</span><span class="na">/Index.cmake</span><span class="nf">)</span>
 
 <span class="c"># install vcpkg dependencies: - should be called before defining project()</span>
-<span class="nf">run_vcpkg()</span>
+<span class="nf">run_vcpkg(</span>
+<span class="w">    </span><span class="no">VCPKG_URL</span><span class="w"> </span><span class="s">&quot;https://github.com/microsoft/vcpkg.git&quot;</span>
+<span class="w">    </span><span class="no">VCPKG_REV</span><span class="w"> </span><span class="s">&quot;9a5e44fcc1d6d734f46e385245438afaa7e53e28&quot;</span>
+<span class="w">    </span><span class="no">ENABLE_VCPKG_UPDATE</span>
+<span class="nf">)</span>
 
 <span class="c"># Set the project name and language</span>
 <span class="nf">project(</span><span class="nb">myproject</span><span class="w"> </span><span class="no">LANGUAGES</span><span class="w"> </span><span class="no">CXX</span><span class="w"> </span><span class="no">C</span><span class="nf">)</span>

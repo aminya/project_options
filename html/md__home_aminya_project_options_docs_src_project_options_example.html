@@ -120,7 +120,11 @@ $(document).ready(function(){initNavTree('md__home_aminya_project_options_docs_s
 <div class="line">include(${_project_options_SOURCE_DIR}/Index.cmake)</div>
 <div class="line"> </div>
 <div class="line"># install vcpkg dependencies: - should be called before defining project()</div>
-<div class="line">run_vcpkg()</div>
+<div class="line">run_vcpkg(</div>
+<div class="line">    VCPKG_URL &quot;https://github.com/microsoft/vcpkg.git&quot;</div>
+<div class="line">    VCPKG_REV &quot;9a5e44fcc1d6d734f46e385245438afaa7e53e28&quot;</div>
+<div class="line">    ENABLE_VCPKG_UPDATE</div>
+<div class="line">)</div>
 <div class="line"> </div>
 <div class="line"># Set the project name and language</div>
 <div class="line">project(myproject LANGUAGES CXX C)</div>
