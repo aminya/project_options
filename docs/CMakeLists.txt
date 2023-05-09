@@ -1,7 +1,7 @@
 # This module builds the documentation for the project.
 # Based on https://gitlab.com/Pro1/doxygen-cmake-sphinx/-/blob/master/doc/CMakeLists.txt
 
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.20)
 
 project(
   project_options_docs

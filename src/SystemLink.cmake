@@ -1,12 +1,18 @@
 include_guard()
 
-#
 #[[.rst:
 
-.. include:: ../../docs/src/target_include_system_directories.md
-   :parser: myst_parser.sphinx_
+``target_include_system_directories``
+=====================================
 
-#]]
+Include a system directory (which suppresses its warnings).
+
+The function accepts the same arguments as
+``target_include_directories``. It has the mentioned features of
+``target_link_system_libraries``.
+
+
+]]
 function(target_include_system_directories target)
   set(multiValueArgs INTERFACE PUBLIC PRIVATE)
   cmake_parse_arguments(ARG "" "" "${multiValueArgs}" ${ARGN})
@@ -56,10 +62,22 @@ endfunction()
 
 #[[.rst:
 
-.. include:: ../../docs/src/target_link_system_libraries.md
-   :parser: myst_parser.sphinx_
+``target_link_system_libraries``
+================================
 
-#]]
+Link multiple library targets as system libraries (which suppresses
+their warnings).
+
+The function accepts the same arguments as ``target_link_libraries``. It
+has the following features:
+
+-  The include directories of the library are included as ``SYSTEM`` to
+   suppress their warnings. This helps in enabling
+   ``WARNINGS_AS_ERRORS`` for your own source code.
+-  For installation of the package, the includes are considered to be at
+   ``${CMAKE_INSTALL_INCLUDEDIR}``.
+
+]]
 function(target_link_system_libraries target)
   set(multiValueArgs INTERFACE PUBLIC PRIVATE)
   cmake_parse_arguments(ARG "" "" "${multiValueArgs}" ${ARGN})

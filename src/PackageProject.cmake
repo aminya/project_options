@@ -21,10 +21,62 @@ endfunction()
 
 #[[.rst:
 
-.. include:: ../../docs/src/package_project.md
-   :parser: myst_parser.sphinx_
+``package_project``
+===================
 
-#]]
+A function that packages the project for external usage (e.g. from
+vcpkg, Conan, etc).
+
+The following arguments specify the package:
+
+-  ``TARGETS``: the targets you want to package. It is recursively found
+   for the current folder if not specified
+
+-  ``INTERFACE_INCLUDES`` or ``PUBLIC_INCLUDES``: a list of
+   interface/public include directories or files.
+
+   NOTE: The given include directories are directly installed to the
+   install destination. To have an ``include`` folder in the install
+   destination with the content of your include directory, name your
+   directory ``include``.
+
+-  ``INTERFACE_DEPENDENCIES_CONFIGURED`` or
+   ``PUBLIC_DEPENDENCIES_CONFIGURED``: the names of the interface/public
+   dependencies that are found using ``CONFIG``.
+
+-  ``INTERFACE_DEPENDENCIES`` or ``PUBLIC_DEPENDENCIES``: the
+   interface/public dependencies that will be found by any means using
+   ``find_dependency``. The arguments must be specified within quotes
+   (e.g.\ ``"<dependency> 1.0.0 EXACT"`` or ``"<dependency> CONFIG"``).
+
+-  ``PRIVATE_DEPENDENCIES_CONFIGURED``: the names of the PRIVATE
+   dependencies found using ``CONFIG``. Only included when
+   ``BUILD_SHARED_LIBS`` is ``OFF``.
+
+-  ``PRIVATE_DEPENDENCIES``: the PRIVATE dependencies found by any means
+   using ``find_dependency``. Only included when ``BUILD_SHARED_LIBS``
+   is ``OFF``
+
+Other arguments that are automatically found and manually specifying
+them is not recommended:
+
+-  ``NAME``: the name of the package. Defaults to ``${PROJECT_NAME}``.
+
+-  ``VERSION``: the version of the package. Defaults to
+   ``${PROJECT_VERSION}``.
+
+-  ``COMPATIBILITY``: the compatibility version of the package. Defaults
+   to ``SameMajorVersion``.
+
+-  ``CONFIG_EXPORT_DESTINATION``: the destination for exporting the
+   configuration files. Defaults to ``${CMAKE_BINARY_DIR}/${NAME}``
+
+-  ``CONFIG_INSTALL_DESTINATION``: the destination for installation of
+   the configuration files. Defaults to
+   ``${CMAKE_INSTALL_DATADIR}/${NAME}``
+
+
+]]
 function(package_project)
   # default to false
   set(_options ARCH_INDEPENDENT)
@@ -279,10 +331,41 @@ endfunction()
 
 #[[.rst:
 
-.. include:: ../../docs/src/target_include_interface_directories.md
-   :parser: myst_parser.sphinx_
+``target_include_interface_directories`` function
+=================================================
 
-#]]
+.. code:: cmake
+
+   target_include_interface_directories(<target_name> [<include_dir> ...])
+
+This function includes ``include_dir`` as the header interface directory
+of ``target_name``. If the given ``include_dir`` path is relative, the
+function assumes the path is
+``${CMAKE_CURRENT_SOURCE_DIR}/${include_dir}`` (i.e. the path is related
+to the path of CMakeLists.txt which calls the function).
+
+A property named ``PROJECT_OPTIONS_INTERFACE_DIRECTORIES`` will be
+created in ``target_name`` to represent the header directory path. When
+adding the target to ``package_project``, directories in this property
+will be automatically added.
+
+You can call this function with the same ``target_name`` multiple times
+to add more header interface directories.
+
+.. code:: cmake
+
+   add_library(my_header_lib INTERFACE)
+   target_include_interface_directories(my_header_lib "${CMAKE_CURRENT_SOURCE_DIR}/include")
+   target_include_interface_directories(my_header_lib ../include)
+
+   add_library(my_lib)
+   target_sources(my_lib PRIVATE function.cpp)
+   target_include_interface_directories(my_lib include ../include)
+
+   package_project(TARGETS my_header_lib my_lib)
+
+
+]]
 function(target_include_interface_directories target)
   function(target_include_interface_directory target include_dir)
     # Make include_dir absolute
@@ -316,10 +399,60 @@ endfunction()
 
 #[[.rst:
 
-.. include:: ../../docs/src/target_find_dependencies.md
-   :parser: myst_parser.sphinx_
+``target_find_dependencies`` function
+=====================================
 
-#]]
+.. code:: cmake
+
+   target_find_dependencies(<target_name>
+     [INTERFACE dependency ...]
+     [PUBLIC dependency ...]
+     [PRIVATE dependency ...]
+     [INTERFACE_CONFIG dependency ...]
+     [PUBLIC_CONFIG dependency ...]
+     [PRIVATE_CONFIG dependency ...]
+   )
+
+This macro calls ``find_package(${dependency} [CONFIG] REQUIRED)`` for
+all dependencies required and binds them to the target.
+
+Properties named
+``PROJECT_OPTIONS_<PRIVATE|PUBLIC|INTERFACE>[_CONFIG]_DEPENDENCIES``
+will be created in ``target_name`` to represent corresponding
+dependencies. When adding the target to ``package_project``, directories
+in this property will be automatically added.
+
+You can call this function with the same ``target_name`` multiple times
+to add more dependencies.
+
+.. code:: cmake
+
+   add_library(my_lib)
+   target_sources(my_lib PRIVATE function.cpp)
+   target_include_interface_directories(my_lib "${CMAKE_CURRENT_SOURCE_DIR}/include")
+
+   target_find_dependencies(my_lib
+     PUBLIC_CONFIG
+     fmt
+     PRIVATE_CONFIG
+     Microsoft.GSL
+   )
+   target_find_dependencies(my_lib
+     PRIVATE_CONFIG
+     range-v3
+   )
+
+   target_link_system_libraries(my_lib
+     PUBLIC
+     fmt::fmt
+     PRIVATE
+     Microsoft.GSL::GSL
+     range-v3::range-v3
+   )
+
+   package_project(TARGETS my_lib)
+
+]]
 macro(target_find_dependencies target)
   set(_options)
   set(_oneValueArgs)
