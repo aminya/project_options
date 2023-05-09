@@ -57,8 +57,8 @@
 <li class="toctree-l1"><a class="reference internal" href="#project-options-parameters"><code class="docutils literal notranslate"><span class="pre">project_options</span></code> parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#run-vcpkg"><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#package-project"><code class="docutils literal notranslate"><span class="pre">package_project</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#target-include-interface-directories-function"><code class="docutils literal notranslate"><span class="pre">target_include_interface_directories</span></code> function</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#target-find-dependencies-function"><code class="docutils literal notranslate"><span class="pre">target_find_dependencies</span></code> function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#target-include-interface-directories"><code class="docutils literal notranslate"><span class="pre">target_include_interface_directories</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#target-find-dependencies"><code class="docutils literal notranslate"><span class="pre">target_find_dependencies</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#target-include-system-directories"><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#target-link-system-libraries"><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#dynamic-project-options"><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code></a></li>
@@ -458,8 +458,8 @@ the configuration files. Defaults to
 <code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_DATADIR}/${NAME}</span></code></p></li>
 </ul>
 </section>
-<section id="target-include-interface-directories-function">
-<h1><code class="docutils literal notranslate"><span class="pre">target_include_interface_directories</span></code> function<a class="headerlink" href="#target-include-interface-directories-function" title="Permalink to this heading"></a></h1>
+<section id="target-include-interface-directories">
+<h1><code class="docutils literal notranslate"><span class="pre">target_include_interface_directories</span></code><a class="headerlink" href="#target-include-interface-directories" title="Permalink to this heading"></a></h1>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_include_interface_directories(</span><span class="nv">&lt;target_name&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;include_dir&gt;</span><span class="w"> </span><span class="p">...]</span><span class="nf">)</span>
 </pre></div>
 </div>
@@ -486,8 +486,8 @@ to add more header interface directories.</p>
 </pre></div>
 </div>
 </section>
-<section id="target-find-dependencies-function">
-<h1><code class="docutils literal notranslate"><span class="pre">target_find_dependencies</span></code> function<a class="headerlink" href="#target-find-dependencies-function" title="Permalink to this heading"></a></h1>
+<section id="target-find-dependencies">
+<h1><code class="docutils literal notranslate"><span class="pre">target_find_dependencies</span></code><a class="headerlink" href="#target-find-dependencies" title="Permalink to this heading"></a></h1>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_find_dependencies(</span><span class="nv">&lt;target_name&gt;</span>
 <span class="w">  </span><span class="p">[</span><span class="no">INTERFACE</span><span class="w"> </span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]</span>
 <span class="w">  </span><span class="p">[</span><span class="no">PUBLIC</span><span class="w"> </span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]</span>
