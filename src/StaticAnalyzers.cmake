@@ -223,10 +223,26 @@ endmacro()
 
 #[[.rst:
 
-.. include:: ../../docs/src/target_disable_static_analysis.md
-   :parser: myst_parser.sphinx_
+``target_disable_static_analysis``
+==================================
 
-#]]
+This function disables static analysis for the given target:
+
+.. code:: cmake
+
+   target_disable_static_analysis(some_external_target)
+
+There is also individual functions to disable a specific analysis for
+the target:
+
+-  ``target_disable_cpp_check(target)``
+-  ``target_disable_vs_analysis(target)``
+-  ``target_disable_clang_tidy(target)``
+-  ``target_disable_include_what_you_use(target)``
+-  ``target_disable_gcc_analyzer(target)``
+
+
+]]
 macro(target_disable_static_analysis TARGET)
   if(NOT CMAKE_GENERATOR MATCHES "Visual Studio")
     target_disable_clang_tidy(${TARGET})

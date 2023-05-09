@@ -2,10 +2,20 @@ include_guard()
 
 #[[.rst:
 
-.. include:: ../../docs/src/target_link_cuda.md
-   :parser: myst_parser.sphinx_
+``target_link_cuda``
+====================
 
-#]]
+Link Cuda to the given target.
+
+.. code:: cmake
+
+   add_executable(main_cuda main.cu)
+   target_compile_features(main_cuda PRIVATE cxx_std_17)
+   target_link_libraries(main_cuda PRIVATE project_options project_warnings)
+   target_link_cuda(main_cuda)
+
+
+]]
 macro(target_link_cuda target)
   # optional named CUDA_WARNINGS
   set(oneValueArgs CUDA_WARNINGS)
