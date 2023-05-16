@@ -16,6 +16,13 @@ function(
 
     if(${ENABLE_SANITIZER_ADDRESS})
       list(APPEND SANITIZERS "address")
+      if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 8)
+        list(APPEND SANITIZERS "pointer-compare" "pointer-subtract")
+        message(
+          STATUS
+          "To enable invalid pointer pairs detection, add detect_invalid_pointer_pairs=2 to the environment variable ASAN_OPTIONS."
+        )
+      endif()
     endif()
 
     if(${ENABLE_SANITIZER_LEAK})
