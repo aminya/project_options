@@ -19,7 +19,20 @@ function(
     endif()
 
     if(${ENABLE_STACK_PROTECTION})
-      list(APPEND HARDENING_COMPILE_OPTIONS -fstack-protector-strong -fstack-clash-protection)
+      set(_enable_stack_clash_protection TRUE)
+      if (APPLE)
+        EXECUTE_PROCESS(COMMAND uname -m OUTPUT_VARIABLE _architecture)
+        # `-fstack-clash-protection` dosen't work on MacOS M1 with clang
+        if (${_architecture} STREQUAL "arm64" AND CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+          set(_enable_stack_clash_protection FALSE)
+        endif()
+      endif()
+
+      if (_enable_stack_clash_protection)
+        list(APPEND HARDENING_COMPILE_OPTIONS -fstack-clash-protection)
+      endif()
+
+      list(APPEND HARDENING_COMPILE_OPTIONS -fstack-protector-strong)
     endif()
 
     if(${ENABLE_OVERFLOW_PROTECTION})
