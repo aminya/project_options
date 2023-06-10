@@ -21,9 +21,8 @@ function(
     if(${ENABLE_STACK_PROTECTION})
       set(_enable_stack_clash_protection TRUE)
       if (APPLE)
-        EXECUTE_PROCESS(COMMAND uname -m OUTPUT_VARIABLE _architecture)
         # `-fstack-clash-protection` dosen't work on MacOS M1 with clang
-        if (_architecture MATCHES ".*arm64.*" AND CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+        if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64" AND CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
           set(_enable_stack_clash_protection FALSE)
         endif()
       endif()
