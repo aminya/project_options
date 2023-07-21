@@ -196,6 +196,9 @@ macro(project_options)
   add_library(${_options_target} INTERFACE)
   add_library(${_warnings_target} INTERFACE)
 
+  # use the linker
+  configure_linker(${_options_target} "${ProjectOptions_LINKER}")
+
   # fix mingw
   mingw_unicode()
 
@@ -228,9 +231,6 @@ macro(project_options)
     # enable cache system
     enable_cache()
   endif()
-
-  # use the linker
-  configure_linker(${_options_target} "${ProjectOptions_LINKER}")
 
   # standard compiler warnings
   set_project_warnings(
