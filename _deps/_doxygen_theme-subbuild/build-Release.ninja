@@ -6,17 +6,11 @@
 
 include CMakeFiles/impl-Release.ninja
 
-build install: phony install$:Release
-
-build install/local: phony install/local$:Release
-
-build documentation: phony documentation$:Release
-
-build doxygen-docs: phony doxygen-docs$:Release
+build _doxygen_theme-populate: phony _doxygen_theme-populate$:Release
 
 
 #############################################
-# Folder: /home/aminya/GitHub/Cpp/project_options/docs/build
+# Folder: /home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild
 
 build all: phony all$:Release
 

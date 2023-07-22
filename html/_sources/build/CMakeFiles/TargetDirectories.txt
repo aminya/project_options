@@ -1,6 +1,0 @@
-/home/aminya/project_options/docs/build/CMakeFiles/doxygen-docs.dir
-/home/aminya/project_options/docs/build/CMakeFiles/documentation.dir
-/home/aminya/project_options/docs/build/CMakeFiles/edit_cache.dir
-/home/aminya/project_options/docs/build/CMakeFiles/rebuild_cache.dir
-/home/aminya/project_options/docs/build/CMakeFiles/install.dir
-/home/aminya/project_options/docs/build/CMakeFiles/install/local.dir

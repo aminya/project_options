@@ -7,7 +7,7 @@
 
 # =============================================================================
 # Project: _doxygen_theme-populate
-# Configurations: Debug
+# Configurations: Debug, Release, RelWithDebInfo
 # =============================================================================
 # =============================================================================
 
@@ -23,7 +23,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /usr/bin/cmake --regenerate-during-build -S/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild -B/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild
+  command = /usr/bin/cmake --regenerate-during-build -S/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild -B/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild
   description = Re-running CMake...
   generator = 1
 

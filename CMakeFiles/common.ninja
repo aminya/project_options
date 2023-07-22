@@ -27,15 +27,14 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = /home/aminya/project_options/docs/build/
+cmake_ninja_workdir = /home/aminya/GitHub/Cpp/project_options/docs/build/
 
 #############################################
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/aminya/project_options/docs/build && /home/aminya/cmake/cmake-3.25.1-linux-x86_64/bin/ccmake -S/home/aminya/project_options/docs -B/home/aminya/project_options/docs/build
-  DESC = Running CMake cache editor...
-  pool = console
+  COMMAND = cd /home/aminya/GitHub/Cpp/project_options/docs/build && /usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
   restat = 1
 
 build edit_cache: phony CMakeFiles/edit_cache.util
@@ -45,7 +44,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/aminya/project_options/docs/build && /usr/bin/cmake --regenerate-during-build -S/home/aminya/project_options/docs -B/home/aminya/project_options/docs/build
+  COMMAND = cd /home/aminya/GitHub/Cpp/project_options/docs/build && /usr/bin/cmake --regenerate-during-build -S/home/aminya/GitHub/Cpp/project_options/docs -B/home/aminya/GitHub/Cpp/project_options/docs/build
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -57,7 +56,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # Utility command for install
 
 build CMakeFiles/Release/install.util: CUSTOM_COMMAND all$:Release
-  COMMAND = cd /home/aminya/project_options/docs/build && /usr/bin/cmake -DBUILD_TYPE=Release -P cmake_install.cmake
+  COMMAND = cd /home/aminya/GitHub/Cpp/project_options/docs/build && /usr/bin/cmake -DBUILD_TYPE=Release -P cmake_install.cmake
   DESC = Install the project...
   pool = console
   restat = 1
@@ -69,7 +68,7 @@ build install$:Release: phony CMakeFiles/Release/install.util
 # Utility command for install/local
 
 build CMakeFiles/Release/install/local.util: CUSTOM_COMMAND all$:Release
-  COMMAND = cd /home/aminya/project_options/docs/build && /usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -DBUILD_TYPE=Release -P cmake_install.cmake
+  COMMAND = cd /home/aminya/GitHub/Cpp/project_options/docs/build && /usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -DBUILD_TYPE=Release -P cmake_install.cmake
   DESC = Installing only the local directory...
   pool = console
   restat = 1
@@ -90,14 +89,14 @@ build install/local$:Release: phony CMakeFiles/Release/install/local.util
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build CMakeFiles/impl-Release.ninja build-Release.ninja build.ninja: RERUN_CMAKE | ../CMakeLists.txt ../cmake/FindSphinx.cmake ../conf.py.in /home/aminya/project_options/src/Cache.cmake /home/aminya/project_options/src/Common.cmake /home/aminya/project_options/src/CompilerWarnings.cmake /home/aminya/project_options/src/Conan.cmake /home/aminya/project_options/src/CrossCompiler.cmake /home/aminya/project_options/src/Cuda.cmake /home/aminya/project_options/src/DetectCompiler.cmake /home/aminya/project_options/src/Doxygen.cmake /home/aminya/project_options/src/DynamicProjectOptions.cmake /home/aminya/project_options/src/Git.cmake /home/aminya/project_options/src/Index.cmake /home/aminya/project_options/src/Linker.cmake /home/aminya/project_options/src/MinGW.cmake /home/aminya/project_options/src/Optimization.cmake /home/aminya/project_options/src/PackageProject.cmake /home/aminya/project_options/src/PreventInSourceBuilds.cmake /home/aminya/project_options/src/Sanitizers.cmake /home/aminya/project_options/src/Standards.cmake /home/aminya/project_options/src/StaticAnalyzers.cmake /home/aminya/project_options/src/SystemLink.cmake /home/aminya/project_options/src/Tests.cmake /home/aminya/project_options/src/Utilities.cmake /home/aminya/project_options/src/VCEnvironment.cmake /home/aminya/project_options/src/Vcpkg.cmake /usr/share/cmake-3.22/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.22/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.22/Modules/FetchContent.cmake /usr/share/cmake-3.22/Modules/FetchContent/CMakeLists.cmake.in /usr/share/cmake-3.22/Modules/FindDoxygen.cmake /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.22/Modules/FindPackageMessage.cmake /usr/share/cmake-3.22/Modules/FindPython.cmake /usr/share/cmake-3.22/Modules/FindPython/Support.cmake /usr/share/cmake-3.22/Modules/Platform/Linux.cmake /usr/share/cmake-3.22/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeDoxyfile.in CMakeDoxygenDefaults.cmake CMakeFiles/3.22.1/CMakeSystem.cmake
+build CMakeFiles/impl-Release.ninja build-Release.ninja build.ninja: RERUN_CMAKE | ../CMakeLists.txt ../cmake/FindSphinx.cmake ../conf.py.in /home/aminya/GitHub/Cpp/project_options/src/Cache.cmake /home/aminya/GitHub/Cpp/project_options/src/Common.cmake /home/aminya/GitHub/Cpp/project_options/src/CompilerWarnings.cmake /home/aminya/GitHub/Cpp/project_options/src/Conan.cmake /home/aminya/GitHub/Cpp/project_options/src/CrossCompiler.cmake /home/aminya/GitHub/Cpp/project_options/src/Cuda.cmake /home/aminya/GitHub/Cpp/project_options/src/DetectCompiler.cmake /home/aminya/GitHub/Cpp/project_options/src/Doxygen.cmake /home/aminya/GitHub/Cpp/project_options/src/DynamicProjectOptions.cmake /home/aminya/GitHub/Cpp/project_options/src/Git.cmake /home/aminya/GitHub/Cpp/project_options/src/Hardening.cmake /home/aminya/GitHub/Cpp/project_options/src/Index.cmake /home/aminya/GitHub/Cpp/project_options/src/Linker.cmake /home/aminya/GitHub/Cpp/project_options/src/MinGW.cmake /home/aminya/GitHub/Cpp/project_options/src/Optimization.cmake /home/aminya/GitHub/Cpp/project_options/src/PackageProject.cmake /home/aminya/GitHub/Cpp/project_options/src/PreventInSourceBuilds.cmake /home/aminya/GitHub/Cpp/project_options/src/Sanitizers.cmake /home/aminya/GitHub/Cpp/project_options/src/Standards.cmake /home/aminya/GitHub/Cpp/project_options/src/StaticAnalyzers.cmake /home/aminya/GitHub/Cpp/project_options/src/SystemLink.cmake /home/aminya/GitHub/Cpp/project_options/src/Tests.cmake /home/aminya/GitHub/Cpp/project_options/src/Utilities.cmake /home/aminya/GitHub/Cpp/project_options/src/VCEnvironment.cmake /home/aminya/GitHub/Cpp/project_options/src/Vcpkg.cmake /usr/share/cmake-3.22/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.22/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.22/Modules/FetchContent.cmake /usr/share/cmake-3.22/Modules/FetchContent/CMakeLists.cmake.in /usr/share/cmake-3.22/Modules/FindDoxygen.cmake /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.22/Modules/FindPackageMessage.cmake /usr/share/cmake-3.22/Modules/FindPython.cmake /usr/share/cmake-3.22/Modules/FindPython/Support.cmake /usr/share/cmake-3.22/Modules/Platform/Linux.cmake /usr/share/cmake-3.22/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeDoxyfile.in CMakeDoxygenDefaults.cmake CMakeFiles/3.22.1/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build ../CMakeLists.txt ../cmake/FindSphinx.cmake ../conf.py.in /home/aminya/project_options/src/Cache.cmake /home/aminya/project_options/src/Common.cmake /home/aminya/project_options/src/CompilerWarnings.cmake /home/aminya/project_options/src/Conan.cmake /home/aminya/project_options/src/CrossCompiler.cmake /home/aminya/project_options/src/Cuda.cmake /home/aminya/project_options/src/DetectCompiler.cmake /home/aminya/project_options/src/Doxygen.cmake /home/aminya/project_options/src/DynamicProjectOptions.cmake /home/aminya/project_options/src/Git.cmake /home/aminya/project_options/src/Index.cmake /home/aminya/project_options/src/Linker.cmake /home/aminya/project_options/src/MinGW.cmake /home/aminya/project_options/src/Optimization.cmake /home/aminya/project_options/src/PackageProject.cmake /home/aminya/project_options/src/PreventInSourceBuilds.cmake /home/aminya/project_options/src/Sanitizers.cmake /home/aminya/project_options/src/Standards.cmake /home/aminya/project_options/src/StaticAnalyzers.cmake /home/aminya/project_options/src/SystemLink.cmake /home/aminya/project_options/src/Tests.cmake /home/aminya/project_options/src/Utilities.cmake /home/aminya/project_options/src/VCEnvironment.cmake /home/aminya/project_options/src/Vcpkg.cmake /usr/share/cmake-3.22/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.22/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.22/Modules/FetchContent.cmake /usr/share/cmake-3.22/Modules/FetchContent/CMakeLists.cmake.in /usr/share/cmake-3.22/Modules/FindDoxygen.cmake /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.22/Modules/FindPackageMessage.cmake /usr/share/cmake-3.22/Modules/FindPython.cmake /usr/share/cmake-3.22/Modules/FindPython/Support.cmake /usr/share/cmake-3.22/Modules/Platform/Linux.cmake /usr/share/cmake-3.22/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeDoxyfile.in CMakeDoxygenDefaults.cmake CMakeFiles/3.22.1/CMakeSystem.cmake: phony
+build ../CMakeLists.txt ../cmake/FindSphinx.cmake ../conf.py.in /home/aminya/GitHub/Cpp/project_options/src/Cache.cmake /home/aminya/GitHub/Cpp/project_options/src/Common.cmake /home/aminya/GitHub/Cpp/project_options/src/CompilerWarnings.cmake /home/aminya/GitHub/Cpp/project_options/src/Conan.cmake /home/aminya/GitHub/Cpp/project_options/src/CrossCompiler.cmake /home/aminya/GitHub/Cpp/project_options/src/Cuda.cmake /home/aminya/GitHub/Cpp/project_options/src/DetectCompiler.cmake /home/aminya/GitHub/Cpp/project_options/src/Doxygen.cmake /home/aminya/GitHub/Cpp/project_options/src/DynamicProjectOptions.cmake /home/aminya/GitHub/Cpp/project_options/src/Git.cmake /home/aminya/GitHub/Cpp/project_options/src/Hardening.cmake /home/aminya/GitHub/Cpp/project_options/src/Index.cmake /home/aminya/GitHub/Cpp/project_options/src/Linker.cmake /home/aminya/GitHub/Cpp/project_options/src/MinGW.cmake /home/aminya/GitHub/Cpp/project_options/src/Optimization.cmake /home/aminya/GitHub/Cpp/project_options/src/PackageProject.cmake /home/aminya/GitHub/Cpp/project_options/src/PreventInSourceBuilds.cmake /home/aminya/GitHub/Cpp/project_options/src/Sanitizers.cmake /home/aminya/GitHub/Cpp/project_options/src/Standards.cmake /home/aminya/GitHub/Cpp/project_options/src/StaticAnalyzers.cmake /home/aminya/GitHub/Cpp/project_options/src/SystemLink.cmake /home/aminya/GitHub/Cpp/project_options/src/Tests.cmake /home/aminya/GitHub/Cpp/project_options/src/Utilities.cmake /home/aminya/GitHub/Cpp/project_options/src/VCEnvironment.cmake /home/aminya/GitHub/Cpp/project_options/src/Vcpkg.cmake /usr/share/cmake-3.22/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.22/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.22/Modules/FetchContent.cmake /usr/share/cmake-3.22/Modules/FetchContent/CMakeLists.cmake.in /usr/share/cmake-3.22/Modules/FindDoxygen.cmake /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.22/Modules/FindPackageMessage.cmake /usr/share/cmake-3.22/Modules/FindPython.cmake /usr/share/cmake-3.22/Modules/FindPython/Support.cmake /usr/share/cmake-3.22/Modules/Platform/Linux.cmake /usr/share/cmake-3.22/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeDoxyfile.in CMakeDoxygenDefaults.cmake CMakeFiles/3.22.1/CMakeSystem.cmake: phony
 
 
 #############################################

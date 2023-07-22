@@ -11,7 +11,7 @@
 
 # =============================================================================
 # Project: _doxygen_theme-populate
-# Configurations: Debug
+# Configurations: Debug, Release, RelWithDebInfo
 # =============================================================================
 # =============================================================================
 # Include auxiliary files.
@@ -27,15 +27,14 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = /home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild/
+cmake_ninja_workdir = /home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild/
 
 #############################################
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild && /home/aminya/cmake/cmake-3.25.1-linux-x86_64/bin/ccmake -S/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild -B/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild
-  DESC = Running CMake cache editor...
-  pool = console
+  COMMAND = cd /home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild && /usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
   restat = 1
 
 build edit_cache: phony CMakeFiles/edit_cache.util
@@ -45,7 +44,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild && /usr/bin/cmake --regenerate-during-build -S/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild -B/home/aminya/project_options/docs/build/_deps/_doxygen_theme-subbuild
+  COMMAND = cd /home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild && /usr/bin/cmake --regenerate-during-build -S/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild -B/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-subbuild
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -66,7 +65,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build CMakeFiles/impl-Debug.ninja build-Debug.ninja build.ninja: RERUN_CMAKE | /usr/share/cmake-3.22/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.22/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.22/Modules/ExternalProject-download.cmake.in /usr/share/cmake-3.22/Modules/ExternalProject.cmake /usr/share/cmake-3.22/Modules/Platform/Linux.cmake /usr/share/cmake-3.22/Modules/Platform/UnixPaths.cmake /usr/share/cmake-3.22/Modules/RepositoryInfo.txt.in CMakeCache.txt CMakeFiles/3.22.1/CMakeSystem.cmake CMakeLists.txt _doxygen_theme-populate-prefix/tmp/_doxygen_theme-populate-cfgcmd.txt.in
+build CMakeFiles/impl-Debug.ninja build-Debug.ninja CMakeFiles/impl-Release.ninja build-Release.ninja CMakeFiles/impl-RelWithDebInfo.ninja build-RelWithDebInfo.ninja build.ninja: RERUN_CMAKE | /usr/share/cmake-3.22/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.22/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.22/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.22/Modules/ExternalProject-download.cmake.in /usr/share/cmake-3.22/Modules/ExternalProject.cmake /usr/share/cmake-3.22/Modules/Platform/Linux.cmake /usr/share/cmake-3.22/Modules/Platform/UnixPaths.cmake /usr/share/cmake-3.22/Modules/RepositoryInfo.txt.in CMakeCache.txt CMakeFiles/3.22.1/CMakeSystem.cmake CMakeLists.txt _doxygen_theme-populate-prefix/tmp/_doxygen_theme-populate-cfgcmd.txt.in
   pool = console
 
 
@@ -79,13 +78,25 @@ build /usr/share/cmake-3.22/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.
 #############################################
 # Clean byproducts.
 
-build CMakeFiles/cmake_byproducts_for_clean_target: phony _doxygen_theme-populate$:Debug CMakeFiles/Debug/_doxygen_theme-populate.util
+build CMakeFiles/cmake_byproducts_for_clean_target: phony _doxygen_theme-populate$:Debug CMakeFiles/Debug/_doxygen_theme-populate.util _doxygen_theme-populate$:Release CMakeFiles/Release/_doxygen_theme-populate.util _doxygen_theme-populate$:RelWithDebInfo CMakeFiles/RelWithDebInfo/_doxygen_theme-populate.util
 
 
 #############################################
 # Clean byproducts.
 
 build CMakeFiles/cmake_byproducts_for_clean_target$:Debug: phony
+
+
+#############################################
+# Clean byproducts.
+
+build CMakeFiles/cmake_byproducts_for_clean_target$:Release: phony
+
+
+#############################################
+# Clean byproducts.
+
+build CMakeFiles/cmake_byproducts_for_clean_target$:RelWithDebInfo: phony
 
 
 #############################################

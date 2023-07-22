@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>project_options_docs: License</title>
+<title>project_options_docs: project_options</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -66,7 +66,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('md_src_License.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('md__home_aminya_GitHub_Cpp_project_options_docs_src_Readme_top.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -86,10 +86,40 @@ $(document).ready(function(){initNavTree('md_src_License.html',''); initResizabl
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">License </div>  </div>
+<div class="title">project_options </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>This project can be used under the terms of either the <a href="../../LICENSE.txt">MIT license</a> or the <a href="../../Unlicense.txt">Unlicense</a> depending on your choice. </p>
+<div class="textblock"><p>A general-purpose CMake library that provides functions that improve the CMake experience following the best practices.</p>
+<p><a href="https://aminya.github.io/project_options/"><img src="https://img.shields.io/badge/documentation-blue?style=flat&amp;logo=docs.rs&amp;link=https://aminya.github.io/project_options/" alt="documentation" class="inline"/></a></p>
+<p><a href="https://github.com/aminya/project_options/actions/workflows/ci.yml"><img src="https://github.com/aminya/project_options/actions/workflows/ci.yml/badge.svg" alt="ci" style="pointer-events: none;" class="inline"/></a></p>
+<h1><a class="anchor" id="autotoc_md7"></a>
+Features</h1>
+<ul>
+<li><code>project_options</code>:<ul>
+<li>compiler warnings,</li>
+<li>compiler optimizations (intraprocedural, native),</li>
+<li>caching (ccache, sccache),</li>
+<li>sanitizers,</li>
+<li>static code analyzers (clang-tidy, cppcheck, visual studio, include-what-you-use),</li>
+<li>document generation (doxygen),</li>
+<li>test coverage analysis,</li>
+<li>precompiled headers,</li>
+<li>build time measurement,</li>
+<li>unity builds</li>
+<li>using custom linkers (e.g. lld)</li>
+</ul>
+</li>
+<li><code>package_project</code>: automatic packaging/installation of the project for seamless usage via find_package/target_link through CMake's FetchContent, vcpkg, etc.</li>
+<li><code>run_vcpkg</code>: automatic installation of vcpkg and the project dependencies</li>
+<li><code>ENABLE_CONAN</code> in <code>project_options</code>: automatic installation of Conan and the project dependencies</li>
+<li><code>dynamic_project_options</code>: a wrapper around <code>project_options</code> to change the options on the fly dynamically</li>
+<li><code>target_link_system_libraries</code> and <code>target_include_system_directories</code>: linking/including external dependencies/headers without warnings</li>
+<li><code>target_link_cuda</code>: linking Cuda to a target</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md8"></a>
+Documentation</h1>
+<p>The full documentation is available here:</p>
+<p><a href="https://aminya.github.io/project_options/">https://aminya.github.io/project_options/</a> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

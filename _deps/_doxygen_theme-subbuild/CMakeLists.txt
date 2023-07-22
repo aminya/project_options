@@ -14,8 +14,8 @@ project(_doxygen_theme-populate NONE)
 include(ExternalProject)
 ExternalProject_Add(_doxygen_theme-populate
                      "UPDATE_DISCONNECTED" "False" "URL" "https://github.com/jothepro/doxygen-awesome-css/archive/refs/tags/v2.0.2.zip"
-                    SOURCE_DIR          "/home/aminya/project_options/docs/build/_deps/_doxygen_theme-src"
-                    BINARY_DIR          "/home/aminya/project_options/docs/build/_deps/_doxygen_theme-build"
+                    SOURCE_DIR          "/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-src"
+                    BINARY_DIR          "/home/aminya/GitHub/Cpp/project_options/docs/build/_deps/_doxygen_theme-build"
                     CONFIGURE_COMMAND   ""
                     BUILD_COMMAND       ""
                     INSTALL_COMMAND     ""

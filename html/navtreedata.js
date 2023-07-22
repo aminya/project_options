@@ -25,11 +25,11 @@
 var NAVTREE =
 [
   [ "project_options_docs", "index.html", [
-    [ "License", "md__home_aminya_project_options_docs_src_License.html", null ],
-    [ "<tt>project_options</tt> function", "md__home_aminya_project_options_docs_src_project_options_example.html", null ],
-    [ "project_options", "md__home_aminya_project_options_docs_src_Readme_top.html", [
-      [ "Features", "md__home_aminya_project_options_docs_src_Readme_top.html#autotoc_md7", null ],
-      [ "Documentation", "md__home_aminya_project_options_docs_src_Readme_top.html#autotoc_md8", null ]
+    [ "License", "md__home_aminya_GitHub_Cpp_project_options_docs_src_License.html", null ],
+    [ "<tt>project_options</tt> function", "md__home_aminya_GitHub_Cpp_project_options_docs_src_project_options_example.html", null ],
+    [ "project_options", "md__home_aminya_GitHub_Cpp_project_options_docs_src_Readme_top.html", [
+      [ "Features", "md__home_aminya_GitHub_Cpp_project_options_docs_src_Readme_top.html#autotoc_md7", null ],
+      [ "Documentation", "md__home_aminya_GitHub_Cpp_project_options_docs_src_Readme_top.html#autotoc_md8", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],

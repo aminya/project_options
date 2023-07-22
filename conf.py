@@ -14,7 +14,7 @@
 #
 import os
 import sys
-sys.path.insert(0, r'/home/aminya/project_options/docs')
+sys.path.insert(0, r'/home/aminya/GitHub/Cpp/project_options/docs')
 from sphinx.builders.html import StandaloneHTMLBuilder
 import subprocess, os
 
@@ -58,7 +58,7 @@ extensions = [
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['/home/aminya/project_options/docs/templates']
+templates_path = ['/home/aminya/GitHub/Cpp/project_options/docs/templates']
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -96,7 +96,7 @@ html_theme_options = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-# html_static_path = ['/home/aminya/project_options/docs/static']
+# html_static_path = ['/home/aminya/GitHub/Cpp/project_options/docs/static']
 # html_style = 'css/cmake.css'
 #
 # html_js_files = [
@@ -108,7 +108,7 @@ html_theme_options = {
 master_doc = 'index'
 
 breathe_projects = {
-	'C++ Sphinx Doxygen Breathe': "/home/aminya/project_options/docs/build/xml/"
+	'C++ Sphinx Doxygen Breathe': "/home/aminya/GitHub/Cpp/project_options/docs/build/xml/"
 }
 breathe_default_project = 'C++ Sphinx Doxygen Breathe'
 breathe_default_members = ('members', 'undoc-members')
