@@ -59,7 +59,7 @@ macro(msvc_toolchain)
       include(FetchContent)
       FetchContent_Declare(
         _msvc_toolchain
-        URL "https://github.com/MarkSchofield/WindowsToolchain/archive/refs/tags/v0.6.0.zip"
+        URL "https://github.com/MarkSchofield/WindowsToolchain/archive/refs/tags/v0.7.0.zip"
       )
       FetchContent_MakeAvailable(_msvc_toolchain)
       include("${_msvc_toolchain_SOURCE_DIR}/Windows.MSVC.toolchain.cmake")
