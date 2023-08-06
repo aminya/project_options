@@ -129,3 +129,10 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.arm-bare-metal
       target: build
+  build-gcc-with-custom-linker:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      args:
+        compiler: gcc
+      target: build-with-custom-linker
