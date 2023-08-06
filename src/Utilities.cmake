@@ -124,3 +124,48 @@ function(detect_architecture arch)
     set(${arch} x64 PARENT_SCOPE)
   endif()
 endfunction()
+
+# detect sanitizers support for compiler
+function(check_sanitizers_support
+        ENABLE_SANITIZER_ADDRESS
+        ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+        ENABLE_SANITIZER_LEAK
+        ENABLE_SANITIZER_THREAD
+        ENABLE_SANITIZER_MEMORY)
+  set(SANITIZERS "")
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+    list(APPEND SANITIZERS "address")
+    list(APPEND SANITIZERS "undefined")
+    list(APPEND SANITIZERS "leak")
+    list(APPEND SANITIZERS "thread")
+    list(APPEND SANITIZERS "memory")
+  elseif(MSVC)
+    # or it is MSVC and has run vcvarsall
+    string(FIND "$ENV{PATH}" "$ENV{VSINSTALLDIR}" index_of_vs_install_dir)
+    if("${index_of_vs_install_dir}" STREQUAL "-1")
+      list(APPEND SANITIZERS "address")
+    endif()
+  endif()
+
+  list(JOIN SANITIZERS "," LIST_OF_SANITIZERS)
+
+  if(LIST_OF_SANITIZERS)
+    if(NOT "${LIST_OF_SANITIZERS}" STREQUAL "")
+      if("address" IN_LIST SANITIZERS)
+        set(${ENABLE_SANITIZER_ADDRESS} "ENABLE_SANITIZER_ADDRESS" PARENT_SCOPE)
+      endif()
+      if("undefined" IN_LIST SANITIZERS)
+        set(${ENABLE_SANITIZER_UNDEFINED_BEHAVIOR} "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR" PARENT_SCOPE)
+      endif()
+      if("leak" IN_LIST SANITIZERS)
+        set(${ENABLE_SANITIZER_LEAK} "ENABLE_SANITIZER_LEAK" PARENT_SCOPE)
+      endif()
+      if("thread" IN_LIST SANITIZERS)
+        set(${ENABLE_SANITIZER_THREAD} "ENABLE_SANITIZER_THREAD" PARENT_SCOPE)
+      endif()
+      if("memory" IN_LIST SANITIZERS)
+        set(${ENABLE_SANITIZER_MEMORY} "ENABLE_SANITIZER_MEMORY" PARENT_SCOPE)
+      endif()
+    endif()
+  endif()
+endfunction()
