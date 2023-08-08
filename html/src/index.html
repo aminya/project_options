@@ -65,6 +65,8 @@
 <li class="toctree-l1"><a class="reference internal" href="#target-link-system-libraries"><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#dynamic-project-options"><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#target-disable-static-analysis"><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#check-sanitizers-support"><code class="docutils literal notranslate"><span class="pre">check_sanitizers_support</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#find-linker"><code class="docutils literal notranslate"><span class="pre">find_linker</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#enable-cross-compiler"><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#target-link-cuda"><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#git-clone"><code class="docutils literal notranslate"><span class="pre">git_clone</span></code></a></li>
@@ -637,6 +639,40 @@ the target:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">target_disable_include_what_you_use(target)</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">target_disable_gcc_analyzer(target)</span></code></p></li>
 </ul>
+</section>
+<section id="check-sanitizers-support">
+<h1><code class="docutils literal notranslate"><span class="pre">check_sanitizers_support</span></code><a class="headerlink" href="#check-sanitizers-support" title="Permalink to this heading"></a></h1>
+<p>Detect sanitizers support for compiler.</p>
+<p>Note that some sanitizers cannot be enabled together, and this function doesn’t check that. You should decide which sanitizers to enable based on your needs.</p>
+<p>Output variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_SANITIZER_ADDRESS</span></code>: Address sanitizer is supported</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_SANITIZER_UNDEFINED_BEHAVIOR</span></code>: Undefined behavior sanitizer is supported</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_SANITIZER_LEAK</span></code>: Leak sanitizer is supported</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_SANITIZER_THREAD</span></code>: Thread sanitizer is supported</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_SANITIZER_MEMORY</span></code>: Memory sanitizer is supported</p></li>
+</ul>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">check_sanitizers_support(</span><span class="no">ENABLE_SANITIZER_ADDRESS</span>
+<span class="w">                         </span><span class="no">ENABLE_SANITIZER_UNDEFINED_BEHAVIOR</span>
+<span class="w">                         </span><span class="no">ENABLE_SANITIZER_LEAK</span>
+<span class="w">                         </span><span class="no">ENABLE_SANITIZER_THREAD</span>
+<span class="w">                         </span><span class="no">ENABLE_SANITIZER_MEMORY</span><span class="nf">)</span>
+
+<span class="c"># then pass the sanitizers (e.g. ${ENABLE_SANITIZER_ADDRESS}) to project_options(... ${ENABLE_SANITIZER_ADDRESS} ...)</span>
+</pre></div>
+</div>
+</section>
+<section id="find-linker">
+<h1><code class="docutils literal notranslate"><span class="pre">find_linker</span></code><a class="headerlink" href="#find-linker" title="Permalink to this heading"></a></h1>
+<p>Find a linker prefering the linkers in this order: sold, mold, lld, gold, the system linker</p>
+<p>Output variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LINKER</span></code>: the linker to use</p></li>
+</ul>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_linker(</span><span class="no">LINKER</span><span class="nf">)</span>
+<span class="c"># then pass ${LINKER} to project_options(... LINKER ${LINKER} ...)</span>
+</pre></div>
+</div>
 </section>
 <section id="enable-cross-compiler">
 <h1><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code><a class="headerlink" href="#enable-cross-compiler" title="Permalink to this heading"></a></h1>
