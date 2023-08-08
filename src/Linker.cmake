@@ -37,9 +37,19 @@ macro(configure_linker _project_name _linker)
   endif()
 endmacro()
 
-# detect a custom linker
-# it prefers the linkers in this order: sold, mold, lld, gold, the system linker
-function(detect_custom_linker LINKER)
+#[[.rst:
+
+``find_linker``
+===============
+
+Find a linker prefering the linkers in this order: sold, mold, lld, gold, the system linker
+
+Output variables:
+
+- ``LINKER``: the linker to use
+
+]]
+function(find_linker LINKER)
   set(SUPPORTS_SOLD OFF)
   if(UNIX AND NOT WIN32)
     find_program(PROGRAM_sold NAMES "sold")

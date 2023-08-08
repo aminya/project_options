@@ -41,7 +41,7 @@ check_sanitizers_support(ENABLE_SANITIZER_ADDRESS
 
 # Detect custom linker
 if(NOT MSVC)
-  detect_custom_linker(LINKER)
+  find_linker(LINKER)
   #message(STATUS "Detect Linker: ${LINKER}")
 endif()
 
