@@ -20,7 +20,7 @@ endif()
 
 # Add project_options from https://github.com/aminya/project_options
 # Change the version in the following URL to update the package (watch the releases of the repository for future updates)
-set(PROJECT_OPTIONS_VERSION "v0.30.0")
+set(PROJECT_OPTIONS_VERSION "v0.31.0")
 FetchContent_Declare(
   _project_options
   URL https://github.com/aminya/project_options/archive/refs/tags/${PROJECT_OPTIONS_VERSION}.zip)
@@ -39,43 +39,29 @@ project(myproject LANGUAGES CXX C)
 
 # Build Features
 option(FEATURE_TESTS "Enable the tests" OFF)
+option(FEATURE_DOCS "Enable the docs" OFF)
+
+# vcpkg test feature
 if(FEATURE_TESTS)
   list(APPEND VCPKG_MANIFEST_FEATURES "tests")
 endif()
 
-option(FEATURE_DOCS "Enable the docs" OFF)
-
 # Enable sanitizers and static analyzers when running the tests
-set(ENABLE_CLANG_TIDY OFF)
-set(ENABLE_CPPCHECK OFF)
-set(ENABLE_SANITIZER_ADDRESS OFF)
-set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR OFF)
-set(ENABLE_COVERAGE OFF)
-
 if(FEATURE_TESTS)
   set(ENABLE_CLANG_TIDY "ENABLE_CLANG_TIDY")
   set(ENABLE_CPPCHECK "ENABLE_CPPCHECK")
   set(ENABLE_COVERAGE "ENABLE_COVERAGE")
 
-  if(NOT
-     "${CMAKE_SYSTEM_NAME}"
-     STREQUAL
-     "Windows")
-    set(ENABLE_SANITIZER_ADDRESS "ENABLE_SANITIZER_ADDRESS")
-    set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR")
-  else()
-    # or it is MSVC and has run vcvarsall
-    string(FIND "$ENV{PATH}" "$ENV{VSINSTALLDIR}" index_of_vs_install_dir)
-    if(MSVC AND "${index_of_vs_install_dir}" STREQUAL "-1")
-      set(ENABLE_SANITIZER_ADDRESS "ENABLE_SANITIZER_ADDRESS")
-    endif()
-  endif()
+  check_sanitizers_support(ENABLE_SANITIZER_ADDRESS
+                           ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+                           ENABLE_SANITIZER_LEAK
+                           ENABLE_SANITIZER_THREAD
+                           ENABLE_SANITIZER_MEMORY)
 endif()
 
+# Enable doxgen for the docs
 if(FEATURE_DOCS)
   set(ENABLE_DOXYGEN "ENABLE_DOXYGEN")
-else()
-  set(ENABLE_DOXYGEN OFF)
 endif()
 
 # Initialize project_options variable related to this project
@@ -94,8 +80,8 @@ project_options(
       ${ENABLE_COVERAGE}
       ${ENABLE_SANITIZER_ADDRESS}
       ${ENABLE_SANITIZER_UNDEFINED_BEHAVIOR}
-      # ENABLE_SANITIZER_THREAD
-      # ENABLE_SANITIZER_MEMORY
+      # ${ENABLE_SANITIZER_THREAD}
+      # ${ENABLE_SANITIZER_MEMORY}
       # ENABLE_CONTROL_FLOW_PROTECTION
       # ENABLE_STACK_PROTECTION
       # ENABLE_OVERFLOW_PROTECTION
@@ -110,7 +96,7 @@ project_options(
       # ENABLE_BUILD_WITH_TIME_TRACE
       # ENABLE_UNITY
       # LINKER "lld"
-      # CONAN_PROFILE ${profile_path}  # passes a profile to conan: see https://docs.conan.io/en/latest/reference/profiles.html
+      # CONAN_PROFILE ${profile_path}
 )
 ```
 
