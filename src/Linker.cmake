@@ -37,7 +37,8 @@ macro(configure_linker _project_name _linker)
   endif()
 endmacro()
 
-# detect custom linker
+# detect a custom linker
+# it prefers sold, then mold, then lld, then gold
 function(detect_custom_linker LINKER)
   set(SUPPORTS_LLD OFF)
   set(SUPPORTS_GOLD OFF)
@@ -60,8 +61,16 @@ function(detect_custom_linker LINKER)
       test_linker_option(SUPPORTS_MOLD "mold")
     endif()
   endif()
+  if(UNIX AND NOT WIN32)
+    find_program(PROGRAM_sold NAMES "sold")
+    if(EXISTS ${PROGRAM_sold})
+      test_linker_option(SUPPORTS_SOLD "sold")
+    endif()
+  endif()
 
-  if(SUPPORTS_MOLD)
+  if(SUPPORTS_SOLD)
+    set(${LINKER} "sold" PARENT_SCOPE)
+  elseif(SUPPORTS_MOLD)
     set(${LINKER} "mold" PARENT_SCOPE)
   elseif(SUPPORTS_LLD)
     set(${LINKER} "lld" PARENT_SCOPE)
