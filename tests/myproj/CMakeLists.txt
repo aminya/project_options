@@ -33,18 +33,11 @@ set(PCH_HEADERS
 )
 
 # Enable sanitizers and static analyzers when running the tests
-set(ENABLE_SANITIZER_ADDRESS OFF)
-set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR OFF)
-if(NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
-  set(ENABLE_SANITIZER_ADDRESS "ENABLE_SANITIZER_ADDRESS")
-  set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR")
-else()
-  # or it is MSVC and has run vcvarsall
-  string(FIND "$ENV{PATH}" "$ENV{VSINSTALLDIR}" index_of_vs_install_dir)
-  if(MSVC AND "${index_of_vs_install_dir}" STREQUAL "-1")
-    set(ENABLE_SANITIZER_ADDRESS "ENABLE_SANITIZER_ADDRESS")
-  endif()
-endif()
+check_sanitizers_support(ENABLE_SANITIZER_ADDRESS
+                         ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+                         ENABLE_SANITIZER_LEAK
+                         ENABLE_SANITIZER_THREAD
+                         ENABLE_SANITIZER_MEMORY)
 
 # Detect custom linker
 if(NOT MSVC)
@@ -74,10 +67,10 @@ project_options(
   # ENABLE_BUILD_WITH_TIME_TRACE
   # ENABLE_UNITY
   ${ENABLE_SANITIZER_ADDRESS}
-  # ENABLE_SANITIZER_LEAK
+  # ${ENABLE_SANITIZER_LEAK}
   ${ENABLE_SANITIZER_UNDEFINED_BEHAVIOR}
-  # ENABLE_SANITIZER_THREAD
-  # ENABLE_SANITIZER_MEMORY
+  # ${ENABLE_SANITIZER_THREAD}
+  # ${ENABLE_SANITIZER_MEMORY}
   # CLANG_WARNINGS "-Weverything"
   LINKER "${LINKER}"
 )

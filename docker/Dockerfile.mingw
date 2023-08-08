@@ -11,13 +11,7 @@ RUN npm install -g setup-cpp
 FROM base AS setup
 
 # install cmake, ninja, and ccache
-RUN setup-cpp --cmake true --ninja true --ccache true --cppcheck true --vcpkg true --conan true --task true --powershell true
-
-# TODO: install cross-compiler with setup_cpp_linux
-# NOTE: install mingw by hand, waiting for setup-cpp to have mingw cross-compiler support
-RUN apt-get update && apt-get install -y \
-    mingw-w64 \
-    && rm -rf /var/lib/apt/lists/*
+RUN setup-cpp --compiler mingw --cmake true --ninja true --ccache true --cppcheck true --vcpkg true --conan true --task true --powershell true
 
 COPY ./docker/entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
