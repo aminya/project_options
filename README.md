@@ -86,19 +86,14 @@ project(myproject LANGUAGES CXX C)
 
 # Build Features
 option(FEATURE_TESTS "Enable the tests" OFF)
+option(FEATURE_DOCS "Enable the docs" OFF)
+
+# vcpkg test feature
 if(FEATURE_TESTS)
   list(APPEND VCPKG_MANIFEST_FEATURES "tests")
 endif()
 
-option(FEATURE_DOCS "Enable the docs" OFF)
-
 # Enable sanitizers and static analyzers when running the tests
-set(ENABLE_CLANG_TIDY OFF)
-set(ENABLE_CPPCHECK OFF)
-set(ENABLE_SANITIZER_ADDRESS OFF)
-set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR OFF)
-set(ENABLE_COVERAGE OFF)
-
 if(FEATURE_TESTS)
   set(ENABLE_CLANG_TIDY "ENABLE_CLANG_TIDY")
   set(ENABLE_CPPCHECK "ENABLE_CPPCHECK")
@@ -113,8 +108,6 @@ endif()
 
 if(FEATURE_DOCS)
   set(ENABLE_DOXYGEN "ENABLE_DOXYGEN")
-else()
-  set(ENABLE_DOXYGEN OFF)
 endif()
 
 # Initialize project_options variable related to this project

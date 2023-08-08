@@ -50,10 +50,7 @@ macro(enable_cppcheck CPPCHECK_OPTIONS)
   endif()
 endmacro()
 
-function(_enable_clang_tidy_setup_cl
-  CXX_FLAGS
-  C_FLAGS
-)
+function(_enable_clang_tidy_setup_cl CXX_FLAGS C_FLAGS)
   set(CLANG_TIDY_CXX_FLAGS ${CXX_FLAGS})
   set(CLANG_TIDY_C_FLAGS ${C_FLAGS})
 
@@ -69,24 +66,19 @@ function(_enable_clang_tidy_setup_cl
   set(CLANG_TIDY_C_FLAGS ${CLANG_TIDY_C_FLAGS} PARENT_SCOPE)
 endfunction()
 
-function(_enable_clang_tidy_setup_cross
-  CXX_FLAGS
-  C_FLAGS
-)
+function(_enable_clang_tidy_setup_cross CXX_FLAGS C_FLAGS)
   set(CLANG_TIDY_CXX_FLAGS ${CXX_FLAGS})
   set(CLANG_TIDY_C_FLAGS ${C_FLAGS})
 
   # Get GCC default flags
   if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     execute_process(
-      COMMAND "${CMAKE_CXX_COMPILER}" "-v"
-      ERROR_VARIABLE CLANG_TIDY_CXX_FLAGS_COMPILER_DEFAULT
-      COMMAND_ERROR_IS_FATAL ANY
+      COMMAND "${CMAKE_CXX_COMPILER}" "-v" ERROR_VARIABLE CLANG_TIDY_CXX_FLAGS_COMPILER_DEFAULT
+                                                          COMMAND_ERROR_IS_FATAL ANY
     )
     execute_process(
       COMMAND "${CMAKE_CXX_COMPILER}" "-dumpmachine"
-      OUTPUT_VARIABLE CLANG_TIDY_CXX_FLAGS_COMPILER_TARGET
-      COMMAND_ERROR_IS_FATAL ANY
+      OUTPUT_VARIABLE CLANG_TIDY_CXX_FLAGS_COMPILER_TARGET COMMAND_ERROR_IS_FATAL ANY
     )
 
     string(STRIP "${CLANG_TIDY_CXX_FLAGS_COMPILER_TARGET}" CLANG_TIDY_CXX_FLAGS_COMPILER_TARGET)
@@ -95,14 +87,12 @@ function(_enable_clang_tidy_setup_cross
 
   if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
     execute_process(
-      COMMAND "${CMAKE_C_COMPILER}" "-v"
-      ERROR_VARIABLE CLANG_TIDY_C_FLAGS_COMPILER_DEFAULT
-      COMMAND_ERROR_IS_FATAL ANY
+      COMMAND "${CMAKE_C_COMPILER}" "-v" ERROR_VARIABLE CLANG_TIDY_C_FLAGS_COMPILER_DEFAULT
+                                                        COMMAND_ERROR_IS_FATAL ANY
     )
     execute_process(
       COMMAND "${CMAKE_C_COMPILER}" "-dumpmachine"
-      OUTPUT_VARIABLE CLANG_TIDY_C_FLAGS_COMPILER_TARGET
-      COMMAND_ERROR_IS_FATAL ANY
+      OUTPUT_VARIABLE CLANG_TIDY_C_FLAGS_COMPILER_TARGET COMMAND_ERROR_IS_FATAL ANY
     )
 
     string(STRIP "${CLANG_TIDY_C_FLAGS_COMPILER_TARGET}" CLANG_TIDY_C_FLAGS_COMPILER_TARGET)
@@ -115,10 +105,18 @@ function(_enable_clang_tidy_setup_cross
   if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "GNU")
     # Extract sysroot from GCC default flags
     if(CMAKE_SYSROOT STREQUAL "")
-      string(REGEX MATCH "--with-sysroot=[^\n\r ]+" CLANG_TIDY_CXX_FLAGS_COMPILER_DEFAULT "${CLANG_TIDY_CXX_FLAGS_COMPILER_DEFAULT}")
-      string(REGEX MATCH "--with-sysroot=[^\n\r ]+" CLANG_TIDY_C_FLAGS_COMPILER_DEFAULT "${CLANG_TIDY_C_FLAGS_COMPILER_DEFAULT}")
-      string(REPLACE "with-" "" CLANG_TIDY_CXX_FLAGS_COMPILER_DEFAULT "${CLANG_TIDY_CXX_FLAGS_COMPILER_DEFAULT}")
-      string(REPLACE "with-" "" CLANG_TIDY_C_FLAGS_COMPILER_DEFAULT "${CLANG_TIDY_C_FLAGS_COMPILER_DEFAULT}")
+      string(REGEX MATCH "--with-sysroot=[^\n\r ]+" CLANG_TIDY_CXX_FLAGS_COMPILER_DEFAULT
+                   "${CLANG_TIDY_CXX_FLAGS_COMPILER_DEFAULT}"
+      )
+      string(REGEX MATCH "--with-sysroot=[^\n\r ]+" CLANG_TIDY_C_FLAGS_COMPILER_DEFAULT
+                   "${CLANG_TIDY_C_FLAGS_COMPILER_DEFAULT}"
+      )
+      string(REPLACE "with-" "" CLANG_TIDY_CXX_FLAGS_COMPILER_DEFAULT
+                     "${CLANG_TIDY_CXX_FLAGS_COMPILER_DEFAULT}"
+      )
+      string(REPLACE "with-" "" CLANG_TIDY_C_FLAGS_COMPILER_DEFAULT
+                     "${CLANG_TIDY_C_FLAGS_COMPILER_DEFAULT}"
+      )
       list(APPEND CLANG_TIDY_CXX_FLAGS_COMPILER ${CLANG_TIDY_CXX_FLAGS_COMPILER_DEFAULT})
       list(APPEND CLANG_TIDY_C_FLAGS_COMPILER ${CLANG_TIDY_C_FLAGS_COMPILER_DEFAULT})
     endif()
@@ -141,10 +139,7 @@ function(_enable_clang_tidy_setup_cross
   set(CLANG_TIDY_C_FLAGS ${CLANG_TIDY_C_FLAGS} PARENT_SCOPE)
 endfunction()
 
-function(_enable_clang_tidy_setup
-  CXX_FLAGS
-  C_FLAGS
-)
+function(_enable_clang_tidy_setup CXX_FLAGS C_FLAGS)
   set(CLANG_TIDY_CXX_FLAGS ${CXX_FLAGS})
   set(CLANG_TIDY_C_FLAGS ${C_FLAGS})
 
@@ -201,7 +196,9 @@ macro(enable_clang_tidy CLANG_TIDY_EXTRA_ARGUMENTS)
       list(APPEND CLANG_TIDY_C_FLAGS -warnings-as-errors=*)
     endif()
 
-    if("${CMAKE_CXX_CLANG_TIDY_DRIVER_MODE}" STREQUAL "cl" OR "${CMAKE_C_CLANG_TIDY_DRIVER_MODE}" STREQUAL "cl")
+    if("${CMAKE_CXX_CLANG_TIDY_DRIVER_MODE}" STREQUAL "cl" OR "${CMAKE_C_CLANG_TIDY_DRIVER_MODE}"
+                                                              STREQUAL "cl"
+    )
       _enable_clang_tidy_setup_cl("${CLANG_TIDY_CXX_FLAGS}" "${CLANG_TIDY_C_FLAGS}")
     else()
       _enable_clang_tidy_setup("${CLANG_TIDY_CXX_FLAGS}" "${CLANG_TIDY_C_FLAGS}")

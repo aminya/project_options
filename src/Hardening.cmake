@@ -8,26 +8,29 @@ function(
   ENABLE_STACK_PROTECTION
   ENABLE_OVERFLOW_PROTECTION
   ENABLE_ELF_PROTECTION
-  ENABLE_RUNTIME_SYMBOLS_RESOLUTION)
+  ENABLE_RUNTIME_SYMBOLS_RESOLUTION
+)
   set(HARDENING_COMPILE_OPTIONS "")
   set(HARDENING_LINK_OPTIONS "")
 
   if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
-    if(${ENABLE_CONTROL_FLOW_PROTECTION} AND CMAKE_SYSTEM_PROCESSOR MATCHES "([xX]86)|(amd64)|(AMD64)|([xX]86_64)|(i686)")
+    if(${ENABLE_CONTROL_FLOW_PROTECTION} AND CMAKE_SYSTEM_PROCESSOR MATCHES
+                                             "([xX]86)|(amd64)|(AMD64)|([xX]86_64)|(i686)"
+    )
       list(APPEND HARDENING_COMPILE_OPTIONS -fcf-protection=full)
       list(APPEND HARDENING_LINK_OPTIONS -fcf-protection=full)
     endif()
 
     if(${ENABLE_STACK_PROTECTION})
       set(_enable_stack_clash_protection TRUE)
-      if (APPLE)
-        # `-fstack-clash-protection` dosen't work on MacOS M1 with clang
+      if(APPLE)
+        # `-fstack-clash-protection` doesn't work on MacOS M1 with clang
         if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64" AND CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
           set(_enable_stack_clash_protection FALSE)
         endif()
       endif()
 
-      if (_enable_stack_clash_protection)
+      if(_enable_stack_clash_protection)
         list(APPEND HARDENING_COMPILE_OPTIONS -fstack-clash-protection)
       endif()
 
@@ -71,14 +74,12 @@ function(
   endif()
 
   target_compile_options(
-    ${_project_name}
-    INTERFACE
-    $<$<COMPILE_LANGUAGE:CXX>:${HARDENING_COMPILE_OPTIONS}>
-    $<$<COMPILE_LANGUAGE:C>:${HARDENING_COMPILE_OPTIONS}>)
+    ${_project_name} INTERFACE $<$<COMPILE_LANGUAGE:CXX>:${HARDENING_COMPILE_OPTIONS}>
+                               $<$<COMPILE_LANGUAGE:C>:${HARDENING_COMPILE_OPTIONS}>
+  )
 
   target_link_options(
-    ${_project_name}
-    INTERFACE
-    $<$<COMPILE_LANGUAGE:CXX>:${HARDENING_LINK_OPTIONS}>
-    $<$<COMPILE_LANGUAGE:C>:${HARDENING_LINK_OPTIONS}>)
+    ${_project_name} INTERFACE $<$<COMPILE_LANGUAGE:CXX>:${HARDENING_LINK_OPTIONS}>
+    $<$<COMPILE_LANGUAGE:C>:${HARDENING_LINK_OPTIONS}>
+  )
 endfunction()

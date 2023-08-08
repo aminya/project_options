@@ -32,12 +32,15 @@ set(PCH_HEADERS
     <string_view>
 )
 
-# Enable sanitizers and static analyzers when running the tests
-check_sanitizers_support(ENABLE_SANITIZER_ADDRESS
-                         ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
-                         ENABLE_SANITIZER_LEAK
-                         ENABLE_SANITIZER_THREAD
-                         ENABLE_SANITIZER_MEMORY)
+option(FEATURE_TESTS "Enable the tests" OFF)
+
+if(FEATURE_TESTS)
+  # Enable sanitizers and static analyzers when running the tests
+  check_sanitizers_support(
+    ENABLE_SANITIZER_ADDRESS ENABLE_SANITIZER_UNDEFINED_BEHAVIOR ENABLE_SANITIZER_LEAK
+    ENABLE_SANITIZER_THREAD ENABLE_SANITIZER_MEMORY
+  )
+endif()
 
 # Detect custom linker
 if(NOT MSVC)
@@ -72,7 +75,8 @@ project_options(
   # ${ENABLE_SANITIZER_THREAD}
   # ${ENABLE_SANITIZER_MEMORY}
   # CLANG_WARNINGS "-Weverything"
-  LINKER "${LINKER}"
+  LINKER
+  "${LINKER}"
 )
 # NOTE: project_options and project_warnings are defined inside project_options
 

@@ -22,14 +22,6 @@ run_vcpkg()
 # Set the project name to your project name, my project isn't very descriptive
 project(example VERSION 0.1.0 LANGUAGES C CXX ASM)
 
-set(ENABLE_CLANG_TIDY OFF)
-set(ENABLE_CPPCHECK OFF)
-set(ENABLE_SANITIZER_ADDRESS OFF)
-set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR OFF)
-set(ENABLE_COVERAGE OFF)
-set(ENABLE_INCLUDE_WHAT_YOU_USE OFF)
-set(ENABLE_GCC_ANALYZER OFF)
-
 option(ENABLE_CHECKING "Enable Static analyzer" OFF)
 option(ENABLE_CHECKING_INCLUDE_WHAT_YOU_USE "Enable Static analyzer for include-what-you-use" OFF)
 if(ENABLE_CHECKING)

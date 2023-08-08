@@ -12,7 +12,6 @@ enableGlobDot: true
 words:
   - aarch
   - aminya
-  - dpkg
   - Amnet
   - anotherproj
   - applellvm
@@ -43,6 +42,7 @@ words:
   - DDEFAULT_TRIPLET
   - deps
   - DOPT
+  - dpkg
   - DTARGET
   - DVCPKG
   - dyld
@@ -59,6 +59,7 @@ words:
   - fargs
   - fcolor
   - fdiagnostics
+  - fstack
   - ftime
   - gcovr
   - gnueabi
@@ -96,6 +97,7 @@ words:
   - myproject
   - mypy
   - mythirdpartylib
+  - noexecstack
   - nojekyll
   - nosys
   - nothrow
@@ -107,6 +109,7 @@ words:
   - POSIX
   - pwsh
   - qthelp
+  - relro
   - riscv
   - rmrf
   - rpath
@@ -146,6 +149,8 @@ words:
   - Wpedantic
   - Wshadow
   - Wsign
+  - Wstrict
+  - Wstringop
   - Wunused
   - Wuseless
   - Xcompiler
