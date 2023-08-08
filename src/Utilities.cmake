@@ -133,7 +133,7 @@ function(check_sanitizers_support
         ENABLE_SANITIZER_THREAD
         ENABLE_SANITIZER_MEMORY)
   set(SANITIZERS "")
-  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+  if(NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
     list(APPEND SANITIZERS "address")
     list(APPEND SANITIZERS "undefined")
     list(APPEND SANITIZERS "leak")
