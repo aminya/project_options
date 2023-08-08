@@ -94,7 +94,35 @@ function(
 
 endfunction()
 
-# detect sanitizers support for compiler
+#[[.rst:
+
+``check_sanitizers_support``
+===============
+
+Detect sanitizers support for compiler.
+
+Note that some sanitizers cannot be enabled together, and this function doesn't check that. You should decide which sanitizers to enable based on your needs.
+
+Output variables:
+
+- ``ENABLE_SANITIZER_ADDRESS``: Address sanitizer is supported
+- ``ENABLE_SANITIZER_UNDEFINED_BEHAVIOR``: Undefined behavior sanitizer is supported
+- ``ENABLE_SANITIZER_LEAK``: Leak sanitizer is supported
+- ``ENABLE_SANITIZER_THREAD``: Thread sanitizer is supported
+- ``ENABLE_SANITIZER_MEMORY``: Memory sanitizer is supported
+
+
+.. code:: cmake
+
+  check_sanitizers_support(ENABLE_SANITIZER_ADDRESS
+                           ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+                           ENABLE_SANITIZER_LEAK
+                           ENABLE_SANITIZER_THREAD
+                           ENABLE_SANITIZER_MEMORY)
+
+  # then pass the sanitizers (e.g. ${ENABLE_SANITIZER_ADDRESS}) to project_options(... ${ENABLE_SANITIZER_ADDRESS} ...)
+
+]]
 function(
   check_sanitizers_support
   ENABLE_SANITIZER_ADDRESS

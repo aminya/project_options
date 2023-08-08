@@ -42,6 +42,11 @@ Output variables:
 
 - ``LINKER``: the linker to use
 
+.. code:: cmake
+
+      find_linker(LINKER)
+      # then pass ${LINKER} to project_options(... LINKER ${LINKER} ...)
+
 ]]
 function(find_linker LINKER)
   find_sold(_PROGRAM_sold)

@@ -16,6 +16,12 @@ tasks:
       - cmake --build ./build --config Release
       - touch ./build/.nojekyll
 
+  docs.preview:
+    deps:
+      - docs
+    cmds:
+      - cd ./build/html && npx servor --browse
+
   docs.deploy:
     deps:
       - docs

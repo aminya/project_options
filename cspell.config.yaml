@@ -23,6 +23,7 @@ words:
   - ccache
   - ccmake
   - choco
+  - servor
   - cmake
   - CMAKE
   - cmakelint
