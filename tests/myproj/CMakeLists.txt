@@ -39,6 +39,12 @@ check_sanitizers_support(ENABLE_SANITIZER_ADDRESS
                          ENABLE_SANITIZER_THREAD
                          ENABLE_SANITIZER_MEMORY)
 
+# Detect custom linker
+if(NOT MSVC)
+  find_linker(LINKER)
+  #message(STATUS "Detect Linker: ${LINKER}")
+endif()
+
 # Initialize project_options
 # uncomment the options to enable them
 project_options(
@@ -66,6 +72,7 @@ project_options(
   # ${ENABLE_SANITIZER_THREAD}
   # ${ENABLE_SANITIZER_MEMORY}
   # CLANG_WARNINGS "-Weverything"
+  LINKER "${LINKER}"
 )
 # NOTE: project_options and project_warnings are defined inside project_options
 

@@ -16,6 +16,14 @@ RUN setup-cpp --compiler $compiler --llvm true --cmake true --doxygen true --nin
 COPY ./docker/entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
 
+FROM setup AS setup-custom-linker
+
+# install linker
+RUN apt-get update && apt-get install -y \
+  binutils \
+  mold \
+  lld \
+  && rm -rf /var/lib/apt/lists/*
 
 FROM setup AS build
 COPY . /home/project_options
@@ -30,3 +38,9 @@ WORKDIR /home/project_options
 RUN git submodule update --init
 CMD ["/bin/bash", "-c", "task myproj:test"]
 
+
+FROM setup-custom-linker AS build-with-custom-linker
+COPY . /home/project_options
+WORKDIR /home/project_options
+RUN git submodule update --init
+CMD ["/bin/bash", "-c", "task myproj:build"]

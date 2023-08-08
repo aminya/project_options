@@ -6,6 +6,10 @@ tasks:
     - docker-compose up --build test-gcc
     - docker-compose down
 
+  gcc.custom-linker:
+    - docker-compose up --build build-gcc-with-custom-linker
+    - docker-compose down
+
   llvm:
     - docker-compose up --build build-llvm
     - docker-compose up --build test-llvm
