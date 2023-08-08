@@ -142,7 +142,7 @@ project_options(
       # ENABLE_BUILD_WITH_TIME_TRACE
       # ENABLE_UNITY
       # LINKER "lld"
-      # CONAN_PROFILE ${profile_path}  # passes a profile to conan: see https://docs.conan.io/en/latest/reference/profiles.html
+      # CONAN_PROFILE ${profile_path}
 )
 ```
 
