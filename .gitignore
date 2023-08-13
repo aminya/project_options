@@ -5,3 +5,4 @@ test_install/build/
 build/
 compile_commands.json
 .mypy_cache/
+.venv/

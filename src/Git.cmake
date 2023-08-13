@@ -22,6 +22,7 @@ function(git_clone)
     message(FATAL_ERROR "REPOSITORY_PATH and _fun_REMOTE_URL are required")
   endif()
 
+  # the folder is created as soon as the clone starts
   if(NOT EXISTS "${_fun_REPOSITORY_PATH}")
     message(STATUS "Cloning at ${_fun_REPOSITORY_PATH}")
 
@@ -33,6 +34,8 @@ function(git_clone)
     )
   else()
     message(STATUS "Repository already exists at ${_fun_REPOSITORY_PATH}.")
+    git_wait(REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
+
     git_add_remote(
       REMOTE_URL
       "${_fun_REMOTE_URL}"
@@ -336,4 +339,21 @@ function(git_switch_back)
       COMMAND "${GIT_EXECUTABLE}" "switch" "-" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
     )
   endif()
+endfunction()
+
+function(git_wait)
+  set(oneValueArgs REPOSITORY_PATH)
+  cmake_parse_arguments(_fun "" "${oneValueArgs}" "" ${ARGN})
+
+  if("${_fun_REPOSITORY_PATH}" STREQUAL "")
+    message(FATAL_ERROR "REPOSITORY_PATH is required")
+  endif()
+
+  # wait until .git/index is present (in case a parallel clone is running)
+  while(NOT EXISTS "${_fun_REPOSITORY_PATH}/.git/index"
+        OR EXISTS "${_fun_REPOSITORY_PATH}/.git/index.lock"
+  )
+    message(STATUS "Waiting for git lock file...")
+    execute_process(COMMAND ${CMAKE_COMMAND} -E sleep 0.5)
+  endwhile()
 endfunction()
