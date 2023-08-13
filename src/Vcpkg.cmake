@@ -58,8 +58,36 @@ macro(_bootstrap_vcpkg)
   endif()
 endmacro()
 
+macro(_is_vcpkg_outdated)
+  if("${_vcpkg_args_VCPKG_UPDATE_THRESHOLD}" STREQUAL "")
+    set(_vcpkg_args_VCPKG_UPDATE_THRESHOLD 300)
+  endif()
+
+  if(${_vcpkg_args_ENABLE_VCPKG_UPDATE})
+    set(_time_stamp_file "${VCPKG_PARENT_DIR}/.vcpkg_last_update")
+
+    if(EXISTS "${_time_stamp_file}")
+      string(TIMESTAMP _current_time "%s")
+      file(TIMESTAMP "${_time_stamp_file}" _vcpkg_last_update "%s")
+      # if the last update was more than VCPKG_UPDATE_THRESHOLD
+      math(EXPR time_diff "${_current_time} - ${_vcpkg_last_update}")
+      if(${time_diff} GREATER ${_vcpkg_args_VCPKG_UPDATE_THRESHOLD})
+        set(_vcpkg_args_ENABLE_VCPKG_UPDATE ON)
+        file(TOUCH "${_time_stamp_file}")
+      else()
+        message(STATUS "vcpkg updated recently. Skipping update.")
+        set(_vcpkg_args_ENABLE_VCPKG_UPDATE OFF)
+      endif()
+    else()
+      set(_vcpkg_args_ENABLE_VCPKG_UPDATE ON)
+      file(TOUCH "${_time_stamp_file}")
+    endif()
+  endif()
+endmacro()
+
 macro(_install_and_update_vcpkg)
   _clone_vcpkg_repository()
+  _is_vcpkg_outdated()
   _update_vcpkg_repository()
   _bootstrap_vcpkg()
 endmacro()
@@ -163,12 +191,18 @@ Named String:
    pulled, enable ``ENABLE_VCPKG_UPDATE``
 
 
+- ``VCPKG_UPDATE_THRESHOLD``: (Defaults to 300 seconds). This option
+  allows setting the time threshold in seconds for updating the vcpkg
+  registry. If ``ENABLE_VCPKG_UPDATE`` is enabled, the vcpkg registry
+  will be updated if the last update was more than
+  ``VCPKG_UPDATE_THRESHOLD`` seconds ago.
+
 ]]
 macro(run_vcpkg)
   # named boolean ENABLE_VCPKG_UPDATE arguments
   set(options ENABLE_VCPKG_UPDATE)
   # optional named VCPKG_DIR, VCPKG_URL, and VCPKG_REV arguments
-  set(oneValueArgs VCPKG_DIR VCPKG_URL VCPKG_REV)
+  set(oneValueArgs VCPKG_DIR VCPKG_URL VCPKG_REV VCPKG_UPDATE_THRESHOLD)
   cmake_parse_arguments(_vcpkg_args "${options}" "${oneValueArgs}" "" ${ARGN})
 
   find_program(GIT_EXECUTABLE "git" REQUIRED)
