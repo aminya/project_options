@@ -20,7 +20,7 @@ endif()
 
 # Add project_options from https://github.com/aminya/project_options
 # Change the version in the following URL to update the package (watch the releases of the repository for future updates)
-set(PROJECT_OPTIONS_VERSION "v0.31.0")
+set(PROJECT_OPTIONS_VERSION "v0.32.0")
 FetchContent_Declare(
   _project_options
   URL https://github.com/aminya/project_options/archive/refs/tags/${PROJECT_OPTIONS_VERSION}.zip)
@@ -30,7 +30,7 @@ include(${_project_options_SOURCE_DIR}/Index.cmake)
 # install vcpkg dependencies: - should be called before defining project()
 run_vcpkg(
     VCPKG_URL "https://github.com/microsoft/vcpkg.git"
-    VCPKG_REV "9a5e44fcc1d6d734f46e385245438afaa7e53e28"
+    VCPKG_REV "0fa8459cf3a7caca7adc58f992bc32ff13630684"
     ENABLE_VCPKG_UPDATE
 )
 
