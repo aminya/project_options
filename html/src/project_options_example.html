@@ -115,7 +115,7 @@
 
 <span class="c"># Add project_options from https://github.com/aminya/project_options</span>
 <span class="c"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</span>
-<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.31.0&quot;</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.32.0&quot;</span><span class="nf">)</span>
 <span class="nf">FetchContent_Declare(</span>
 <span class="w">  </span><span class="nb">_project_options</span>
 <span class="w">  </span><span class="no">URL</span><span class="w"> </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/</span><span class="o">${</span><span class="nt">PROJECT_OPTIONS_VERSION</span><span class="o">}</span><span class="p">.</span><span class="nb">zip</span><span class="nf">)</span>
@@ -125,7 +125,7 @@
 <span class="c"># install vcpkg dependencies: - should be called before defining project()</span>
 <span class="nf">run_vcpkg(</span>
 <span class="w">    </span><span class="no">VCPKG_URL</span><span class="w"> </span><span class="s">&quot;https://github.com/microsoft/vcpkg.git&quot;</span>
-<span class="w">    </span><span class="no">VCPKG_REV</span><span class="w"> </span><span class="s">&quot;9a5e44fcc1d6d734f46e385245438afaa7e53e28&quot;</span>
+<span class="w">    </span><span class="no">VCPKG_REV</span><span class="w"> </span><span class="s">&quot;0fa8459cf3a7caca7adc58f992bc32ff13630684&quot;</span>
 <span class="w">    </span><span class="no">ENABLE_VCPKG_UPDATE</span>
 <span class="nf">)</span>
 

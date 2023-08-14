@@ -178,7 +178,7 @@ DOXYGEN_EXECUTABLE-ADVANCED:INTERNAL=1
 //Details about finding Doxygen
 FIND_PACKAGE_MESSAGE_DETAILS_Doxygen:INTERNAL=[/usr/bin/doxygen][cfound components: doxygen dot ][v1.9.1()]
 //Details about finding Python
-FIND_PACKAGE_MESSAGE_DETAILS_Python:INTERNAL=[/usr/bin/python3.10][cfound components: Interpreter ][v3.10.6()]
+FIND_PACKAGE_MESSAGE_DETAILS_Python:INTERNAL=[/usr/bin/python3.10][cfound components: Interpreter ][v3.10.12()]
 //Details about finding Sphinx
 FIND_PACKAGE_MESSAGE_DETAILS_Sphinx:INTERNAL=[/home/aminya/.local/bin/sphinx-build][v()]
 //ADVANCED property for variable: SPHINX_EXECUTABLE
