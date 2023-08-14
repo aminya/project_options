@@ -124,3 +124,26 @@ function(detect_architecture arch)
     set(${arch} x64 PARENT_SCOPE)
   endif()
 endfunction()
+
+# Print all the properties of a target
+function(print_target_properties target)
+  if(NOT TARGET ${target})
+    message(SEND_ERROR "${target} is not a target")
+    return()
+  endif()
+
+  foreach(property ${CMAKE_PROPERTY_LIST})
+    string(REPLACE "<CONFIG>" "DEBUG" property ${property})
+
+    get_property(
+      property_set
+      TARGET ${target}
+      PROPERTY ${property}
+      SET
+    )
+    if(property_set)
+      get_target_property(value ${target} ${property})
+      message("${target} ${property} = ${value}")
+    endif()
+  endforeach()
+endfunction()
