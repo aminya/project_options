@@ -35,10 +35,10 @@ include("${CMAKE_CURRENT_LIST_DIR}/DynamicProjectOptions.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/Hardening.cmake")
 
 # Include msvc toolchain on windows if the generator is not visual studio. Should be called before run_vcpkg and run_conan to be effective
-if("${CMAKE_TOOL_CHAIN}" STREQUAL "")
+if("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
   msvc_toolchain()
 else()
-  message(STATUS "project_options: skipping msvc_toolchain")
+  message(STATUS "project_options: skipping msvc_toolchain as CMAKE_TOOLCHAIN_FILE is set")
 endif()
 
 include("${CMAKE_CURRENT_LIST_DIR}/Conan.cmake")
