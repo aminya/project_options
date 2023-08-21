@@ -69,14 +69,15 @@ tasks:
       - task: rpi4-vcpkg:lint
 
   clean:
+    deps:
+      - myproj:clean
+      - install:clean
+      - minimal:clean
     cmds:
       - cmd: powershell -c 'function rmrf($path) { if (test-path $path) { rm -r -force $path }}; rmrf ./install'
         platforms: [windows]
       - cmd: rm -rf ./install
         platforms: [linux, darwin]
-
-      - task: myproj:clean
-      - task: install:clean
 
   docs:
     deps:

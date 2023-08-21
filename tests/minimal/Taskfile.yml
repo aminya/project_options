@@ -31,7 +31,8 @@ tasks:
     - ~/vcpkg/vcpkg format-manifest ./vcpkg.json
 
   clean:
-    - cmd: powershell -c 'function rmrf($path) { if (test-path $path) { rm -r -force $path }}; rmrf ./build'
-      platforms: [windows]
-    - cmd: rm -rf ./build
-      platforms: [linux, darwin]
+    cmds:
+      - cmd: powershell -c 'function rmrf($path) { if (test-path $path) { rm -r -force $path }}; rmrf ./build'
+        platforms: [windows]
+      - cmd: rm -rf ./build
+        platforms: [linux, darwin]
