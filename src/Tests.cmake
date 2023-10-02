@@ -196,6 +196,10 @@ function(_add_configs_prefix variable_name)
   set(${variable_name} ${value} PARENT_SCOPE)
 endfunction()
 
+function(_set_will_fail test_name)
+  set_property(TEST ${test_name} PROPERTY WILL_FAIL TRUE)
+endfunction()
+
 #[[.rst:
 
 ``add_library_test``
@@ -313,6 +317,10 @@ function(add_library_test library test_name)
     COMMAND ${target_name} ${configs_execute_args} ${args_EXECUTE_ARGS}
     WORKING_DIRECTORY ${args_WORKING_DIRECTORY}
   )
+
+  if(args_WILL_FAIL)
+    _set_will_fail(${target_name})
+  endif()
 endfunction()
 
 #[[.rst:
@@ -326,6 +334,7 @@ endfunction()
      [CONFIGS <config...>]  # Only accepts the EXECUTE_ARGS part in CONFIGS
      [EXECUTE_ARGS <arg...>]  # Args used as command args running the test
      [WORKING_DIRECTOY <dir>]
+     [WILL_FAIL]  # The test should exists with code non-zero
    )
 
 This function registers a test named ``test.<executable>.<test_name>`` that
@@ -350,11 +359,12 @@ multiple times to add more args.
      CONFIGS report
      EXECUTE_ARGS --verbose
      WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+     WILL_FAIL
    )
 
 ]]
 function(add_executable_test executable test_name)
-  set(options)
+  set(options WILL_FAIL)
   set(one_value_args WORKING_DIRECTORY)
   set(multi_value_args CONFIGS EXECUTE_ARGS)
   cmake_parse_arguments(args "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
@@ -373,4 +383,8 @@ function(add_executable_test executable test_name)
     COMMAND ${executable} ${configs_execute_args} ${args_EXECUTE_ARGS}
     WORKING_DIRECTORY ${args_WORKING_DIRECTORY}
   )
+
+  if(args_WILL_FAIL)
+    _set_will_fail(${target_name})
+  endif()
 endfunction()
