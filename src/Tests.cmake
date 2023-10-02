@@ -1,6 +1,5 @@
 include_guard()
 
-include("${CMAKE_CURRENT_LIST_DIR}/Utilities.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/Symlink.cmake")
 
 # Enable coverage reporting for gcc/clang
@@ -81,7 +80,7 @@ function(_configure_target target_name type)
 endfunction()
 
 function(_Set_config_execute_args target_name execute_args)
-  set_or_append_target_property(${target_name} PROJECT_OPTIONS_EXECUTE_ARGS ${execute_args})
+  set_property(TARGET ${target_name} APPEND PROPERTY PROJECT_OPTIONS_EXECUTE_ARGS ${execute_args})
 endfunction()
 
 #[[.rst:

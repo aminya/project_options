@@ -1,7 +1,5 @@
 include_guard()
 
-include("${CMAKE_CURRENT_LIST_DIR}/Utilities.cmake")
-
 # Uses ycm (permissive BSD-3-Clause license) and ForwardArguments (permissive MIT license)
 
 function(get_property_of_targets)
@@ -365,7 +363,7 @@ function(target_include_interface_directories target)
     endif()
 
     # Append include_dir to target property PROJECT_OPTIONS_INTERFACE_DIRECTORIES
-    set_or_append_target_property(${target} "PROJECT_OPTIONS_INTERFACE_DIRECTORIES" ${include_dir})
+    set_property(TARGET ${target} APPEND PROPERTY PROJECT_OPTIONS_INTERFACE_DIRECTORIES ${include_dir})
 
     # Include the interface directory
     get_target_property(_HasSourceFiles ${target} SOURCES)
@@ -468,8 +466,10 @@ macro(target_find_dependencies target)
     endforeach()
 
     # Append to target property
-    set_or_append_target_property(
-      ${target} "PROJECT_OPTIONS_${property}_DEPENDENCIES" "${args_${property}}"
+    set_property(TARGET ${target}
+      APPEND
+      PROPERTY "PROJECT_OPTIONS_${property}_DEPENDENCIES"
+      "${args_${property}}"
     )
   endmacro()
 
