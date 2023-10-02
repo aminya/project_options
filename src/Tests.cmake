@@ -1,6 +1,6 @@
 include_guard()
 
-include("${CMAKE_CURRENT_LIST_DIR}/Systemlink.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/SystemLink.cmake")
 
 # Enable coverage reporting for gcc/clang
 function(enable_coverage _project_name)
