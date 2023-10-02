@@ -325,6 +325,7 @@ endfunction()
    add_executable_test(<executable> <test_name>
      [CONFIGS <config...>]  # Only accepts the EXECUTE_ARGS part in CONFIGS
      [EXECUTE_ARGS <arg...>]  # Args used as command args running the test
+     [WORKING_DIRECTOY <dir>]
    )
 
 This function registers a test named ``test.<executable>.<test_name>`` that
