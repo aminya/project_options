@@ -31,10 +31,7 @@ function(_configure_target target_name type)
     add_executable(${target_name})
     set(scope PRIVATE)
   elseif(${type} STREQUAL "test_config")
-    if(NOT TARGET ${target_name})
-      add_library(${target_name} INTERFACE)
-    endif()
-
+    add_library(${target_name} INTERFACE)
     set(scope INTERFACE)
   endif()
 
@@ -107,21 +104,14 @@ endfunction()
 This function generates a INTERFACE library named ``test_config.<config_name>``,
 so ``add_library_test`` and ``add_executable_test`` can simply reuse test configs.
 
-You can call this function with the same ``<config_name>`` multiple times
-to add more args.
+To avoid confusion (the name says ``add``), you can't call this function with the
+same ``<config_name>`` multiple times to add more args.
 
 .. code:: cmake
 
    add_test_config(common
      COMPILE_DEFINITIONS
      BOOST_UT_DISABLE_MODULE=1
-   )
-   add_test_config(common
-     DEPENDENCIES_CONFIG
-     ut
-
-     LIBRARIES
-     boost-ext-ut::ut
    )
 
 ]]
@@ -231,8 +221,8 @@ this target using ``add_test``.
    ``test_config.<config_name>``. If multiple configs are given, they will be
    merged.
 
-you can't call this function with the same ``<library>`` and ``<test_name>``
-multiple times to add more args.
+To avoid confusion (the name says ``add``), you can't call this function with
+the same ``<library>`` and ``<test_name>`` multiple times to add more args.
 
 .. code:: cmake
 
@@ -344,8 +334,8 @@ runs the ``<executable>`` using ``EXECUTE_ARGS``.
    ``test_config.<config_name>``. If multiple configs are given, they will be
    merged.
 
-You can't call this function with the same ``<executable>`` and ``<test_name>``
-multiple times to add more args.
+To avoid confusion (the name says ``add``), You can't call this function with
+the same ``<executable>`` and ``<test_name>`` multiple times to add more args.
 
 .. code:: cmake
 
