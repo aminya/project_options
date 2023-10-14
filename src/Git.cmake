@@ -15,7 +15,7 @@ Input variables:
 
 ]]
 function(git_clone)
-  set(oneValueArgs REPOSITORY_PATH REMOTE_URL REMOTE_NAME)
+  set(oneValueArgs REPOSITORY_PATH REMOTE_URL REMOTE_NAME FORCE)
   cmake_parse_arguments(_fun "" "${oneValueArgs}" "" ${ARGN})
 
   if("${_fun_REPOSITORY_PATH}" STREQUAL "" OR "${_fun_REMOTE_URL}" STREQUAL "")
@@ -23,7 +23,7 @@ function(git_clone)
   endif()
 
   # the folder is created as soon as the clone starts
-  if(NOT EXISTS "${_fun_REPOSITORY_PATH}")
+  if(NOT EXISTS "${_fun_REPOSITORY_PATH}" OR "${_fun_FORCE}" STREQUAL "TRUE")
     message(STATUS "Cloning at ${_fun_REPOSITORY_PATH}")
 
     find_program(GIT_EXECUTABLE "git" REQUIRED)
@@ -33,8 +33,28 @@ function(git_clone)
       WORKING_DIRECTORY "${_fun_REPOSITORY_PARENT_PATH}" COMMAND_ERROR_IS_FATAL LAST
     )
   else()
-    message(STATUS "Repository already exists at ${_fun_REPOSITORY_PATH}.")
+    message(
+      STATUS "Repository already exists at ${_fun_REPOSITORY_PATH}. Waiting for git lock file.."
+    )
     git_wait(REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
+
+    if(NOT EXISTS "${_fun_REPOSITORY_PATH}/.git")
+      message(
+        STATUS
+          "Folder ${_fun_REPOSITORY_PATH} exists but is not a git repository. Trying to force clone"
+      )
+      # recall the function with the force flag
+      git_clone(
+        REPOSITORY_PATH
+        "${_fun_REPOSITORY_PATH}"
+        REMOTE_URL
+        "${_fun_REMOTE_URL}"
+        REMOTE_NAME
+        "${_fun_REMOTE_NAME}"
+        FORCE
+        TRUE
+      )
+    endif()
 
     git_add_remote(
       REMOTE_URL
@@ -349,11 +369,18 @@ function(git_wait)
     message(FATAL_ERROR "REPOSITORY_PATH is required")
   endif()
 
+  set(counter 0)
+
   # wait until .git/index is present (in case a parallel clone is running)
   while(NOT EXISTS "${_fun_REPOSITORY_PATH}/.git/index"
         OR EXISTS "${_fun_REPOSITORY_PATH}/.git/index.lock"
   )
-    message(STATUS "Waiting for git lock file...")
     execute_process(COMMAND ${CMAKE_COMMAND} -E sleep 0.5)
+
+    math(EXPR counter "${counter} + 1")
+    if(${counter} GREATER 20)
+      message(STATUS "Timeout waiting for git lock file. Continuing...")
+      return()
+    endif()
   endwhile()
 endfunction()
