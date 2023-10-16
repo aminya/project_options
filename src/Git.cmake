@@ -362,12 +362,29 @@ function(git_switch_back)
   endif()
 endfunction()
 
+#[[.rst:
+
+``git_wait``
+============
+
+Wait for the git lock file to be released
+
+Input variables:
+
+- ``REPOSITORY_PATH``: The path to the repository
+- ``TIMEOUT_COUNTER``: The number of times to wait before timing out
+
+]]
 function(git_wait)
-  set(oneValueArgs REPOSITORY_PATH)
+  set(oneValueArgs REPOSITORY_PATH TIMEOUT_COUNTER)
   cmake_parse_arguments(_fun "" "${oneValueArgs}" "" ${ARGN})
 
   if("${_fun_REPOSITORY_PATH}" STREQUAL "")
     message(FATAL_ERROR "REPOSITORY_PATH is required")
+  endif()
+
+  if("${_fun_TIMEOUT_COUNTER}" STREQUAL "")
+    set(_fun_TIMEOUT_COUNTER 20)
   endif()
 
   set(counter 0)
@@ -379,9 +396,11 @@ function(git_wait)
     execute_process(COMMAND ${CMAKE_COMMAND} -E sleep 0.5)
 
     math(EXPR counter "${counter} + 1")
-    if(${counter} GREATER 20)
+    if(${counter} GREATER ${_fun_TIMEOUT_COUNTER})
       message(STATUS "Timeout waiting for git lock file. Continuing...")
       return()
+    else()
+      message(STATUS "Waiting for git lock file...[${counter}/${_fun_TIMEOUT_COUNTER}]")
     endif()
   endwhile()
 endfunction()
