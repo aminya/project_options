@@ -12,10 +12,11 @@ Input variables:
 - ``REPOSITORY_PATH``: The path to the repository
 - ``REMOTE_URL``: The url of the remote to add
 - ``REMOTE_NAME``: The name of the remote to add (defaults to the remote user)
+- ``FORCE_CLONE``: Force the clone even if the directory exists
 
 ]]
 function(git_clone)
-  set(oneValueArgs REPOSITORY_PATH REMOTE_URL REMOTE_NAME)
+  set(oneValueArgs REPOSITORY_PATH REMOTE_URL REMOTE_NAME FORCE_CLONE)
   cmake_parse_arguments(_fun "" "${oneValueArgs}" "" ${ARGN})
 
   if("${_fun_REPOSITORY_PATH}" STREQUAL "" OR "${_fun_REMOTE_URL}" STREQUAL "")
@@ -23,7 +24,7 @@ function(git_clone)
   endif()
 
   # the folder is created as soon as the clone starts
-  if(NOT EXISTS "${_fun_REPOSITORY_PATH}")
+  if(NOT EXISTS "${_fun_REPOSITORY_PATH}" OR "${_fun_FORCE_CLONE}" STREQUAL "TRUE")
     message(STATUS "Cloning at ${_fun_REPOSITORY_PATH}")
 
     find_program(GIT_EXECUTABLE "git" REQUIRED)
@@ -33,8 +34,28 @@ function(git_clone)
       WORKING_DIRECTORY "${_fun_REPOSITORY_PARENT_PATH}" COMMAND_ERROR_IS_FATAL LAST
     )
   else()
-    message(STATUS "Repository already exists at ${_fun_REPOSITORY_PATH}.")
+    message(
+      STATUS "Repository already exists at ${_fun_REPOSITORY_PATH}. Waiting for git lock file.."
+    )
     git_wait(REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
+
+    if(NOT EXISTS "${_fun_REPOSITORY_PATH}/.git")
+      message(
+        STATUS
+          "Folder ${_fun_REPOSITORY_PATH} exists but is not a git repository. Trying to force clone"
+      )
+      # recall the function with the force flag
+      git_clone(
+        REPOSITORY_PATH
+        "${_fun_REPOSITORY_PATH}"
+        REMOTE_URL
+        "${_fun_REMOTE_URL}"
+        REMOTE_NAME
+        "${_fun_REMOTE_NAME}"
+        FORCE_CLONE
+        TRUE
+      )
+    endif()
 
     git_add_remote(
       REMOTE_URL
@@ -341,19 +362,45 @@ function(git_switch_back)
   endif()
 endfunction()
 
+#[[.rst:
+
+``git_wait``
+============
+
+Wait for the git lock file to be released
+
+Input variables:
+
+- ``REPOSITORY_PATH``: The path to the repository
+- ``TIMEOUT_COUNTER``: The number of times to wait before timing out
+
+]]
 function(git_wait)
-  set(oneValueArgs REPOSITORY_PATH)
+  set(oneValueArgs REPOSITORY_PATH TIMEOUT_COUNTER)
   cmake_parse_arguments(_fun "" "${oneValueArgs}" "" ${ARGN})
 
   if("${_fun_REPOSITORY_PATH}" STREQUAL "")
     message(FATAL_ERROR "REPOSITORY_PATH is required")
   endif()
 
+  if("${_fun_TIMEOUT_COUNTER}" STREQUAL "")
+    set(_fun_TIMEOUT_COUNTER 20)
+  endif()
+
+  set(counter 0)
+
   # wait until .git/index is present (in case a parallel clone is running)
   while(NOT EXISTS "${_fun_REPOSITORY_PATH}/.git/index"
         OR EXISTS "${_fun_REPOSITORY_PATH}/.git/index.lock"
   )
-    message(STATUS "Waiting for git lock file...")
     execute_process(COMMAND ${CMAKE_COMMAND} -E sleep 0.5)
+
+    math(EXPR counter "${counter} + 1")
+    if(${counter} GREATER ${_fun_TIMEOUT_COUNTER})
+      message(STATUS "Timeout waiting for git lock file. Continuing...")
+      return()
+    else()
+      message(STATUS "Waiting for git lock file...[${counter}/${_fun_TIMEOUT_COUNTER}]")
+    endif()
   endwhile()
 endfunction()
