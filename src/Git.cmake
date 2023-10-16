@@ -12,10 +12,11 @@ Input variables:
 - ``REPOSITORY_PATH``: The path to the repository
 - ``REMOTE_URL``: The url of the remote to add
 - ``REMOTE_NAME``: The name of the remote to add (defaults to the remote user)
+- ``FORCE_CLONE``: Force the clone even if the directory exists
 
 ]]
 function(git_clone)
-  set(oneValueArgs REPOSITORY_PATH REMOTE_URL REMOTE_NAME FORCE)
+  set(oneValueArgs REPOSITORY_PATH REMOTE_URL REMOTE_NAME FORCE_CLONE)
   cmake_parse_arguments(_fun "" "${oneValueArgs}" "" ${ARGN})
 
   if("${_fun_REPOSITORY_PATH}" STREQUAL "" OR "${_fun_REMOTE_URL}" STREQUAL "")
@@ -23,7 +24,7 @@ function(git_clone)
   endif()
 
   # the folder is created as soon as the clone starts
-  if(NOT EXISTS "${_fun_REPOSITORY_PATH}" OR "${_fun_FORCE}" STREQUAL "TRUE")
+  if(NOT EXISTS "${_fun_REPOSITORY_PATH}" OR "${_fun_FORCE_CLONE}" STREQUAL "TRUE")
     message(STATUS "Cloning at ${_fun_REPOSITORY_PATH}")
 
     find_program(GIT_EXECUTABLE "git" REQUIRED)
@@ -51,7 +52,7 @@ function(git_clone)
         "${_fun_REMOTE_URL}"
         REMOTE_NAME
         "${_fun_REMOTE_NAME}"
-        FORCE
+        FORCE_CLONE
         TRUE
       )
     endif()
