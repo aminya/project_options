@@ -1,4 +1,3 @@
-/media/aminya/Linux/GitHub/Cpp/project_options/docs/build/CMakeFiles/doxygen-docs.dir
 /media/aminya/Linux/GitHub/Cpp/project_options/docs/build/CMakeFiles/documentation.dir
 /media/aminya/Linux/GitHub/Cpp/project_options/docs/build/CMakeFiles/edit_cache.dir
 /media/aminya/Linux/GitHub/Cpp/project_options/docs/build/CMakeFiles/rebuild_cache.dir

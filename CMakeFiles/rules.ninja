@@ -7,7 +7,7 @@
 
 # =============================================================================
 # Project: project_options_docs
-# Configurations: Release
+# Configurations: Debug, Release, RelWithDebInfo
 # =============================================================================
 # =============================================================================
 
@@ -26,14 +26,6 @@ rule RERUN_CMAKE
   command = /home/aminya/cmake/cmake-3.26.4-linux-x86_64/bin/cmake --regenerate-during-build -S/media/aminya/Linux/GitHub/Cpp/project_options/docs -B/media/aminya/Linux/GitHub/Cpp/project_options/docs/build
   description = Re-running CMake...
   generator = 1
-
-
-#############################################
-# Rule for cleaning additional files.
-
-rule CLEAN_ADDITIONAL
-  command = /home/aminya/cmake/cmake-3.26.4-linux-x86_64/bin/cmake -DCONFIG=$CONFIG -P CMakeFiles/clean_additional.cmake
-  description = Cleaning additional files...
 
 
 #############################################
