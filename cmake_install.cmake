@@ -1,4 +1,4 @@
-# Install script for directory: /home/aminya/GitHub/Cpp/project_options/docs
+# Install script for directory: /media/aminya/Linux/GitHub/Cpp/project_options/docs
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -37,8 +37,8 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "FALSE")
 endif()
 
-if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/documentation" TYPE DIRECTORY FILES "/home/aminya/GitHub/Cpp/project_options/docs/build/html" REGEX "/\\.buildinfo$" EXCLUDE)
+if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/documentation" TYPE DIRECTORY FILES "/media/aminya/Linux/GitHub/Cpp/project_options/docs/build/html" REGEX "/\\.buildinfo$" EXCLUDE)
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -49,5 +49,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/aminya/GitHub/Cpp/project_options/docs/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/media/aminya/Linux/GitHub/Cpp/project_options/docs/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

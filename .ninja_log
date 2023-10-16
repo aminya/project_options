@@ -1,9 +1,9 @@
 # ninja log v5
-1	63	0	CMakeFiles/doxygen-docs-Release	d424df6668dbb05d
-1	1191	0	doc_format_html	4568e72c7140dbb9
-1	1191	0	/home/aminya/GitHub/Cpp/project_options/docs/build/doc_format_html	4568e72c7140dbb9
-1	63	0	/home/aminya/GitHub/Cpp/project_options/docs/build/CMakeFiles/doxygen-docs-Release	d424df6668dbb05d
-1	154	0	CMakeFiles/doxygen-docs-Release	d424df6668dbb05d
-1	154	0	/home/aminya/GitHub/Cpp/project_options/docs/build/CMakeFiles/doxygen-docs-Release	d424df6668dbb05d
-1	3173	0	doc_format_html	4568e72c7140dbb9
-1	3173	0	/home/aminya/GitHub/Cpp/project_options/docs/build/doc_format_html	4568e72c7140dbb9
+0	209	0	CMakeFiles/doxygen-docs-Release	df03721b0755a608
+0	2886	0	doc_format_html	386cb45ea79436ff
+0	209	0	/media/aminya/Linux/GitHub/Cpp/project_options/docs/build/CMakeFiles/doxygen-docs-Release	df03721b0755a608
+0	2886	0	/media/aminya/Linux/GitHub/Cpp/project_options/docs/build/doc_format_html	386cb45ea79436ff
+0	62	0	CMakeFiles/doxygen-docs-Release	df03721b0755a608
+0	62	0	/media/aminya/Linux/GitHub/Cpp/project_options/docs/build/CMakeFiles/doxygen-docs-Release	df03721b0755a608
+0	609	0	doc_format_html	386cb45ea79436ff
+0	609	0	/media/aminya/Linux/GitHub/Cpp/project_options/docs/build/doc_format_html	386cb45ea79436ff

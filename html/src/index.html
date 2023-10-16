@@ -77,6 +77,7 @@
 <li class="toctree-l1"><a class="reference internal" href="#git-revision"><code class="docutils literal notranslate"><span class="pre">git_revision</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#git-is-detached"><code class="docutils literal notranslate"><span class="pre">git_is_detached</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#git-switch-back"><code class="docutils literal notranslate"><span class="pre">git_switch_back</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#git-wait"><code class="docutils literal notranslate"><span class="pre">git_wait</span></code></a></li>
 </ul>
 
         </div>
@@ -122,7 +123,7 @@
 
 <span class="c"># Add project_options from https://github.com/aminya/project_options</span>
 <span class="c"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</span>
-<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.32.0&quot;</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.32.2&quot;</span><span class="nf">)</span>
 <span class="nf">FetchContent_Declare(</span>
 <span class="w">  </span><span class="nb">_project_options</span>
 <span class="w">  </span><span class="no">URL</span><span class="w"> </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/</span><span class="o">${</span><span class="nt">PROJECT_OPTIONS_VERSION</span><span class="o">}</span><span class="p">.</span><span class="nb">zip</span><span class="nf">)</span>
@@ -408,7 +409,7 @@ or a commit sha. If <code class="docutils literal notranslate"><span class="pre"
 the builds will become reproducible because that exact commit is
 always used for the builds. To make sure that this commit sha is
 pulled, enable <code class="docutils literal notranslate"><span class="pre">ENABLE_VCPKG_UPDATE</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">VCPKG_UPDATE_THRESHOLD</span></code>: (Defaults to 300 seconds). This option
+<li><p><code class="docutils literal notranslate"><span class="pre">VCPKG_UPDATE_THRESHOLD</span></code>: (Defaults to 3600 seconds). This option
 allows setting the time threshold in seconds for updating the vcpkg
 registry. If <code class="docutils literal notranslate"><span class="pre">ENABLE_VCPKG_UPDATE</span></code> is enabled, the vcpkg registry
 will be updated if the last update was more than
@@ -599,7 +600,7 @@ repository</a>.</p>
 
 <span class="c"># Add project_options from https://github.com/aminya/project_options</span>
 <span class="c"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</span>
-<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.32.0&quot;</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.32.2&quot;</span><span class="nf">)</span>
 <span class="nf">FetchContent_Declare(</span>
 <span class="w">  </span><span class="nb">_project_options</span>
 <span class="w">  </span><span class="no">URL</span><span class="w"> </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/</span><span class="o">${</span><span class="nt">PROJECT_OPTIONS_VERSION</span><span class="o">}</span><span class="p">.</span><span class="nb">zip</span><span class="nf">)</span>
@@ -783,6 +784,7 @@ triplets</a></p>
 <li><p><code class="docutils literal notranslate"><span class="pre">REPOSITORY_PATH</span></code>: The path to the repository</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">REMOTE_URL</span></code>: The url of the remote to add</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">REMOTE_NAME</span></code>: The name of the remote to add (defaults to the remote user)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FORCE_CLONE</span></code>: Force the clone even if the directory exists</p></li>
 </ul>
 </section>
 <section id="git-pull">
@@ -861,6 +863,15 @@ triplets</a></p>
 <p>Input variables:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">REPOSITORY_PATH</span></code>: The path to the repository</p></li>
+</ul>
+</section>
+<section id="git-wait">
+<h1><code class="docutils literal notranslate"><span class="pre">git_wait</span></code><a class="headerlink" href="#git-wait" title="Permalink to this heading"></a></h1>
+<p>Wait for the git lock file to be released</p>
+<p>Input variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">REPOSITORY_PATH</span></code>: The path to the repository</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TIMEOUT_COUNTER</span></code>: The number of times to wait before timing out</p></li>
 </ul>
 </section>
 

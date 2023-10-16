@@ -1,9 +1,9 @@
 var namespaces_dup =
 [
-    [ "<tt>project</tt> and <tt>project_options</tt>", "md__home_aminya_GitHub_Cpp_project_options_docs_src_project_options_example.html#autotoc_md2", null ],
-    [ "<a href=\"https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe\">executable usage</a>", "md__home_aminya_GitHub_Cpp_project_options_docs_src_project_options_example.html#autotoc_md3", null ],
-    [ "<a href=\"https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib\">library usage</a>", "md__home_aminya_GitHub_Cpp_project_options_docs_src_project_options_example.html#autotoc_md4", null ],
-    [ "<a href=\"https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib\">header-only library usage</a>", "md__home_aminya_GitHub_Cpp_project_options_docs_src_project_options_example.html#autotoc_md5", null ],
+    [ "<tt>project</tt> and <tt>project_options</tt>", "md__media_aminya_Linux_GitHub_Cpp_project_options_docs_src_project_options_example.html#autotoc_md2", null ],
+    [ "<a href=\"https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe\">executable usage</a>", "md__media_aminya_Linux_GitHub_Cpp_project_options_docs_src_project_options_example.html#autotoc_md3", null ],
+    [ "<a href=\"https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib\">library usage</a>", "md__media_aminya_Linux_GitHub_Cpp_project_options_docs_src_project_options_example.html#autotoc_md4", null ],
+    [ "<a href=\"https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib\">header-only library usage</a>", "md__media_aminya_Linux_GitHub_Cpp_project_options_docs_src_project_options_example.html#autotoc_md5", null ],
     [ "conf", "namespaceconf.html", [
       [ "author", "namespaceconf.html#a637c239d256432248aa8d9f3ab0b8c52", null ],
       [ "breathe_default_members", "namespaceconf.html#a54585428ce84441199d9dfd7087e2243", null ],

@@ -1,430 +1,105 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Getting Started &mdash; project_options 0.28.0 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="project_options function" href="src/index.html" />
-<link href="../css/company_style.css" rel="stylesheet" type="text/css">
-
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>project_options_docs: Main Page</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="#" class="icon icon-home">
-            project_options
-          </a>
-              <div class="version">
-                main
-              </div>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">project_options_docs
+   &#160;<span id="projectnumber">0.28.0</span>
+   </div>
+   <div id="projectbrief">Documentation</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html"><code class="docutils literal notranslate"><span class="pre">project_options</span></code> function</a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#project-options-parameters"><code class="docutils literal notranslate"><span class="pre">project_options</span></code> parameters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#run-vcpkg"><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#package-project"><code class="docutils literal notranslate"><span class="pre">package_project</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#target-include-interface-directories"><code class="docutils literal notranslate"><span class="pre">target_include_interface_directories</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#target-find-dependencies"><code class="docutils literal notranslate"><span class="pre">target_find_dependencies</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#target-include-system-directories"><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#target-link-system-libraries"><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#dynamic-project-options"><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#target-disable-static-analysis"><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#check-sanitizers-support"><code class="docutils literal notranslate"><span class="pre">check_sanitizers_support</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#find-linker"><code class="docutils literal notranslate"><span class="pre">find_linker</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#enable-cross-compiler"><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#target-link-cuda"><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#git-clone"><code class="docutils literal notranslate"><span class="pre">git_clone</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#git-pull"><code class="docutils literal notranslate"><span class="pre">git_pull</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#git-checkout"><code class="docutils literal notranslate"><span class="pre">git_checkout</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#git-parse-url"><code class="docutils literal notranslate"><span class="pre">git_parse_url</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#git-add-remote"><code class="docutils literal notranslate"><span class="pre">git_add_remote</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#git-revision"><code class="docutils literal notranslate"><span class="pre">git_revision</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#git-is-detached"><code class="docutils literal notranslate"><span class="pre">git_is_detached</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#git-switch-back"><code class="docutils literal notranslate"><span class="pre">git_switch_back</span></code></a></li>
-</ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">project_options</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Getting Started</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="getting-started">
-<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h1>
-<section id="project-options">
-<h2>project_options<a class="headerlink" href="#project-options" title="Permalink to this heading"></a></h2>
-<p>A general-purpose CMake library that provides functions that improve the CMake experience following the best practices.</p>
-<p><a class="reference external" href="https://aminya.github.io/project_options/"><img alt="documentation" src="https://img.shields.io/badge/documentation-blue?style=flat&amp;logo=docs.rs&amp;link=https://aminya.github.io/project_options/" /></a></p>
-<p><a class="reference external" href="https://github.com/aminya/project_options/actions/workflows/ci.yml"><img alt="ci" src="https://github.com/aminya/project_options/actions/workflows/ci.yml/badge.svg" /></a></p>
-<section id="features">
-<h3>Features<a class="headerlink" href="#features" title="Permalink to this heading"></a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">project_options</span></code>:</p>
-<ul>
-<li><p>compiler warnings,</p></li>
-<li><p>compiler optimizations (intraprocedural, native),</p></li>
-<li><p>caching (ccache, sccache),</p></li>
-<li><p>sanitizers,</p></li>
-<li><p>static code analyzers (clang-tidy, cppcheck, visual studio, include-what-you-use),</p></li>
-<li><p>document generation (doxygen),</p></li>
-<li><p>test coverage analysis,</p></li>
-<li><p>precompiled headers,</p></li>
-<li><p>build time measurement,</p></li>
-<li><p>unity builds</p></li>
-<li><p>using custom linkers (e.g. lld)</p></li>
-</ul>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">package_project</span></code>: automatic packaging/installation of the project for seamless usage via find_package/target_link through CMake’s FetchContent, vcpkg, etc.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code>: automatic installation of vcpkg and the project dependencies</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_CONAN</span></code> in <code class="docutils literal notranslate"><span class="pre">project_options</span></code>: automatic installation of Conan and the project dependencies</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code>: a wrapper around <code class="docutils literal notranslate"><span class="pre">project_options</span></code> to change the options on the fly dynamically</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code> and <code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code>: linking/including external dependencies/headers without warnings</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code>: linking Cuda to a target</p></li>
-</ul>
-</section>
-<section id="documentation">
-<h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading"></a></h3>
-<p>The full documentation is available here:</p>
-<p><a class="reference external" href="https://aminya.github.io/project_options/">https://aminya.github.io/project_options/</a></p>
-</section>
-</section>
-<section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
-<section id="project-options-function">
-<h3><code class="docutils literal notranslate"><span class="pre">project_options</span></code> function<a class="headerlink" href="#project-options-function" title="Permalink to this heading"></a></h3>
-<p>See the <code class="docutils literal notranslate"><span class="pre">project_options()</span></code> in action in <a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project">this template repository</a>. <a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project">cpp_vcpkg_project</a> has prepared all the best practices for a production-ready C++ project.</p>
-<section id="project-and-project-options">
-<h4><code class="docutils literal notranslate"><span class="pre">project</span></code> and <code class="docutils literal notranslate"><span class="pre">project_options</span></code><a class="headerlink" href="#project-and-project-options" title="Permalink to this heading"></a></h4>
-<p>Here is an example of the usage:</p>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.20</span><span class="nf">)</span>
-
-<span class="c"># set a default CXX standard for the tools and targets that do not specify them.</span>
-<span class="c"># If commented, the latest supported standard for your compiler is automatically set.</span>
-<span class="c"># set(CMAKE_CXX_STANDARD 20)</span>
-
-<span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
-<span class="nf">if(</span><span class="no">CMAKE_VERSION</span><span class="w"> </span><span class="no">VERSION_GREATER_EQUAL</span><span class="w"> </span><span class="s">&quot;3.24.0&quot;</span><span class="nf">)</span>
-<span class="w">  </span><span class="nf">cmake_policy(</span><span class="no">SET</span><span class="w"> </span><span class="no">CMP0135</span><span class="w"> </span><span class="no">NEW</span><span class="nf">)</span>
-<span class="nf">endif()</span>
-
-<span class="c"># Add project_options from https://github.com/aminya/project_options</span>
-<span class="c"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</span>
-<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.32.0&quot;</span><span class="nf">)</span>
-<span class="nf">FetchContent_Declare(</span>
-<span class="w">  </span><span class="nb">_project_options</span>
-<span class="w">  </span><span class="no">URL</span><span class="w"> </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/</span><span class="o">${</span><span class="nt">PROJECT_OPTIONS_VERSION</span><span class="o">}</span><span class="p">.</span><span class="nb">zip</span><span class="nf">)</span>
-<span class="nf">FetchContent_MakeAvailable(</span><span class="nb">_project_options</span><span class="nf">)</span>
-<span class="nf">include(</span><span class="o">${</span><span class="nt">_project_options_SOURCE_DIR</span><span class="o">}</span><span class="na">/Index.cmake</span><span class="nf">)</span>
-
-<span class="c"># install vcpkg dependencies: - should be called before defining project()</span>
-<span class="nf">run_vcpkg(</span>
-<span class="w">    </span><span class="no">VCPKG_URL</span><span class="w"> </span><span class="s">&quot;https://github.com/microsoft/vcpkg.git&quot;</span>
-<span class="w">    </span><span class="no">VCPKG_REV</span><span class="w"> </span><span class="s">&quot;0fa8459cf3a7caca7adc58f992bc32ff13630684&quot;</span>
-<span class="w">    </span><span class="no">ENABLE_VCPKG_UPDATE</span>
-<span class="nf">)</span>
-
-<span class="c"># Set the project name and language</span>
-<span class="nf">project(</span><span class="nb">myproject</span><span class="w"> </span><span class="no">LANGUAGES</span><span class="w"> </span><span class="no">CXX</span><span class="w"> </span><span class="no">C</span><span class="nf">)</span>
-
-<span class="c"># Build Features</span>
-<span class="nf">option(</span><span class="no">FEATURE_TESTS</span><span class="w"> </span><span class="s">&quot;Enable the tests&quot;</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span>
-<span class="nf">option(</span><span class="no">FEATURE_DOCS</span><span class="w"> </span><span class="s">&quot;Enable the docs&quot;</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span>
-
-<span class="c"># vcpkg test feature</span>
-<span class="nf">if(</span><span class="no">FEATURE_TESTS</span><span class="nf">)</span>
-<span class="w">  </span><span class="nf">list(</span><span class="no">APPEND</span><span class="w"> </span><span class="no">VCPKG_MANIFEST_FEATURES</span><span class="w"> </span><span class="s">&quot;tests&quot;</span><span class="nf">)</span>
-<span class="nf">endif()</span>
-
-<span class="c"># Enable sanitizers and static analyzers when running the tests</span>
-<span class="nf">if(</span><span class="no">FEATURE_TESTS</span><span class="nf">)</span>
-<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_CLANG_TIDY</span><span class="w"> </span><span class="s">&quot;ENABLE_CLANG_TIDY&quot;</span><span class="nf">)</span>
-<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_CPPCHECK</span><span class="w"> </span><span class="s">&quot;ENABLE_CPPCHECK&quot;</span><span class="nf">)</span>
-<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_COVERAGE</span><span class="w"> </span><span class="s">&quot;ENABLE_COVERAGE&quot;</span><span class="nf">)</span>
-
-<span class="w">  </span><span class="nf">check_sanitizers_support(</span><span class="no">ENABLE_SANITIZER_ADDRESS</span>
-<span class="w">                           </span><span class="no">ENABLE_SANITIZER_UNDEFINED_BEHAVIOR</span>
-<span class="w">                           </span><span class="no">ENABLE_SANITIZER_LEAK</span>
-<span class="w">                           </span><span class="no">ENABLE_SANITIZER_THREAD</span>
-<span class="w">                           </span><span class="no">ENABLE_SANITIZER_MEMORY</span><span class="nf">)</span>
-<span class="nf">endif()</span>
-
-<span class="c"># Enable doxgen for the docs</span>
-<span class="nf">if(</span><span class="no">FEATURE_DOCS</span><span class="nf">)</span>
-<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_DOXYGEN</span><span class="w"> </span><span class="s">&quot;ENABLE_DOXYGEN&quot;</span><span class="nf">)</span>
-<span class="nf">endif()</span>
-
-<span class="c"># Initialize project_options variable related to this project</span>
-<span class="c"># This overwrites `project_options` and sets `project_warnings`</span>
-<span class="c"># uncomment to enable the options. Some of them accept one or more inputs:</span>
-<span class="nf">project_options(</span>
-<span class="w">      </span><span class="no">PREFIX</span><span class="w"> </span><span class="s">&quot;myproject&quot;</span>
-<span class="w">      </span><span class="no">ENABLE_CACHE</span>
-<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_CPPCHECK</span><span class="o">}</span>
-<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_CLANG_TIDY</span><span class="o">}</span>
-<span class="w">      </span><span class="no">ENABLE_VS_ANALYSIS</span>
-<span class="w">      </span><span class="c"># ENABLE_CONAN</span>
-<span class="w">      </span><span class="c"># ENABLE_INTERPROCEDURAL_OPTIMIZATION</span>
-<span class="w">      </span><span class="c"># ENABLE_NATIVE_OPTIMIZATION</span>
-<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_DOXYGEN</span><span class="o">}</span>
-<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_COVERAGE</span><span class="o">}</span>
-<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_SANITIZER_ADDRESS</span><span class="o">}</span>
-<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_SANITIZER_UNDEFINED_BEHAVIOR</span><span class="o">}</span>
-<span class="w">      </span><span class="c"># ${ENABLE_SANITIZER_THREAD}</span>
-<span class="w">      </span><span class="c"># ${ENABLE_SANITIZER_MEMORY}</span>
-<span class="w">      </span><span class="c"># ENABLE_CONTROL_FLOW_PROTECTION</span>
-<span class="w">      </span><span class="c"># ENABLE_STACK_PROTECTION</span>
-<span class="w">      </span><span class="c"># ENABLE_OVERFLOW_PROTECTION</span>
-<span class="w">      </span><span class="c"># ENABLE_ELF_PROTECTION</span>
-<span class="w">      </span><span class="c"># ENABLE_RUNTIME_SYMBOLS_RESOLUTION</span>
-<span class="w">      </span><span class="c"># ENABLE_COMPILE_COMMANDS_SYMLINK</span>
-<span class="w">      </span><span class="c"># ENABLE_PCH</span>
-<span class="w">      </span><span class="c"># PCH_HEADERS</span>
-<span class="w">      </span><span class="c"># WARNINGS_AS_ERRORS</span>
-<span class="w">      </span><span class="c"># ENABLE_INCLUDE_WHAT_YOU_USE</span>
-<span class="w">      </span><span class="c"># ENABLE_GCC_ANALYZER</span>
-<span class="w">      </span><span class="c"># ENABLE_BUILD_WITH_TIME_TRACE</span>
-<span class="w">      </span><span class="c"># ENABLE_UNITY</span>
-<span class="w">      </span><span class="c"># LINKER &quot;lld&quot;</span>
-<span class="w">      </span><span class="c"># CONAN_PROFILE ${profile_path}</span>
-<span class="nf">)</span>
-</pre></div>
-</div>
-<p>Then add the executables or libraries to the project:</p>
-</section>
-<section id="executable-usage">
-<h4><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe">executable usage</a><a class="headerlink" href="#executable-usage" title="Permalink to this heading"></a></h4>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">main</span><span class="w"> </span><span class="nb">main.cpp</span><span class="nf">)</span>
-
-<span class="c"># link project_options/warnings</span>
-<span class="nf">target_link_libraries(</span><span class="nb">main</span>
-<span class="w">  </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">myproject_project_options</span><span class="w"> </span><span class="nb">myproject_project_warnings</span>
-<span class="nf">)</span>
-
-<span class="c"># Find dependencies:</span>
-<span class="nf">target_find_dependencies(</span><span class="nb">main</span>
-<span class="w">  </span><span class="no">PRIVATE_CONFIG</span>
-<span class="w">  </span><span class="nb">fmt</span>
-<span class="w">  </span><span class="nb">Eigen3</span>
-<span class="nf">)</span>
-
-<span class="c"># Link dependencies</span>
-<span class="nf">target_link_system_libraries(</span><span class="nb">main</span>
-<span class="w">  </span><span class="no">PRIVATE</span>
-<span class="w">  </span><span class="nb">fmt</span><span class="o">::</span><span class="nb">fmt</span>
-<span class="w">  </span><span class="nb">Eigen3</span><span class="o">::</span><span class="nb">Eigen</span>
-<span class="nf">)</span>
-
-<span class="c"># Package the project</span>
-<span class="nf">package_project(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">main</span><span class="nf">)</span>
-</pre></div>
-</div>
-</section>
-<section id="library-usage">
-<h4><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib">library usage</a><a class="headerlink" href="#library-usage" title="Permalink to this heading"></a></h4>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">my_lib</span><span class="w"> </span><span class="s">&quot;./src/my_lib/lib.cpp&quot;</span><span class="nf">)</span>
-
-<span class="c"># link project_options/warnings</span>
-<span class="nf">target_link_libraries(</span><span class="nb">my_lib</span>
-<span class="w">  </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">myproject_project_options</span><span class="w"> </span><span class="nb">myproject_project_warnings</span>
-<span class="nf">)</span>
-
-<span class="c"># Includes:</span>
-<span class="nf">target_include_interface_directories(</span><span class="nb">my_lib</span><span class="w"> </span><span class="s">&quot;${CMAKE_CURRENT_SOURCE_DIR}/include&quot;</span><span class="nf">)</span>
-
-<span class="c"># Find dependencies:</span>
-<span class="nf">target_find_dependencies(</span><span class="nb">my_lib</span>
-<span class="w">  </span><span class="no">PRIVATE_CONFIG</span>
-<span class="w">  </span><span class="nb">fmt</span>
-<span class="w">  </span><span class="nb">Eigen3</span>
-<span class="nf">)</span>
-
-<span class="c"># Link dependencies:</span>
-<span class="nf">target_link_system_libraries(</span><span class="nb">my_lib</span>
-<span class="w">  </span><span class="no">PRIVATE</span>
-<span class="w">  </span><span class="nb">fmt</span><span class="o">::</span><span class="nb">fmt</span>
-<span class="w">  </span><span class="nb">Eigen3</span><span class="o">::</span><span class="nb">Eigen</span>
-<span class="nf">)</span>
-
-<span class="c"># Package the project</span>
-<span class="nf">package_project(</span>
-<span class="w">  </span><span class="c"># Note that you must export `myproject_project_options` and `myproject_project_warnings` for `my_lib`</span>
-<span class="w">  </span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">my_lib</span><span class="w"> </span><span class="nb">myproject_project_options</span><span class="w"> </span><span class="nb">myproject_project_warnings</span>
-<span class="nf">)</span>
-</pre></div>
-</div>
-</section>
-<section id="header-only-library-usage">
-<h4><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib">header-only library usage</a><a class="headerlink" href="#header-only-library-usage" title="Permalink to this heading"></a></h4>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">my_header_lib</span><span class="w"> </span><span class="no">INTERFACE</span><span class="nf">)</span>
-
-<span class="c"># link project_options/warnings</span>
-<span class="nf">target_link_libraries(</span><span class="nb">my_header_lib</span>
-<span class="w">  </span><span class="no">INTERFACE</span><span class="w"> </span><span class="nb">myproject_project_options</span><span class="w"> </span><span class="nb">myproject_project_warnings</span>
-<span class="nf">)</span>
-
-<span class="c"># Includes:</span>
-<span class="nf">target_include_interface_directories(</span><span class="nb">my_header_lib</span><span class="w"> </span><span class="s">&quot;${CMAKE_CURRENT_SOURCE_DIR}/include&quot;</span><span class="nf">)</span>
-
-<span class="c"># Find dependencies:</span>
-<span class="nf">target_find_dependencies(</span><span class="nb">my_header_lib</span>
-<span class="w">  </span><span class="no">INTERFACE_CONFIG</span>
-<span class="w">  </span><span class="nb">fmt</span>
-<span class="w">  </span><span class="nb">Eigen3</span>
-<span class="nf">)</span>
-
-<span class="c"># Link dependencies:</span>
-<span class="nf">target_link_system_libraries(</span><span class="nb">my_header_lib</span>
-<span class="w">  </span><span class="no">INTERFACE</span>
-<span class="w">  </span><span class="nb">fmt</span><span class="o">::</span><span class="nb">fmt</span>
-<span class="w">  </span><span class="nb">Eigen3</span><span class="o">::</span><span class="nb">Eigen</span>
-<span class="nf">)</span>
-
-<span class="c"># Package the project</span>
-<span class="nf">package_project(</span>
-<span class="w">  </span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">my_header_lib</span><span class="w"> </span><span class="nb">myproject_project_options</span><span class="w"> </span><span class="nb">myproject_project_warnings</span>
-<span class="nf">)</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="license">
-<h3>License<a class="headerlink" href="#license" title="Permalink to this heading"></a></h3>
-<p>This project can be used under the terms of either the <a class="reference internal" href="#../../LICENSE.txt"><span class="xref myst">MIT license</span></a> or the <a class="reference internal" href="#../../Unlicense.txt"><span class="xref myst">Unlicense</span></a> depending on your choice.</p>
-</section>
-</section>
-</section>
-<section id="table-of-contents">
-<h1>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading"></a></h1>
-<div class="toctree-wrapper compound">
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html"><code class="docutils literal notranslate"><span class="pre">project_options</span></code> function</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="src/index.html#project-and-project-options"><code class="docutils literal notranslate"><span class="pre">project</span></code> and <code class="docutils literal notranslate"><span class="pre">project_options</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="src/index.html#executable-usage">executable usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src/index.html#library-usage">library usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src/index.html#header-only-library-usage">header-only library usage</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#project-options-parameters"><code class="docutils literal notranslate"><span class="pre">project_options</span></code> parameters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#run-vcpkg"><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#package-project"><code class="docutils literal notranslate"><span class="pre">package_project</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#target-include-interface-directories"><code class="docutils literal notranslate"><span class="pre">target_include_interface_directories</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#target-find-dependencies"><code class="docutils literal notranslate"><span class="pre">target_find_dependencies</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#target-include-system-directories"><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#target-link-system-libraries"><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#dynamic-project-options"><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#target-disable-static-analysis"><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#check-sanitizers-support"><code class="docutils literal notranslate"><span class="pre">check_sanitizers_support</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#find-linker"><code class="docutils literal notranslate"><span class="pre">find_linker</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#enable-cross-compiler"><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#target-link-cuda"><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#git-clone"><code class="docutils literal notranslate"><span class="pre">git_clone</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#git-pull"><code class="docutils literal notranslate"><span class="pre">git_pull</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#git-checkout"><code class="docutils literal notranslate"><span class="pre">git_checkout</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#git-parse-url"><code class="docutils literal notranslate"><span class="pre">git_parse_url</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#git-add-remote"><code class="docutils literal notranslate"><span class="pre">git_add_remote</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#git-revision"><code class="docutils literal notranslate"><span class="pre">git_revision</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#git-is-detached"><code class="docutils literal notranslate"><span class="pre">git_is_detached</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/index.html#git-switch-back"><code class="docutils literal notranslate"><span class="pre">git_switch_back</span></code></a></li>
-</ul>
-</div>
-</section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="src/index.html" class="btn btn-neutral float-right" title="project_options function" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright MIT - Copyright (c) 2022-2100 Amin Yahyaabadi.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  
-
-<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
-    <span class="rst-current-version" data-toggle="rst-current-version">
-      <span class="fa fa-book"> Read the Docs</span>
-      v: main
-      <span class="fa fa-caret-down"></span>
-    </span>
-    <div class="rst-other-versions">
-        <!-- The content here is replaced in the version_switcher.js -->
-    </div>
-</div>
-<script src="../js/versions.js"></script>
-<script src="../js/version_switcher.js"></script>
-<script>
-    window.addEventListener('load', (event) => {
-        ar_updateVersionList('main');
-    });
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
 </script>
-<script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('index.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
 
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="PageDoc"><div class="header">
+  <div class="headertitle">
+<div class="title">project_options_docs Documentation</div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><p><a class="anchor" id="md__media_aminya_Linux_GitHub_Cpp_project_options_docs_README"></a> !include ./src/Readme_top.md</p>
+<p>!include ./src/project_options_example.md</p>
+<p>!include ./src/License.md </p>
+</div></div><!-- PageDoc -->
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
 </body>
 </html>

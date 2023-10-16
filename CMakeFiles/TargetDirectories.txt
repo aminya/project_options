@@ -1,6 +1,6 @@
-/home/aminya/GitHub/Cpp/project_options/docs/build/CMakeFiles/doxygen-docs.dir
-/home/aminya/GitHub/Cpp/project_options/docs/build/CMakeFiles/documentation.dir
-/home/aminya/GitHub/Cpp/project_options/docs/build/CMakeFiles/edit_cache.dir
-/home/aminya/GitHub/Cpp/project_options/docs/build/CMakeFiles/rebuild_cache.dir
-/home/aminya/GitHub/Cpp/project_options/docs/build/CMakeFiles/install.dir
-/home/aminya/GitHub/Cpp/project_options/docs/build/CMakeFiles/install/local.dir
+/media/aminya/Linux/GitHub/Cpp/project_options/docs/build/CMakeFiles/doxygen-docs.dir
+/media/aminya/Linux/GitHub/Cpp/project_options/docs/build/CMakeFiles/documentation.dir
+/media/aminya/Linux/GitHub/Cpp/project_options/docs/build/CMakeFiles/edit_cache.dir
+/media/aminya/Linux/GitHub/Cpp/project_options/docs/build/CMakeFiles/rebuild_cache.dir
+/media/aminya/Linux/GitHub/Cpp/project_options/docs/build/CMakeFiles/install.dir
+/media/aminya/Linux/GitHub/Cpp/project_options/docs/build/CMakeFiles/install/local.dir
