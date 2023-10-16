@@ -60,7 +60,7 @@ endmacro()
 
 macro(_is_vcpkg_outdated)
   if("${_vcpkg_args_VCPKG_UPDATE_THRESHOLD}" STREQUAL "")
-    set(_vcpkg_args_VCPKG_UPDATE_THRESHOLD 300)
+    set(_vcpkg_args_VCPKG_UPDATE_THRESHOLD 3600)
   endif()
 
   if(${_vcpkg_args_ENABLE_VCPKG_UPDATE})
@@ -191,7 +191,7 @@ Named String:
    pulled, enable ``ENABLE_VCPKG_UPDATE``
 
 
-- ``VCPKG_UPDATE_THRESHOLD``: (Defaults to 300 seconds). This option
+- ``VCPKG_UPDATE_THRESHOLD``: (Defaults to 3600 seconds). This option
   allows setting the time threshold in seconds for updating the vcpkg
   registry. If ``ENABLE_VCPKG_UPDATE`` is enabled, the vcpkg registry
   will be updated if the last update was more than
