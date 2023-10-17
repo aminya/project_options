@@ -121,11 +121,8 @@ target_link_system_libraries(lib2 PRIVATE fmt::fmt Eigen3::Eigen)
 target_link_system_libraries(lib2 PRIVATE mythirdpartylib)
 
 add_test_config(common
-  DEPENDENCIES_CONFIG
-  ut
-
-  SYSTEM_LIBRARIES
-  Boost::ut
+  COMPILE_DEFINITIONS
+  EXPECTED_RESULT=0
 )
 
 add_library_test(lib lib CONFIGS common SOURCES tests/mylib/lib.cpp)
