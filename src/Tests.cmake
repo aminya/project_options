@@ -166,7 +166,9 @@ function(_get_configs_execute_args variable_name)
 
   foreach(config IN LISTS ARGN)
     get_target_property(execute_args ${config} PROJECT_OPTIONS_EXECUTE_ARGS)
-    list(APPEND variable_name ${execute_args})
+    if(execute_args)
+      list(APPEND variable_name ${execute_args})
+    endif()
   endforeach()
 
   set(${variable_name} ${value} PARENT_SCOPE)
