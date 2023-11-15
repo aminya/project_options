@@ -15,6 +15,40 @@ Input variables:
 - ``SHALLOW_SINCE``: Create a shallow clone with a history after the specified time. date should be in format of `git log --date=raw`.
 - ``BRANCH``: Only clone the given branch
 - ``FORCE_CLONE``: Force the clone even if the directory exists
+
+Simple example:
+
+.. code:: cmake
+
+  git_clone(
+    REPOSITORY_PATH
+    "./vcpkg"
+    REMOTE_URL
+    "https://github.com/microsoft/vcpkg.git"
+  )
+
+Example for a shallow clone and checking out of a specific revision:
+
+.. code:: cmake
+
+  git_clone(
+    REPOSITORY_PATH
+    "$ENV{HOME}/vcpkg"
+    REMOTE_URL
+    "https://github.com/microsoft/vcpkg.git"
+    SHALLOW_SINCE
+    "1686087993 -0700"
+    BRANCH
+    "master"
+  )
+  git_checkout(
+    REPOSITORY_PATH
+    "$ENV{HOME}/vcpkg"
+    REVISION
+    ecd22cc3acc8ee3c406e566db1e19ece1f17f409
+  )
+
+
 ]]
 function(git_clone)
   set(oneValueArgs
@@ -132,6 +166,23 @@ Input variables:
 - ``REPOSITORY_PATH``: The path to the repository
 - ``REVISION``: The revision to checkout
 
+.. code:: cmake
+
+  git_checkout(
+    REPOSITORY_PATH
+    "$ENV{HOME}/vcpkg"
+    REVISION
+    ecd22cc3acc8ee3c406e566db1e19ece1f17f409
+  )
+
+.. code:: cmake
+
+  git_checkout(
+    REPOSITORY_PATH
+    "./some_repo"
+    REVISION
+    v1.0.0
+  )
 ]]
 function(git_checkout)
   set(oneValueArgs REPOSITORY_PATH REVISION)
