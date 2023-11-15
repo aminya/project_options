@@ -12,11 +12,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8d643f27"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -99,14 +99,14 @@
            <div itemprop="articleBody">
              
   <section id="getting-started">
-<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h1>
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h1>
 <section id="project-options">
-<h2>project_options<a class="headerlink" href="#project-options" title="Permalink to this heading"></a></h2>
+<h2>project_options<a class="headerlink" href="#project-options" title="Link to this heading"></a></h2>
 <p>A general-purpose CMake library that provides functions that improve the CMake experience following the best practices.</p>
 <p><a class="reference external" href="https://aminya.github.io/project_options/"><img alt="documentation" src="https://img.shields.io/badge/documentation-blue?style=flat&amp;logo=docs.rs&amp;link=https://aminya.github.io/project_options/" /></a></p>
 <p><a class="reference external" href="https://github.com/aminya/project_options/actions/workflows/ci.yml"><img alt="ci" src="https://github.com/aminya/project_options/actions/workflows/ci.yml/badge.svg" /></a></p>
 <section id="features">
-<h3>Features<a class="headerlink" href="#features" title="Permalink to this heading"></a></h3>
+<h3>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">project_options</span></code>:</p>
 <ul>
@@ -132,18 +132,18 @@
 </ul>
 </section>
 <section id="documentation">
-<h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading"></a></h3>
+<h3>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h3>
 <p>The full documentation is available here:</p>
 <p><a class="reference external" href="https://aminya.github.io/project_options/">https://aminya.github.io/project_options/</a></p>
 </section>
 </section>
 <section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
 <section id="project-options-function">
-<h3><code class="docutils literal notranslate"><span class="pre">project_options</span></code> function<a class="headerlink" href="#project-options-function" title="Permalink to this heading"></a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">project_options</span></code> function<a class="headerlink" href="#project-options-function" title="Link to this heading"></a></h3>
 <p>See the <code class="docutils literal notranslate"><span class="pre">project_options()</span></code> in action in <a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project">this template repository</a>. <a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project">cpp_vcpkg_project</a> has prepared all the best practices for a production-ready C++ project.</p>
 <section id="project-and-project-options">
-<h4><code class="docutils literal notranslate"><span class="pre">project</span></code> and <code class="docutils literal notranslate"><span class="pre">project_options</span></code><a class="headerlink" href="#project-and-project-options" title="Permalink to this heading"></a></h4>
+<h4><code class="docutils literal notranslate"><span class="pre">project</span></code> and <code class="docutils literal notranslate"><span class="pre">project_options</span></code><a class="headerlink" href="#project-and-project-options" title="Link to this heading"></a></h4>
 <p>Here is an example of the usage:</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.20</span><span class="nf">)</span>
 
@@ -158,7 +158,7 @@
 
 <span class="c"># Add project_options from https://github.com/aminya/project_options</span>
 <span class="c"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</span>
-<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.32.2&quot;</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.33.0&quot;</span><span class="nf">)</span>
 <span class="nf">FetchContent_Declare(</span>
 <span class="w">  </span><span class="nb">_project_options</span>
 <span class="w">  </span><span class="no">URL</span><span class="w"> </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/</span><span class="o">${</span><span class="nt">PROJECT_OPTIONS_VERSION</span><span class="o">}</span><span class="p">.</span><span class="nb">zip</span><span class="nf">)</span>
@@ -241,7 +241,7 @@
 <p>Then add the executables or libraries to the project:</p>
 </section>
 <section id="executable-usage">
-<h4><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe">executable usage</a><a class="headerlink" href="#executable-usage" title="Permalink to this heading"></a></h4>
+<h4><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe">executable usage</a><a class="headerlink" href="#executable-usage" title="Link to this heading"></a></h4>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">main</span><span class="w"> </span><span class="nb">main.cpp</span><span class="nf">)</span>
 
 <span class="c"># link project_options/warnings</span>
@@ -269,7 +269,7 @@
 </div>
 </section>
 <section id="library-usage">
-<h4><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib">library usage</a><a class="headerlink" href="#library-usage" title="Permalink to this heading"></a></h4>
+<h4><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib">library usage</a><a class="headerlink" href="#library-usage" title="Link to this heading"></a></h4>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">my_lib</span><span class="w"> </span><span class="s">&quot;./src/my_lib/lib.cpp&quot;</span><span class="nf">)</span>
 
 <span class="c"># link project_options/warnings</span>
@@ -303,7 +303,7 @@
 </div>
 </section>
 <section id="header-only-library-usage">
-<h4><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib">header-only library usage</a><a class="headerlink" href="#header-only-library-usage" title="Permalink to this heading"></a></h4>
+<h4><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib">header-only library usage</a><a class="headerlink" href="#header-only-library-usage" title="Link to this heading"></a></h4>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">my_header_lib</span><span class="w"> </span><span class="no">INTERFACE</span><span class="nf">)</span>
 
 <span class="c"># link project_options/warnings</span>
@@ -337,13 +337,13 @@
 </section>
 </section>
 <section id="license">
-<h3>License<a class="headerlink" href="#license" title="Permalink to this heading"></a></h3>
+<h3>License<a class="headerlink" href="#license" title="Link to this heading"></a></h3>
 <p>This project can be used under the terms of either the <a class="reference internal" href="#../../LICENSE.txt"><span class="xref myst">MIT license</span></a> or the <a class="reference internal" href="#../../Unlicense.txt"><span class="xref myst">Unlicense</span></a> depending on your choice.</p>
 </section>
 </section>
 </section>
 <section id="table-of-contents">
-<h1>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading"></a></h1>
+<h1>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a></li>

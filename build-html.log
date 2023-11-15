@@ -1,4 +1,4 @@
-Running Sphinx v6.2.1
+Running Sphinx v7.2.6
 Doxygen version 1.9.1
 Copyright Dimitri van Heesch 1997-2021
 
@@ -43,15 +43,28 @@ If configName is omitted 'Doxyfile' will be used as a default.
 If - is used for configFile doxygen will write / read the configuration to /from standard output / input.
 
 -v print version string
-loading pickled environment... done
+loading pickled environment... failed: build environment version not current
+done
 myst v2.0.0: MdParserConfig(commonmark_only=False, gfm_only=False, enable_extensions=set(), disable_syntax=[], all_links_external=False, url_schemes=('http', 'https', 'mailto', 'ftp'), ref_domains=None, fence_as_directive=set(), number_code_blocks=[], title_to_header=False, heading_anchors=0, heading_slug_func=None, html_meta={}, footnote_transition=True, words_per_minute=200, substitutions={}, linkify_fuzzy_links=True, dmath_allow_labels=True, dmath_allow_space=True, dmath_allow_digits=True, dmath_double_inline=False, update_mathjax=True, mathjax_classes='tex2jax_process|mathjax_process|math|output_area', enable_checkboxes=False, suppress_warnings=[], highlight_code_blocks=True)
 building [mo]: targets for 0 po files that are out of date
 writing output... 
-building [html]: targets for 0 source files that are out of date
-updating environment: 0 added, 0 changed, 0 removed
-reading sources... 
+building [html]: targets for 6 source files that are out of date
+updating environment: [new config] 6 added, 0 changed, 0 removed
+[2Kreading sources... [ 17%] README[2Kreading sources... [ 33%] index[2Kreading sources... [ 50%] src/License[2Kreading sources... [ 67%] src/Readme_top[2Kreading sources... [ 83%] src/index[2Kreading sources... [100%] src/project_options_example
 looking for now-outdated files... none found
-no targets are out of date.
-build succeeded, 1 warning.
+pickling environment... done
+checking consistency... done
+preparing documents... done
+copying assets... [2Kcopying downloadable files... [ 50%] LICENSE.txt[2Kcopying downloadable files... [100%] Unlicense.txt
+copying static files... done
+copying extra files... done
+done
+[2Kwriting output... [ 17%] README[2Kwriting output... [ 33%] index[2Kwriting output... [ 50%] src/License[2Kwriting output... [ 67%] src/Readme_top[2Kwriting output... [ 83%] src/index[2Kwriting output... [100%] src/project_options_example
+generating indices... genindex done
+highlighting module code... 
+writing additional pages... search done
+dumping search index in English (code: en)... done
+dumping object inventory... done
+build succeeded, 10 warnings.
 
 The HTML pages are in html.

@@ -12,11 +12,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d643f27"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -105,10 +105,10 @@
            <div itemprop="articleBody">
              
   <section id="project-options-function">
-<h1><code class="docutils literal notranslate"><span class="pre">project_options</span></code> function<a class="headerlink" href="#project-options-function" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">project_options</span></code> function<a class="headerlink" href="#project-options-function" title="Link to this heading"></a></h1>
 <p>See the <code class="docutils literal notranslate"><span class="pre">project_options()</span></code> in action in <a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project">this template repository</a>. <a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project">cpp_vcpkg_project</a> has prepared all the best practices for a production-ready C++ project.</p>
 <section id="project-and-project-options">
-<h2><code class="docutils literal notranslate"><span class="pre">project</span></code> and <code class="docutils literal notranslate"><span class="pre">project_options</span></code><a class="headerlink" href="#project-and-project-options" title="Permalink to this heading"></a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">project</span></code> and <code class="docutils literal notranslate"><span class="pre">project_options</span></code><a class="headerlink" href="#project-and-project-options" title="Link to this heading"></a></h2>
 <p>Here is an example of the usage:</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.20</span><span class="nf">)</span>
 
@@ -123,7 +123,7 @@
 
 <span class="c"># Add project_options from https://github.com/aminya/project_options</span>
 <span class="c"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</span>
-<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.32.2&quot;</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.33.0&quot;</span><span class="nf">)</span>
 <span class="nf">FetchContent_Declare(</span>
 <span class="w">  </span><span class="nb">_project_options</span>
 <span class="w">  </span><span class="no">URL</span><span class="w"> </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/</span><span class="o">${</span><span class="nt">PROJECT_OPTIONS_VERSION</span><span class="o">}</span><span class="p">.</span><span class="nb">zip</span><span class="nf">)</span>
@@ -206,7 +206,7 @@
 <p>Then add the executables or libraries to the project:</p>
 </section>
 <section id="executable-usage">
-<h2><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe">executable usage</a><a class="headerlink" href="#executable-usage" title="Permalink to this heading"></a></h2>
+<h2><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_exe">executable usage</a><a class="headerlink" href="#executable-usage" title="Link to this heading"></a></h2>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">main</span><span class="w"> </span><span class="nb">main.cpp</span><span class="nf">)</span>
 
 <span class="c"># link project_options/warnings</span>
@@ -234,7 +234,7 @@
 </div>
 </section>
 <section id="library-usage">
-<h2><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib">library usage</a><a class="headerlink" href="#library-usage" title="Permalink to this heading"></a></h2>
+<h2><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_lib">library usage</a><a class="headerlink" href="#library-usage" title="Link to this heading"></a></h2>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">my_lib</span><span class="w"> </span><span class="s">&quot;./src/my_lib/lib.cpp&quot;</span><span class="nf">)</span>
 
 <span class="c"># link project_options/warnings</span>
@@ -268,7 +268,7 @@
 </div>
 </section>
 <section id="header-only-library-usage">
-<h2><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib">header-only library usage</a><a class="headerlink" href="#header-only-library-usage" title="Permalink to this heading"></a></h2>
+<h2><a class="reference external" href="https://github.com/aminya/cpp_vcpkg_project/tree/main/my_header_lib">header-only library usage</a><a class="headerlink" href="#header-only-library-usage" title="Link to this heading"></a></h2>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">my_header_lib</span><span class="w"> </span><span class="no">INTERFACE</span><span class="nf">)</span>
 
 <span class="c"># link project_options/warnings</span>
@@ -302,7 +302,7 @@
 </section>
 </section>
 <section id="project-options-parameters">
-<h1><code class="docutils literal notranslate"><span class="pre">project_options</span></code> parameters<a class="headerlink" href="#project-options-parameters" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">project_options</span></code> parameters<a class="headerlink" href="#project-options-parameters" title="Link to this heading"></a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">project_options</span></code> function accepts the following named flags:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ENABLE_CACHE</span></code>: Enable cache if available</p></li>
@@ -371,7 +371,7 @@ rule set in Visual Studio.</p></li>
 </ul>
 </section>
 <section id="run-vcpkg">
-<h1><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code><a class="headerlink" href="#run-vcpkg" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">run_vcpkg</span></code><a class="headerlink" href="#run-vcpkg" title="Link to this heading"></a></h1>
 <p>Install vcpkg and vcpkg dependencies:</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">run_vcpkg()</span>
 </pre></div>
@@ -417,7 +417,7 @@ will be updated if the last update was more than
 </ul>
 </section>
 <section id="package-project">
-<h1><code class="docutils literal notranslate"><span class="pre">package_project</span></code><a class="headerlink" href="#package-project" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">package_project</span></code><a class="headerlink" href="#package-project" title="Link to this heading"></a></h1>
 <p>A function that packages the project for external usage (e.g. from
 vcpkg, Conan, etc).</p>
 <p>The following arguments specify the package:</p>
@@ -461,7 +461,7 @@ the configuration files. Defaults to
 </ul>
 </section>
 <section id="target-include-interface-directories">
-<h1><code class="docutils literal notranslate"><span class="pre">target_include_interface_directories</span></code><a class="headerlink" href="#target-include-interface-directories" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">target_include_interface_directories</span></code><a class="headerlink" href="#target-include-interface-directories" title="Link to this heading"></a></h1>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_include_interface_directories(</span><span class="nv">&lt;target_name&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;include_dir&gt;</span><span class="w"> </span><span class="p">...]</span><span class="nf">)</span>
 </pre></div>
 </div>
@@ -489,7 +489,7 @@ to add more header interface directories.</p>
 </div>
 </section>
 <section id="target-find-dependencies">
-<h1><code class="docutils literal notranslate"><span class="pre">target_find_dependencies</span></code><a class="headerlink" href="#target-find-dependencies" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">target_find_dependencies</span></code><a class="headerlink" href="#target-find-dependencies" title="Link to this heading"></a></h1>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_find_dependencies(</span><span class="nv">&lt;target_name&gt;</span>
 <span class="w">  </span><span class="p">[</span><span class="no">INTERFACE</span><span class="w"> </span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]</span>
 <span class="w">  </span><span class="p">[</span><span class="no">PUBLIC</span><span class="w"> </span><span class="nb">dependency</span><span class="w"> </span><span class="p">...]</span>
@@ -537,14 +537,14 @@ to add more dependencies.</p>
 </div>
 </section>
 <section id="target-include-system-directories">
-<h1><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code><a class="headerlink" href="#target-include-system-directories" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">target_include_system_directories</span></code><a class="headerlink" href="#target-include-system-directories" title="Link to this heading"></a></h1>
 <p>Include a system directory (which suppresses its warnings).</p>
 <p>The function accepts the same arguments as
 <code class="docutils literal notranslate"><span class="pre">target_include_directories</span></code>. It has the mentioned features of
 <code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code>.</p>
 </section>
 <section id="target-link-system-libraries">
-<h1><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code><a class="headerlink" href="#target-link-system-libraries" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">target_link_system_libraries</span></code><a class="headerlink" href="#target-link-system-libraries" title="Link to this heading"></a></h1>
 <p>Link multiple library targets as system libraries (which suppresses
 their warnings).</p>
 <p>The function accepts the same arguments as <code class="docutils literal notranslate"><span class="pre">target_link_libraries</span></code>. It
@@ -558,7 +558,7 @@ suppress their warnings. This helps in enabling
 </ul>
 </section>
 <section id="dynamic-project-options">
-<h1><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code><a class="headerlink" href="#dynamic-project-options" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">dynamic_project_options</span></code><a class="headerlink" href="#dynamic-project-options" title="Link to this heading"></a></h1>
 <p>During the test and development, it can be useful to change options on
 the fly. For example, to enable sanitizers when running tests. You can
 include <code class="docutils literal notranslate"><span class="pre">DynamicOptions.cmake</span></code>, which imports the
@@ -600,7 +600,7 @@ repository</a>.</p>
 
 <span class="c"># Add project_options from https://github.com/aminya/project_options</span>
 <span class="c"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</span>
-<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.32.2&quot;</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.33.0&quot;</span><span class="nf">)</span>
 <span class="nf">FetchContent_Declare(</span>
 <span class="w">  </span><span class="nb">_project_options</span>
 <span class="w">  </span><span class="no">URL</span><span class="w"> </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/</span><span class="o">${</span><span class="nt">PROJECT_OPTIONS_VERSION</span><span class="o">}</span><span class="p">.</span><span class="nb">zip</span><span class="nf">)</span>
@@ -631,7 +631,7 @@ repository</a>.</p>
 <p>Add your executables, etc., as described above.</p>
 </section>
 <section id="target-disable-static-analysis">
-<h1><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code><a class="headerlink" href="#target-disable-static-analysis" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">target_disable_static_analysis</span></code><a class="headerlink" href="#target-disable-static-analysis" title="Link to this heading"></a></h1>
 <p>This function disables static analysis for the given target:</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_disable_static_analysis(</span><span class="nb">some_external_target</span><span class="nf">)</span>
 </pre></div>
@@ -647,7 +647,7 @@ the target:</p>
 </ul>
 </section>
 <section id="check-sanitizers-support">
-<h1><code class="docutils literal notranslate"><span class="pre">check_sanitizers_support</span></code><a class="headerlink" href="#check-sanitizers-support" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">check_sanitizers_support</span></code><a class="headerlink" href="#check-sanitizers-support" title="Link to this heading"></a></h1>
 <p>Detect sanitizers support for compiler.</p>
 <p>Note that some sanitizers cannot be enabled together, and this function doesn’t check that. You should decide which sanitizers to enable based on your needs.</p>
 <p>Output variables:</p>
@@ -669,7 +669,7 @@ the target:</p>
 </div>
 </section>
 <section id="find-linker">
-<h1><code class="docutils literal notranslate"><span class="pre">find_linker</span></code><a class="headerlink" href="#find-linker" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">find_linker</span></code><a class="headerlink" href="#find-linker" title="Link to this heading"></a></h1>
 <p>Find a linker prefering the linkers in this order: sold, mold, lld, gold, the system linker</p>
 <p>Output variables:</p>
 <ul class="simple">
@@ -681,7 +681,7 @@ the target:</p>
 </div>
 </section>
 <section id="enable-cross-compiler">
-<h1><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code><a class="headerlink" href="#enable-cross-compiler" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">enable_cross_compiler</span></code><a class="headerlink" href="#enable-cross-compiler" title="Link to this heading"></a></h1>
 <p><strong>NOTE</strong>: more documentation/examples for this feature is welcome. See
 the <code class="docutils literal notranslate"><span class="pre">tests/rpi3</span></code>, <code class="docutils literal notranslate"><span class="pre">tests/rpi4</span></code>, <code class="docutils literal notranslate"><span class="pre">tests/emscripten</span></code>,
 <code class="docutils literal notranslate"><span class="pre">tests-rpi4-vcpkg</span></code> directories in the
@@ -767,7 +767,7 @@ triplets</a></p>
 </ul>
 </section>
 <section id="target-link-cuda">
-<h1><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code><a class="headerlink" href="#target-link-cuda" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">target_link_cuda</span></code><a class="headerlink" href="#target-link-cuda" title="Link to this heading"></a></h1>
 <p>Link Cuda to the given target.</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">main_cuda</span><span class="w"> </span><span class="nb">main.cu</span><span class="nf">)</span>
 <span class="nf">target_compile_features(</span><span class="nb">main_cuda</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">cxx_std_17</span><span class="nf">)</span>
@@ -777,18 +777,48 @@ triplets</a></p>
 </div>
 </section>
 <section id="git-clone">
-<h1><code class="docutils literal notranslate"><span class="pre">git_clone</span></code><a class="headerlink" href="#git-clone" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">git_clone</span></code><a class="headerlink" href="#git-clone" title="Link to this heading"></a></h1>
 <p>Clone the given repository to the given path</p>
 <p>Input variables:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">REPOSITORY_PATH</span></code>: The path to the repository</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">REMOTE_URL</span></code>: The url of the remote to add</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">REMOTE_NAME</span></code>: The name of the remote to add (defaults to the remote user)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SHALLOW_SINCE</span></code>: Create a shallow clone with a history after the specified time. date should be in format of <cite>git log –date=raw</cite>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BRANCH</span></code>: Only clone the given branch</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">FORCE_CLONE</span></code>: Force the clone even if the directory exists</p></li>
 </ul>
+<p>Simple example:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">git_clone(</span>
+<span class="w">  </span><span class="no">REPOSITORY_PATH</span>
+<span class="w">  </span><span class="s">&quot;./vcpkg&quot;</span>
+<span class="w">  </span><span class="no">REMOTE_URL</span>
+<span class="w">  </span><span class="s">&quot;https://github.com/microsoft/vcpkg.git&quot;</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>Example for a shallow clone and checking out of a specific revision:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">git_clone(</span>
+<span class="w">  </span><span class="no">REPOSITORY_PATH</span>
+<span class="w">  </span><span class="s">&quot;$ENV{HOME}/vcpkg&quot;</span>
+<span class="w">  </span><span class="no">REMOTE_URL</span>
+<span class="w">  </span><span class="s">&quot;https://github.com/microsoft/vcpkg.git&quot;</span>
+<span class="w">  </span><span class="no">SHALLOW_SINCE</span>
+<span class="w">  </span><span class="s">&quot;1686087993 -0700&quot;</span>
+<span class="w">  </span><span class="no">BRANCH</span>
+<span class="w">  </span><span class="s">&quot;master&quot;</span>
+<span class="nf">)</span>
+<span class="nf">git_checkout(</span>
+<span class="w">  </span><span class="no">REPOSITORY_PATH</span>
+<span class="w">  </span><span class="s">&quot;$ENV{HOME}/vcpkg&quot;</span>
+<span class="w">  </span><span class="no">REVISION</span>
+<span class="w">  </span><span class="nb">ecd22cc3acc8ee3c406e566db1e19ece1f17f409</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
 </section>
 <section id="git-pull">
-<h1><code class="docutils literal notranslate"><span class="pre">git_pull</span></code><a class="headerlink" href="#git-pull" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">git_pull</span></code><a class="headerlink" href="#git-pull" title="Link to this heading"></a></h1>
 <p>Pull the given repository</p>
 <p>It will temporarily switch back to the previous branch if the head is detached for updating</p>
 <p>Input variables:</p>
@@ -797,16 +827,32 @@ triplets</a></p>
 </ul>
 </section>
 <section id="git-checkout">
-<h1><code class="docutils literal notranslate"><span class="pre">git_checkout</span></code><a class="headerlink" href="#git-checkout" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">git_checkout</span></code><a class="headerlink" href="#git-checkout" title="Link to this heading"></a></h1>
 <p>Checkout the given revision</p>
 <p>Input variables:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">REPOSITORY_PATH</span></code>: The path to the repository</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">REVISION</span></code>: The revision to checkout</p></li>
 </ul>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">git_checkout(</span>
+<span class="w">  </span><span class="no">REPOSITORY_PATH</span>
+<span class="w">  </span><span class="s">&quot;$ENV{HOME}/vcpkg&quot;</span>
+<span class="w">  </span><span class="no">REVISION</span>
+<span class="w">  </span><span class="nb">ecd22cc3acc8ee3c406e566db1e19ece1f17f409</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">git_checkout(</span>
+<span class="w">  </span><span class="no">REPOSITORY_PATH</span>
+<span class="w">  </span><span class="s">&quot;./some_repo&quot;</span>
+<span class="w">  </span><span class="no">REVISION</span>
+<span class="w">  </span><span class="nb">v1.0.0</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
 </section>
 <section id="git-parse-url">
-<h1><code class="docutils literal notranslate"><span class="pre">git_parse_url</span></code><a class="headerlink" href="#git-parse-url" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">git_parse_url</span></code><a class="headerlink" href="#git-parse-url" title="Link to this heading"></a></h1>
 <p>Parse the given Git url into its components</p>
 <p>It expects the url to be in the form of:
 <cite>[protocol://][host]/user/repo[.git]</cite></p>
@@ -824,7 +870,7 @@ triplets</a></p>
 </ul>
 </section>
 <section id="git-add-remote">
-<h1><code class="docutils literal notranslate"><span class="pre">git_add_remote</span></code><a class="headerlink" href="#git-add-remote" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">git_add_remote</span></code><a class="headerlink" href="#git-add-remote" title="Link to this heading"></a></h1>
 <p>Add a remote to the given repository on the given path</p>
 <p>Input variables:</p>
 <ul class="simple">
@@ -834,7 +880,7 @@ triplets</a></p>
 </ul>
 </section>
 <section id="git-revision">
-<h1><code class="docutils literal notranslate"><span class="pre">git_revision</span></code><a class="headerlink" href="#git-revision" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">git_revision</span></code><a class="headerlink" href="#git-revision" title="Link to this heading"></a></h1>
 <p>Find the current git revision of the given repository</p>
 <p>Input variables:</p>
 <ul class="simple">
@@ -846,7 +892,7 @@ triplets</a></p>
 </ul>
 </section>
 <section id="git-is-detached">
-<h1><code class="docutils literal notranslate"><span class="pre">git_is_detached</span></code><a class="headerlink" href="#git-is-detached" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">git_is_detached</span></code><a class="headerlink" href="#git-is-detached" title="Link to this heading"></a></h1>
 <p>Check if the given repository is in a detached state</p>
 <p>Input variables:</p>
 <ul class="simple">
@@ -858,7 +904,7 @@ triplets</a></p>
 </ul>
 </section>
 <section id="git-switch-back">
-<h1><code class="docutils literal notranslate"><span class="pre">git_switch_back</span></code><a class="headerlink" href="#git-switch-back" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">git_switch_back</span></code><a class="headerlink" href="#git-switch-back" title="Link to this heading"></a></h1>
 <p>Detect if the head is detached, if so, switch back before calling git pull on a detached head</p>
 <p>Input variables:</p>
 <ul class="simple">
@@ -866,7 +912,7 @@ triplets</a></p>
 </ul>
 </section>
 <section id="git-wait">
-<h1><code class="docutils literal notranslate"><span class="pre">git_wait</span></code><a class="headerlink" href="#git-wait" title="Permalink to this heading"></a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">git_wait</span></code><a class="headerlink" href="#git-wait" title="Link to this heading"></a></h1>
 <p>Wait for the git lock file to be released</p>
 <p>Input variables:</p>
 <ul class="simple">
