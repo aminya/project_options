@@ -457,8 +457,17 @@ function(git_switch_back)
 
     execute_process(
       COMMAND "${GIT_EXECUTABLE}" "switch" "-" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
-                                                                 COMMAND_ERROR_IS_FATAL LAST
+      RESULT_VARIABLE _switch_back_result
     )
+
+    # if the switch back failed, try to checkout the previous branch
+    if(NOT ${_switch_back_result} EQUAL 0)
+      message(STATUS "Switch back failed. Trying to checkout previous branch")
+      execute_process(
+        COMMAND "${GIT_EXECUTABLE}" "checkout" "-" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
+                                                                     COMMAND_ERROR_IS_FATAL LAST
+      )
+    endif()
   endif()
 endfunction()
 
