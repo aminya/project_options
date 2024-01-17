@@ -29,7 +29,7 @@ endmacro()
 
 macro(_update_vcpkg_repository)
   if(${_vcpkg_args_ENABLE_VCPKG_UPDATE})
-    git_pull(REPOSITORY_PATH "${_vcpkg_args_VCPKG_DIR}")
+    git_pull(REPOSITORY_PATH "${_vcpkg_args_VCPKG_DIR}" TARGET_REVISION "${_vcpkg_args_VCPKG_REV}")
   endif()
 endmacro()
 
@@ -94,7 +94,6 @@ endmacro()
 
 macro(_checkout_vcpkg_repository)
   if(NOT "${_vcpkg_args_VCPKG_REV}" STREQUAL "")
-
     git_checkout(REPOSITORY_PATH "${_vcpkg_args_VCPKG_DIR}" REVISION "${_vcpkg_args_VCPKG_REV}")
   endif()
 endmacro()
