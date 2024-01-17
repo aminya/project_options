@@ -78,7 +78,6 @@ include(${_project_options_SOURCE_DIR}/Index.cmake)
 run_vcpkg(
     VCPKG_URL "https://github.com/microsoft/vcpkg.git"
     VCPKG_REV "0fa8459cf3a7caca7adc58f992bc32ff13630684"
-    ENABLE_VCPKG_UPDATE
 )
 
 # Set the project name and language

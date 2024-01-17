@@ -126,15 +126,18 @@ endfunction()
 
 Pull the given repository
 
-It will temporarily switch back to the previous branch if the head is detached for updating
+If ``TARGET_REVISION`` is given, the pull is skipped if the current revision is the same as the target revision.
+
+It will temporarily switch back to the previous branch if the head is detached for updating.
 
 Input variables:
 
 - ``REPOSITORY_PATH``: The path to the repository
+- ``TARGET_REVISION``: if the current revision of the repository is the same as this given revision, the pull is skipped
 
 ]]
 function(git_pull)
-  set(oneValueArgs REPOSITORY_PATH)
+  set(oneValueArgs REPOSITORY_PATH TARGET_REVISION)
   cmake_parse_arguments(_fun "" "${oneValueArgs}" "" ${ARGN})
 
   if("${_fun_REPOSITORY_PATH}" STREQUAL "")
@@ -144,14 +147,26 @@ function(git_pull)
   # store the current revision
   git_revision(REVISION REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
 
+  # skip the pull if the revision is the same
+  if(NOT "${_fun_TARGET_REVISION}" STREQUAL "" AND "${REVISION}" STREQUAL "${_fun_TARGET_REVISION}")
+    message(STATUS "Skipping pull of ${_fun_REPOSITORY_PATH} because it's already at ${REVISION}")
+    return()
+  else()
+    # pull and restore it after the pull
+    set(_fun_TARGET_REVISION "${REVISION}")
+  endif()
+
   git_switch_back(REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
 
   message(STATUS "Updating ${_fun_REPOSITORY_PATH}")
   find_program(GIT_EXECUTABLE "git" REQUIRED)
-  execute_process(COMMAND "${GIT_EXECUTABLE}" "pull" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}")
+  execute_process(
+    COMMAND "${GIT_EXECUTABLE}" "pull" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
+                                                         COMMAND_ERROR_IS_FATAL LAST
+  )
 
   # restore the revision
-  git_checkout(REPOSITORY_PATH "${_fun_REPOSITORY_PATH}" REVISION "${REVISION}")
+  git_checkout(REPOSITORY_PATH "${_fun_REPOSITORY_PATH}" REVISION "${_fun_TARGET_REVISION}")
 endfunction()
 
 #[[.rst:
@@ -190,6 +205,11 @@ function(git_checkout)
 
   if("${_fun_REPOSITORY_PATH}" STREQUAL "" OR "${_fun_REVISION}" STREQUAL "")
     message(FATAL_ERROR "REPOSITORY_PATH and REVISION are required")
+  endif()
+
+  git_revision(REVISION REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
+  if("${REVISION}" STREQUAL "${_fun_REVISION}")
+    return()
   endif()
 
   find_program(GIT_EXECUTABLE "git" REQUIRED)
