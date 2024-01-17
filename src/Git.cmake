@@ -160,6 +160,10 @@ function(git_pull)
 
   message(STATUS "Updating ${_fun_REPOSITORY_PATH}")
   find_program(GIT_EXECUTABLE "git" REQUIRED)
+
+  # wait for lock before pulling
+  git_wait(REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
+
   execute_process(
     COMMAND "${GIT_EXECUTABLE}" "pull" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
                                                          COMMAND_ERROR_IS_FATAL LAST
@@ -211,6 +215,9 @@ function(git_checkout)
   if("${REVISION}" STREQUAL "${_fun_REVISION}")
     return()
   endif()
+
+  # wait for lock before checking out
+  git_wait(REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
 
   find_program(GIT_EXECUTABLE "git" REQUIRED)
   execute_process(
@@ -376,7 +383,7 @@ function(git_revision REVISION)
     COMMAND "${GIT_EXECUTABLE}" "rev-parse" "HEAD"
     OUTPUT_VARIABLE _git_revision
     WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
-    OUTPUT_STRIP_TRAILING_WHITESPACE
+    OUTPUT_STRIP_TRAILING_WHITESPACE COMMAND_ERROR_IS_FATAL LAST
   )
   set(${REVISION} ${_git_revision} PARENT_SCOPE)
 endfunction()
@@ -411,7 +418,7 @@ function(git_is_detached IS_DETACHED)
     COMMAND "${GIT_EXECUTABLE}" "rev-parse" "--abbrev-ref" "--symbolic-full-name" "HEAD"
     OUTPUT_VARIABLE _git_status
     WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
-    OUTPUT_STRIP_TRAILING_WHITESPACE
+    OUTPUT_STRIP_TRAILING_WHITESPACE COMMAND_ERROR_IS_FATAL LAST
   )
   if("${_git_status}" STREQUAL "HEAD")
     set(${IS_DETACHED} TRUE PARENT_SCOPE)
@@ -444,8 +451,13 @@ function(git_switch_back)
 
   if(${IS_DETACHED})
     message(STATUS "Switch back ${_fun_REPOSITORY_PATH}")
+
+    # wait for lock before switching back
+    git_wait(REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
+
     execute_process(
       COMMAND "${GIT_EXECUTABLE}" "switch" "-" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
+                                                                 COMMAND_ERROR_IS_FATAL LAST
     )
   endif()
 endfunction()
@@ -477,20 +489,17 @@ function(git_wait)
 
   set(counter 0)
 
-  message(STATUS "Waiting for git lock file...[${counter}/${_fun_TIMEOUT_COUNTER}]")
-
   # wait until .git/index is present (in case a parallel clone is running)
   while(NOT EXISTS "${_fun_REPOSITORY_PATH}/.git/index"
         OR EXISTS "${_fun_REPOSITORY_PATH}/.git/index.lock"
   )
-    execute_process(COMMAND ${CMAKE_COMMAND} -E sleep 0.5)
+    message(STATUS "Waiting for git lock file...[${counter}/${_fun_TIMEOUT_COUNTER}]")
+    execute_process(COMMAND ${CMAKE_COMMAND} -E sleep 0.5 COMMAND_ERROR_IS_FATAL LAST)
 
     math(EXPR counter "${counter} + 1")
     if(${counter} GREATER ${_fun_TIMEOUT_COUNTER})
       message(STATUS "Timeout waiting for git lock file. Continuing...")
       return()
-    else()
-      message(STATUS "Waiting for git lock file...[${counter}/${_fun_TIMEOUT_COUNTER}]")
     endif()
   endwhile()
 endfunction()
