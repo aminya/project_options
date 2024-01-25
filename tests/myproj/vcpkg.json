@@ -1,16 +1,16 @@
 {
-  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
   "name": "myproject",
   "version-string": "0.1.0",
-  "builtin-baseline": "8dbd66f5a7821ced1ed57696b50375a977006813",
+  "builtin-baseline": "3b213864579b6fa686e38715508f7cd41a50900f",
   "dependencies": [
     {
       "name": "eigen3",
-      "version>=": "3.4.0"
+      "version>=": "3.4.0#2"
     },
     {
       "name": "fmt",
-      "version>=": "8.1.1"
+      "version>=": "10.2.1"
     }
   ]
 }
