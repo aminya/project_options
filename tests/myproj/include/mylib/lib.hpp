@@ -3,7 +3,7 @@
 // test external pac
 #include <Eigen/Dense>
 #include <fmt/core.h>
-#include <fmt/ostream.h>
+#include <fmt/ranges.h>
 
 // test std libraries
 #include <iostream>
@@ -24,7 +24,7 @@ int some_fun() {
   auto eigen_vec = Eigen::VectorXd::LinSpaced(10, 0, 1);
 
   // print the vector
-  fmt::print("{}", eigen_vec);
+  fmt::print("[{}]", fmt::join(eigen_vec, ", "));
 
   return 0;
 }
