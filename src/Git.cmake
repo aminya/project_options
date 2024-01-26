@@ -465,8 +465,19 @@ function(git_switch_back)
       message(STATUS "Switch back failed. Trying to checkout previous branch")
       execute_process(
         COMMAND "${GIT_EXECUTABLE}" "checkout" "-" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
-                                                                     COMMAND_ERROR_IS_FATAL LAST
+        RESULT_VARIABLE _checkout_result
       )
+
+      # if the checkout failed, try to checkout the default branch
+      if(NOT ${_checkout_result} EQUAL 0)
+        message(STATUS "Checkout previous branch failed. Trying to checkout default branch")
+        git_default_branch(default_branch REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
+        execute_process(
+          COMMAND "${GIT_EXECUTABLE}" "checkout" "${default_branch}"
+          WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}" COMMAND_ERROR_IS_FATAL LAST
+        )
+      endif()
+
     endif()
   endif()
 endfunction()
@@ -511,4 +522,57 @@ function(git_wait)
       return()
     endif()
   endwhile()
+endfunction()
+
+#[[.rst:
+
+``git_default_branch``
+======================
+Get the default branch of the given repository. Defaults to master in case of failure
+
+Input variables:
+- ``REPOSITORY_PATH``: The path to the repository
+
+Output variables:
+- ``default_branch``: The variable to store the default branch in
+
+
+.. code:: cmake
+
+  git_default_branch(
+    REPOSITORY_PATH
+    "$ENV{HOME}/vcpkg"
+    default_branch
+  )
+
+]]
+function(git_default_branch default_branch)
+  # use git symbolic-ref refs/remotes/origin/HEAD to get the default branch
+
+  set(oneValueArgs REPOSITORY_PATH)
+  cmake_parse_arguments(_fun "" "${oneValueArgs}" "" ${ARGN})
+
+  if("${_fun_REPOSITORY_PATH}" STREQUAL "")
+    message(FATAL_ERROR "REPOSITORY_PATH is required")
+  endif()
+
+  find_program(GIT_EXECUTABLE "git" REQUIRED)
+  execute_process(
+    COMMAND "${GIT_EXECUTABLE}" "symbolic-ref" "refs/remotes/origin/HEAD"
+    OUTPUT_VARIABLE _default_branch
+    WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    RESULT_VARIABLE _default_branch_result
+  )
+
+  if(${_default_branch_result} EQUAL 0)
+    string(REGEX REPLACE "refs/remotes/origin/" "" _default_branch "${_default_branch}")
+  else()
+    message(
+      WARNING "Could not get default branch of ${_fun_REPOSITORY_PATH}. Considering it as master"
+    )
+    set(_default_branch "master")
+  endif()
+
+  set(${default_branch} ${_default_branch} PARENT_SCOPE)
 endfunction()
