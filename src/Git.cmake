@@ -432,7 +432,10 @@ endfunction()
 ``git_switch_back``
 ===================
 
-Detect if the head is detached, if so, switch back before calling git pull on a detached head
+Detect if the head is detached, if so, switch/checkout back
+If the switch/checkout back fails or goes to a detached state, try to checkout the default branch
+
+This is used before updating the repository in a pull
 
 Input variables:
 
@@ -447,38 +450,42 @@ function(git_switch_back)
     message(FATAL_ERROR "REPOSITORY_PATH is required")
   endif()
 
+  # return if the head is not detached
   git_is_detached(IS_DETACHED REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
+  if(NOT ${IS_DETACHED})
+    return()
+  endif()
 
+  # first try to switch back
+  message(STATUS "Switch back ${_fun_REPOSITORY_PATH}")
+  git_wait(REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
+  execute_process(
+    COMMAND "${GIT_EXECUTABLE}" "switch" "-" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
+    RESULT_VARIABLE _switch_back_result
+  )
+  git_is_detached(IS_DETACHED REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
+  if(${_switch_back_result} EQUAL 0 AND NOT ${IS_DETACHED})
+    return()
+  endif()
+
+  # if the switch back failed, try to checkout the previous branch
+  message(STATUS "Switch back failed. Trying to checkout previous branch")
+  git_wait(REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
+  execute_process(
+    COMMAND "${GIT_EXECUTABLE}" "checkout" "-" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
+    RESULT_VARIABLE _checkout_result
+  )
+  git_is_detached(IS_DETACHED REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
+  if(${_checkout_result} EQUAL 0 AND NOT ${IS_DETACHED})
+    return()
+  endif()
+
+  # switch/checkout back went to a detached state or failed, try to checkout the default branch
+  git_is_detached(IS_DETACHED REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
   if(${IS_DETACHED})
-    message(STATUS "Switch back ${_fun_REPOSITORY_PATH}")
-
-    # wait for lock before switching back
-    git_wait(REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
-
-    execute_process(
-      COMMAND "${GIT_EXECUTABLE}" "switch" "-" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
-      RESULT_VARIABLE _switch_back_result
-    )
-
-    # if the switch back failed, try to checkout the previous branch
-    if(NOT ${_switch_back_result} EQUAL 0)
-      message(STATUS "Switch back failed. Trying to checkout previous branch")
-      execute_process(
-        COMMAND "${GIT_EXECUTABLE}" "checkout" "-" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
-        RESULT_VARIABLE _checkout_result
-      )
-
-      # if the checkout failed, try to checkout the default branch
-      if(NOT ${_checkout_result} EQUAL 0)
-        message(STATUS "Checkout previous branch failed. Trying to checkout default branch")
-        git_default_branch(default_branch REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
-        execute_process(
-          COMMAND "${GIT_EXECUTABLE}" "checkout" "${default_branch}"
-          WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}" COMMAND_ERROR_IS_FATAL LAST
-        )
-      endif()
-
-    endif()
+    message(STATUS "Trying to checkout default branch")
+    git_default_branch(default_branch REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
+    git_checkout(REPOSITORY_PATH "${_fun_REPOSITORY_PATH}" REVISION "${default_branch}")
   endif()
 endfunction()
 
