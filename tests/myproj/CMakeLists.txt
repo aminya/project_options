@@ -18,7 +18,7 @@ if(ENABLE_CROSS_COMPILING)
 endif()
 
 run_vcpkg(VCPKG_URL "https://github.com/microsoft/vcpkg.git" VCPKG_REV
-          "6a3dd0874f153f8b375ec26210ea6d41dee3bb26" ENABLE_VCPKG_UPDATE
+          "10e052511428d6b0c7fcc63a139e8024bb146032" ENABLE_VCPKG_UPDATE
 )
 
 project(myproj VERSION 0.2.0 LANGUAGES CXX C)
