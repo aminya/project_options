@@ -8,7 +8,7 @@ on:
 
 jobs:
   Test:
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -83,13 +83,14 @@ jobs:
           doxygen: true
 
       - name: Test
+        if: ${{ !cancelled() }}
         run: |
           task test
         env:
           CMAKE_GENERATOR: ${{ matrix.cmake_generator }}
 
       - name: Lint
-        if: ${{ matrix.os == 'ubuntu-20.04' && matrix.compiler == 'gcc' }}
+        if: ${{ !cancelled() && matrix.os == 'ubuntu-20.04' && matrix.compiler == 'gcc' }}
         run: |
           # TODO add to setup-cpp
           python3 -m pip install --user cmakelint cmake-format
