@@ -79,7 +79,11 @@ function(enable_doxygen DOXYGEN_THEME)
   endif()
 
   # find doxygen and dot if available
-  find_package(Doxygen REQUIRED OPTIONAL_COMPONENTS dot)
+  find_package(Doxygen OPTIONAL_COMPONENTS dot)
+  if (NOT Doxygen_FOUND)
+    message(WARNING "Doxygen not found, install doxygen and try again. Documentation will not be generated.")
+    return()
+  endif()
 
   # add doxygen-docs target
   message(STATUS "Adding `doxygen-docs` target that builds the documentation.")

@@ -59,28 +59,44 @@ macro(_bootstrap_vcpkg)
 endmacro()
 
 macro(_is_vcpkg_outdated)
-  if("${_vcpkg_args_VCPKG_UPDATE_THRESHOLD}" STREQUAL "")
-    set(_vcpkg_args_VCPKG_UPDATE_THRESHOLD 3600)
-  endif()
+  # skip the update if the requested revision is the same as the current revision
+  git_revision(_REVISION REPOSITORY_PATH "${_vcpkg_args_VCPKG_DIR}")
+  if(NOT "${_vcpkg_args_VCPKG_REV}" STREQUAL "" AND "${_REVISION}" STREQUAL
+                                                    "${_vcpkg_args_VCPKG_REV}"
+  )
+    message(STATUS "Skipping vcpkg update as it's already at ${_REVISION}")
+    set(_vcpkg_args_ENABLE_VCPKG_UPDATE OFF)
+  elseif(NOT "${_vcpkg_args_VCPKG_REV}" STREQUAL "" AND NOT "${_REVISION}" STREQUAL
+                                                        "${_vcpkg_args_VCPKG_REV}"
+  )
+    # Requested revision is different from the current revision, so update
+    set(_vcpkg_args_ENABLE_VCPKG_UPDATE ON)
+  else()
+    # Requested revision is not specified, so update depending on the timestamp
+    # Check if the vcpkg registry is updated using the timestamp file that project_option generates
+    if("${_vcpkg_args_VCPKG_UPDATE_THRESHOLD}" STREQUAL "")
+      set(_vcpkg_args_VCPKG_UPDATE_THRESHOLD 3600)
+    endif()
 
-  if(${_vcpkg_args_ENABLE_VCPKG_UPDATE})
-    set(_time_stamp_file "${VCPKG_PARENT_DIR}/.vcpkg_last_update")
+    if(${_vcpkg_args_ENABLE_VCPKG_UPDATE})
+      set(_time_stamp_file "${VCPKG_PARENT_DIR}/.vcpkg_last_update")
 
-    if(EXISTS "${_time_stamp_file}")
-      string(TIMESTAMP _current_time "%s")
-      file(TIMESTAMP "${_time_stamp_file}" _vcpkg_last_update "%s")
-      # if the last update was more than VCPKG_UPDATE_THRESHOLD
-      math(EXPR time_diff "${_current_time} - ${_vcpkg_last_update}")
-      if(${time_diff} GREATER ${_vcpkg_args_VCPKG_UPDATE_THRESHOLD})
+      if(EXISTS "${_time_stamp_file}")
+        string(TIMESTAMP _current_time "%s")
+        file(TIMESTAMP "${_time_stamp_file}" _vcpkg_last_update "%s")
+        # if the last update was more than VCPKG_UPDATE_THRESHOLD
+        math(EXPR time_diff "${_current_time} - ${_vcpkg_last_update}")
+        if(${time_diff} GREATER ${_vcpkg_args_VCPKG_UPDATE_THRESHOLD})
+          set(_vcpkg_args_ENABLE_VCPKG_UPDATE ON)
+          file(TOUCH "${_time_stamp_file}")
+        else()
+          message(STATUS "vcpkg updated recently. Skipping update.")
+          set(_vcpkg_args_ENABLE_VCPKG_UPDATE OFF)
+        endif()
+      else()
         set(_vcpkg_args_ENABLE_VCPKG_UPDATE ON)
         file(TOUCH "${_time_stamp_file}")
-      else()
-        message(STATUS "vcpkg updated recently. Skipping update.")
-        set(_vcpkg_args_ENABLE_VCPKG_UPDATE OFF)
       endif()
-    else()
-      set(_vcpkg_args_ENABLE_VCPKG_UPDATE ON)
-      file(TOUCH "${_time_stamp_file}")
     endif()
   endif()
 endmacro()

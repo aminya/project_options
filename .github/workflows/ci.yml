@@ -80,7 +80,7 @@ jobs:
           cppcheck: true
           clangtidy: true
           task: true
-          doxygen: true
+          doxygen: ${{ !contains(matrix.os, 'macos-11') }}
 
       - name: Test
         if: ${{ !cancelled() }}
