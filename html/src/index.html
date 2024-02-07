@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>project_options function &mdash; project_options 0.28.0 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -78,6 +80,7 @@
 <li class="toctree-l1"><a class="reference internal" href="#git-is-detached"><code class="docutils literal notranslate"><span class="pre">git_is_detached</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#git-switch-back"><code class="docutils literal notranslate"><span class="pre">git_switch_back</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#git-wait"><code class="docutils literal notranslate"><span class="pre">git_wait</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#git-default-branch"><code class="docutils literal notranslate"><span class="pre">git_default_branch</span></code></a></li>
 </ul>
 
         </div>
@@ -123,7 +126,7 @@
 
 <span class="c"># Add project_options from https://github.com/aminya/project_options</span>
 <span class="c"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</span>
-<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.33.0&quot;</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.34.0&quot;</span><span class="nf">)</span>
 <span class="nf">FetchContent_Declare(</span>
 <span class="w">  </span><span class="nb">_project_options</span>
 <span class="w">  </span><span class="no">URL</span><span class="w"> </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/</span><span class="o">${</span><span class="nt">PROJECT_OPTIONS_VERSION</span><span class="o">}</span><span class="p">.</span><span class="nb">zip</span><span class="nf">)</span>
@@ -133,8 +136,7 @@
 <span class="c"># install vcpkg dependencies: - should be called before defining project()</span>
 <span class="nf">run_vcpkg(</span>
 <span class="w">    </span><span class="no">VCPKG_URL</span><span class="w"> </span><span class="s">&quot;https://github.com/microsoft/vcpkg.git&quot;</span>
-<span class="w">    </span><span class="no">VCPKG_REV</span><span class="w"> </span><span class="s">&quot;0fa8459cf3a7caca7adc58f992bc32ff13630684&quot;</span>
-<span class="w">    </span><span class="no">ENABLE_VCPKG_UPDATE</span>
+<span class="w">    </span><span class="no">VCPKG_REV</span><span class="w"> </span><span class="s">&quot;10e052511428d6b0c7fcc63a139e8024bb146032&quot;</span>
 <span class="nf">)</span>
 
 <span class="c"># Set the project name and language</span>
@@ -379,7 +381,7 @@ rule set in Visual Studio.</p></li>
 <p>Or by specifying the options</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">run_vcpkg(</span>
 <span class="w">    </span><span class="no">VCPKG_URL</span><span class="w"> </span><span class="s">&quot;https://github.com/microsoft/vcpkg.git&quot;</span>
-<span class="w">    </span><span class="no">VCPKG_REV</span><span class="w"> </span><span class="s">&quot;0fa8459cf3a7caca7adc58f992bc32ff13630684&quot;</span>
+<span class="w">    </span><span class="no">VCPKG_REV</span><span class="w"> </span><span class="s">&quot;10e052511428d6b0c7fcc63a139e8024bb146032&quot;</span>
 <span class="w">    </span><span class="no">ENABLE_VCPKG_UPDATE</span>
 <span class="nf">)</span>
 </pre></div>
@@ -600,7 +602,7 @@ repository</a>.</p>
 
 <span class="c"># Add project_options from https://github.com/aminya/project_options</span>
 <span class="c"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</span>
-<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.33.0&quot;</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.34.0&quot;</span><span class="nf">)</span>
 <span class="nf">FetchContent_Declare(</span>
 <span class="w">  </span><span class="nb">_project_options</span>
 <span class="w">  </span><span class="no">URL</span><span class="w"> </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/</span><span class="o">${</span><span class="nt">PROJECT_OPTIONS_VERSION</span><span class="o">}</span><span class="p">.</span><span class="nb">zip</span><span class="nf">)</span>
@@ -820,10 +822,12 @@ triplets</a></p>
 <section id="git-pull">
 <h1><code class="docutils literal notranslate"><span class="pre">git_pull</span></code><a class="headerlink" href="#git-pull" title="Link to this heading"></a></h1>
 <p>Pull the given repository</p>
-<p>It will temporarily switch back to the previous branch if the head is detached for updating</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">TARGET_REVISION</span></code> is given, the pull is skipped if the current revision is the same as the target revision.</p>
+<p>It will temporarily switch back to the previous branch if the head is detached for updating.</p>
 <p>Input variables:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">REPOSITORY_PATH</span></code>: The path to the repository</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TARGET_REVISION</span></code>: if the current revision of the repository is the same as this given revision, the pull is skipped</p></li>
 </ul>
 </section>
 <section id="git-checkout">
@@ -905,7 +909,9 @@ triplets</a></p>
 </section>
 <section id="git-switch-back">
 <h1><code class="docutils literal notranslate"><span class="pre">git_switch_back</span></code><a class="headerlink" href="#git-switch-back" title="Link to this heading"></a></h1>
-<p>Detect if the head is detached, if so, switch back before calling git pull on a detached head</p>
+<p>Detect if the head is detached, if so, switch/checkout back
+If the switch/checkout back fails or goes to a detached state, try to checkout the default branch</p>
+<p>This is used before updating the repository in a pull</p>
 <p>Input variables:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">REPOSITORY_PATH</span></code>: The path to the repository</p></li>
@@ -919,6 +925,21 @@ triplets</a></p>
 <li><p><code class="docutils literal notranslate"><span class="pre">REPOSITORY_PATH</span></code>: The path to the repository</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TIMEOUT_COUNTER</span></code>: The number of times to wait before timing out</p></li>
 </ul>
+</section>
+<section id="git-default-branch">
+<h1><code class="docutils literal notranslate"><span class="pre">git_default_branch</span></code><a class="headerlink" href="#git-default-branch" title="Link to this heading"></a></h1>
+<p>Get the default branch of the given repository. Defaults to master in case of failure</p>
+<p>Input variables:
+- <code class="docutils literal notranslate"><span class="pre">REPOSITORY_PATH</span></code>: The path to the repository</p>
+<p>Output variables:
+- <code class="docutils literal notranslate"><span class="pre">default_branch</span></code>: The variable to store the default branch in</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">git_default_branch(</span>
+<span class="w">  </span><span class="no">REPOSITORY_PATH</span>
+<span class="w">  </span><span class="s">&quot;$ENV{HOME}/vcpkg&quot;</span>
+<span class="w">  </span><span class="nb">default_branch</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
 </section>
 
 
