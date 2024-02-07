@@ -1,6 +1,7 @@
 include_guard()
 
-include("${CMAKE_CURRENT_LIST_DIR}/Utilities.cmake")
+set(ProjectOptions_SRC_DIR "${CMAKE_CURRENT_LIST_DIR}")
+include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
 
 # detect if the compiler is msvc
 function(is_msvc value)
@@ -58,8 +59,7 @@ macro(msvc_toolchain)
       message(STATUS "Using Windows Windows toolchain")
       include(FetchContent)
       FetchContent_Declare(
-        _msvc_toolchain
-        GIT_REPOSITORY "https://github.com/MarkSchofield/WindowsToolchain.git"
+        _msvc_toolchain GIT_REPOSITORY "https://github.com/MarkSchofield/WindowsToolchain.git"
         GIT_TAG "17c6d4ff6531ee268b9a22a8bcfbb3809e970e4e"
       )
       FetchContent_MakeAvailable(_msvc_toolchain)

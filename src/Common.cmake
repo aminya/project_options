@@ -1,5 +1,7 @@
 include_guard()
 
+set(ProjectOptions_SRC_DIR "${CMAKE_CURRENT_LIST_DIR}")
+
 # This function sets ProjectOptions_SRC_DIR using the current lists path
 macro(set_project_options_src_dir)
   get_directory_property(LISTFILE_STACK LISTFILE_STACK)

@@ -1,5 +1,7 @@
 include_guard()
 
+set(ProjectOptions_SRC_DIR "${CMAKE_CURRENT_LIST_DIR}")
+
 # detect mingw
 function(is_mingw value)
   if(USE_CROSSCOMPILER_MINGW)

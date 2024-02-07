@@ -1,5 +1,7 @@
 include_guard()
 
+set(ProjectOptions_SRC_DIR "${CMAKE_CURRENT_LIST_DIR}")
+
 # includes a separate CMakeLists.txt file to detect the CXX/C compilers before project is called
 # Using a separate file ensures that the current scope is not contaminated by the variable
 macro(detect_compiler)

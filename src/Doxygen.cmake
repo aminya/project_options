@@ -80,8 +80,11 @@ function(enable_doxygen DOXYGEN_THEME)
 
   # find doxygen and dot if available
   find_package(Doxygen OPTIONAL_COMPONENTS dot)
-  if (NOT Doxygen_FOUND)
-    message(WARNING "Doxygen not found, install doxygen and try again. Documentation will not be generated.")
+  if(NOT Doxygen_FOUND)
+    message(
+      WARNING
+        "Doxygen not found, install doxygen and try again. Documentation will not be generated."
+    )
     return()
   endif()
 

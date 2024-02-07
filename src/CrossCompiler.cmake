@@ -1,5 +1,7 @@
 include_guard()
 
+set(ProjectOptions_SRC_DIR "${CMAKE_CURRENT_LIST_DIR}")
+
 #[[.rst:
 
 ``enable_cross_compiler``
