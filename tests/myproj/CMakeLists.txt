@@ -98,6 +98,9 @@ add_subdirectory(libs)
 ## tests
 enable_testing()
 add_executable_test(main no_arg)
+add_executable_test(main with_arg
+  EXECUTE_ARGS hello world
+)
 
 # Header-only library
 add_library(lib INTERFACE)
