@@ -153,8 +153,54 @@ Install conan 2 and conan 2 dependencies:
 
   run_conan2()
 
+.. code:: cmake
+
+  run_conan2(
+    HOST_PROFILE default auto-cmake
+    BUILD_PROFILE default
+    INSTALL_ARGS --build=missing
+  )
+
+Note that it should be called before defining ``project()``.
+
+Named String:
+
+- Values are semicolon separated, e.g. ``"--build=never;--update;--lockfile-out=''"``.
+  However, you can make use of the cmake behaviour that automatically concatenates
+  multiple space separated string into a semicolon seperated list, e.g.
+  ``--build=never --update --lockfile-out=''``.
+
+-  ``HOST_PROFILE``: (Defaults to ``"default;auto-cmake"``). This option
+  sets the host profile used by conan. When ``auto-cmake`` is specified,
+  cmake-conan will invoke conan's autodetection mechanism which tries to
+  guess the system defaults. If multiple profiles are specified, a
+  `compound profile <https://docs.conan.io/2.0/reference/commands/install.html#profiles-settings-options-conf>`_
+  will be used - compounded from left to right, where right has the highest priority.
+
+-  ``BUILD_PROFILE``: (Defaults to ``"default"``). This option
+  sets the build profile used by conan. If multiple profiles are specified,
+  a `compound profile <https://docs.conan.io/2.0/reference/commands/install.html#profiles-settings-options-conf>`_
+  will be used - compounded from left to right, where right has the highest priority.
+
+-  ``INSTALL_ARGS``: (Defaults to ``"--build=missing"``). This option
+  customizes ``conan install`` command invocation. Note that ``--build``
+  must be specified, otherwise conan will revert to its default behaviour.
+
+  - Two arguments are reserved to the dependency provider implementation
+    and must not be set: the path to a ``conanfile.txt|.py``, and the output
+    format (``--format``).
+
 ]]
 macro(run_conan2)
+  set(options)
+  set(one_value_args)
+  set(multi_value_args
+    HOST_PROFILE
+    BUILD_PROFILE
+    INSTALL_ARGS
+  )
+  cmake_parse_arguments(_args "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
+
   if(CMAKE_VERSION VERSION_LESS "3.24.0")
     message(FATAL_ERROR
       "run_conan2 only supports cmake 3.24+, please update your cmake.\n"
@@ -179,6 +225,22 @@ macro(run_conan2)
       # TLS_VERIFY ON # fails on some systems
     )
   endif()
+
+  if(NOT _args_HOST_PROFILE)
+    set(_args_HOST_PROFILE "default;auto-cmake")
+  endif()
+
+  if(NOT _args_BUILD_PROFILE)
+    set(_args_BUILD_PROFILE "default")
+  endif()
+
+  if(NOT _args_INSTALL_ARGS)
+    set(_args_INSTALL_ARGS "--build=missing")
+  endif()
+
+  set(CONAN_HOST_PROFILE "${_args_HOST_PROFILE}" CACHE STRING "Conan host profile" FORCE)
+  set(CONAN_BUILD_PROFILE "${_args_BUILD_PROFILE}" CACHE STRING "Conan build profile" FORCE)
+  set(CONAN_INSTALL_ARGS "${_args_INSTALL_ARGS}" CACHE STRING "Command line arguments for conan install" FORCE)
 
   # A workaround from https://github.com/conan-io/cmake-conan/issues/595
   list(APPEND CMAKE_PROJECT_TOP_LEVEL_INCLUDES ${CMAKE_BINARY_DIR}/conan_provider.cmake)
