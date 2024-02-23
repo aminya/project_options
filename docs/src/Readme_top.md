@@ -22,6 +22,7 @@ A general-purpose CMake library that provides functions that improve the CMake e
   - using custom linkers (e.g. lld)
 - `package_project`: automatic packaging/installation of the project for seamless usage via find_package/target_link through CMake's FetchContent, vcpkg, etc.
 - `run_vcpkg`: automatic installation of vcpkg and the project dependencies
+- `run_conan2`: automatic installation of Conan 2 and the project dependencies
 - `ENABLE_CONAN` in `project_options`: automatic installation of Conan and the project dependencies
 - `dynamic_project_options`: a wrapper around `project_options` to change the options on the fly dynamically
 - `target_link_system_libraries` and `target_include_system_directories`: linking/including external dependencies/headers without warnings

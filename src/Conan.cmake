@@ -1,7 +1,31 @@
 include_guard()
 
+function(conan_get_version conan_current_version)
+  find_program(conan_command "conan" REQUIRED)
+  execute_process(
+    COMMAND ${conan_command} --version
+    OUTPUT_VARIABLE conan_output
+    RESULT_VARIABLE conan_result
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+
+  if(conan_result)
+    message(FATAL_ERROR "Error when trying to run Conan")
+  endif()
+
+  string(REGEX MATCH "[0-9]+\\.[0-9]+\\.[0-9]+" conan_version ${conan_output})
+  set(${conan_current_version} ${conan_version} PARENT_SCOPE)
+endfunction()
+
 # Run Conan for dependency management
 macro(run_conan)
+  conan_get_version(_conan_current_version)
+  if(_conan_current_version VERSION_GREATER_EQUAL "2.0.0")
+    message(FATAL_ERROR
+      "ENABLE_CONAN in project_options(...) only supports conan 1.\n"
+      "  If you're using conan 2, disable ENABLE_CONAN and use run_conan2(...) before project(...).")
+  endif()
+
   # Download automatically, you can also just copy the conan.cmake file
   if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
     message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
@@ -116,4 +140,46 @@ macro(run_conan)
     endforeach()
   endif()
 
+endmacro()
+
+#[[.rst:
+
+``run_conan2``
+=============
+
+Install conan 2 and conan 2 dependencies:
+
+.. code:: cmake
+
+  run_conan2()
+
+]]
+macro(run_conan2)
+  if(CMAKE_VERSION VERSION_LESS "3.24.0")
+    message(FATAL_ERROR
+      "run_conan2 only supports cmake 3.24+, please update your cmake.\n"
+      "  If you're using conan 1, set ENABLE_CONAN using project_options(...) or dynamic_project_options(...) after project().")
+  endif()
+
+  conan_get_version(_conan_current_version)
+  if(_conan_current_version VERSION_LESS "2.0.5")
+    message(FATAL_ERROR
+      "run_conan2 only supports conan 2.0.5+, please update your conan.\n"
+      "  If you're using conan 1, set ENABLE_CONAN using project_options(...) or dynamic_project_options(...) after project().")
+  endif()
+
+  # Download automatically, you can also just copy the conan.cmake file
+  if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan_provider.cmake")
+    message(STATUS "Downloading conan_provider.cmake from https://github.com/conan-io/cmake-conan")
+    file(
+      DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/f6464d1e13ef7a47c569f5061f9607ea63339d39/conan_provider.cmake"
+      "${CMAKE_BINARY_DIR}/conan_provider.cmake"
+      EXPECTED_HASH SHA256=0a5eb4afbdd94faf06dcbf82d3244331605ef2176de32c09ea9376e768cbb0fc
+
+      # TLS_VERIFY ON # fails on some systems
+    )
+  endif()
+
+  # A workaround from https://github.com/conan-io/cmake-conan/issues/595
+  list(APPEND CMAKE_PROJECT_TOP_LEVEL_INCLUDES ${CMAKE_BINARY_DIR}/conan_provider.cmake)
 endmacro()

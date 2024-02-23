@@ -27,6 +27,8 @@ CMake experience following the best practices.
     FetchContent, vcpkg, etc.
 -   `run_vcpkg`: automatic installation of vcpkg and the project
     dependencies
+-   `run_conan2`: automatic installation of vcpkg and the project
+    dependencies
 -   `ENABLE_CONAN` in `project_options`: automatic installation of Conan
     and the project dependencies
 -   `dynamic_project_options`: a wrapper around `project_options` to
