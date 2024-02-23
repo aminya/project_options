@@ -76,11 +76,15 @@ jobs:
           cmake: ${{ matrix.cmake }}
           ninja: true
           vcpkg: true
-          conan: true
+          conan: false
           cppcheck: true
           clangtidy: true
           task: true
           doxygen: ${{ !contains(matrix.os, 'macos-11') }}
+
+      - name: Install conan2
+        run: |
+          pip3 install conan==2.1.0
 
       - name: Test
         if: ${{ !cancelled() }}
