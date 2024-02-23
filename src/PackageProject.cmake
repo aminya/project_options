@@ -1,5 +1,7 @@
 include_guard()
 
+include("${CMAKE_CURRENT_LIST_DIR}/Utilities.cmake")
+
 # Uses ycm (permissive BSD-3-Clause license) and ForwardArguments (permissive MIT license)
 
 function(get_property_of_targets)
@@ -15,7 +17,8 @@ function(get_property_of_targets)
       list(APPEND _Value ${_Current_property})
     endif()
   endforeach()
-  list(REMOVE_DUPLICATES _Current_property)
+  convert_genex_semicolons("${_Value}" _Value)
+  list(REMOVE_DUPLICATES _Value)
   set(${args_OUTPUT} ${_Value} PARENT_SCOPE)
 endfunction()
 

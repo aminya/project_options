@@ -1,5 +1,7 @@
 include_guard()
 
+include("${CMAKE_CURRENT_LIST_DIR}/Utilities.cmake")
+
 #[[.rst:
 
 ``target_include_system_directories``
@@ -18,6 +20,7 @@ function(target_include_system_directories target)
   cmake_parse_arguments(ARG "" "" "${multiValueArgs}" ${ARGN})
 
   foreach(scope IN ITEMS INTERFACE PUBLIC PRIVATE)
+    convert_genex_semicolons("${ARG_${scope}}" "ARG_${scope}")
     foreach(lib_include_dirs IN LISTS ARG_${scope})
       if(NOT MSVC OR (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0"
                       AND CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL "19.29.30036.3")
@@ -83,6 +86,7 @@ function(target_link_system_libraries target)
   cmake_parse_arguments(ARG "" "" "${multiValueArgs}" ${ARGN})
 
   foreach(scope IN ITEMS INTERFACE PUBLIC PRIVATE)
+    convert_genex_semicolons("${ARG_${scope}}" "ARG_${scope}")
     foreach(lib IN LISTS ARG_${scope})
       target_link_system_library(${target} ${scope} ${lib})
     endforeach()

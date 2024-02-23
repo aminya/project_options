@@ -124,3 +124,52 @@ function(detect_architecture arch)
     set(${arch} x64 PARENT_SCOPE)
   endif()
 endfunction()
+
+# convert semicolons in generator expression to $<SEMICOLON>
+function(convert_genex_semicolons genex output)
+  set(result)
+
+  set(depth 0)
+  set(index 0)
+  set(prefixed_with_dollar FALSE)
+  string(LENGTH "${genex}" length)
+
+  while(index LESS length)
+    string(SUBSTRING "${genex}" ${index} 1 ch)
+
+    if(ch STREQUAL "$")
+      set(prefixed_with_dollar TRUE)
+      string(APPEND result "${ch}")
+    elseif(ch STREQUAL "<")
+      if(prefixed_with_dollar)
+        set(prefixed_with_dollar FALSE)
+        math(EXPR depth "${depth}+1")
+      endif()
+
+      string(APPEND result "${ch}")
+    elseif(ch STREQUAL ">")
+      set(prefixed_with_dollar FALSE)
+
+      if(depth GREATER 0)
+        math(EXPR depth "${depth}-1")
+      endif()
+
+      string(APPEND result "${ch}")
+    elseif(ch STREQUAL ";")
+      set(prefixed_with_dollar FALSE)
+
+      if(depth GREATER 0)
+        string(APPEND result "$<SEMICOLON>")
+      else()
+        string(APPEND result "${ch}")
+      endif()
+    else()
+      set(prefixed_with_dollar FALSE)
+      string(APPEND result "${ch}")
+    endif()
+
+    math(EXPR index "${index}+1")
+  endwhile()
+
+  set("${output}" "${result}" PARENT_SCOPE)
+endfunction()
