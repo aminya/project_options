@@ -247,5 +247,5 @@ macro(run_conan2)
 
   # Add this to invoke conan even when there's no find_package in CMakeLists.txt.
   # This helps users get the third-party package names, which is used in later find_package.
-  cmake_language(DEFER DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} CALL find_package Git)
+  cmake_language(DEFER DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} CALL find_package Git QUIET)
 endmacro()
