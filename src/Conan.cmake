@@ -244,4 +244,8 @@ macro(run_conan2)
 
   # A workaround from https://github.com/conan-io/cmake-conan/issues/595
   list(APPEND CMAKE_PROJECT_TOP_LEVEL_INCLUDES ${CMAKE_BINARY_DIR}/conan_provider.cmake)
+
+  # Add this to invoke conan even when there's no find_package in CMakeLists.txt.
+  # This helps users get the third-party package names, which is used in later find_package.
+  cmake_language(DEFER DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} CALL find_package Git)
 endmacro()
