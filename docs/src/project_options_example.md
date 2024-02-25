@@ -73,7 +73,6 @@ project_options(
       ${ENABLE_CPPCHECK}
       ${ENABLE_CLANG_TIDY}
       ENABLE_VS_ANALYSIS
-      # ENABLE_CONAN
       # ENABLE_INTERPROCEDURAL_OPTIMIZATION
       # ENABLE_NATIVE_OPTIMIZATION
       ${ENABLE_DOXYGEN}
@@ -96,7 +95,6 @@ project_options(
       # ENABLE_BUILD_WITH_TIME_TRACE
       # ENABLE_UNITY
       # LINKER "lld"
-      # CONAN_PROFILE ${profile_path}
 )
 ```
 

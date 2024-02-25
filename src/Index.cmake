@@ -113,8 +113,6 @@ front of them:
    cppcheck
 -  ``VS_ANALYSIS_RULESET``: Override the defaults for the code analysis
    rule set in Visual Studio.
--  ``CONAN_OPTIONS``: Extra Conan options
--  ``CONAN_PROFILE``: Passes a profile to conan: see https://docs.conan.io/en/latest/reference/profiles.html
 
 
 ]]
