@@ -76,7 +76,7 @@ jobs:
           cmake: ${{ matrix.cmake }}
           ninja: true
           vcpkg: true
-          conan: true
+          conan: 2.1.0
           cppcheck: true
           clangtidy: true
           task: true

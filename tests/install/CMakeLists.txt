@@ -4,13 +4,13 @@ cmake_minimum_required(VERSION 3.16...3.21)
 include(../../src/Index.cmake)
 
 run_vcpkg()
+run_conan()
 
 project(anotherproj VERSION 0.1.0 LANGUAGES CXX C)
 
 # Initialize project_options
 project_options(
   ENABLE_CACHE
-  ENABLE_CONAN
   # WARNINGS_AS_ERRORS
   ENABLE_CPPCHECK
   ENABLE_CLANG_TIDY

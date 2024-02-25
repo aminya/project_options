@@ -27,8 +27,8 @@ CMake experience following the best practices.
     FetchContent, vcpkg, etc.
 -   `run_vcpkg`: automatic installation of vcpkg and the project
     dependencies
--   `ENABLE_CONAN` in `project_options`: automatic installation of Conan
-    and the project dependencies
+-   `run_conan`: automatic installation of conan and the project
+    dependencies
 -   `dynamic_project_options`: a wrapper around `project_options` to
     change the options on the fly dynamically
 -   `target_link_system_libraries` and
@@ -79,6 +79,8 @@ run_vcpkg(
     VCPKG_URL "https://github.com/microsoft/vcpkg.git"
     VCPKG_REV "10e052511428d6b0c7fcc63a139e8024bb146032"
 )
+# Install conan dependencies: - should be called before defining project()
+run_conan()
 
 # Set the project name and language
 project(myproject LANGUAGES CXX C)
@@ -119,7 +121,6 @@ project_options(
       ${ENABLE_CPPCHECK}
       ${ENABLE_CLANG_TIDY}
       ENABLE_VS_ANALYSIS
-      # ENABLE_CONAN
       # ENABLE_INTERPROCEDURAL_OPTIMIZATION
       # ENABLE_NATIVE_OPTIMIZATION
       ${ENABLE_DOXYGEN}
@@ -142,7 +143,6 @@ project_options(
       # ENABLE_BUILD_WITH_TIME_TRACE
       # ENABLE_UNITY
       # LINKER "lld"
-      # CONAN_PROFILE ${profile_path}
 )
 ```
 

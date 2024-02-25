@@ -33,6 +33,8 @@ run_vcpkg(
     VCPKG_REV "10e052511428d6b0c7fcc63a139e8024bb146032"
     ENABLE_VCPKG_UPDATE
 )
+# Install conan dependencies: - should be called before defining project()
+run_conan()
 
 # Set the project name and language
 project(myproject LANGUAGES CXX C)
@@ -73,7 +75,6 @@ project_options(
       ${ENABLE_CPPCHECK}
       ${ENABLE_CLANG_TIDY}
       ENABLE_VS_ANALYSIS
-      # ENABLE_CONAN
       # ENABLE_INTERPROCEDURAL_OPTIMIZATION
       # ENABLE_NATIVE_OPTIMIZATION
       ${ENABLE_DOXYGEN}
@@ -96,7 +97,6 @@ project_options(
       # ENABLE_BUILD_WITH_TIME_TRACE
       # ENABLE_UNITY
       # LINKER "lld"
-      # CONAN_PROFILE ${profile_path}
 )
 ```
 

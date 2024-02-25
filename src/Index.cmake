@@ -59,7 +59,6 @@ include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
 -  ``ENABLE_CLANG_TIDY``: Enable static analysis with clang-tidy
 -  ``ENABLE_VS_ANALYSIS``: Enable Visual Studio IDE code analysis if the
    generator is Visual Studio.
--  ``ENABLE_CONAN``: Use Conan for dependency management
 -  ``ENABLE_INTERPROCEDURAL_OPTIMIZATION``: Enable Interprocedural
    Optimization (Link Time Optimization, LTO) in the release build
 -  ``ENABLE_NATIVE_OPTIMIZATION``: Enable the optimizations specific to
@@ -114,8 +113,6 @@ front of them:
    cppcheck
 -  ``VS_ANALYSIS_RULESET``: Override the defaults for the code analysis
    rule set in Visual Studio.
--  ``CONAN_OPTIONS``: Extra Conan options
--  ``CONAN_PROFILE``: Passes a profile to conan: see https://docs.conan.io/en/latest/reference/profiles.html
 
 
 ]]
@@ -308,7 +305,19 @@ macro(project_options)
   endif()
 
   if(${ProjectOptions_ENABLE_CONAN})
-    run_conan()
+    _run_conan1(
+      DEPRECATED_CALL
+      DEPRECATED_PROFILE ${ProjectOptions_CONAN_PROFILE}
+      HOST_PROFILE ${ProjectOptions_CONAN_HOST_PROFILE}
+      BUILD_PROFILE ${ProjectOptions_CONAN_BUILD_PROFILE}
+      DEPRECATED_OPTIONS ${ProjectOptions_CONAN_OPTIONS}
+    )
+  endif()
+
+  get_property(_should_invoke_conan1 DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" PROPERTY PROJECT_OPTIONS_SHOULD_INVOKE_CONAN1)
+  if(_should_invoke_conan1)
+    get_property(conan1_args DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" PROPERTY PROJECT_OPTIONS_CONAN1_ARGS)
+    _run_conan1(${conan1_args})
   endif()
 
   if(${ProjectOptions_ENABLE_UNITY})
