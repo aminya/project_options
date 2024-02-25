@@ -36,8 +36,8 @@ macro(_run_conan1)
   conan_get_version(_conan_current_version)
   if(_conan_current_version VERSION_GREATER_EQUAL "2.0.0")
     message(FATAL_ERROR
-      "ENABLE_CONAN in project_options(...) only supports conan 1.\n"
-      "  If you're using conan 2, disable ENABLE_CONAN and use run_conan(...) before project(...).")
+      "ENABLE_CONAN in `project_options(...)` only supports conan 1.\n"
+      "  If you're using conan 2, disable ENABLE_CONAN and use `run_conan(...)` before `project(...)`.")
   endif()
 
   # Download automatically, you can also just copy the conan.cmake file
@@ -200,7 +200,7 @@ macro(_run_conan2)
   conan_get_version(_conan_current_version)
   if(_conan_current_version VERSION_LESS "2.0.5")
     message(FATAL_ERROR
-      "run_conan(...) with conan 2 only supports conan 2.0.5+, please update your conan.\n"
+      "`run_conan(...)` with conan 2 only supports conan 2.0.5+, please update your conan.\n"
       "  Or You can downgrade your conan to use conan 1.")
   endif()
 
