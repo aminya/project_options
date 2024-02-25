@@ -20,7 +20,7 @@ endif()
 run_vcpkg(VCPKG_URL "https://github.com/microsoft/vcpkg.git" VCPKG_REV
           "10e052511428d6b0c7fcc63a139e8024bb146032" ENABLE_VCPKG_UPDATE
 )
-run_conan2()
+run_conan()
 
 project(myproj VERSION 0.2.0 LANGUAGES CXX C)
 

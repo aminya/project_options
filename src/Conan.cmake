@@ -17,8 +17,22 @@ function(conan_get_version conan_current_version)
   set(${conan_current_version} ${conan_version} PARENT_SCOPE)
 endfunction()
 
-# Run Conan for dependency management
-macro(run_conan)
+# Run Conan 1 for dependency management
+macro(_run_conan1)
+  set(options
+    DEPRECATED_CALL # For backward compability
+  )
+  set(one_value_args
+    DEPRECATED_PROFILE # For backward compability
+  )
+  set(multi_value_args
+    HOST_PROFILE
+    BUILD_PROFILE
+    INSTALL_ARGS
+    DEPRECATED_OPTIONS # For backward compability
+  )
+  cmake_parse_arguments(_args "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
+
   conan_get_version(_conan_current_version)
   if(_conan_current_version VERSION_GREATER_EQUAL "2.0.0")
     message(FATAL_ERROR
@@ -85,35 +99,59 @@ macro(run_conan)
       set(OUTPUT_QUIET)
     endif()
 
+    set(_should_detect FALSE)
+    if(((NOT _args_DEPRECATED_CALL) AND ((NOT _args_HOST_PROFILE) OR ("auto-cmake" IN_LIST _args_HOST_PROFILE)))
+        OR ((_args_DEPRECATED_CALL) AND (NOT _args_DEPRECATED_PROFILE)))
+      set(_should_detect TRUE)
+      list(REMOVE_ITEM _args_HOST_PROFILE "auto-cmake")
+    endif()
+
+    if(NOT _args_DEPRECATED_PROFILE)
+      set(CONAN_DEFAULT_PROFILE "default")
+    else()
+      set(CONAN_DEFAULT_PROFILE ${_args_DEPRECATED_PROFILE})
+    endif()
+
+    if(NOT _args_HOST_PROFILE)
+      set(CONAN_HOST_PROFILE ${CONAN_DEFAULT_PROFILE})
+    else()
+      set(CONAN_HOST_PROFILE ${_args_HOST_PROFILE})
+    endif()
+
+    if(NOT _args_BUILD_PROFILE)
+      set(CONAN_BUILD_PROFILE ${CONAN_DEFAULT_PROFILE})
+    else()
+      set(CONAN_BUILD_PROFILE ${_args_BUILD_PROFILE})
+    endif()
+
+    foreach(_install_args IN LISTS _args_INSTALL_ARGS)
+      string(REGEX MATCH "--build=.*" _possible_build_arg "${_install_args}")
+
+      if(_possible_build_arg)
+        string(SUBSTRING "${_possible_build_arg}" 8 -1 CONAN_BUILD_ARG)
+      endif()
+    endforeach()
+    if(NOT CONAN_BUILD_ARG)
+      set(CONAN_BUILD_ARG "missing")
+      set(CONAN_INSTALL_ARGS "")
+    else()
+      list(REMOVE_ITEM _args_INSTALL_ARGS "--build=${CONAN_BUILD_ARG}")
+      set(CONAN_INSTALL_ARGS ${_args_INSTALL_ARGS})
+    endif()
+
     foreach(TYPE ${LIST_OF_BUILD_TYPES})
       message(STATUS "Running Conan for build type '${TYPE}'")
 
-      if("${ProjectOptions_CONAN_PROFILE}" STREQUAL "")
+      if(_should_detect)
         # Detects current build settings to pass into conan
         conan_cmake_autodetect(settings BUILD_TYPE ${TYPE})
         set(CONAN_SETTINGS SETTINGS ${settings})
         set(CONAN_ENV ENV "CC=${CMAKE_C_COMPILER}" "CXX=${CMAKE_CXX_COMPILER}")
-      else()
+      elseif(_args_DEPRECATED_CALL)
         # Derive all conan settings from a conan profile
-        set(CONAN_SETTINGS PROFILE ${ProjectOptions_CONAN_PROFILE} SETTINGS "build_type=${TYPE}")
+        set(CONAN_SETTINGS PROFILE ${CONAN_DEFAULT_PROFILE} SETTINGS "build_type=${TYPE}")
+
         # CONAN_ENV should be redundant, since the profile can set CC & CXX
-      endif()
-
-      if("${ProjectOptions_CONAN_PROFILE}" STREQUAL "")
-        set(CONAN_DEFAULT_PROFILE "default")
-      else()
-        set(CONAN_DEFAULT_PROFILE ${ProjectOptions_CONAN_PROFILE})
-      endif()
-      if("${ProjectOptions_CONAN_BUILD_PROFILE}" STREQUAL "")
-        set(CONAN_BUILD_PROFILE ${CONAN_DEFAULT_PROFILE})
-      else()
-        set(CONAN_BUILD_PROFILE ${ProjectOptions_CONAN_BUILD_PROFILE})
-      endif()
-
-      if("${ProjectOptions_CONAN_HOST_PROFILE}" STREQUAL "")
-        set(CONAN_HOST_PROFILE ${CONAN_DEFAULT_PROFILE})
-      else()
-        set(CONAN_HOST_PROFILE ${ProjectOptions_CONAN_HOST_PROFILE})
       endif()
 
       # PATH_OR_REFERENCE ${CMAKE_SOURCE_DIR} is used to tell conan to process
@@ -123,10 +161,10 @@ macro(run_conan)
         PATH_OR_REFERENCE
         ${CMAKE_SOURCE_DIR}
         BUILD
-        missing
+        ${CONAN_BUILD_ARG}
         # Pass compile-time configured options into conan
         OPTIONS
-        ${ProjectOptions_CONAN_OPTIONS}
+        ${CONAN_INSTALL_ARGS}
         # Pass CMake compilers to Conan
         ${CONAN_ENV}
         PROFILE_HOST
@@ -142,56 +180,8 @@ macro(run_conan)
 
 endmacro()
 
-#[[.rst:
-
-``run_conan2``
-=============
-
-Install conan 2 and conan 2 dependencies:
-
-.. code:: cmake
-
-  run_conan2()
-
-.. code:: cmake
-
-  run_conan2(
-    HOST_PROFILE default auto-cmake
-    BUILD_PROFILE default
-    INSTALL_ARGS --build=missing
-  )
-
-Note that it should be called before defining ``project()``.
-
-Named String:
-
-- Values are semicolon separated, e.g. ``"--build=never;--update;--lockfile-out=''"``.
-  However, you can make use of the cmake behaviour that automatically concatenates
-  multiple space separated string into a semicolon seperated list, e.g.
-  ``--build=never --update --lockfile-out=''``.
-
--  ``HOST_PROFILE``: (Defaults to ``"default;auto-cmake"``). This option
-  sets the host profile used by conan. When ``auto-cmake`` is specified,
-  cmake-conan will invoke conan's autodetection mechanism which tries to
-  guess the system defaults. If multiple profiles are specified, a
-  `compound profile <https://docs.conan.io/2.0/reference/commands/install.html#profiles-settings-options-conf>`_
-  will be used - compounded from left to right, where right has the highest priority.
-
--  ``BUILD_PROFILE``: (Defaults to ``"default"``). This option
-  sets the build profile used by conan. If multiple profiles are specified,
-  a `compound profile <https://docs.conan.io/2.0/reference/commands/install.html#profiles-settings-options-conf>`_
-  will be used - compounded from left to right, where right has the highest priority.
-
--  ``INSTALL_ARGS``: (Defaults to ``"--build=missing"``). This option
-  customizes ``conan install`` command invocation. Note that ``--build``
-  must be specified, otherwise conan will revert to its default behaviour.
-
-  - Two arguments are reserved to the dependency provider implementation
-    and must not be set: the path to a ``conanfile.txt|.py``, and the output
-    format (``--format``).
-
-]]
-macro(run_conan2)
+# Run Conan 2 for dependency management
+macro(_run_conan2)
   set(options)
   set(one_value_args)
   set(multi_value_args
@@ -243,9 +233,69 @@ macro(run_conan2)
   set(CONAN_INSTALL_ARGS "${_args_INSTALL_ARGS}" CACHE STRING "Command line arguments for conan install" FORCE)
 
   # A workaround from https://github.com/conan-io/cmake-conan/issues/595
-  list(APPEND CMAKE_PROJECT_TOP_LEVEL_INCLUDES ${CMAKE_BINARY_DIR}/conan_provider.cmake)
+  list(APPEND CMAKE_PROJECT_TOP_LEVEL_INCLUDES "${CMAKE_BINARY_DIR}/conan_provider.cmake")
 
   # Add this to invoke conan even when there's no find_package in CMakeLists.txt.
   # This helps users get the third-party package names, which is used in later find_package.
-  cmake_language(DEFER DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} CALL find_package Git QUIET)
+  cmake_language(DEFER DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" CALL find_package Git QUIET)
+endmacro()
+
+#[[.rst:
+
+``run_conan``
+=============
+
+Install conan and conan dependencies:
+
+.. code:: cmake
+
+  run_conan()
+
+.. code:: cmake
+
+  run_conan(
+    HOST_PROFILE default auto-cmake
+    BUILD_PROFILE default
+    INSTALL_ARGS --build=missing
+  )
+
+Note that it should be called before defining ``project()``.
+
+Named String:
+
+- Values are semicolon separated, e.g. ``"--build=never;--update;--lockfile-out=''"``.
+  However, you can make use of the cmake behaviour that automatically concatenates
+  multiple space separated string into a semicolon seperated list, e.g.
+  ``--build=never --update --lockfile-out=''``.
+
+-  ``HOST_PROFILE``: (Defaults to ``"default;auto-cmake"``). This option
+  sets the host profile used by conan. When ``auto-cmake`` is specified,
+  cmake-conan will invoke conan's autodetection mechanism which tries to
+  guess the system defaults. If multiple profiles are specified, a
+  `compound profile <https://docs.conan.io/2.0/reference/commands/install.html#profiles-settings-options-conf>`_
+  will be used - compounded from left to right, where right has the highest priority.
+
+-  ``BUILD_PROFILE``: (Defaults to ``"default"``). This option
+  sets the build profile used by conan. If multiple profiles are specified,
+  a `compound profile <https://docs.conan.io/2.0/reference/commands/install.html#profiles-settings-options-conf>`_
+  will be used - compounded from left to right, where right has the highest priority.
+
+-  ``INSTALL_ARGS``: (Defaults to ``"--build=missing"``). This option
+  customizes ``conan install`` command invocation. Note that ``--build``
+  must be specified, otherwise conan will revert to its default behaviour.
+
+  - Two arguments are reserved to the dependency provider implementation
+    and must not be set: the path to a ``conanfile.txt|.py``, and the output
+    format (``--format``).
+
+]]
+macro(run_conan)
+  conan_get_version(_conan_current_version)
+
+  if(_conan_current_version VERSION_LESS "2.0.0")
+    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY PROJECT_OPTIONS_SHOULD_INVOKE_CONAN1 TRUE)
+    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY PROJECT_OPTIONS_CONAN1_ARGS ${ARGN})
+  else()
+    _run_conan2(${ARGN})
+  endif()
 endmacro()
