@@ -102,9 +102,9 @@ add_test(NAME main COMMAND main)
 # Header-only library
 add_library(lib INTERFACE)
 set(lib_INCLUDE_DIR "include")
-target_include_directories(
-  lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${lib_INCLUDE_DIR}>"
-                "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>"
+target_include_system_directories( # Test the fix of semicolon in genex issue
+  lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_CURRENT_SOURCE_DIR}/${lib_INCLUDE_DIR}>"
+  "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>"
 ) # TODO(refactor)
 target_link_libraries(lib INTERFACE myproj_project_options myproj_project_warnings)
 target_link_system_libraries(lib INTERFACE fmt::fmt Eigen3::Eigen)
