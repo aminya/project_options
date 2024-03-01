@@ -20,7 +20,7 @@ endif()
 
 # Add project_options from https://github.com/aminya/project_options
 # Change the version in the following URL to update the package (watch the releases of the repository for future updates)
-set(PROJECT_OPTIONS_VERSION "v0.34.0")
+set(PROJECT_OPTIONS_VERSION "v0.35.0")
 FetchContent_Declare(
   _project_options
   URL https://github.com/aminya/project_options/archive/refs/tags/${PROJECT_OPTIONS_VERSION}.zip)
@@ -31,7 +31,10 @@ include(${_project_options_SOURCE_DIR}/Index.cmake)
 run_vcpkg(
     VCPKG_URL "https://github.com/microsoft/vcpkg.git"
     VCPKG_REV "10e052511428d6b0c7fcc63a139e8024bb146032"
+    ENABLE_VCPKG_UPDATE
 )
+# Install conan dependencies: - should be called before defining project()
+run_conan()
 
 # Set the project name and language
 project(myproject LANGUAGES CXX C)
@@ -72,7 +75,6 @@ project_options(
       ${ENABLE_CPPCHECK}
       ${ENABLE_CLANG_TIDY}
       ENABLE_VS_ANALYSIS
-      # ENABLE_CONAN
       # ENABLE_INTERPROCEDURAL_OPTIMIZATION
       # ENABLE_NATIVE_OPTIMIZATION
       ${ENABLE_DOXYGEN}
@@ -95,7 +97,6 @@ project_options(
       # ENABLE_BUILD_WITH_TIME_TRACE
       # ENABLE_UNITY
       # LINKER "lld"
-      # CONAN_PROFILE ${profile_path}
 )
 ```
 

@@ -31,3 +31,14 @@ events:
     message: |
       The system is: Linux - 6.2.0-39-generic - x86_64
 ...
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineSystem.cmake:233 (message)"
+      - "CMakeLists.txt:6 (project)"
+    message: |
+      The system is: Linux - 6.5.0-21-generic - x86_64
+...
