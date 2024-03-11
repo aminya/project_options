@@ -356,7 +356,7 @@ macro(enable_cross_compiler)
     else()
       if(NOT DEFINED EMSCRIPTEN_ROOT)
         include(FetchContent)
-        message(STATUS "fetch emscripten repo. ...")
+        message(STATUS "fetch emscripten repo main branch. ...")
         FetchContent_Declare(
           emscripten GIT_REPOSITORY https://github.com/emscripten-core/emscripten GIT_TAG main
         )
