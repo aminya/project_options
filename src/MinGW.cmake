@@ -128,7 +128,7 @@ macro(mingw_unicode)
           "Enabling Unicode for MinGW in the current project to fix undefined references to WinMain"
       )
       add_compile_definitions("UNICODE" "_UNICODE")
-      add_compile_options("-municode")
+      add_link_options("-municode")
     endif()
   endif()
 endmacro()
