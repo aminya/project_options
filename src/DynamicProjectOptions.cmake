@@ -101,20 +101,14 @@ macro(dynamic_project_options)
     )
   endif()
 
-  if((CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*")
-     AND NOT WIN32
+  if(((CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*") AND (NOT WIN32))
+    OR ((CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*") AND (NOT WIN32) AND (NOT APPLE))
   )
     set(SUPPORTS_UBSAN ON)
+    set(SUPPORTS_ASAN ON)
   else()
     set(SUPPORTS_UBSAN OFF)
-  endif()
-
-  if((CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*")
-     AND WIN32
-  )
     set(SUPPORTS_ASAN OFF)
-  else()
-    set(SUPPORTS_ASAN ON)
   endif()
 
   # ccache, clang-tidy, cppcheck are only supported with Ninja and Makefile based generators
