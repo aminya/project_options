@@ -43,6 +43,9 @@ if(FEATURE_TESTS)
   )
 endif()
 
+include(CMakePrintHelpers)
+cmake_print_variables(ENABLE_SANITIZER_ADDRESS ENABLE_SANITIZER_UNDEFINED_BEHAVIOR)
+
 # Detect custom linker
 if(NOT MSVC)
   find_linker(LINKER)
