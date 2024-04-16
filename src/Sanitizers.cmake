@@ -1,5 +1,7 @@
 include_guard()
 
+include("${CMAKE_CURRENT_LIST_DIR}/Utilities.cmake")
+
 # Enable the sanitizers for the given project
 function(
   enable_sanitizers
@@ -133,11 +135,28 @@ function(
 )
   set(SANITIZERS "")
   if(NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
-    list(APPEND SANITIZERS "address")
-    list(APPEND SANITIZERS "undefined")
-    list(APPEND SANITIZERS "leak")
-    list(APPEND SANITIZERS "thread")
-    list(APPEND SANITIZERS "memory")
+    set(HAS_SANITIZER_SUPPORT ON)
+
+    # Disable gcc sanitizer on some macos according to https://github.com/orgs/Homebrew/discussions/3384#discussioncomment-6264292
+    if((CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*") AND APPLE)
+      detect_macos_version(MACOS_VERSION)
+      if(MACOS_VERSION VERSION_GREATER_EQUAL 13)
+        set(HAS_SANITIZER_SUPPORT OFF)
+      endif()
+
+      detect_architecture(ARCHITECTURE)
+      if(ARCHITECTURE STREQUAL "arm64")
+        set(HAS_SANITIZER_SUPPORT OFF)
+      endif()
+    endif()
+
+    if (HAS_SANITIZER_SUPPORT)
+      list(APPEND SANITIZERS "address")
+      list(APPEND SANITIZERS "undefined")
+      list(APPEND SANITIZERS "leak")
+      list(APPEND SANITIZERS "thread")
+      list(APPEND SANITIZERS "memory")
+    endif()
   elseif(MSVC)
     # or it is MSVC and has run vcvarsall
     string(FIND "$ENV{PATH}" "$ENV{VSINSTALLDIR}" index_of_vs_install_dir)
