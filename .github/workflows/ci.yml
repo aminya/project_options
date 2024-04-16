@@ -44,6 +44,10 @@ jobs:
             compiler: "gcc"
             cmake: true
             vcvarsall: true
+          - os: "macos-13"
+            compiler: "gcc"
+            cmake: true
+            vcvarsall: true
         exclude:
           # fails with an internal error
           - os: "macos-12"
@@ -80,7 +84,7 @@ jobs:
           cppcheck: true
           clangtidy: true
           task: true
-          doxygen: ${{ !contains(matrix.os, 'macos-11') }}
+          doxygen: ${{ !contains(matrix.os, 'macos-11') && !contains(matrix.os, 'macos-13') }}
 
       - name: Test
         if: ${{ !cancelled() }}

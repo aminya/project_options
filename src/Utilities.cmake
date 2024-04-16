@@ -125,6 +125,15 @@ function(detect_architecture arch)
   endif()
 endfunction()
 
+function(detect_macos_version version)
+  find_program(SW_VERS_EXECUTABLE sw_vers)
+  execute_process(
+    COMMAND "${SW_VERS_EXECUTABLE}" -productVersion
+    OUTPUT_VARIABLE MACOS_VERSION
+  )
+  set(${version} "${MACOS_VERSION}" PARENT_SCOPE)
+endfunction()
+
 # convert semicolons in generator expression to $<SEMICOLON>
 function(convert_genex_semicolons genex output)
   set(result)
