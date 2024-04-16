@@ -8,6 +8,26 @@ run_conan()
 
 project(anotherproj VERSION 0.1.0 LANGUAGES CXX C)
 
+option(FEATURE_TESTS "Enable the tests" ON)
+if(FEATURE_TESTS)
+  # Enable sanitizers and static analyzers when running the tests
+  check_sanitizers_support(
+    ENABLE_SANITIZER_ADDRESS ENABLE_SANITIZER_UNDEFINED_BEHAVIOR ENABLE_SANITIZER_LEAK
+    ENABLE_SANITIZER_THREAD ENABLE_SANITIZER_MEMORY
+  )
+endif()
+
+set(ENABLE_INTERPROCEDURAL_OPTIMIZATION "ENABLE_INTERPROCEDURAL_OPTIMIZATION")
+if(APPLE)
+  detect_macos_version(apple_version)
+  if(apple_version VERSION_GREATER_EQUAL 13)
+    # workaround for linkage error as described in https://github.com/Homebrew/homebrew-core/issues/145991
+    # although fixed, this problem still exists in github actions
+    add_link_options(-Wl,-ld_classic)
+    set(ENABLE_INTERPROCEDURAL_OPTIMIZATION "")
+  endif()
+endif()
+
 # Initialize project_options
 project_options(
   ENABLE_CACHE
@@ -23,14 +43,14 @@ project_options(
   DOXYGEN_THEME
   "${CMAKE_CURRENT_LIST_DIR}/css/my_custom_theme.css"
   "${CMAKE_CURRENT_LIST_DIR}/css/my_custom_theme_extra.css"
-  ENABLE_INTERPROCEDURAL_OPTIMIZATION
+  ${ENABLE_INTERPROCEDURAL_OPTIMIZATION}
   # ENABLE_BUILD_WITH_TIME_TRACE
   # ENABLE_UNITY
-  # ENABLE_SANITIZER_ADDRESS
-  # ENABLE_SANITIZER_LEAK
-  # ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
-  # ENABLE_SANITIZER_THREAD
-  # ENABLE_SANITIZER_MEMORY
+  ${ENABLE_SANITIZER_ADDRESS}
+  # ${ENABLE_SANITIZER_LEAK}
+  ${ENABLE_SANITIZER_UNDEFINED_BEHAVIOR}
+  # ${ENABLE_SANITIZER_THREAD}
+  # ${ENABLE_SANITIZER_MEMORY}
 )
 
 # add src, tests, etc here:

@@ -33,7 +33,7 @@ set(PCH_HEADERS
     <string_view>
 )
 
-option(FEATURE_TESTS "Enable the tests" OFF)
+option(FEATURE_TESTS "Enable the tests" ON)
 
 if(FEATURE_TESTS)
   # Enable sanitizers and static analyzers when running the tests
@@ -47,6 +47,17 @@ endif()
 if(NOT MSVC)
   find_linker(LINKER)
   #message(STATUS "Detect Linker: ${LINKER}")
+endif()
+
+set(ENABLE_INTERPROCEDURAL_OPTIMIZATION "ENABLE_INTERPROCEDURAL_OPTIMIZATION")
+if(APPLE)
+  detect_macos_version(apple_version)
+  if(apple_version VERSION_GREATER_EQUAL 13)
+    # workaround for linkage error as described in https://github.com/Homebrew/homebrew-core/issues/145991
+    # although fixed, this problem still exists in github actions
+    add_link_options(-Wl,-ld_classic)
+    set(ENABLE_INTERPROCEDURAL_OPTIMIZATION "")
+  endif()
 endif()
 
 # Initialize project_options
@@ -65,7 +76,7 @@ project_options(
   # PCH_HEADERS
   # ${PCH_HEADERS}
   ENABLE_DOXYGEN
-  ENABLE_INTERPROCEDURAL_OPTIMIZATION
+  ${ENABLE_INTERPROCEDURAL_OPTIMIZATION}
   ENABLE_NATIVE_OPTIMIZATION
   # ENABLE_BUILD_WITH_TIME_TRACE
   # ENABLE_UNITY

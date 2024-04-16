@@ -1,5 +1,7 @@
 include_guard()
 
+include("${CMAKE_CURRENT_LIST_DIR}/Sanitizers.cmake")
+
 #[[.rst:
 
 ``dynamic_project_options``
@@ -101,20 +103,24 @@ macro(dynamic_project_options)
     )
   endif()
 
-  if((CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*")
-     AND NOT WIN32
+  check_sanitizers_support(
+    ENABLE_SANITIZER_ADDRESS
+    ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+    ENABLE_SANITIZER_LEAK
+    ENABLE_SANITIZER_THREAD
+    ENABLE_SANITIZER_MEMORY
   )
+
+  if(ENABLE_SANITIZER_ADDRESS)
+    set(SUPPORTS_ASAN ON)
+  else()
+    set(SUPPORTS_ASAN OFF)
+  endif()
+
+  if(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR)
     set(SUPPORTS_UBSAN ON)
   else()
     set(SUPPORTS_UBSAN OFF)
-  endif()
-
-  if((CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*")
-     AND WIN32
-  )
-    set(SUPPORTS_ASAN OFF)
-  else()
-    set(SUPPORTS_ASAN ON)
   endif()
 
   # ccache, clang-tidy, cppcheck are only supported with Ninja and Makefile based generators
