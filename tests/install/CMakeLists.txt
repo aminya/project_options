@@ -8,7 +8,7 @@ run_conan()
 
 project(anotherproj VERSION 0.1.0 LANGUAGES CXX C)
 
-option(FEATURE_TESTS "Enable the tests" OFF)
+option(FEATURE_TESTS "Enable the tests" ON)
 if(FEATURE_TESTS)
   # Enable sanitizers and static analyzers when running the tests
   check_sanitizers_support(

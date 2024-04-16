@@ -33,7 +33,7 @@ set(PCH_HEADERS
     <string_view>
 )
 
-option(FEATURE_TESTS "Enable the tests" OFF)
+option(FEATURE_TESTS "Enable the tests" ON)
 
 if(FEATURE_TESTS)
   # Enable sanitizers and static analyzers when running the tests
@@ -42,9 +42,6 @@ if(FEATURE_TESTS)
     ENABLE_SANITIZER_THREAD ENABLE_SANITIZER_MEMORY
   )
 endif()
-
-include(CMakePrintHelpers)
-cmake_print_variables(ENABLE_SANITIZER_ADDRESS ENABLE_SANITIZER_UNDEFINED_BEHAVIOR)
 
 # Detect custom linker
 if(NOT MSVC)
