@@ -108,7 +108,10 @@ add_subdirectory(libs)
 
 ## tests
 enable_testing()
-add_test(NAME main COMMAND main)
+add_executable_test(main no_arg)
+add_executable_test(main with_arg
+  EXECUTE_ARGS hello world
+)
 
 # Header-only library
 add_library(lib INTERFACE)
@@ -130,6 +133,14 @@ target_include_directories(
 target_link_libraries(lib2 PRIVATE myproj_project_options myproj_project_warnings)
 target_link_system_libraries(lib2 PRIVATE fmt::fmt Eigen3::Eigen)
 target_link_system_libraries(lib2 PRIVATE mythirdpartylib)
+
+add_test_config(common
+  COMPILE_DEFINITIONS
+  EXPECTED_RESULT=0
+)
+
+add_library_test(lib lib CONFIGS common SOURCES tests/mylib/lib.cpp)
+add_library_test(lib2 lib CONFIGS common SOURCES tests/mylib2/lib.cpp)
 
 # package everything automatically
 package_project(

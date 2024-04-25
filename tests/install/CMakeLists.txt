@@ -68,4 +68,4 @@ target_link_libraries(another_main PRIVATE myproj::lib myproj::lib2)
 
 # tests
 enable_testing()
-add_test(NAME another_main COMMAND another_main)
+add_executable_test(another_main no_arg)

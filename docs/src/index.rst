@@ -7,6 +7,7 @@
 .. cmake-module:: ../../src/DynamicProjectOptions.cmake
 .. cmake-module:: ../../src/StaticAnalyzers.cmake
 .. cmake-module:: ../../src/Sanitizers.cmake
+.. cmake-module:: ../../src/Tests.cmake
 .. cmake-module:: ../../src/Linker.cmake
 .. cmake-module:: ../../src/CrossCompiler.cmake
 .. cmake-module:: ../../src/Cuda.cmake

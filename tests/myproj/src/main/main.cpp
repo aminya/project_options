@@ -15,7 +15,11 @@
 #include <cstdint>
 #include <cstring>
 
-int main() {
+int main(int argc, char* argv[]) {
+    if (argc > 1) {
+      fmt::print("[{}]", fmt::join(argv + 1, argv + argc, ", "));
+    }
+
     fmt::print("Hello from fmt{}", "!");
 
     Eigen::VectorXd eigen_vec = Eigen::Vector3d(1, 2, 3);
