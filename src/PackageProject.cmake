@@ -319,19 +319,6 @@ function(package_project)
   include("${_ycm_SOURCE_DIR}/modules/AddUninstallTarget.cmake")
 endfunction()
 
-function(set_or_append_target_property target property new_values)
-  get_target_property(_AllValues ${target} ${property})
-
-  if(NOT _AllValues) # If the property hasn't set
-    set(_AllValues "${new_values}")
-  else()
-    list(APPEND _AllValues ${new_values})
-  endif()
-  list(REMOVE_DUPLICATES _AllValues)
-
-  set_target_properties(${target} PROPERTIES ${property} "${_AllValues}")
-endfunction()
-
 #[[.rst:
 
 ``target_include_interface_directories``
@@ -378,7 +365,7 @@ function(target_include_interface_directories target)
     endif()
 
     # Append include_dir to target property PROJECT_OPTIONS_INTERFACE_DIRECTORIES
-    set_or_append_target_property(${target} "PROJECT_OPTIONS_INTERFACE_DIRECTORIES" ${include_dir})
+    set_property(TARGET ${target} APPEND PROPERTY "PROJECT_OPTIONS_INTERFACE_DIRECTORIES" ${include_dir})
 
     # Include the interface directory
     get_target_property(_HasSourceFiles ${target} SOURCES)
@@ -531,10 +518,7 @@ function(target_find_dependencies target)
         find_package(${package_name} REQUIRED ${find_package_args})
       endif()
 
-      # Append to target property
-      set_or_append_target_property(
-        ${target} "PROJECT_OPTIONS_${type}_DEPENDENCIES" "${package_name}"
-      )
+      set_property(TARGET ${target} APPEND PROPERTY "PROJECT_OPTIONS_${type}_DEPENDENCIES" "${package_name}")
     endif()
   endmacro()
 
