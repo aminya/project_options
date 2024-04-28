@@ -93,11 +93,13 @@ project_options(
 )
 target_compile_features(project_options INTERFACE cxx_std_20)
 
-find_package(Microsoft.GSL CONFIG REQUIRED)
-find_package(fmt CONFIG REQUIRED)
-
 add_executable(example)
 target_sources(example PRIVATE main.cpp)
 target_include_directories(example PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(example PRIVATE project_options project_warnings)
+target_find_dependencies(example
+  PUBLIC_CONFIG
+  Microsoft.GSL
+  fmt
+)
 target_link_system_libraries(example PRIVATE Microsoft.GSL::GSL fmt::fmt-header-only)
