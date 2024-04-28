@@ -99,7 +99,7 @@ target_find_dependencies(main
   PUBLIC
     PACKAGE fmt CONFIG
     PACKAGE Eigen3 CONFIG
-    PACAKGE docopt CONFIG
+    PACKAGE docopt CONFIG
 )
 
 target_link_system_libraries(main PRIVATE fmt::fmt Eigen3::Eigen)
