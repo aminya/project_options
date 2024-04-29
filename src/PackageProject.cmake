@@ -518,7 +518,8 @@ function(target_find_dependencies target)
         find_package(${package_name} REQUIRED ${find_package_args})
       endif()
 
-      set_property(TARGET ${target} APPEND PROPERTY "PROJECT_OPTIONS_${type}_DEPENDENCIES" "${package_name}")
+      list(JOIN find_package_args " " installation_args)
+      set_property(TARGET ${target} APPEND PROPERTY "PROJECT_OPTIONS_${type}_DEPENDENCIES" "${package_name} ${installation_args}")
     endif()
   endmacro()
 
