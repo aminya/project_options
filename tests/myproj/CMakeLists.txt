@@ -95,12 +95,12 @@ project_options(
 add_executable(main ./src/main/main.cpp)
 target_link_libraries(main PRIVATE myproj_project_options myproj_project_warnings)
 
-## dependencies
-set(DEPENDENCIES_CONFIGURED fmt Eigen3 docopt)
-
-foreach(DEPENDENCY ${DEPENDENCIES_CONFIGURED})
-  find_package(${DEPENDENCY} CONFIG REQUIRED)
-endforeach()
+target_find_dependencies(main
+  PUBLIC
+    PACKAGE fmt CONFIG
+    PACKAGE Eigen3 CONFIG
+    PACKAGE docopt CONFIG
+)
 
 target_link_system_libraries(main PRIVATE fmt::fmt Eigen3::Eigen)
 

@@ -319,19 +319,6 @@ function(package_project)
   include("${_ycm_SOURCE_DIR}/modules/AddUninstallTarget.cmake")
 endfunction()
 
-function(set_or_append_target_property target property new_values)
-  get_target_property(_AllValues ${target} ${property})
-
-  if(NOT _AllValues) # If the property hasn't set
-    set(_AllValues "${new_values}")
-  else()
-    list(APPEND _AllValues ${new_values})
-  endif()
-  list(REMOVE_DUPLICATES _AllValues)
-
-  set_target_properties(${target} PROPERTIES ${property} "${_AllValues}")
-endfunction()
-
 #[[.rst:
 
 ``target_include_interface_directories``
@@ -378,7 +365,7 @@ function(target_include_interface_directories target)
     endif()
 
     # Append include_dir to target property PROJECT_OPTIONS_INTERFACE_DIRECTORIES
-    set_or_append_target_property(${target} "PROJECT_OPTIONS_INTERFACE_DIRECTORIES" ${include_dir})
+    set_property(TARGET ${target} APPEND PROPERTY "PROJECT_OPTIONS_INTERFACE_DIRECTORIES" ${include_dir})
 
     # Include the interface directory
     get_target_property(_HasSourceFiles ${target} SOURCES)
@@ -400,7 +387,7 @@ function(target_include_interface_directories target)
   endforeach()
 endfunction()
 
-#[[.rst:
+#[=[.rst:
 
 ``target_find_dependencies``
 =====================================
@@ -408,15 +395,17 @@ endfunction()
 .. code:: cmake
 
    target_find_dependencies(<target_name>
-     [INTERFACE dependency ...]
-     [PUBLIC dependency ...]
-     [PRIVATE dependency ...]
-     [INTERFACE_CONFIG dependency ...]
-     [PUBLIC_CONFIG dependency ...]
-     [PRIVATE_CONFIG dependency ...]
+     [
+      <INTERFACE|PUBLIC|PRIVATE|INTERFACE_CONFIG|PUBLIC_CONFIG|PRIVATE_CONFIG>
+      [dependency1...]
+     ]...
+     [
+      <INTERFACE|PUBLIC|PRIVATE|INTERFACE_CONFIG|PUBLIC_CONFIG|PRIVATE_CONFIG>
+      [PACKAGE <dependency_name> [find_package() argument1...]]...
+     ]...
    )
 
-This macro calls ``find_package(${dependency} [CONFIG] REQUIRED)`` for
+This macro calls ``find_package(${dependency} [CONFIG] REQUIRED [OTHER_ARGUMENTS])`` for
 all dependencies required and binds them to the target.
 
 Properties named
@@ -436,60 +425,106 @@ to add more dependencies.
 
    target_find_dependencies(my_lib
      PUBLIC_CONFIG
-     fmt
+       fmt
+
      PRIVATE_CONFIG
-     Microsoft.GSL
+       PACKAGE Microsoft.GSL
+       PACKAGE Qt6 COMPONENTS Widgets
    )
    target_find_dependencies(my_lib
-     PRIVATE_CONFIG
-     range-v3
+     PRIVATE
+       PACKAGE range-v3 CONFIG QUIET  # you can also set CONFIG here
    )
 
    target_link_system_libraries(my_lib
      PUBLIC
      fmt::fmt
+
      PRIVATE
      Microsoft.GSL::GSL
+     Qt6::Widgets
      range-v3::range-v3
    )
 
    package_project(TARGETS my_lib)
 
-]]
-macro(target_find_dependencies target)
-  set(_options)
-  set(_oneValueArgs)
-  set(_MultiValueArgs
-      PRIVATE
-      PUBLIC
-      INTERFACE
-      PRIVATE_CONFIG
-      PUBLIC_CONFIG
-      INTERFACE_CONFIG
-  )
-  cmake_parse_arguments(args "${_options}" "${_oneValueArgs}" "${_MultiValueArgs}" ${ARGN})
+]=]
+function(target_find_dependencies target)
+  set(unparsed_args ${ARGN})
 
-  macro(_property_for property)
-    # Call find_package to all newly added dependencies
-    foreach(_Dependency IN LISTS args_${property})
-      if(${property} MATCHES ".*CONFIG")
-        find_package(${_Dependency} CONFIG REQUIRED)
-      else()
-        include(CMakeFindDependencyMacro)
-        find_dependency(${_Dependency})
+  set(type "")
+  set(package_name "")
+  set(find_package_args "")
+  set(simple_mode FALSE)
+
+  macro(_parse_target_find_dependencies)
+    set(package_name "")
+    set(find_package_args "")
+
+    while(unparsed_args)
+      list(POP_FRONT unparsed_args _current)
+
+      if(_current MATCHES "^(PRIVATE|PUBLIC|INTERFACE)(_CONFIG)?$") # Parse an option section
+        # Set the option section type
+        set(type "${_current}")
+
+        # Check mode for this option section
+        if(unparsed_args)
+          list(GET unparsed_args 0 _next)
+
+          if(_next STREQUAL "PACKAGE")
+            set(simple_mode FALSE)
+          else()
+            set(simple_mode TRUE)
+          endif()
+        endif()
+      elseif(simple_mode) # Parse a simple option item
+        set(package_name "${_current}")
+        break()
+      else() # Parse a complex option item
+        # _current == "PACKAGE", so the next is the package_name
+        list(POP_FRONT unparsed_args package_name)
+
+        while(unparsed_args)
+          list(POP_FRONT unparsed_args _find_package_arg)
+
+          # Done if _find_package_arg belongs to next option item
+          if((_find_package_arg MATCHES "^(PRIVATE|PUBLIC|INTERFACE)(_CONFIG)?$")
+            OR(_find_package_arg STREQUAL "PACKAGE"))
+            list(PREPEND unparsed_args "${_find_package_arg}")
+            break()
+          endif()
+
+          list(APPEND find_package_args "${_find_package_arg}")
+        endwhile()
+        break()
       endif()
-    endforeach()
-
-    # Append to target property
-    set_or_append_target_property(
-      ${target} "PROJECT_OPTIONS_${property}_DEPENDENCIES" "${args_${property}}"
-    )
+    endwhile()
   endmacro()
 
-  _property_for(PRIVATE)
-  _property_for(PUBLIC)
-  _property_for(INTERFACE)
-  _property_for(PRIVATE_CONFIG)
-  _property_for(PUBLIC_CONFIG)
-  _property_for(INTERFACE_CONFIG)
-endmacro()
+  macro(_add_dependency)
+    if(package_name)
+      if("CONFIG" IN_LIST find_package_args)
+        list(REMOVE_ITEM find_package_args "CONFIG")
+
+        if(type MATCHES "^(PRIVATE|PUBLIC|INTERFACE)$")
+          set(type "${type}_CONFIG")
+        endif()
+      endif()
+
+      if(${type} MATCHES ".*CONFIG")
+        find_package(${package_name} CONFIG REQUIRED ${find_package_args})
+      else()
+        find_package(${package_name} REQUIRED ${find_package_args})
+      endif()
+
+      list(JOIN find_package_args " " installation_args)
+      set_property(TARGET ${target} APPEND PROPERTY "PROJECT_OPTIONS_${type}_DEPENDENCIES" "${package_name} ${installation_args}")
+    endif()
+  endmacro()
+
+  while(unparsed_args)
+    _parse_target_find_dependencies()
+    _add_dependency()
+  endwhile()
+endfunction()
