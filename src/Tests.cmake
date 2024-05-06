@@ -29,14 +29,22 @@ function(_configure_target target_name type)
 
   if(${type} STREQUAL "library_test")
     add_executable(${target_name})
+    set(source_scope PRIVATE)
     set(scope PRIVATE)
   elseif(${type} STREQUAL "test_config")
-    add_library(${target_name} INTERFACE)
-    set(scope INTERFACE)
+    if(args_SOURCES)
+      add_library(${target_name} STATIC)
+      set(source_scope PRIVATE)
+      set(scope PUBLIC)
+    else()
+      add_library(${target_name} INTERFACE)
+      set(source_scope INTERFACE)
+      set(scope INTERFACE)
+    endif()
   endif()
 
   target_sources(${target_name}
-    ${scope}
+    ${source_scope}
     ${args_SOURCES}
   )
   target_include_directories(${target_name}
