@@ -44,9 +44,7 @@ function(
         list(APPEND HARDENING_COMPILE_OPTIONS -Wstringop-overflow=4 -Wformat-overflow=2)
       endif()
 
-      if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-        target_compile_definitions(${_project_name} INTERFACE _FORTIFY_SOURCE=3)
-      endif()
+      target_compile_definitions(${_project_name} INTERFACE $<$<CONFIG:Release,RelWithDebInfo>:DEBUG_FORTIFY_SOURCE=3>)
     endif()
 
     if(${ENABLE_ELF_PROTECTION})
@@ -64,9 +62,7 @@ function(
       list(APPEND HARDENING_LINK_OPTIONS /guard:cf)
     endif()
 
-    if(${ENABLE_STACK_PROTECTION} AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-      list(APPEND HARDENING_COMPILE_OPTIONS /RTC1)
-    endif()
+    list(APPEND HARDENING_COMPILE_OPTIONS $<$<CONFIG:Debug>:/RTC1>)
 
     if(${ENABLE_OVERFLOW_PROTECTION})
       list(APPEND HARDENING_COMPILE_OPTIONS /sdl)
