@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.24)
+# 3.24 is required to make CheckIPOSupported prefer to honor the calling project's flags, see https://cmake.org/cmake/help/latest/policy/CMP0138.html
 # 3.20 is required by the windows toolchain and cmake_path. It also has a more reliable building functionality.
 # 3.18 required by package_project and interprocedural optimization. It also has a more reliable building functionality (no errors during the linking stage).
 
