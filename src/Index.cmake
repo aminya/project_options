@@ -1,13 +1,14 @@
-cmake_minimum_required(VERSION 3.24)
-# 3.24 is required to make CheckIPOSupported prefer to honor the calling project's flags, see https://cmake.org/cmake/help/latest/policy/CMP0138.html
+cmake_minimum_required(VERSION 3.20)
 # 3.20 is required by the windows toolchain and cmake_path. It also has a more reliable building functionality.
 # 3.18 required by package_project and interprocedural optimization. It also has a more reliable building functionality (no errors during the linking stage).
 
 include_guard()
 
-# fix DOWNLOAD_EXTRACT_TIMESTAMP warning in FetchContent
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
+  # fix DOWNLOAD_EXTRACT_TIMESTAMP warning in FetchContent
   cmake_policy(SET CMP0135 NEW)
+  # make CheckIPOSupported prefer to honor the calling project's flags
+  cmake_policy(SET CMP0138 NEW)
 endif()
 
 # only useable here
