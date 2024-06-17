@@ -160,7 +160,7 @@ function(
   elseif(MSVC)
     # or it is MSVC and has run vcvarsall
     string(FIND "$ENV{PATH}" "$ENV{VSINSTALLDIR}" index_of_vs_install_dir)
-    if("${index_of_vs_install_dir}" STREQUAL "-1")
+    if(NOT "${index_of_vs_install_dir}" STREQUAL "-1")
       list(APPEND SANITIZERS "address")
     endif()
   endif()
