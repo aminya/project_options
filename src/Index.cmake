@@ -8,6 +8,8 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
   # fix DOWNLOAD_EXTRACT_TIMESTAMP warning in FetchContent
   cmake_policy(SET CMP0135 NEW)
   # make CheckIPOSupported prefer to honor the calling project's flags
+  # this fixes check_ipo_supported() to find clang-scan-deps correctly
+  cmake_policy(SET CMP0137 NEW)
   cmake_policy(SET CMP0138 NEW)
 endif()
 
