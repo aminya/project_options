@@ -86,8 +86,19 @@ function(
               "Using MSVC sanitizers requires setting the MSVC environment before building the project. Please manually open the MSVC command prompt and rebuild the project."
           )
         endif()
+        if(POLICY CMP0141)
+          if("${CMAKE_MSVC_DEBUG_INFORMATION_FORMAT}" STREQUAL ""
+             OR "${CMAKE_MSVC_DEBUG_INFORMATION_FORMAT}" STREQUAL "EditAndContinue"
+           )
+            set_target_properties(
+              ${_project_name} PROPERTIES MSVC_DEBUG_INFORMATION_FORMAT ProgramDatabase
+            )
+          endif()
+        else()
+          target_compile_options(${_project_name} INTERFACE /Zi)
+        endif()
         target_compile_options(
-          ${_project_name} INTERFACE /fsanitize=${LIST_OF_SANITIZERS} /Zi /INCREMENTAL:NO
+          ${_project_name} INTERFACE /fsanitize=${LIST_OF_SANITIZERS} /INCREMENTAL:NO
         )
         target_link_options(${_project_name} INTERFACE /INCREMENTAL:NO)
       endif()
