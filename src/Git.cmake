@@ -499,7 +499,7 @@ Wait for the git lock file to be released
 Input variables:
 
 - ``REPOSITORY_PATH``: The path to the repository
-- ``TIMEOUT_COUNTER``: The number of times to wait before timing out
+- ``TIMEOUT_COUNTER``: The number of times to wait before timing out, each time 1 seconds (defaults to 120)
 
 ]]
 function(git_wait)
@@ -511,7 +511,7 @@ function(git_wait)
   endif()
 
   if("${_fun_TIMEOUT_COUNTER}" STREQUAL "")
-    set(_fun_TIMEOUT_COUNTER 20)
+    set(_fun_TIMEOUT_COUNTER 120)
   endif()
 
   set(counter 0)
@@ -520,8 +520,11 @@ function(git_wait)
   while(NOT EXISTS "${_fun_REPOSITORY_PATH}/.git/index"
         OR EXISTS "${_fun_REPOSITORY_PATH}/.git/index.lock"
   )
-    message(STATUS "Waiting for git lock file...[${counter}/${_fun_TIMEOUT_COUNTER}]")
-    execute_process(COMMAND ${CMAKE_COMMAND} -E sleep 0.5 COMMAND_ERROR_IS_FATAL LAST)
+    if(${counter} EQUAL 0)
+      message(STATUS "Waiting for git lock file\n")
+    endif()
+
+    execute_process(COMMAND ${CMAKE_COMMAND} -E sleep 1 COMMAND_ERROR_IS_FATAL LAST)
 
     math(EXPR counter "${counter} + 1")
     if(${counter} GREATER ${_fun_TIMEOUT_COUNTER})
