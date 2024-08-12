@@ -13,6 +13,11 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
   cmake_policy(SET CMP0138 NEW)
 endif()
 
+if(POLICY CMP0141)
+  # MSVC debug information format flags are selected by an abstraction.
+  cmake_policy(SET CMP0141 NEW)
+endif()
+
 # only useable here
 set(ProjectOptions_SRC_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
