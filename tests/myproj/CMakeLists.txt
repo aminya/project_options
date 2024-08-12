@@ -88,6 +88,10 @@ project_options(
   # CLANG_WARNINGS "-Weverything"
   LINKER
   "${LINKER}"
+
+  # Test if _FORTIFY_SOURCE is defined only once when ENABLE_OVERFLOW_PROTECTION
+  ENABLE_OVERFLOW_PROTECTION
+  CLANG_TIDY_EXTRA_ARGUMENTS "-warnings-as-errors=clang-diagnostic-macro-redefined"
 )
 # NOTE: project_options and project_warnings are defined inside project_options
 
