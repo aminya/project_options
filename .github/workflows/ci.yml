@@ -40,14 +40,6 @@ jobs:
           - os: "windows-2022"
             compiler: "msvc"
             vcvarsall: false
-          - os: "macos-11"
-            compiler: "gcc"
-            cmake: true
-            vcvarsall: true
-          - os: "macos-13"
-            compiler: "gcc"
-            cmake: true
-            vcvarsall: true
         exclude:
           # fails with an internal error
           - os: "macos-12"
