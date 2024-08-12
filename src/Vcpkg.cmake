@@ -232,6 +232,7 @@ macro(run_vcpkg)
   _checkout_vcpkg_repository()
 
   configure_mingw_vcpkg()
+  # configure_clang_vcpkg()
 
   # add the vcpkg toolchain
   _add_vcpkg_toolchain()
