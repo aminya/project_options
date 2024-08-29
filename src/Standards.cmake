@@ -1,5 +1,14 @@
 include_guard()
 
+function(_set_language_standard output language)
+  foreach(version IN LISTS ARGN)
+    if(DEFINED "CMAKE_${language}${version}_STANDARD_COMPILE_OPTION" OR DEFINED "CMAKE_${language}${version}_EXTENSION_COMPILE_OPTION")
+      set("${output}" "${version}" PARENT_SCOPE)
+      break()
+    endif()
+  endforeach()
+endfunction()
+
 # Set the default copmiler standards if not specified
 macro(set_standards)
 
@@ -8,19 +17,7 @@ macro(set_standards)
   # Like not having compiler warnings on by default, this fixes another `bad` default for the compilers
   # If someone needs an older standard like c++11 although their compiler supports c++20, they can override this by passing -D CMAKE_CXX_STANDARD=11.
   if("${CMAKE_CXX_STANDARD}" STREQUAL "")
-    if(DEFINED CMAKE_CXX20_STANDARD_COMPILE_OPTION OR DEFINED CMAKE_CXX20_EXTENSION_COMPILE_OPTION)
-      set(CXX_LATEST_STANDARD 20)
-    elseif(DEFINED CMAKE_CXX17_STANDARD_COMPILE_OPTION OR DEFINED
-                                                          CMAKE_CXX17_EXTENSION_COMPILE_OPTION
-    )
-      set(CXX_LATEST_STANDARD 17)
-    elseif(DEFINED CMAKE_CXX14_STANDARD_COMPILE_OPTION OR DEFINED
-                                                          CMAKE_CXX14_EXTENSION_COMPILE_OPTION
-    )
-      set(CXX_LATEST_STANDARD 14)
-    else()
-      set(CXX_LATEST_STANDARD 11)
-    endif()
+    _set_language_standard(CXX_LATEST_STANDARD CXX 23 20 17 14 11)
     message(
       STATUS
         "The default CMAKE_CXX_STANDARD used by external targets and tools is not set yet. Using the latest supported C++ standard that is ${CXX_LATEST_STANDARD}"
@@ -29,19 +26,7 @@ macro(set_standards)
   endif()
 
   if("${CMAKE_C_STANDARD}" STREQUAL "")
-    if(NOT
-       ${ProjectOptions_ENABLE_CPPCHECK} # cppcheck doesn't support C17 https://sourceforge.net/p/cppcheck/discussion/general/thread/19ea152bba/
-       AND DEFINED CMAKE_C17_STANDARD_COMPILE_OPTION
-       OR DEFINED CMAKE_C17_EXTENSION_COMPILE_OPTION
-    )
-      set(C_LATEST_STANDARD 17)
-    elseif(DEFINED CMAKE_C11_STANDARD_COMPILE_OPTION OR DEFINED CMAKE_C11_EXTENSION_COMPILE_OPTION)
-      set(C_LATEST_STANDARD 11)
-    elseif(DEFINED CMAKE_C99_STANDARD_COMPILE_OPTION OR DEFINED CMAKE_C99_EXTENSION_COMPILE_OPTION)
-      set(C_LATEST_STANDARD 99)
-    else()
-      set(C_LATEST_STANDARD 90)
-    endif()
+    _set_language_standard(C_LATEST_STANDARD C 23 20 17 11 99 90)
     message(
       STATUS
         "The default CMAKE_C_STANDARD used by external targets and tools is not set yet. Using the latest supported C standard that is ${C_LATEST_STANDARD}"
