@@ -266,12 +266,13 @@ function(package_project)
   )
 
   # download ForwardArguments
-  FetchContent_Declare(
-    _fargs URL https://github.com/polysquare/cmake-forward-arguments/archive/refs/tags/v1.0.0.zip
+  FetchContent_Declare(_fargs
+    URL https://github.com/polysquare/cmake-forward-arguments/archive/refs/tags/v1.0.0.zip
+    SOURCE_SUBDIR this-directory-does-not-exist
   )
   FetchContent_GetProperties(_fargs)
   if(NOT _fargs_POPULATED)
-    FetchContent_Populate(_fargs)
+    FetchContent_MakeAvailable(_fargs)
   endif()
   include("${_fargs_SOURCE_DIR}/ForwardArguments.cmake")
 
@@ -289,10 +290,13 @@ function(package_project)
   )
 
   # download ycm
-  FetchContent_Declare(_ycm URL https://github.com/robotology/ycm/archive/refs/tags/v0.13.0.zip)
+  FetchContent_Declare(_ycm
+    URL https://github.com/robotology/ycm/archive/refs/tags/v0.13.0.zip
+    SOURCE_SUBDIR this-directory-does-not-exist
+  )
   FetchContent_GetProperties(_ycm)
   if(NOT _ycm_POPULATED)
-    FetchContent_Populate(_ycm)
+    FetchContent_MakeAvailable(_ycm)
   endif()
   include("${_ycm_SOURCE_DIR}/modules/InstallBasicPackageFiles.cmake")
 

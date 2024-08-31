@@ -357,11 +357,13 @@ macro(enable_cross_compiler)
       if(NOT DEFINED EMSCRIPTEN_ROOT)
         include(FetchContent)
         message(STATUS "fetch emscripten repo main branch. ...")
-        FetchContent_Declare(
-          emscripten GIT_REPOSITORY https://github.com/emscripten-core/emscripten GIT_TAG main
+        FetchContent_Declare(emscripten
+          GIT_REPOSITORY https://github.com/emscripten-core/emscripten
+          GIT_TAG main
+          SOURCE_SUBDIR this-directory-does-not-exist
         )
         if(NOT emscripten_POPULATED)
-          FetchContent_Populate(emscripten)
+          FetchContent_MakeAvailable(emscripten)
           set(EMSCRIPTEN_ROOT "${emscripten_SOURCE_DIR}")
         endif()
       endif()
