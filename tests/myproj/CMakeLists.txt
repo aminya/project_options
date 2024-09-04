@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16...3.21)
+cmake_minimum_required(VERSION 3.16...3.30)
 
 # set a default CXX standard used by the external tools like clang-tidy, cppcheck, etc.
 # You can later set fine-grained standards for each target using `target_compile_features`
@@ -55,7 +55,7 @@ if(APPLE)
   if(apple_version VERSION_GREATER_EQUAL 13)
     # workaround for linkage error as described in https://github.com/Homebrew/homebrew-core/issues/145991
     # although fixed, this problem still exists in github actions
-    add_link_options(-Wl,-ld_classic)
+    #XXX add_link_options(-Wl,-ld_classic)
     set(ENABLE_INTERPROCEDURAL_OPTIMIZATION "")
   endif()
 endif()
@@ -71,7 +71,7 @@ project_options(
   ENABLE_CLANG_TIDY
   # ENABLE_INCLUDE_WHAT_YOU_USE
   # ENABLE_GCC_ANALYZER
-  ENABLE_COVERAGE
+  #XXX ENABLE_COVERAGE
   # ENABLE_PCH
   # PCH_HEADERS
   # ${PCH_HEADERS}
@@ -123,6 +123,13 @@ target_include_system_directories( # Test the fix of semicolon in genex issue
 ) # TODO(refactor)
 target_link_libraries(lib INTERFACE myproj_project_options myproj_project_warnings)
 target_link_system_libraries(lib INTERFACE fmt::fmt Eigen3::Eigen)
+
+option(LIB_WITH_EIGEN "Enable Eigen" OFF)
+if(LIB_WITH_EIGEN)
+  target_compile_definitions(lib INTERFACE HAS_EIGEN)
+endif()
+
+target_link_libraries(main PRIVATE lib)
 
 # Library
 add_library(lib2 "./src/mylib2/lib.cpp")
@@ -178,3 +185,6 @@ package_project(
 )
 
 package_project(NAME myproj_main TARGETS main)
+
+set(CPACK_GENERATOR TGZ)
+include(CPack)
