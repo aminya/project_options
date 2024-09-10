@@ -60,7 +60,7 @@ macro(msvc_toolchain)
       include(FetchContent)
       FetchContent_Declare(
         _msvc_toolchain GIT_REPOSITORY "https://github.com/MarkSchofield/WindowsToolchain.git"
-        GIT_TAG "v0.10.0"
+        GIT_TAG "v0.11.0"
       )
       FetchContent_MakeAvailable(_msvc_toolchain)
       include("${_msvc_toolchain_SOURCE_DIR}/Windows.MSVC.toolchain.cmake")
