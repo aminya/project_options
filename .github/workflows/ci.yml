@@ -72,6 +72,7 @@ jobs:
           clangtidy: true
           task: true
           doxygen: true
+          python: true
 
       - name: Test
         if: ${{ !cancelled() }}
@@ -82,5 +83,6 @@ jobs:
 
       - name: Lint
         run: |
-          python3 -m pip install --user cmakelint cmake-format
+          pipx install cmakelint
+          pipx install --include-deps cmake-format
           task lint
