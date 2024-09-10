@@ -83,6 +83,5 @@ jobs:
 
       - name: Lint
         run: |
-          pipx install cmakelint
-          pipx install --include-deps cmake-format
+          pipx install cmakelang[YAML]
           task lint
