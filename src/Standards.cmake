@@ -2,7 +2,9 @@ include_guard()
 
 function(_set_language_standard output language)
   foreach(version IN LISTS ARGN)
-    if(DEFINED "CMAKE_${language}${version}_STANDARD_COMPILE_OPTION" OR DEFINED "CMAKE_${language}${version}_EXTENSION_COMPILE_OPTION")
+    if(DEFINED "CMAKE_${language}${version}_STANDARD_COMPILE_OPTION"
+       OR DEFINED "CMAKE_${language}${version}_EXTENSION_COMPILE_OPTION"
+    )
       set("${output}" "${version}" PARENT_SCOPE)
       break()
     endif()
@@ -17,7 +19,15 @@ macro(set_standards)
   # Like not having compiler warnings on by default, this fixes another `bad` default for the compilers
   # If someone needs an older standard like c++11 although their compiler supports c++20, they can override this by passing -D CMAKE_CXX_STANDARD=11.
   if("${CMAKE_CXX_STANDARD}" STREQUAL "")
-    _set_language_standard(CXX_LATEST_STANDARD CXX 23 20 17 14 11)
+    _set_language_standard(
+      CXX_LATEST_STANDARD
+      CXX
+      23
+      20
+      17
+      14
+      11
+    )
     message(
       STATUS
         "The default CMAKE_CXX_STANDARD used by external targets and tools is not set yet. Using the latest supported C++ standard that is ${CXX_LATEST_STANDARD}"
@@ -26,7 +36,16 @@ macro(set_standards)
   endif()
 
   if("${CMAKE_C_STANDARD}" STREQUAL "")
-    _set_language_standard(C_LATEST_STANDARD C 23 20 17 11 99 90)
+    _set_language_standard(
+      C_LATEST_STANDARD
+      C
+      23
+      20
+      17
+      11
+      99
+      90
+    )
     message(
       STATUS
         "The default CMAKE_C_STANDARD used by external targets and tools is not set yet. Using the latest supported C standard that is ${C_LATEST_STANDARD}"

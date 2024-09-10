@@ -37,9 +37,7 @@ function(is_msvc value)
     include("${ProjectOptions_SRC_DIR}/DetectCompiler.cmake")
     detect_compiler()
 
-    if((DETECTED_CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND DETECTED_CMAKE_C_COMPILER_ID STREQUAL
-                                                           "MSVC")
-    )
+    if((DETECTED_CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND DETECTED_CMAKE_C_COMPILER_ID STREQUAL "MSVC"))
       set(${value} ON PARENT_SCOPE)
       return()
     endif()
@@ -85,9 +83,7 @@ macro(run_vcvarsall)
     set(VS_DEBUGGER_ENVIRONMENT "PATH=\$(VC_ExecutablePath_${VCVARSALL_ARCH_UPPER});%PATH%")
 
     get_all_targets(all_targets)
-    set_target_properties(
-      ${all_targets} PROPERTIES VS_DEBUGGER_ENVIRONMENT "${VS_DEBUGGER_ENVIRONMENT}"
-    )
+    set_target_properties(${all_targets} PROPERTIES VS_DEBUGGER_ENVIRONMENT "${VS_DEBUGGER_ENVIRONMENT}")
   endif()
 
   # if msvc_found is set by msvc_toolchain
@@ -132,9 +128,7 @@ macro(run_vcvarsall)
         # set the environment variables
         set_env_from_string("${VCVARSALL_ENV}")
       else()
-        message(
-          WARNING "Failed to parse the vcvarsall output. ${VCVARSALL_ERROR}.\nIgnoring this error"
-        )
+        message(WARNING "Failed to parse the vcvarsall output. ${VCVARSALL_ERROR}.\nIgnoring this error")
 
       endif()
 

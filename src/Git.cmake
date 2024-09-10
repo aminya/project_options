@@ -92,8 +92,7 @@ function(git_clone)
 
     if(NOT EXISTS "${_fun_REPOSITORY_PATH}/.git")
       message(
-        STATUS
-          "Folder ${_fun_REPOSITORY_PATH} exists but is not a git repository. Trying to force clone"
+        STATUS "Folder ${_fun_REPOSITORY_PATH} exists but is not a git repository. Trying to force clone"
       )
       # recall the function with the force flag
       git_clone(
@@ -165,8 +164,8 @@ function(git_pull)
   git_wait(REPOSITORY_PATH "${_fun_REPOSITORY_PATH}")
 
   execute_process(
-    COMMAND "${GIT_EXECUTABLE}" "pull" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
-                                                         COMMAND_ERROR_IS_FATAL LAST
+    COMMAND "${GIT_EXECUTABLE}" "pull" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}" COMMAND_ERROR_IS_FATAL
+                                                         LAST
   )
 
   # restore the revision
@@ -348,8 +347,8 @@ function(git_add_remote)
       WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}" COMMAND_ERROR_IS_FATAL LAST
     )
     execute_process(
-      COMMAND "${GIT_EXECUTABLE}" "fetch" "${_fun_REMOTE_NAME}"
-      WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}" COMMAND_ERROR_IS_FATAL LAST
+      COMMAND "${GIT_EXECUTABLE}" "fetch" "${_fun_REMOTE_NAME}" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
+                                                                                  COMMAND_ERROR_IS_FATAL LAST
     )
   endif()
 endfunction()
@@ -517,9 +516,7 @@ function(git_wait)
   set(counter 0)
 
   # wait until .git/index is present (in case a parallel clone is running)
-  while(NOT EXISTS "${_fun_REPOSITORY_PATH}/.git/index"
-        OR EXISTS "${_fun_REPOSITORY_PATH}/.git/index.lock"
-  )
+  while(NOT EXISTS "${_fun_REPOSITORY_PATH}/.git/index" OR EXISTS "${_fun_REPOSITORY_PATH}/.git/index.lock")
     if(${counter} EQUAL 0)
       message(STATUS "Waiting for git lock file\n")
     endif()
@@ -578,9 +575,7 @@ function(git_default_branch default_branch)
   if(${_default_branch_result} EQUAL 0)
     string(REGEX REPLACE "refs/remotes/origin/" "" _default_branch "${_default_branch}")
   else()
-    message(
-      WARNING "Could not get default branch of ${_fun_REPOSITORY_PATH}. Considering it as master"
-    )
+    message(WARNING "Could not get default branch of ${_fun_REPOSITORY_PATH}. Considering it as master")
     set(_default_branch "master")
   endif()
 

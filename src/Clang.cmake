@@ -4,10 +4,9 @@ set(ProjectOptions_SRC_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
 # detect clang
 function(is_clang value)
-  if(clang
-     OR ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" AND "${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
-     OR ("${DETECTED_CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" AND "${DETECTED_CMAKE_C_COMPILER_ID}"
-                                                                  STREQUAL "Clang")
+  if(clang OR ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" AND "${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
+     OR ("${DETECTED_CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" AND "${DETECTED_CMAKE_C_COMPILER_ID}" STREQUAL
+                                                                  "Clang")
   )
     set(${value} ON PARENT_SCOPE)
     return()
@@ -24,9 +23,7 @@ function(is_clang value)
     include("${ProjectOptions_SRC_DIR}/DetectCompiler.cmake")
     detect_compiler()
 
-    if((DETECTED_CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND DETECTED_CMAKE_C_COMPILER_ID STREQUAL
-                                                            "Clang")
-    )
+    if((DETECTED_CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND DETECTED_CMAKE_C_COMPILER_ID STREQUAL "Clang"))
       set(${value} ON PARENT_SCOPE)
       return()
     endif()

@@ -18,9 +18,7 @@ function(
 
     if(${ENABLE_SANITIZER_ADDRESS})
       list(APPEND SANITIZERS "address")
-      if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL
-                                                  8
-      )
+      if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 8)
         list(APPEND SANITIZERS "pointer-compare" "pointer-subtract")
         message(
           STATUS
@@ -51,9 +49,7 @@ function(
           "Memory sanitizer requires all the code (including libc++) to be MSan-instrumented otherwise it reports false positives"
       )
       if("address" IN_LIST SANITIZERS OR "thread" IN_LIST SANITIZERS OR "leak" IN_LIST SANITIZERS)
-        message(
-          WARNING "Memory sanitizer does not work with Address, Thread and Leak sanitizer enabled"
-        )
+        message(WARNING "Memory sanitizer does not work with Address, Thread and Leak sanitizer enabled")
       else()
         list(APPEND SANITIZERS "memory")
       endif()
@@ -87,19 +83,15 @@ function(
           )
         endif()
         if(POLICY CMP0141)
-          if("${CMAKE_MSVC_DEBUG_INFORMATION_FORMAT}" STREQUAL ""
-             OR "${CMAKE_MSVC_DEBUG_INFORMATION_FORMAT}" STREQUAL "EditAndContinue"
-           )
-            set_target_properties(
-              ${_project_name} PROPERTIES MSVC_DEBUG_INFORMATION_FORMAT ProgramDatabase
-            )
+          if("${CMAKE_MSVC_DEBUG_INFORMATION_FORMAT}" STREQUAL "" OR "${CMAKE_MSVC_DEBUG_INFORMATION_FORMAT}"
+                                                                     STREQUAL "EditAndContinue"
+          )
+            set_target_properties(${_project_name} PROPERTIES MSVC_DEBUG_INFORMATION_FORMAT ProgramDatabase)
           endif()
         else()
           target_compile_options(${_project_name} INTERFACE /Zi)
         endif()
-        target_compile_options(
-          ${_project_name} INTERFACE /fsanitize=${LIST_OF_SANITIZERS} /INCREMENTAL:NO
-        )
+        target_compile_options(${_project_name} INTERFACE /fsanitize=${LIST_OF_SANITIZERS} /INCREMENTAL:NO)
         target_link_options(${_project_name} INTERFACE /INCREMENTAL:NO)
       endif()
     endif()
@@ -161,7 +153,7 @@ function(
       endif()
     endif()
 
-    if (HAS_SANITIZER_SUPPORT)
+    if(HAS_SANITIZER_SUPPORT)
       list(APPEND SANITIZERS "address")
       list(APPEND SANITIZERS "undefined")
       list(APPEND SANITIZERS "leak")
@@ -184,9 +176,7 @@ function(
         set(${ENABLE_SANITIZER_ADDRESS} "ENABLE_SANITIZER_ADDRESS" PARENT_SCOPE)
       endif()
       if("undefined" IN_LIST SANITIZERS)
-        set(${ENABLE_SANITIZER_UNDEFINED_BEHAVIOR} "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR"
-            PARENT_SCOPE
-        )
+        set(${ENABLE_SANITIZER_UNDEFINED_BEHAVIOR} "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR" PARENT_SCOPE)
       endif()
       if("leak" IN_LIST SANITIZERS)
         set(${ENABLE_SANITIZER_LEAK} "ENABLE_SANITIZER_LEAK" PARENT_SCOPE)

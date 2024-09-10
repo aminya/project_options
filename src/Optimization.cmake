@@ -18,8 +18,7 @@ macro(enable_interprocedural_optimization _project_name)
     set_target_properties(${_project_name} PROPERTIES INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO ON)
   else()
     message(
-      WARNING
-        "Interprocedural Optimization is not supported. Not using it. Here is the error log: ${output}"
+      WARNING "Interprocedural Optimization is not supported. Not using it. Here is the error log: ${output}"
     )
   endif()
 endmacro()
@@ -28,9 +27,7 @@ endmacro()
 macro(enable_native_optimization _project_name)
   detect_architecture(_arch)
   if("${_arch}" STREQUAL "x64")
-    message(
-      STATUS "Enabling the optimizations specific to the current build machine (less portable)"
-    )
+    message(STATUS "Enabling the optimizations specific to the current build machine (less portable)")
     if(MSVC)
       # TODO It seems it only accepts the exact instruction set like AVX https://docs.microsoft.com/en-us/cpp/build/reference/arch-x64
       # target_compile_options(${_project_name} INTERFACE /arch:native)
@@ -47,9 +44,8 @@ macro(disable_exceptions _project_name)
                                /D_HAS_EXCEPTIONS=0>
   )
   target_compile_options(
-    ${_project_name}
-    INTERFACE $<$<AND:$<COMPILE_LANGUAGE:CXX>,$<NOT:$<CXX_COMPILER_ID:MSVC>>>:-fno-exceptions
-              -fno-unwind-tables>
+    ${_project_name} INTERFACE $<$<AND:$<COMPILE_LANGUAGE:CXX>,$<NOT:$<CXX_COMPILER_ID:MSVC>>>:-fno-exceptions
+                               -fno-unwind-tables>
   )
 endmacro()
 
@@ -59,7 +55,6 @@ macro(disable_rtti _project_name)
     ${_project_name} INTERFACE $<$<AND:$<COMPILE_LANGUAGE:CXX>,$<CXX_COMPILER_ID:MSVC>>:/GR->
   )
   target_compile_options(
-    ${_project_name}
-    INTERFACE $<$<AND:$<COMPILE_LANGUAGE:CXX>,$<NOT:$<CXX_COMPILER_ID:MSVC>>>:-fno-rtti>
+    ${_project_name} INTERFACE $<$<AND:$<COMPILE_LANGUAGE:CXX>,$<NOT:$<CXX_COMPILER_ID:MSVC>>>:-fno-rtti>
   )
 endmacro()

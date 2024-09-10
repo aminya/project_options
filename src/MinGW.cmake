@@ -14,9 +14,9 @@ function(is_mingw value)
     endif()
   endif()
 
-  if(MINGW OR ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND "${CMAKE_C_COMPILER_ID}" STREQUAL "GNU"
-              ) OR ("${DETECTED_CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU"
-                    AND "${DETECTED_CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+  if(MINGW OR ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND "${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+     OR ("${DETECTED_CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND "${DETECTED_CMAKE_C_COMPILER_ID}" STREQUAL
+                                                                "GNU")
   )
     set(${value} ON PARENT_SCOPE)
     return()
@@ -33,9 +33,7 @@ function(is_mingw value)
     include("${ProjectOptions_SRC_DIR}/DetectCompiler.cmake")
     detect_compiler()
 
-    if((DETECTED_CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND DETECTED_CMAKE_C_COMPILER_ID STREQUAL
-                                                          "GNU")
-    )
+    if((DETECTED_CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND DETECTED_CMAKE_C_COMPILER_ID STREQUAL "GNU"))
       set(${value} ON PARENT_SCOPE)
       return()
     endif()
@@ -77,9 +75,7 @@ macro(configure_mingw_vcpkg)
     set(VCPKG_CRT_LINKAGE ${MINGW_LINKAGE} CACHE STRING "")
 
     # Based on the docs https://github.com/microsoft/vcpkg/blob/master/docs/users/mingw.md (but it doesn't work!)
-    set(VCPKG_DEFAULT_TRIPLET "${_arch}-mingw-${MINGW_LINKAGE}" CACHE STRING
-                                                                      "Default triplet for vcpkg"
-    )
+    set(VCPKG_DEFAULT_TRIPLET "${_arch}-mingw-${MINGW_LINKAGE}" CACHE STRING "Default triplet for vcpkg")
     set($ENV{VCPKG_DEFAULT_TRIPLET} "${_arch}-mingw-${MINGW_LINKAGE}")
     if(WIN32 AND NOT MSVC)
       set(VCPKG_DEFAULT_HOST_TRIPLET "${_arch}-mingw-${MINGW_LINKAGE}"
@@ -87,9 +83,7 @@ macro(configure_mingw_vcpkg)
       )
       set($ENV{VCPKG_DEFAULT_HOST_TRIPLET} "${_arch}-mingw-${MINGW_LINKAGE}")
     elseif(CROSSCOMPILING AND HOST_TRIPLET)
-      set(VCPKG_DEFAULT_HOST_TRIPLET "${HOST_TRIPLET}" CACHE STRING
-                                                             "Default target triplet for vcpkg"
-      )
+      set(VCPKG_DEFAULT_HOST_TRIPLET "${HOST_TRIPLET}" CACHE STRING "Default target triplet for vcpkg")
       set($ENV{VCPKG_DEFAULT_HOST_TRIPLET} "${HOST_TRIPLET}")
     endif()
   endif()
@@ -124,8 +118,7 @@ macro(mingw_unicode)
     check_cxx_compiler_flag("-municode" _cxx_supports_municode)
     if(${_cxx_supports_municode})
       message(
-        STATUS
-          "Enabling Unicode for MinGW in the current project to fix undefined references to WinMain"
+        STATUS "Enabling Unicode for MinGW in the current project to fix undefined references to WinMain"
       )
       add_compile_definitions("UNICODE" "_UNICODE")
       add_compile_options("-municode")

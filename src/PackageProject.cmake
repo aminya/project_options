@@ -115,20 +115,15 @@ function(package_project)
       PRIVATE_DEPENDENCIES
   )
 
-  cmake_parse_arguments(
-    _PackageProject "${_options}" "${_oneValueArgs}" "${_multiValueArgs}" "${ARGN}"
-  )
+  cmake_parse_arguments(_PackageProject "${_options}" "${_oneValueArgs}" "${_multiValueArgs}" "${ARGN}")
 
   # Set default options
-  include(GNUInstallDirs
-  )# Define GNU standard installation directories such as CMAKE_INSTALL_DATADIR
+  include(GNUInstallDirs) # Define GNU standard installation directories such as CMAKE_INSTALL_DATADIR
 
   # set default packaged targets
   if(NOT _PackageProject_TARGETS)
     get_all_installable_targets(_PackageProject_TARGETS)
-    message(
-      STATUS "package_project: considering ${_PackageProject_TARGETS} as the exported targets"
-    )
+    message(STATUS "package_project: considering ${_PackageProject_TARGETS} as the exported targets")
   endif()
 
   # default to the name of the project or the given name
@@ -158,9 +153,7 @@ function(package_project)
 
   # use datadir (works better with vcpkg, etc)
   if("${_PackageProject_CONFIG_INSTALL_DESTINATION}" STREQUAL "")
-    set(_PackageProject_CONFIG_INSTALL_DESTINATION
-        "${CMAKE_INSTALL_DATADIR}/${_PackageProject_NAME}"
-    )
+    set(_PackageProject_CONFIG_INSTALL_DESTINATION "${CMAKE_INSTALL_DATADIR}/${_PackageProject_NAME}")
   endif()
   # ycm args
   set(_PackageProject_INSTALL_DESTINATION "${_PackageProject_CONFIG_INSTALL_DESTINATION}")
@@ -208,8 +201,7 @@ function(package_project)
   # Append the configured public dependencies
   set(_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED
       "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}" "${PROPERTY_PUBLIC_CONFIG_DEPENDENCIES}"
-      "${_PackageProject_INTERFACE_DEPENDENCIES_CONFIGURED}"
-      "${PROPERTY_INTERFACE_CONFIG_DEPENDENCIES}"
+      "${_PackageProject_INTERFACE_DEPENDENCIES_CONFIGURED}" "${PROPERTY_INTERFACE_CONFIG_DEPENDENCIES}"
   )
   list(REMOVE_DUPLICATES _PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED)
   if(NOT "${_PackageProject_PUBLIC_DEPENDENCIES_CONFIGURED}" STREQUAL "")
@@ -230,9 +222,8 @@ function(package_project)
   )
 
   # Append the configured private dependencies
-  set(_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED
-      "${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED}"
-      "${PROPERTY_PRIVATE_CONFIG_DEPENDENCIES}"
+  set(_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED "${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED}"
+                                                      "${PROPERTY_PRIVATE_CONFIG_DEPENDENCIES}"
   )
   list(REMOVE_DUPLICATES _PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED)
   if(NOT "${_PackageProject_PRIVATE_DEPENDENCIES_CONFIGURED}" STREQUAL "")
@@ -266,9 +257,9 @@ function(package_project)
   )
 
   # download ForwardArguments
-  FetchContent_Declare(_fargs
-    URL https://github.com/polysquare/cmake-forward-arguments/archive/refs/tags/v1.0.0.zip
-    SOURCE_SUBDIR this-directory-does-not-exist
+  FetchContent_Declare(
+    _fargs URL https://github.com/polysquare/cmake-forward-arguments/archive/refs/tags/v1.0.0.zip
+               SOURCE_SUBDIR this-directory-does-not-exist
   )
   FetchContent_GetProperties(_fargs)
   if(NOT _fargs_POPULATED)
@@ -290,9 +281,9 @@ function(package_project)
   )
 
   # download ycm
-  FetchContent_Declare(_ycm
-    URL https://github.com/robotology/ycm/archive/refs/tags/v0.13.0.zip
-    SOURCE_SUBDIR this-directory-does-not-exist
+  FetchContent_Declare(
+    _ycm URL https://github.com/robotology/ycm/archive/refs/tags/v0.13.0.zip SOURCE_SUBDIR
+             this-directory-does-not-exist
   )
   FetchContent_GetProperties(_ycm)
   if(NOT _ycm_POPULATED)
@@ -380,8 +371,7 @@ function(target_include_interface_directories target)
       )
     else()
       target_include_directories(
-        ${target} PUBLIC $<BUILD_INTERFACE:${include_dir}>
-                         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+        ${target} PUBLIC $<BUILD_INTERFACE:${include_dir}> $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
       )
     endif()
   endfunction()
@@ -493,8 +483,9 @@ function(target_find_dependencies target)
           list(POP_FRONT unparsed_args _find_package_arg)
 
           # Done if _find_package_arg belongs to next option item
-          if((_find_package_arg MATCHES "^(PRIVATE|PUBLIC|INTERFACE)(_CONFIG)?$")
-            OR(_find_package_arg STREQUAL "PACKAGE"))
+          if((_find_package_arg MATCHES "^(PRIVATE|PUBLIC|INTERFACE)(_CONFIG)?$") OR (_find_package_arg
+                                                                                      STREQUAL "PACKAGE")
+          )
             list(PREPEND unparsed_args "${_find_package_arg}")
             break()
           endif()
@@ -523,7 +514,10 @@ function(target_find_dependencies target)
       endif()
 
       list(JOIN find_package_args " " installation_args)
-      set_property(TARGET ${target} APPEND PROPERTY "PROJECT_OPTIONS_${type}_DEPENDENCIES" "${package_name} ${installation_args}")
+      set_property(
+        TARGET ${target} APPEND PROPERTY "PROJECT_OPTIONS_${type}_DEPENDENCIES"
+                                         "${package_name} ${installation_args}"
+      )
     endif()
   endmacro()
 

@@ -65,8 +65,8 @@ configure_file(conf.py.in conf.py @ONLY)
 set(doc_formats "")
 if(SPHINX_HTML)
   list(APPEND doc_formats html)
-  set(html_extra_commands COMMAND ${CMAKE_COMMAND} -E copy_directory
-                          ${CMAKE_CURRENT_LIST_DIR}/root/ ${CMAKE_CURRENT_BINARY_DIR}
+  set(html_extra_commands COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/root/
+                          ${CMAKE_CURRENT_BINARY_DIR}
   )
   file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/js/versions.js
        "var ar_versions = [{\"version\": \"build\", \"folder\": \"html\", \"has_pdf\": false}]"
@@ -104,8 +104,8 @@ foreach(format ${doc_formats})
   add_custom_command(
     OUTPUT ${doc_format_output}
     COMMAND
-      ${SPHINX_EXECUTABLE} -c ${CMAKE_CURRENT_BINARY_DIR} -d ${CMAKE_CURRENT_BINARY_DIR}/doctrees -b
-      ${format} ${sphinx_flags} ${CMAKE_CURRENT_LIST_DIR} ${CMAKE_CURRENT_BINARY_DIR}/${format} >
+      ${SPHINX_EXECUTABLE} -c ${CMAKE_CURRENT_BINARY_DIR} -d ${CMAKE_CURRENT_BINARY_DIR}/doctrees -b ${format}
+      ${sphinx_flags} ${CMAKE_CURRENT_LIST_DIR} ${CMAKE_CURRENT_BINARY_DIR}/${format} >
       ${CMAKE_CURRENT_BINARY_DIR}/${doc_format_log} # log stdout, pass stderr
       ${${format}_extra_commands}
     DEPENDS ${doc_format_last}
@@ -120,15 +120,11 @@ endforeach()
 add_custom_target(documentation ALL DEPENDS ${doc_format_outputs})
 
 if(SPHINX_INFO)
-  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/texinfo/cmake.info DESTINATION ${CMAKE_INFO_DIR}
-          ${COMPONENT}
-  )
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/texinfo/cmake.info DESTINATION ${CMAKE_INFO_DIR} ${COMPONENT})
 endif()
 
 if(SPHINX_MAN)
-  file(GLOB man_rst RELATIVE ${CMAKE_SOURCE_DIR}/Help/manual
-       ${CMAKE_SOURCE_DIR}/Help/manual/*.[1-9].rst
-  )
+  file(GLOB man_rst RELATIVE ${CMAKE_SOURCE_DIR}/Help/manual ${CMAKE_SOURCE_DIR}/Help/manual/*.[1-9].rst)
   foreach(m ${man_rst})
     if("x${m}" MATCHES "^x(.+)\\.([1-9])\\.rst$")
       set(name "${CMAKE_MATCH_1}")
@@ -142,8 +138,8 @@ if(SPHINX_MAN)
         endif()
       endif()
       if(NOT skip)
-        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/man/${name}.${sec}
-                DESTINATION ${CMAKE_MAN_DIR}/man${sec} ${COMPONENT}
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/man/${name}.${sec} DESTINATION ${CMAKE_MAN_DIR}/man${sec}
+                ${COMPONENT}
         )
       endif()
       unset(skip)

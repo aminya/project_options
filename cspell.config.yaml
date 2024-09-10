@@ -23,7 +23,6 @@ words:
   - ccache
   - ccmake
   - choco
-  - servor
   - cmake
   - CMAKE
   - cmakelint
@@ -63,6 +62,7 @@ words:
   - fstack
   - ftime
   - gcovr
+  - genex
   - gnueabi
   - gnueabihf
   - Graphviz
@@ -116,6 +116,7 @@ words:
   - rpath
   - rtti
   - sccache
+  - servor
   - setx
   - shlib
   - suppr
@@ -128,6 +129,7 @@ words:
   - undoc
   - vcpkg
   - vcvarsall
+  - venv
   - visualc
   - visualcpp
   - VSCMD

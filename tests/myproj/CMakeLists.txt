@@ -88,10 +88,10 @@ project_options(
   # CLANG_WARNINGS "-Weverything"
   LINKER
   "${LINKER}"
-
   # Test if _FORTIFY_SOURCE is defined only once when ENABLE_OVERFLOW_PROTECTION
   ENABLE_OVERFLOW_PROTECTION
-  CLANG_TIDY_EXTRA_ARGUMENTS "-warnings-as-errors=clang-diagnostic-macro-redefined"
+  CLANG_TIDY_EXTRA_ARGUMENTS
+  "-warnings-as-errors=clang-diagnostic-macro-redefined"
 )
 # NOTE: project_options and project_warnings are defined inside project_options
 
@@ -99,11 +99,18 @@ project_options(
 add_executable(main ./src/main/main.cpp)
 target_link_libraries(main PRIVATE myproj_project_options myproj_project_warnings)
 
-target_find_dependencies(main
+target_find_dependencies(
+  main
   PUBLIC
-    PACKAGE fmt CONFIG
-    PACKAGE Eigen3 CONFIG
-    PACKAGE docopt CONFIG
+  PACKAGE
+  fmt
+  CONFIG
+  PACKAGE
+  Eigen3
+  CONFIG
+  PACKAGE
+  docopt
+  CONFIG
 )
 
 target_link_system_libraries(main PRIVATE fmt::fmt Eigen3::Eigen)
@@ -117,8 +124,10 @@ add_test(NAME main COMMAND main)
 # Header-only library
 add_library(lib INTERFACE)
 set(lib_INCLUDE_DIR "include")
-target_include_system_directories( # Test the fix of semicolon in genex issue
-  lib INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_CURRENT_SOURCE_DIR}/${lib_INCLUDE_DIR}>"
+target_include_system_directories(
+  # Test the fix of semicolon in genex issue
+  lib INTERFACE
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_CURRENT_SOURCE_DIR}/${lib_INCLUDE_DIR}>"
   "$<INSTALL_INTERFACE:./${CMAKE_INSTALL_INCLUDEDIR}>"
 ) # TODO(refactor)
 target_link_libraries(lib INTERFACE myproj_project_options myproj_project_warnings)

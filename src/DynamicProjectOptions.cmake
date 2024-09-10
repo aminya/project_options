@@ -104,11 +104,8 @@ macro(dynamic_project_options)
   endif()
 
   check_sanitizers_support(
-    ENABLE_SANITIZER_ADDRESS
-    ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
-    ENABLE_SANITIZER_LEAK
-    ENABLE_SANITIZER_THREAD
-    ENABLE_SANITIZER_MEMORY
+    ENABLE_SANITIZER_ADDRESS ENABLE_SANITIZER_UNDEFINED_BEHAVIOR ENABLE_SANITIZER_LEAK
+    ENABLE_SANITIZER_THREAD ENABLE_SANITIZER_MEMORY
   )
 
   if(ENABLE_SANITIZER_ADDRESS)
@@ -230,13 +227,13 @@ macro(dynamic_project_options)
     else()
       if(option_type EQUAL 0)
         cmake_dependent_option(
-          OPT_${option_name} "${option_description}" ${option_developer_default}
-          ENABLE_DEVELOPER_MODE ${option_user_default}
+          OPT_${option_name} "${option_description}" ${option_developer_default} ENABLE_DEVELOPER_MODE
+          ${option_user_default}
         )
       else()
         cmake_dependent_option(
-          OPT_${option_name} "${option_description}" "${option_developer_default}"
-          ENABLE_DEVELOPER_MODE "${option_user_default}"
+          OPT_${option_name} "${option_description}" "${option_developer_default}" ENABLE_DEVELOPER_MODE
+          "${option_user_default}"
         )
       endif()
     endif()

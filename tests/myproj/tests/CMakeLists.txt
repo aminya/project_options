@@ -9,10 +9,8 @@ find_package(myproj_header_only_lib 0.2.0 CONFIG REQUIRED)
 # Executable
 add_executable(main ../src/main/main.cpp)
 target_link_libraries(
-  main
-  PRIVATE myproj_header_only_lib::lib #
-          myproj_header_only_lib::myproj_project_options
-          myproj_header_only_lib::myproj_project_warnings
+  main PRIVATE myproj_header_only_lib::lib #
+               myproj_header_only_lib::myproj_project_options myproj_header_only_lib::myproj_project_warnings
 )
 
 ## tests

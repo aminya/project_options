@@ -317,14 +317,21 @@ macro(project_options)
   if(${ProjectOptions_ENABLE_CONAN})
     _run_conan1(
       DEPRECATED_CALL
-      DEPRECATED_PROFILE ${ProjectOptions_CONAN_PROFILE}
-      HOST_PROFILE ${ProjectOptions_CONAN_HOST_PROFILE}
-      BUILD_PROFILE ${ProjectOptions_CONAN_BUILD_PROFILE}
-      DEPRECATED_OPTIONS ${ProjectOptions_CONAN_OPTIONS}
+      DEPRECATED_PROFILE
+      ${ProjectOptions_CONAN_PROFILE}
+      HOST_PROFILE
+      ${ProjectOptions_CONAN_HOST_PROFILE}
+      BUILD_PROFILE
+      ${ProjectOptions_CONAN_BUILD_PROFILE}
+      DEPRECATED_OPTIONS
+      ${ProjectOptions_CONAN_OPTIONS}
     )
   endif()
 
-  get_property(_should_invoke_conan1 DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" PROPERTY PROJECT_OPTIONS_SHOULD_INVOKE_CONAN1)
+  get_property(
+    _should_invoke_conan1 DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    PROPERTY PROJECT_OPTIONS_SHOULD_INVOKE_CONAN1
+  )
   if(_should_invoke_conan1)
     get_property(conan1_args DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" PROPERTY PROJECT_OPTIONS_CONAN1_ARGS)
     _run_conan1(${conan1_args})

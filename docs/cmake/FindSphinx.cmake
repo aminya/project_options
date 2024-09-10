@@ -51,8 +51,8 @@ function(
 )
 
   add_custom_target(
-    ${target_name} ALL COMMAND ${SPHINX_EXECUTABLE} -b ${builder} -c ${conf} ${source}
-                               ${destination} COMMENT "Generating sphinx documentation: ${builder}"
+    ${target_name} ALL COMMAND ${SPHINX_EXECUTABLE} -b ${builder} -c ${conf} ${source} ${destination}
+    COMMENT "Generating sphinx documentation: ${builder}"
   )
 
   set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES ${destination})

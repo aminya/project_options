@@ -109,9 +109,7 @@ macro(enable_cross_compiler)
       TOOLCHAIN_FILE
   )
   set(multiValueArgs)
-  cmake_parse_arguments(
-    EnableCrossCompiler "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN}
-  )
+  cmake_parse_arguments(EnableCrossCompiler "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
   include("${ProjectOptions_SRC_DIR}/Utilities.cmake")
   detect_architecture(_arch)
@@ -154,16 +152,14 @@ macro(enable_cross_compiler)
       set(_default_triplet "x64-mingw-dynamic")
     elseif(_cc MATCHES "i686(-w64)?-mingw32-[gc]..?" OR _cxx MATCHES "i686(-w64)?-mingw32-[gc]..?")
       set(_default_triplet "i686-mingw-dynamic")
-    elseif(_cc MATCHES "(gcc-)?arm-linux-gnueabi-[gc]..?" OR _cxx MATCHES
-                                                             "(gcc-)?arm-linux-gnueabi-[gc]..?"
-    )
+    elseif(_cc MATCHES "(gcc-)?arm-linux-gnueabi-[gc]..?" OR _cxx MATCHES "(gcc-)?arm-linux-gnueabi-[gc]..?")
       set(_default_triplet "arm-linux")
     elseif(_cc MATCHES "(gcc-)?arm-linux-gnueabihf-[gc]..?" OR _cxx MATCHES
                                                                "(gcc-)?arm-linux-gnueabihf-[gc]..?"
     )
       set(_default_triplet "arm-linux")
-    elseif(_cc MATCHES "(gcc-)?aarch64-linux-(gnu-)?[gc]..?"
-           OR _cxx MATCHES "(gcc-)?aarch64-linux-(gnu-)?[gc]..?"
+    elseif(_cc MATCHES "(gcc-)?aarch64-linux-(gnu-)?[gc]..?" OR _cxx MATCHES
+                                                                "(gcc-)?aarch64-linux-(gnu-)?[gc]..?"
     )
       set(_default_triplet "arm64-linux")
     elseif(_cc MATCHES "emcc" OR _cxx MATCHES "em..")
@@ -172,9 +168,7 @@ macro(enable_cross_compiler)
   endif()
 
   # detect compiler and target_architecture by triplet
-  if("${_default_triplet}" STREQUAL "x64-mingw-dynamic" OR "${_default_triplet}" STREQUAL
-                                                           "x64-mingw-static"
-  )
+  if("${_default_triplet}" STREQUAL "x64-mingw-dynamic" OR "${_default_triplet}" STREQUAL "x64-mingw-static")
     if("${_cc}" STREQUAL "")
       set(_cc "x86_64-w64-mingw32-gcc")
     endif()
@@ -270,9 +264,7 @@ macro(enable_cross_compiler)
   set(LIBRARY_LINKAGE)
   if(BUILD_SHARED_LIBS)
     set(LIBRARY_LINKAGE "dynamic")
-    if("${_default_triplet}" STREQUAL "x64-mingw-static" OR "${_default_triplet}" STREQUAL
-                                                            "x86-mingw-static"
-    )
+    if("${_default_triplet}" STREQUAL "x64-mingw-static" OR "${_default_triplet}" STREQUAL "x86-mingw-static")
       message(WARNING "cross-compiler triplet is set to 'static' but BUILD_SHARED_LIBS is enabled")
     endif()
   else()
@@ -301,9 +293,7 @@ macro(enable_cross_compiler)
     endif()
     set(MINGW TRUE)
     set(USE_CROSSCOMPILER_MINGW TRUE)
-  elseif(_cc MATCHES "(gcc-)?arm-linux-gnueabi-[gc]..?" OR _cxx MATCHES
-                                                           "(gcc-)?arm-linux-gnueabi-[gc]..?"
-  )
+  elseif(_cc MATCHES "(gcc-)?arm-linux-gnueabi-[gc]..?" OR _cxx MATCHES "(gcc-)?arm-linux-gnueabi-[gc]..?")
     if("${_cross_root}" STREQUAL "")
       set(_cross_root "/usr/gcc-arm-linux-gnueabi")
     endif()
@@ -357,7 +347,8 @@ macro(enable_cross_compiler)
       if(NOT DEFINED EMSCRIPTEN_ROOT)
         include(FetchContent)
         message(STATUS "fetch emscripten repo main branch. ...")
-        FetchContent_Declare(emscripten
+        FetchContent_Declare(
+          emscripten
           GIT_REPOSITORY https://github.com/emscripten-core/emscripten
           GIT_TAG main
           SOURCE_SUBDIR this-directory-does-not-exist
@@ -447,9 +438,7 @@ function(get_toolchain_file value)
   endif()
 
   if(USE_CROSSCOMPILER_MINGW)
-    set(${value} ${ProjectOptions_SRC_DIR}/toolchains/${_arch}-w64-mingw32.toolchain.cmake
-        PARENT_SCOPE
-    )
+    set(${value} ${ProjectOptions_SRC_DIR}/toolchains/${_arch}-w64-mingw32.toolchain.cmake PARENT_SCOPE)
   elseif(USE_CROSSCOMPILER_EMSCRIPTEN)
     if(EMSCRIPTEN_ROOT)
       set(${value} ${EMSCRIPTEN_ROOT}/cmake/Modules/Platform/Emscripten.cmake PARENT_SCOPE)

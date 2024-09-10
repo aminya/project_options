@@ -47,17 +47,15 @@ function(enable_doxygen DOXYGEN_THEME)
     # use a modern doxygen theme
     # https://github.com/jothepro/doxygen-awesome-css v2.0.2
     FetchContent_Declare(
-      _doxygen_theme
-      URL https://github.com/jothepro/doxygen-awesome-css/archive/refs/tags/v2.0.2.zip
+      _doxygen_theme URL https://github.com/jothepro/doxygen-awesome-css/archive/refs/tags/v2.0.2.zip
     )
     FetchContent_MakeAvailable(_doxygen_theme)
     if("${DOXYGEN_THEME}" STREQUAL "awesome" OR "${DOXYGEN_THEME}" STREQUAL "awesome-sidebar")
       set(DOXYGEN_HTML_EXTRA_STYLESHEET "${_doxygen_theme_SOURCE_DIR}/doxygen-awesome.css")
     endif()
     if("${DOXYGEN_THEME}" STREQUAL "awesome-sidebar")
-      set(DOXYGEN_HTML_EXTRA_STYLESHEET
-          ${DOXYGEN_HTML_EXTRA_STYLESHEET}
-          "${_doxygen_theme_SOURCE_DIR}/doxygen-awesome-sidebar-only.css"
+      set(DOXYGEN_HTML_EXTRA_STYLESHEET ${DOXYGEN_HTML_EXTRA_STYLESHEET}
+                                        "${_doxygen_theme_SOURCE_DIR}/doxygen-awesome-sidebar-only.css"
       )
     endif()
   elseif("${DOXYGEN_THEME}" STREQUAL "original")
@@ -81,10 +79,7 @@ function(enable_doxygen DOXYGEN_THEME)
   # find doxygen and dot if available
   find_package(Doxygen OPTIONAL_COMPONENTS dot)
   if(NOT Doxygen_FOUND)
-    message(
-      WARNING
-        "Doxygen not found, install doxygen and try again. Documentation will not be generated."
-    )
+    message(WARNING "Doxygen not found, install doxygen and try again. Documentation will not be generated.")
     return()
   endif()
 

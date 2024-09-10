@@ -46,13 +46,13 @@ macro(_bootstrap_vcpkg)
     # Run the vcpkg bootstrap
     if(WIN32)
       execute_process(
-        COMMAND "bootstrap-vcpkg.bat" "-disableMetrics"
-        WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}" COMMAND_ERROR_IS_FATAL LAST
+        COMMAND "bootstrap-vcpkg.bat" "-disableMetrics" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
+                                                                          COMMAND_ERROR_IS_FATAL LAST
       )
     else()
       execute_process(
-        COMMAND "./bootstrap-vcpkg.sh" "-disableMetrics"
-        WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}" COMMAND_ERROR_IS_FATAL LAST
+        COMMAND "./bootstrap-vcpkg.sh" "-disableMetrics" WORKING_DIRECTORY "${_vcpkg_args_VCPKG_DIR}"
+                                                                           COMMAND_ERROR_IS_FATAL LAST
       )
     endif()
   endif()
@@ -61,9 +61,7 @@ endmacro()
 macro(_is_vcpkg_outdated)
   # skip the update if the requested revision is the same as the current revision
   git_revision(_REVISION REPOSITORY_PATH "${_vcpkg_args_VCPKG_DIR}")
-  if(NOT "${_vcpkg_args_VCPKG_REV}" STREQUAL "" AND "${_REVISION}" STREQUAL
-                                                    "${_vcpkg_args_VCPKG_REV}"
-  )
+  if(NOT "${_vcpkg_args_VCPKG_REV}" STREQUAL "" AND "${_REVISION}" STREQUAL "${_vcpkg_args_VCPKG_REV}")
     message(STATUS "Skipping vcpkg update as it's already at ${_REVISION}")
     set(_vcpkg_args_ENABLE_VCPKG_UPDATE OFF)
   elseif(NOT "${_vcpkg_args_VCPKG_REV}" STREQUAL "" AND NOT "${_REVISION}" STREQUAL
@@ -145,8 +143,8 @@ macro(_cross_compiling_vcpkg)
       endif()
 
       if(NOT "${_toolchain_file}" STREQUAL "")
-        set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE ${_toolchain_file}
-            CACHE STRING "vcpkg chainload toolchain file" FORCE
+        set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE ${_toolchain_file} CACHE STRING "vcpkg chainload toolchain file"
+                                                                    FORCE
         )
       endif()
     endif()

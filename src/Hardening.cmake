@@ -44,7 +44,9 @@ function(
         list(APPEND HARDENING_COMPILE_OPTIONS -Wstringop-overflow=4 -Wformat-overflow=2)
       endif()
 
-      target_compile_options(${_project_name} INTERFACE $<$<CONFIG:Release,RelWithDebInfo>:-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3>)
+      target_compile_options(
+        ${_project_name} INTERFACE $<$<CONFIG:Release,RelWithDebInfo>:-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3>
+      )
     endif()
 
     if(${ENABLE_ELF_PROTECTION})

@@ -41,7 +41,10 @@ macro(enable_cppcheck CPPCHECK_OPTIONS)
       if(CMAKE_CXX_STANDARD MATCHES [[03|11|14|17|20]])
         set(CMAKE_CXX_CPPCHECK ${CMAKE_CXX_CPPCHECK} --std=c++${CMAKE_CXX_STANDARD})
       else()
-        message(${WARNING_MESSAGE} "cppcheck dosen't support specified C++ standard ${CMAKE_CXX_STANDARD}. Using the cppcheck default C++ standard version.")
+        message(
+          ${WARNING_MESSAGE}
+          "cppcheck doesn't support specified C++ standard ${CMAKE_CXX_STANDARD}. Using the cppcheck default C++ standard version."
+        )
       endif()
     endif()
 
@@ -51,7 +54,10 @@ macro(enable_cppcheck CPPCHECK_OPTIONS)
       elseif(CMAKE_C_STANDARD MATCHES [[99|11]])
         set(CMAKE_C_CPPCHECK ${CMAKE_C_CPPCHECK} --std=c${CMAKE_C_STANDARD})
       else()
-        message(${WARNING_MESSAGE} "cppcheck dosen't support specified C standard ${CMAKE_C_STANDARD}. Using the cppcheck default C standard version.")
+        message(
+          ${WARNING_MESSAGE}
+          "cppcheck doesn't support specified C standard ${CMAKE_C_STANDARD}. Using the cppcheck default C standard version."
+        )
       endif()
     endif()
 
@@ -79,8 +85,8 @@ function(_enable_clang_tidy_setup_cross CXX_FLAGS C_FLAGS)
                                                           COMMAND_ERROR_IS_FATAL ANY
     )
     execute_process(
-      COMMAND "${CMAKE_CXX_COMPILER}" "-dumpmachine"
-      OUTPUT_VARIABLE CLANG_TIDY_CXX_FLAGS_COMPILER_TARGET COMMAND_ERROR_IS_FATAL ANY
+      COMMAND "${CMAKE_CXX_COMPILER}" "-dumpmachine" OUTPUT_VARIABLE CLANG_TIDY_CXX_FLAGS_COMPILER_TARGET
+                                                                     COMMAND_ERROR_IS_FATAL ANY
     )
 
     string(STRIP "${CLANG_TIDY_CXX_FLAGS_COMPILER_TARGET}" CLANG_TIDY_CXX_FLAGS_COMPILER_TARGET)
@@ -93,8 +99,8 @@ function(_enable_clang_tidy_setup_cross CXX_FLAGS C_FLAGS)
                                                         COMMAND_ERROR_IS_FATAL ANY
     )
     execute_process(
-      COMMAND "${CMAKE_C_COMPILER}" "-dumpmachine"
-      OUTPUT_VARIABLE CLANG_TIDY_C_FLAGS_COMPILER_TARGET COMMAND_ERROR_IS_FATAL ANY
+      COMMAND "${CMAKE_C_COMPILER}" "-dumpmachine" OUTPUT_VARIABLE CLANG_TIDY_C_FLAGS_COMPILER_TARGET
+                                                                   COMMAND_ERROR_IS_FATAL ANY
     )
 
     string(STRIP "${CLANG_TIDY_C_FLAGS_COMPILER_TARGET}" CLANG_TIDY_C_FLAGS_COMPILER_TARGET)
@@ -116,9 +122,7 @@ function(_enable_clang_tidy_setup_cross CXX_FLAGS C_FLAGS)
       string(REPLACE "with-" "" CLANG_TIDY_CXX_FLAGS_COMPILER_DEFAULT
                      "${CLANG_TIDY_CXX_FLAGS_COMPILER_DEFAULT}"
       )
-      string(REPLACE "with-" "" CLANG_TIDY_C_FLAGS_COMPILER_DEFAULT
-                     "${CLANG_TIDY_C_FLAGS_COMPILER_DEFAULT}"
-      )
+      string(REPLACE "with-" "" CLANG_TIDY_C_FLAGS_COMPILER_DEFAULT "${CLANG_TIDY_C_FLAGS_COMPILER_DEFAULT}")
       list(APPEND CLANG_TIDY_CXX_FLAGS_COMPILER ${CLANG_TIDY_CXX_FLAGS_COMPILER_DEFAULT})
       list(APPEND CLANG_TIDY_C_FLAGS_COMPILER ${CLANG_TIDY_C_FLAGS_COMPILER_DEFAULT})
     endif()
@@ -182,8 +186,8 @@ macro(enable_clang_tidy CLANG_TIDY_EXTRA_ARGUMENTS)
       list(APPEND CLANG_TIDY_C_FLAGS -warnings-as-errors=*)
     endif()
 
-    if("${CMAKE_CXX_CLANG_TIDY_DRIVER_MODE}" STREQUAL "cl" OR "${CMAKE_C_CLANG_TIDY_DRIVER_MODE}"
-                                                              STREQUAL "cl"
+    if("${CMAKE_CXX_CLANG_TIDY_DRIVER_MODE}" STREQUAL "cl" OR "${CMAKE_C_CLANG_TIDY_DRIVER_MODE}" STREQUAL
+                                                              "cl"
     )
       _enable_clang_tidy_setup_cl("${CLANG_TIDY_CXX_FLAGS}" "${CLANG_TIDY_C_FLAGS}")
     else()
@@ -249,9 +253,7 @@ macro(enable_gcc_analyzer _project_name GCC_ANALYZER_EXTRA_ARGUMENTS)
   else()
     set(_gcc_analyzer_flags -fanalyzer ${GCC_ANALYZER_EXTRA_ARGUMENTS})
 
-    target_compile_options(
-      ${_project_name} INTERFACE $<$<COMPILE_LANGUAGE:C>:${_gcc_analyzer_flags}>
-    )
+    target_compile_options(${_project_name} INTERFACE $<$<COMPILE_LANGUAGE:C>:${_gcc_analyzer_flags}>)
   endif()
 endmacro()
 
@@ -277,9 +279,8 @@ endmacro()
 macro(target_disable_vs_analysis TARGET)
   if(CMAKE_GENERATOR MATCHES "Visual Studio")
     set_target_properties(
-      ${TARGET}
-      PROPERTIES VS_GLOBAL_EnableMicrosoftCodeAnalysis false VS_GLOBAL_CodeAnalysisRuleSet ""
-                 VS_GLOBAL_EnableClangTidyCodeAnalysis ""
+      ${TARGET} PROPERTIES VS_GLOBAL_EnableMicrosoftCodeAnalysis false VS_GLOBAL_CodeAnalysisRuleSet ""
+                           VS_GLOBAL_EnableClangTidyCodeAnalysis ""
     )
   endif()
 endmacro()
@@ -298,8 +299,8 @@ macro(target_disable_gcc_analyzer TARGET)
   if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
     get_target_property(_compile_options ${TARGET} INTERFACE_COMPILE_OPTIONS)
     if(_compile_options)
-      string(REGEX REPLACE "-fanalyzer|-Wanalyzer-[0-9a-zA-Z-]+" ""
-                           _compile_options_no_gcc_analyzer "${_compile_options}"
+      string(REGEX REPLACE "-fanalyzer|-Wanalyzer-[0-9a-zA-Z-]+" "" _compile_options_no_gcc_analyzer
+                           "${_compile_options}"
       )
       set_target_properties(
         ${TARGET} PROPERTIES INTERFACE_COMPILE_OPTIONS "${_compile_options_no_gcc_analyzer}"
@@ -307,12 +308,10 @@ macro(target_disable_gcc_analyzer TARGET)
     endif()
     get_target_property(_compile_options ${TARGET} COMPILE_OPTIONS)
     if(_compile_options)
-      string(REGEX REPLACE "-fanalyzer|-Wanalyzer-[0-9a-zA-Z-]+" ""
-                           _compile_options_no_gcc_analyzer "${_compile_options}"
+      string(REGEX REPLACE "-fanalyzer|-Wanalyzer-[0-9a-zA-Z-]+" "" _compile_options_no_gcc_analyzer
+                           "${_compile_options}"
       )
-      set_target_properties(
-        ${TARGET} PROPERTIES COMPILE_OPTIONS "${_compile_options_no_gcc_analyzer}"
-      )
+      set_target_properties(${TARGET} PROPERTIES COMPILE_OPTIONS "${_compile_options_no_gcc_analyzer}")
     endif()
   endif()
 endmacro()

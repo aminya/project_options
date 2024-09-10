@@ -24,9 +24,7 @@ macro(configure_linker _target _linker)
       set(_linker_flag "-fuse-ld=${_linker}")
       target_link_options(${_target} INTERFACE ${_linker_flag})
     else()
-      message(
-        WARNING "Linker ${_linker} is not supported by the compiler. Using the default linker."
-      )
+      message(WARNING "Linker ${_linker} is not supported by the compiler. Using the default linker.")
     endif()
   endif()
 endmacro()

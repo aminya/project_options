@@ -19,25 +19,21 @@ endfunction()
 
 # Run Conan 1 for dependency management
 macro(_run_conan1)
-  set(options
-    DEPRECATED_CALL # For backward compability
+  set(options DEPRECATED_CALL # For backward compability
   )
-  set(one_value_args
-    DEPRECATED_PROFILE # For backward compability
+  set(one_value_args DEPRECATED_PROFILE # For backward compability
   )
-  set(multi_value_args
-    HOST_PROFILE
-    BUILD_PROFILE
-    INSTALL_ARGS
-    DEPRECATED_OPTIONS # For backward compability
+  set(multi_value_args HOST_PROFILE BUILD_PROFILE INSTALL_ARGS DEPRECATED_OPTIONS # For backward compability
   )
   cmake_parse_arguments(_args "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
   conan_get_version(_conan_current_version)
   if(_conan_current_version VERSION_GREATER_EQUAL "2.0.0")
-    message(FATAL_ERROR
-      "ENABLE_CONAN in `project_options(...)` only supports conan 1.\n"
-      "  If you're using conan 2, disable ENABLE_CONAN and use `run_conan(...)` before `project(...)`.")
+    message(
+      FATAL_ERROR
+        "ENABLE_CONAN in `project_options(...)` only supports conan 1.\n"
+        "  If you're using conan 2, disable ENABLE_CONAN and use `run_conan(...)` before `project(...)`."
+    )
   endif()
 
   # Download automatically, you can also just copy the conan.cmake file
@@ -67,9 +63,7 @@ macro(_run_conan1)
     INDEX
     0
   )
-  conan_add_remote(
-    NAME bincrafters URL https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
-  )
+  conan_add_remote(NAME bincrafters URL https://bincrafters.jfrog.io/artifactory/api/conan/public-conan)
 
   if(CONAN_EXPORTED)
     # standard conan installation, in which deps will be defined in conanfile. It is not necessary to call conan again, as it is already running.
@@ -100,8 +94,9 @@ macro(_run_conan1)
     endif()
 
     set(_should_detect FALSE)
-    if(((NOT _args_DEPRECATED_CALL) AND ((NOT _args_HOST_PROFILE) OR ("auto-cmake" IN_LIST _args_HOST_PROFILE)))
-        OR ((_args_DEPRECATED_CALL) AND (NOT _args_DEPRECATED_PROFILE)))
+    if(((NOT _args_DEPRECATED_CALL) AND ((NOT _args_HOST_PROFILE) OR ("auto-cmake" IN_LIST _args_HOST_PROFILE)
+                                        )) OR ((_args_DEPRECATED_CALL) AND (NOT _args_DEPRECATED_PROFILE))
+    )
       set(_should_detect TRUE)
       list(REMOVE_ITEM _args_HOST_PROFILE "auto-cmake")
     endif()
@@ -184,34 +179,31 @@ endmacro()
 macro(_run_conan2)
   set(options)
   set(one_value_args)
-  set(multi_value_args
-    HOST_PROFILE
-    BUILD_PROFILE
-    INSTALL_ARGS
-  )
+  set(multi_value_args HOST_PROFILE BUILD_PROFILE INSTALL_ARGS)
   cmake_parse_arguments(_args "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
   if(CMAKE_VERSION VERSION_LESS "3.24.0")
-    message(FATAL_ERROR
-      "`run_conan(...)` with conan 2 only supports cmake 3.24+, please update your cmake.\n"
-      "  Or you can downgrade your conan to use conan 1.")
+    message(FATAL_ERROR "`run_conan(...)` with conan 2 only supports cmake 3.24+, please update your cmake.\n"
+                        "  Or you can downgrade your conan to use conan 1."
+    )
   endif()
 
   conan_get_version(_conan_current_version)
   if(_conan_current_version VERSION_LESS "2.0.5")
-    message(FATAL_ERROR
-      "`run_conan(...)` with conan 2 only supports conan 2.0.5+, please update your conan.\n"
-      "  Or You can downgrade your conan to use conan 1.")
+    message(
+      FATAL_ERROR "`run_conan(...)` with conan 2 only supports conan 2.0.5+, please update your conan.\n"
+                  "  Or You can downgrade your conan to use conan 1."
+    )
   endif()
 
   # Download automatically, you can also just copy the conan.cmake file
   if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan_provider.cmake")
     message(STATUS "Downloading conan_provider.cmake from https://github.com/conan-io/cmake-conan")
     file(
-      DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/f6464d1e13ef7a47c569f5061f9607ea63339d39/conan_provider.cmake"
+      DOWNLOAD
+      "https://raw.githubusercontent.com/conan-io/cmake-conan/f6464d1e13ef7a47c569f5061f9607ea63339d39/conan_provider.cmake"
       "${CMAKE_BINARY_DIR}/conan_provider.cmake"
       EXPECTED_HASH SHA256=0a5eb4afbdd94faf06dcbf82d3244331605ef2176de32c09ea9376e768cbb0fc
-
       # TLS_VERIFY ON # fails on some systems
     )
   endif()
@@ -230,14 +222,24 @@ macro(_run_conan2)
 
   set(CONAN_HOST_PROFILE "${_args_HOST_PROFILE}" CACHE STRING "Conan host profile" FORCE)
   set(CONAN_BUILD_PROFILE "${_args_BUILD_PROFILE}" CACHE STRING "Conan build profile" FORCE)
-  set(CONAN_INSTALL_ARGS "${_args_INSTALL_ARGS}" CACHE STRING "Command line arguments for conan install" FORCE)
+  set(CONAN_INSTALL_ARGS "${_args_INSTALL_ARGS}" CACHE STRING "Command line arguments for conan install"
+                                                       FORCE
+  )
 
   # A workaround from https://github.com/conan-io/cmake-conan/issues/595
   list(APPEND CMAKE_PROJECT_TOP_LEVEL_INCLUDES "${CMAKE_BINARY_DIR}/conan_provider.cmake")
 
   # Add this to invoke conan even when there's no find_package in CMakeLists.txt.
   # This helps users get the third-party package names, which is used in later find_package.
-  cmake_language(DEFER DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" CALL find_package Git QUIET)
+  cmake_language(
+    DEFER
+    DIRECTORY
+    "${CMAKE_CURRENT_SOURCE_DIR}"
+    CALL
+    find_package
+    Git
+    QUIET
+  )
 endmacro()
 
 #[[.rst:

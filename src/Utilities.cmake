@@ -80,9 +80,8 @@ endmacro()
 
 # Is CMake verbose?
 function(is_verbose var)
-  if("${CMAKE_MESSAGE_LOG_LEVEL}" STREQUAL "VERBOSE" OR "${CMAKE_MESSAGE_LOG_LEVEL}" STREQUAL
-                                                        "DEBUG" OR "${CMAKE_MESSAGE_LOG_LEVEL}"
-                                                                   STREQUAL "TRACE"
+  if("${CMAKE_MESSAGE_LOG_LEVEL}" STREQUAL "VERBOSE" OR "${CMAKE_MESSAGE_LOG_LEVEL}" STREQUAL "DEBUG"
+     OR "${CMAKE_MESSAGE_LOG_LEVEL}" STREQUAL "TRACE"
   )
     set(${var} ON PARENT_SCOPE)
   else()
@@ -127,10 +126,7 @@ endfunction()
 
 function(detect_macos_version version)
   find_program(SW_VERS_EXECUTABLE sw_vers)
-  execute_process(
-    COMMAND "${SW_VERS_EXECUTABLE}" -productVersion
-    OUTPUT_VARIABLE MACOS_VERSION
-  )
+  execute_process(COMMAND "${SW_VERS_EXECUTABLE}" -productVersion OUTPUT_VARIABLE MACOS_VERSION)
   set(${version} "${MACOS_VERSION}" PARENT_SCOPE)
 endfunction()
 

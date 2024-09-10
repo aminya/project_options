@@ -22,9 +22,7 @@ macro(common_project_options ENABLE_COMPILE_COMMANDS_SYMLINK)
     message(STATUS "Setting build type to 'RelWithDebInfo' as none was specified.")
     set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "Choose the type of build." FORCE)
     # Set the possible values of build type for cmake-gui, ccmake
-    set_property(
-      CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo"
-    )
+    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
   endif()
 
   get_property(BUILDING_MULTI_CONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
@@ -35,8 +33,8 @@ macro(common_project_options ENABLE_COMPILE_COMMANDS_SYMLINK)
       # list to only the configuration types you use, but only if one
       # is not forced-set on the command line for VS
       message(TRACE "Setting up multi-config build types")
-      set(CMAKE_CONFIGURATION_TYPES Debug Release RelWithDebInfo MinSizeRel
-          CACHE STRING "Enabled build types" FORCE
+      set(CMAKE_CONFIGURATION_TYPES Debug Release RelWithDebInfo MinSizeRel CACHE STRING
+                                                                                  "Enabled build types" FORCE
       )
     else()
       message(TRACE "User chose a specific build type, so we are using that")
@@ -61,9 +59,7 @@ macro(common_project_options ENABLE_COMPILE_COMMANDS_SYMLINK)
       # Make a symbol link of compile_commands.json on the source dir to help clang based tools find it
       if(WIN32)
         # Detect whether cmake is run as administrator (only administrator can read the LOCAL SERVICE account reg key)
-        execute_process(
-          COMMAND reg query "HKU\\S-1-5-19" ERROR_VARIABLE IS_NONADMINISTRATOR OUTPUT_QUIET
-        )
+        execute_process(COMMAND reg query "HKU\\S-1-5-19" ERROR_VARIABLE IS_NONADMINISTRATOR OUTPUT_QUIET)
       else()
         set(IS_NONADMINISTRATOR "")
       endif()
@@ -77,17 +73,14 @@ macro(common_project_options ENABLE_COMPILE_COMMANDS_SYMLINK)
           DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
           VERBATIM
         )
-        add_custom_target(
-          _copy_compile_commands DEPENDS ${CMAKE_SOURCE_DIR}/compile_commands.json VERBATIM
-        )
+        add_custom_target(_copy_compile_commands DEPENDS ${CMAKE_SOURCE_DIR}/compile_commands.json VERBATIM)
         message(
           STATUS
             "compile_commands.json was not symlinked to the root. Run `cmake --build <build_dir> -t _copy_compile_commands` if needed."
         )
       else()
-        file(CREATE_LINK ${CMAKE_BINARY_DIR}/compile_commands.json
-             ${CMAKE_SOURCE_DIR}/compile_commands.json SYMBOLIC
-             RESULT _compile_commands_symlink_result
+        file(CREATE_LINK ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json
+             SYMBOLIC RESULT _compile_commands_symlink_result
         )
         if(_compile_commands_symlink_result EQUAL 0)
           message(TRACE "compile_commands.json was symlinked to the root.")
