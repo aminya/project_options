@@ -21,14 +21,11 @@ jobs:
         compiler:
           - llvm
           - gcc
-        cmake:
-          - true
         vcvarsall:
           - true
         include:
           - os: "windows-2022"
             compiler: "msvc"
-            cmake: true
             vcvarsall: true
           - os: "windows-2022"
             compiler: "msvc"
@@ -55,7 +52,7 @@ jobs:
             ${{ env.XDG_CACHE_HOME }}/vcpkg/archives
             ${{ env.LOCALAPPDATA }}\vcpkg\archives
             ${{ env.APPDATA }}\vcpkg\archives
-          key: ${{ runner.os }}-${{ matrix.compiler }}-${{ env.BUILD_TYPE }}-${{ hashFiles('**/CMakeLists.txt', './vcpkg.json')}}-${{ matrix.cmake }}
+          key: ${{ runner.os }}-${{ matrix.compiler }}-${{ env.BUILD_TYPE }}-${{ hashFiles('**/CMakeLists.txt', './vcpkg.json')}}
           restore-keys: |
             ${{ runner.os }}-${{ env.BUILD_TYPE }}-
 
@@ -64,7 +61,7 @@ jobs:
         with:
           compiler: ${{ matrix.compiler }}
           vcvarsall: ${{ contains(matrix.os, 'windows') && matrix.vcvarsall }}
-          cmake: ${{ matrix.cmake }}
+          cmake: ${{ !contains(matrix.os, 'macos-14') }}
           ninja: true
           vcpkg: true
           conan: 2.6.0
