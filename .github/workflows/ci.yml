@@ -16,7 +16,8 @@ jobs:
         os:
           - windows-2022
           - ubuntu-22.04
-          - macos-12
+          - macos-13
+          - macos-14
         compiler:
           - llvm
           - gcc
@@ -40,12 +41,6 @@ jobs:
           - os: "windows-2022"
             compiler: "msvc"
             vcvarsall: false
-        exclude:
-          # fails with an internal error
-          - os: "macos-12"
-            compiler: "gcc"
-            cmake: true
-            vcvarsall: true
     steps:
       - uses: actions/checkout@v3
         with:
@@ -60,7 +55,7 @@ jobs:
             ${{ env.XDG_CACHE_HOME }}/vcpkg/archives
             ${{ env.LOCALAPPDATA }}\vcpkg\archives
             ${{ env.APPDATA }}\vcpkg\archives
-          key: ${{ runner.os }}-${{ matrix.compiler }}-${{ env.BUILD_TYPE }}-${{ hashFiles('**/CMakeLists.txt') }}-${{ hashFiles('./vcpkg.json')}}-${{ matrix.cmake }}
+          key: ${{ runner.os }}-${{ matrix.compiler }}-${{ env.BUILD_TYPE }}-${{ hashFiles('**/CMakeLists.txt', './vcpkg.json')}}-${{ matrix.cmake }}
           restore-keys: |
             ${{ runner.os }}-${{ env.BUILD_TYPE }}-
 
@@ -72,11 +67,11 @@ jobs:
           cmake: ${{ matrix.cmake }}
           ninja: true
           vcpkg: true
-          conan: 2.1.0
+          conan: 2.6.0
           cppcheck: true
           clangtidy: true
           task: true
-          doxygen: ${{ !contains(matrix.os, 'macos-11') && !contains(matrix.os, 'macos-13') }}
+          doxygen: true
 
       - name: Test
         if: ${{ !cancelled() }}
@@ -86,9 +81,6 @@ jobs:
           CMAKE_GENERATOR: ${{ matrix.cmake_generator }}
 
       - name: Lint
-        if: ${{ !cancelled() && matrix.os == 'ubuntu-20.04' && matrix.compiler == 'gcc' }}
         run: |
-          # TODO add to setup-cpp
           python3 -m pip install --user cmakelint cmake-format
-
           task lint
