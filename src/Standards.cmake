@@ -22,7 +22,7 @@ macro(set_standards)
     _set_language_standard(
       CXX_LATEST_STANDARD
       CXX
-      23
+      # 23
       20
       17
       14
@@ -39,7 +39,7 @@ macro(set_standards)
     _set_language_standard(
       C_LATEST_STANDARD
       C
-      23
+      # 23
       20
       17
       11
