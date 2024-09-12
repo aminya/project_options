@@ -17,6 +17,10 @@ if(ENABLE_CROSS_COMPILING)
   enable_cross_compiler()
 endif()
 
+# Override vcpkg triplets to install dynamic libraries instead of static libraries,
+# so we can test the installation of vcpkg-installed dependencies afterwards
+set(VCPKG_OVERLAY_TRIPLETS "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg_triplets")
+
 run_vcpkg(VCPKG_URL "https://github.com/microsoft/vcpkg.git" VCPKG_REV
           "0cb95c860ea83aafc1b24350510b30dec535989a" ENABLE_VCPKG_UPDATE
 )
