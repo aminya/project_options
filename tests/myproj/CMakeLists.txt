@@ -24,6 +24,8 @@ run_conan()
 
 project(myproj VERSION 0.2.0 LANGUAGES CXX C)
 
+include(cmake/rpath.cmake)  # Set rpath for installed programs, used in runtime installation test
+
 set(PCH_HEADERS
     <Eigen/Dense>
     <fmt/core.h>
