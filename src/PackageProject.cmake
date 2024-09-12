@@ -255,6 +255,25 @@ function(package_project)
     PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_PackageProject_NAME}" COMPONENT dev
                   ${FILE_SET_ARGS}
   )
+  set(runtime_dirs)
+  if(CONAN_RUNTIME_LIB_DIRS)
+    list(APPEND runtime_dirs ${CONAN_RUNTIME_LIB_DIRS})
+  endif()
+  if(runtime_dirs)
+    install(RUNTIME_DEPENDENCY_SET ${_PackageProject_SET}
+      PRE_EXCLUDE_REGEXES
+        [[api-ms-win-.*]]
+        [[ext-ms-.*]]
+        [[kernel32\.dll]]
+        [[(libc|libgcc_s|libgcc_s_seh|libm|libstdc\+\+|libc\+\+|libunwind)(-[0-9.]+)?\..*]]
+      POST_EXCLUDE_REGEXES
+        [[.*/system32/.*\.dll]]
+        [[^/lib.*]]
+        [[^/usr/lib.*]]
+      DIRECTORIES
+        ${runtime_dirs}
+    )
+  endif()
 
   # download ForwardArguments
   FetchContent_Declare(
