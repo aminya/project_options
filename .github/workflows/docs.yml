@@ -1,8 +1,9 @@
 name: docs
 on:
   push:
-    branches:
-      - main
+    tags:
+      - "*"
+  workflow_dispatch:
 
 jobs:
   Test:
@@ -36,12 +37,11 @@ jobs:
           git checkout main
           task docs
 
-      # TODO Automatic deploys fail
-      # - name: Deploy Documentation
-      #   uses: Cecilapp/GitHub-Pages-deploy@v3
-      #   with:
-      #     build_dir: docs/build/html/
-      #     branch: gh-pages
-      #     email: aminyahyaabadi74@gmail.com
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy Documentation
+        uses: Cecilapp/GitHub-Pages-deploy@v3
+        with:
+          build_dir: docs/build/html/
+          branch: gh-pages
+          email: ${{ github.actor }}@users.noreply.github.com
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
