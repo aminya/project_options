@@ -40,7 +40,7 @@ jobs:
       - name: Deploy Documentation
         uses: Cecilapp/GitHub-Pages-deploy@v3
         with:
-          build_dir: docs/build/html/
+          build_dir: docs/build/
           branch: gh-pages
           email: ${{ github.actor }}@users.noreply.github.com
         env:
