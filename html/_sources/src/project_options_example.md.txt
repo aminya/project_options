@@ -31,7 +31,6 @@ include(${_project_options_SOURCE_DIR}/Index.cmake)
 run_vcpkg(
     VCPKG_URL "https://github.com/microsoft/vcpkg.git"
     VCPKG_REV "10e052511428d6b0c7fcc63a139e8024bb146032"
-    ENABLE_VCPKG_UPDATE
 )
 # Install conan dependencies: - should be called before defining project()
 run_conan()

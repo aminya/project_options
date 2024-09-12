@@ -1,0 +1,1 @@
+var ar_versions = [{"version": "build", "folder": "html", "has_pdf": false}]
