@@ -87,6 +87,7 @@ words:
   - libcuda
   - libfuzzer
   - libg
+  - libm
   - libstdc
   - LPSTR
   - LPWSTR
