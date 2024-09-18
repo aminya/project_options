@@ -77,6 +77,7 @@ words:
   - libc
   - libcuda
   - libg
+  - libm
   - libstdc
   - LPSTR
   - LPWSTR
