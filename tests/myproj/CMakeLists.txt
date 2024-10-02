@@ -18,7 +18,7 @@ if(ENABLE_CROSS_COMPILING)
 endif()
 
 run_vcpkg(VCPKG_URL "https://github.com/microsoft/vcpkg.git" VCPKG_REV
-          "10e052511428d6b0c7fcc63a139e8024bb146032" ENABLE_VCPKG_UPDATE
+          "86a181505ac6460f98496a79abdee6a0f49905ec" ENABLE_VCPKG_UPDATE
 )
 run_conan()
 
