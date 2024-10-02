@@ -346,12 +346,8 @@ function(git_add_remote)
     endif()
 
     execute_process(
-      COMMAND "${GIT_EXECUTABLE}" "remote" "add" "${_fun_REMOTE_NAME}" "${_fun_REMOTE_URL}"
-      WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}" COMMAND_ERROR_IS_FATAL LAST
-    )
-    execute_process(
-      COMMAND "${GIT_EXECUTABLE}" "fetch" "${_fun_REMOTE_NAME}" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
-                                                                                  COMMAND_ERROR_IS_FATAL LAST
+      COMMAND "${GIT_EXECUTABLE}" "remote" "add" "--fetch" "${_fun_REMOTE_NAME}" "${_fun_REMOTE_URL}"
+      WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
     )
   endif()
 endfunction()
