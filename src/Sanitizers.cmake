@@ -38,8 +38,11 @@ function(
           "pointer-compare"
           "pointer-subtract"
   )
-    if(${ENABLE_SANITIZER_${SANITIZER}})
-      if(${SUPPORTS_SANITIZER_${SANITIZER}})
+    set(SANITIZER_UPPERCASE "${SANITIZER}")
+    string(TOUPPER ${SANITIZER} SANITIZER_UPPERCASE)
+
+    if(${ENABLE_SANITIZER_${SANITIZER_UPPERCASE}})
+      if(${SUPPORTS_SANITIZER_${SANITIZER_UPPERCASE}})
         list(APPEND SANITIZERS ${SANITIZER})
       else()
         # do not enable the sanitizer if it is not supported
