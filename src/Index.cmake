@@ -82,7 +82,7 @@ include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
    those.
 -  ``ENABLE_SANITIZER_ADDRESS``: Enable address sanitizer
 -  ``ENABLE_SANITIZER_LEAK``: Enable leak sanitizer
--  ``ENABLE_SANITIZER_UNDEFINED_BEHAVIOR``: Enable undefined behavior
+-  ``ENABLE_SANITIZER_UNDEFINED``: Enable undefined behavior
    sanitizer
 -  ``ENABLE_SANITIZER_THREAD``: Enable thread sanitizer
 -  ``ENABLE_SANITIZER_MEMORY``: Enable memory sanitizer

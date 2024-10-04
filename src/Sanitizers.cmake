@@ -137,7 +137,7 @@ Note that some sanitizers cannot be enabled together, and this function doesn't 
 Output variables:
 
 - ``ENABLE_SANITIZER_ADDRESS``: Address sanitizer is supported
-- ``ENABLE_SANITIZER_UNDEFINED_BEHAVIOR``: Undefined behavior sanitizer is supported
+- ``ENABLE_SANITIZER_UNDEFINED``: Undefined behavior sanitizer is supported
 - ``ENABLE_SANITIZER_LEAK``: Leak sanitizer is supported
 - ``ENABLE_SANITIZER_THREAD``: Thread sanitizer is supported
 - ``ENABLE_SANITIZER_MEMORY``: Memory sanitizer is supported
@@ -148,7 +148,7 @@ Output variables:
 .. code:: cmake
 
   check_sanitizers_support(ENABLE_SANITIZER_ADDRESS
-                           ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+                           ENABLE_SANITIZER_UNDEFINED
                            ENABLE_SANITIZER_LEAK
                            ENABLE_SANITIZER_THREAD
                            ENABLE_SANITIZER_MEMORY
