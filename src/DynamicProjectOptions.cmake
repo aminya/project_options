@@ -103,27 +103,18 @@ macro(dynamic_project_options)
     )
   endif()
 
-  check_sanitizers_support(
-    ENABLE_SANITIZER_ADDRESS
-    ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
-    ENABLE_SANITIZER_LEAK
-    ENABLE_SANITIZER_THREAD
-    ENABLE_SANITIZER_MEMORY
-    ENABLE_SANITIZER_POINTER_COMPARE
-    ENABLE_SANITIZER_POINTER_SUBTRACT
-  )
+  # Fallback for ENABLE_SANITIZER_UNDEFINED_BEHAVIOR option
+  foreach(default_type IN ITEMS DEFAULT DEVELOPER_DEFAULT USER_DEFAULT)
+    if(DEFINED ENABLE_SANITIZER_UNDEFINED_BEHAVIOR_${default_type})
+      if(DEFINED ENABLE_SANITIZER_UNDEFINED_${default_type})
+        message(WARNING "Don't set both ENABLE_SANITIZER_UNDEFINED_BEHAVIOR_${default_type} and ENABLE_SANITIZER_UNDEFINED_${default_type}. Use ENABLE_SANITIZER_UNDEFINED_${default_type} only.")
+      else()
+        message(DEPRECATION "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR_${default_type} is deprecated. Use ENABLE_SANITIZER_UNDEFINED_${default_type} instead.")
+      endif()
 
-  if(ENABLE_SANITIZER_ADDRESS)
-    set(SUPPORTS_ASAN ON)
-  else()
-    set(SUPPORTS_ASAN OFF)
-  endif()
-
-  if(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR)
-    set(SUPPORTS_UBSAN ON)
-  else()
-    set(SUPPORTS_UBSAN OFF)
-  endif()
+      set(ENABLE_SANITIZER_UNDEFINED_${default_type} ${ENABLE_SANITIZER_UNDEFINED_BEHAVIOR_${default_type}})
+    endif()
+  endforeach()
 
   # ccache, clang-tidy, cppcheck are only supported with Ninja and Makefile based generators
   # note that it is possible to use Ninja with cl, so this still allows clang-tidy on Windows
@@ -163,9 +154,9 @@ macro(dynamic_project_options)
       "0\;DISABLE_RTTI\;OFF\;OFF\;Disable RTTI (no-rtti flag)"
       "0\;ENABLE_BUILD_WITH_TIME_TRACE\;OFF\;OFF\;Generates report of where compile-time is spent"
       "0\;ENABLE_UNITY\;OFF\;OFF\;Merge C++ files into larger C++ files, can speed up compilation sometimes"
-      "0\;ENABLE_SANITIZER_ADDRESS\;OFF\;${SUPPORTS_ASAN}\;Make memory errors into hard runtime errors (windows/linux/macos)"
+      "0\;ENABLE_SANITIZER_ADDRESS\;OFF\;ON\;Make memory errors into hard runtime errors (windows/linux/macos)"
       "0\;ENABLE_SANITIZER_LEAK\;OFF\;OFF\;Make memory leaks into hard runtime errors"
-      "0\;ENABLE_SANITIZER_UNDEFINED_BEHAVIOR\;OFF\;${SUPPORTS_UBSAN}\;Make certain types (numeric mostly) of undefined behavior into runtime errors"
+      "0\;ENABLE_SANITIZER_UNDEFINED\;OFF\;ON\;Make certain types (numeric mostly) of undefined behavior into runtime errors"
       "0\;ENABLE_SANITIZER_THREAD\;OFF\;OFF\;Make thread race conditions into hard runtime errors"
       "0\;ENABLE_SANITIZER_MEMORY\;OFF\;OFF\;Make other memory errors into runtime errors"
       "0\;ENABLE_CONTROL_FLOW_PROTECTION\;OFF\;OFF\;Enable control flow protection instrumentation"
@@ -277,7 +268,7 @@ macro(dynamic_project_options)
     ${ENABLE_UNITY_VALUE}
     ${ENABLE_SANITIZER_ADDRESS_VALUE}
     ${ENABLE_SANITIZER_LEAK_VALUE}
-    ${ENABLE_SANITIZER_UNDEFINED_BEHAVIOR_VALUE}
+    ${ENABLE_SANITIZER_UNDEFINED_VALUE}
     ${ENABLE_SANITIZER_THREAD_VALUE}
     ${ENABLE_SANITIZER_MEMORY_VALUE}
     ${ENABLE_CONTROL_FLOW_PROTECTION_VALUE}
