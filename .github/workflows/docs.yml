@@ -34,7 +34,6 @@ jobs:
 
       - name: Build Documentation
         run: |
-          git checkout main
           task docs
 
       - name: Deploy Documentation
