@@ -161,7 +161,7 @@
 
 <span class="c"># Add project_options from https://github.com/aminya/project_options</span>
 <span class="c"># Change the version in the following URL to update the package (watch the releases of the repository for future updates)</span>
-<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.36.4&quot;</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">PROJECT_OPTIONS_VERSION</span><span class="w"> </span><span class="s">&quot;v0.36.6&quot;</span><span class="nf">)</span>
 <span class="nf">FetchContent_Declare(</span>
 <span class="w">  </span><span class="nb">_project_options</span>
 <span class="w">  </span><span class="no">URL</span><span class="w"> </span><span class="na">https://github.com/aminya/project_options/archive/refs/tags/</span><span class="o">${</span><span class="nt">PROJECT_OPTIONS_VERSION</span><span class="o">}</span><span class="p">.</span><span class="nb">zip</span><span class="nf">)</span>
@@ -171,7 +171,7 @@
 <span class="c"># install vcpkg dependencies: - should be called before defining project()</span>
 <span class="nf">run_vcpkg(</span>
 <span class="w">    </span><span class="no">VCPKG_URL</span><span class="w"> </span><span class="s">&quot;https://github.com/microsoft/vcpkg.git&quot;</span>
-<span class="w">    </span><span class="no">VCPKG_REV</span><span class="w"> </span><span class="s">&quot;10e052511428d6b0c7fcc63a139e8024bb146032&quot;</span>
+<span class="w">    </span><span class="no">VCPKG_REV</span><span class="w"> </span><span class="s">&quot;86a181505ac6460f98496a79abdee6a0f49905ec&quot;</span>
 <span class="nf">)</span>
 <span class="c"># Install conan dependencies: - should be called before defining project()</span>
 <span class="nf">run_conan()</span>
@@ -195,7 +195,7 @@
 <span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_COVERAGE</span><span class="w"> </span><span class="s">&quot;ENABLE_COVERAGE&quot;</span><span class="nf">)</span>
 
 <span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_SANITIZER_ADDRESS</span><span class="w"> </span><span class="s">&quot;ENABLE_SANITIZER_ADDRESS&quot;</span><span class="nf">)</span>
-<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_SANITIZER_UNDEFINED_BEHAVIOR</span><span class="w"> </span><span class="s">&quot;ENABLE_SANITIZER_UNDEFINED_BEHAVIOR&quot;</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">ENABLE_SANITIZER_UNDEFINED</span><span class="w"> </span><span class="s">&quot;ENABLE_SANITIZER_UNDEFINED&quot;</span><span class="nf">)</span>
 <span class="nf">endif()</span>
 
 <span class="c"># Enable doxgen for the docs</span>
@@ -217,7 +217,7 @@
 <span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_DOXYGEN</span><span class="o">}</span>
 <span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_COVERAGE</span><span class="o">}</span>
 <span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_SANITIZER_ADDRESS</span><span class="o">}</span>
-<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_SANITIZER_UNDEFINED_BEHAVIOR</span><span class="o">}</span>
+<span class="w">      </span><span class="o">${</span><span class="nt">ENABLE_SANITIZER_UNDEFINED</span><span class="o">}</span>
 <span class="w">      </span><span class="c"># ${ENABLE_SANITIZER_THREAD}</span>
 <span class="w">      </span><span class="c"># ${ENABLE_SANITIZER_MEMORY}</span>
 <span class="w">      </span><span class="c"># ENABLE_SANITIZER_POINTER_COMPARE</span>
