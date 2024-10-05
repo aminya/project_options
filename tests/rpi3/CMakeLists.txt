@@ -67,7 +67,7 @@ if(ENABLE_TESTING)
   if(NOT DISABLE_SANITIZER)
     if(NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
       set(ENABLE_SANITIZER_ADDRESS "ENABLE_SANITIZER_ADDRESS")
-      set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR")
+      set(ENABLE_SANITIZER_UNDEFINED "ENABLE_SANITIZER_UNDEFINED")
     else()
       # or it is MSVC and has run vcvarsall
       string(FIND "$ENV{PATH}" "$ENV{VSINSTALLDIR}" index_of_vs_install_dir)
@@ -90,7 +90,7 @@ project_options(
   ENABLE_VS_ANALYSIS
   ${ENABLE_COVERAGE}
   ${ENABLE_SANITIZER_ADDRESS}
-  ${ENABLE_SANITIZER_UNDEFINED_BEHAVIOR}
+  ${ENABLE_SANITIZER_UNDEFINED}
   DISABLE_EXCEPTIONS
   DISABLE_RTTI
   # Note: PCH is disabled by default in developer mode because these headers become globally included and they can mask other errors

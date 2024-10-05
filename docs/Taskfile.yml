@@ -15,6 +15,7 @@ tasks:
       - cmake -S ./ -B ./build -G "Ninja Multi-Config" -DCMAKE_BUILD_TYPE=Release
       - cmake --build ./build --config Release
       - touch ./build/.nojekyll
+      - rm -rf ./build/*.ninja ./build/*log ./build/*.py ./build/CMakeFiles ./build/CMakeCache.txt ./build/*.cmake
 
   docs.preview:
     deps:
