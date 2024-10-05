@@ -319,13 +319,16 @@ function(git_add_remote)
 
   find_program(GIT_EXECUTABLE "git" REQUIRED)
 
-  # ensure that the given repository's remote is the current remote
+  # Get the list of the remotes
   execute_process(
     COMMAND "${GIT_EXECUTABLE}" "remote" "-v" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
                                                                 COMMAND_ERROR_IS_FATAL LAST
     OUTPUT_VARIABLE _remote_output
   )
-  string(FIND "${_remote_output}" "${_fun_REMOTE_URL}" _find_index)
+  # Remove .git from the URL
+  string(REGEX REPLACE "^(.*)\.git$" "\\1" _fun_REMOTE_URL_no_git "${_fun_REMOTE_URL}")
+  # Check if the given remote already exists in the remote list
+  string(FIND "${_remote_output}" "${_fun_REMOTE_URL_no_git}" _find_index)
 
   # Add the given remote if it doesn't exist
   if(${_find_index} EQUAL -1)
@@ -343,12 +346,8 @@ function(git_add_remote)
     endif()
 
     execute_process(
-      COMMAND "${GIT_EXECUTABLE}" "remote" "add" "${_fun_REMOTE_NAME}" "${_fun_REMOTE_URL}"
-      WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}" COMMAND_ERROR_IS_FATAL LAST
-    )
-    execute_process(
-      COMMAND "${GIT_EXECUTABLE}" "fetch" "${_fun_REMOTE_NAME}" WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
-                                                                                  COMMAND_ERROR_IS_FATAL LAST
+      COMMAND "${GIT_EXECUTABLE}" "remote" "add" "--fetch" "${_fun_REMOTE_NAME}" "${_fun_REMOTE_URL}"
+      WORKING_DIRECTORY "${_fun_REPOSITORY_PATH}"
     )
   endif()
 endfunction()

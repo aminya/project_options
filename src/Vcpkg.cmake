@@ -170,7 +170,7 @@ Or by specifying the options
 
    run_vcpkg(
        VCPKG_URL "https://github.com/microsoft/vcpkg.git"
-       VCPKG_REV "10e052511428d6b0c7fcc63a139e8024bb146032"
+       VCPKG_REV "86a181505ac6460f98496a79abdee6a0f49905ec"
        ENABLE_VCPKG_UPDATE
    )
 

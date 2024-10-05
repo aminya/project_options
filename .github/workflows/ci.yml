@@ -66,7 +66,8 @@ jobs:
           vcpkg: true
           conan: 2.6.0
           cppcheck: true
-          clangtidy: true
+          cmakelang: true
+          clang-tidy: true
           task: true
           doxygen: true
           python: true
@@ -80,5 +81,4 @@ jobs:
 
       - name: Lint
         run: |
-          pipx install cmakelang[YAML]
           task lint

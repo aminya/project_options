@@ -8,7 +8,7 @@ function(
   _project_name
   ENABLE_SANITIZER_ADDRESS
   ENABLE_SANITIZER_LEAK
-  ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+  ENABLE_SANITIZER_UNDEFINED
   ENABLE_SANITIZER_THREAD
   ENABLE_SANITIZER_MEMORY
   ENABLE_SANITIZER_POINTER_COMPARE
@@ -18,7 +18,7 @@ function(
   # check if the sanitizers are supported
   check_sanitizers_support(
     SUPPORTS_SANITIZER_ADDRESS
-    SUPPORTS_SANITIZER_UNDEFINED_BEHAVIOR
+    SUPPORTS_SANITIZER_UNDEFINED
     SUPPORTS_SANITIZER_LEAK
     SUPPORTS_SANITIZER_THREAD
     SUPPORTS_SANITIZER_MEMORY
@@ -38,8 +38,11 @@ function(
           "pointer-compare"
           "pointer-subtract"
   )
-    if(${ENABLE_SANITIZER_${SANITIZER}})
-      if(${SUPPORTS_SANITIZER_${SANITIZER}})
+    set(SANITIZER_UPPERCASE "${SANITIZER}")
+    string(TOUPPER ${SANITIZER} SANITIZER_UPPERCASE)
+
+    if(${ENABLE_SANITIZER_${SANITIZER_UPPERCASE}})
+      if(${SUPPORTS_SANITIZER_${SANITIZER_UPPERCASE}})
         list(APPEND SANITIZERS ${SANITIZER})
       else()
         # do not enable the sanitizer if it is not supported
@@ -134,7 +137,7 @@ Note that some sanitizers cannot be enabled together, and this function doesn't 
 Output variables:
 
 - ``ENABLE_SANITIZER_ADDRESS``: Address sanitizer is supported
-- ``ENABLE_SANITIZER_UNDEFINED_BEHAVIOR``: Undefined behavior sanitizer is supported
+- ``ENABLE_SANITIZER_UNDEFINED``: Undefined behavior sanitizer is supported
 - ``ENABLE_SANITIZER_LEAK``: Leak sanitizer is supported
 - ``ENABLE_SANITIZER_THREAD``: Thread sanitizer is supported
 - ``ENABLE_SANITIZER_MEMORY``: Memory sanitizer is supported
@@ -145,7 +148,7 @@ Output variables:
 .. code:: cmake
 
   check_sanitizers_support(ENABLE_SANITIZER_ADDRESS
-                           ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+                           ENABLE_SANITIZER_UNDEFINED
                            ENABLE_SANITIZER_LEAK
                            ENABLE_SANITIZER_THREAD
                            ENABLE_SANITIZER_MEMORY
@@ -158,7 +161,7 @@ Output variables:
 function(
   check_sanitizers_support
   ENABLE_SANITIZER_ADDRESS
-  ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+  ENABLE_SANITIZER_UNDEFINED
   ENABLE_SANITIZER_LEAK
   ENABLE_SANITIZER_THREAD
   ENABLE_SANITIZER_MEMORY

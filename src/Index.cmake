@@ -82,7 +82,7 @@ include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
    those.
 -  ``ENABLE_SANITIZER_ADDRESS``: Enable address sanitizer
 -  ``ENABLE_SANITIZER_LEAK``: Enable leak sanitizer
--  ``ENABLE_SANITIZER_UNDEFINED_BEHAVIOR``: Enable undefined behavior
+-  ``ENABLE_SANITIZER_UNDEFINED``: Enable undefined behavior
    sanitizer
 -  ``ENABLE_SANITIZER_THREAD``: Enable thread sanitizer
 -  ``ENABLE_SANITIZER_MEMORY``: Enable memory sanitizer
@@ -148,7 +148,8 @@ macro(project_options)
       ENABLE_UNITY
       ENABLE_SANITIZER_ADDRESS
       ENABLE_SANITIZER_LEAK
-      ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+      ENABLE_SANITIZER_UNDEFINED
+      ENABLE_SANITIZER_UNDEFINED_BEHAVIOR  # deprecated, ENABLE_SANITIZER_UNDEFINED
       ENABLE_SANITIZER_THREAD
       ENABLE_SANITIZER_MEMORY
       ENABLE_SANITIZER_POINTER_COMPARE
@@ -260,12 +261,23 @@ macro(project_options)
     enable_coverage(${_options_target})
   endif()
 
+  # Fallback for deprecated ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+  if(ProjectOptions_ENABLE_SANITIZER_UNDEFINED_BEHAVIOR)
+    if(ProjectOptions_ENABLE_SANITIZER_UNDEFINED)
+      message(WARNING "Don't switch on both ENABLE_SANITIZER_UNDEFINED_BEHAVIOR and ENABLE_SANITIZER_UNDEFINED. Use ENABLE_SANITIZER_UNDEFINED only.")
+    else()
+      message(DEPRECATION "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR is deprecated. Use ENABLE_SANITIZER_UNDEFINED instead.")
+    endif()
+
+    set(ProjectOptions_ENABLE_SANITIZER_UNDEFINED ${ProjectOptions_ENABLE_SANITIZER_UNDEFINED_BEHAVIOR})
+  endif()
+
   # sanitizer options if supported by compiler
   enable_sanitizers(
     ${_options_target}
     ${ProjectOptions_ENABLE_SANITIZER_ADDRESS}
     ${ProjectOptions_ENABLE_SANITIZER_LEAK}
-    ${ProjectOptions_ENABLE_SANITIZER_UNDEFINED_BEHAVIOR}
+    ${ProjectOptions_ENABLE_SANITIZER_UNDEFINED}
     ${ProjectOptions_ENABLE_SANITIZER_THREAD}
     ${ProjectOptions_ENABLE_SANITIZER_MEMORY}
     ${ProjectOptions_ENABLE_SANITIZER_POINTER_COMPARE}
