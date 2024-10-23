@@ -20,6 +20,10 @@ tasks:
     cmds:
       - task: myproj:test.release
       - cmake --install ./build --config Release --prefix {{.CWD}}/install
+      - cmd: '{{.CWD}}/install/bin/main.exe'
+        platforms: [windows]
+      - cmd: '{{.CWD}}/install/bin/main'
+        platforms: [linux, darwin]
 
   default:
     cmds:

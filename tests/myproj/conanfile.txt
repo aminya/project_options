@@ -3,5 +3,8 @@
 [requires]
 docopt.cpp/0.6.3
 
+[options]
+docopt.cpp/*:shared=True
+
 [generators]
 CMakeDeps
