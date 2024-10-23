@@ -1,5 +1,5 @@
-# ninja log v5
-0	464	0	doc_format_html	c9b4b4d43334804b
-0	464	0	/media/aminya/Linux/GitHub/Cpp/project_options/docs/build/doc_format_html	c9b4b4d43334804b
-0	477	0	doc_format_html	c9b4b4d43334804b
-0	477	0	/media/aminya/Linux/GitHub/Cpp/project_options/docs/build/doc_format_html	c9b4b4d43334804b
+# ninja log v6
+1	2015	1729650621063054329	/media/aminya/Linux/GitHub/Cpp/project_options/docs/build/doc_format_html	e29530ee77ea149c
+1	2015	1729650621063054329	doc_format_html	e29530ee77ea149c
+2	793	1729650672127656456	doc_format_html	e29530ee77ea149c
+2	793	1729650672127656456	/media/aminya/Linux/GitHub/Cpp/project_options/docs/build/doc_format_html	e29530ee77ea149c
