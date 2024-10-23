@@ -43,14 +43,6 @@ include("${ProjectOptions_SRC_DIR}/DetectCompiler.cmake")
 include("${ProjectOptions_SRC_DIR}/CrossCompiler.cmake")
 include("${ProjectOptions_SRC_DIR}/DynamicProjectOptions.cmake")
 include("${ProjectOptions_SRC_DIR}/Hardening.cmake")
-
-# Include msvc toolchain on windows if the generator is not visual studio. Should be called before run_vcpkg and run_conan to be effective
-if("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
-  msvc_toolchain()
-else()
-  message(STATUS "project_options: skipping msvc_toolchain as CMAKE_TOOLCHAIN_FILE is set")
-endif()
-
 include("${ProjectOptions_SRC_DIR}/Conan.cmake")
 include("${ProjectOptions_SRC_DIR}/Vcpkg.cmake")
 
