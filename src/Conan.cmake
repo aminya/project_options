@@ -217,7 +217,11 @@ macro(_run_conan2)
   endif()
 
   if(NOT _args_INSTALL_ARGS)
-    set(_args_INSTALL_ARGS "--build=missing")
+    set(_args_INSTALL_ARGS
+        --build=missing
+        -c tools.system.package_manager:mode=install
+        -c tools.system.package_manager:sudo=True
+    )
   endif()
 
   set(CONAN_HOST_PROFILE "${_args_HOST_PROFILE}" CACHE STRING "Conan host profile" FORCE)
