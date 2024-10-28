@@ -1,9 +1,13 @@
 # https://taskfile.dev/#6/installation
 version: 3
 
+# Run before install pip deps
+#   python -m venv ./.venv
+#   source ./.venv/bin/activate
+
 tasks:
   readme:
-    - pip install -q -U pandoc-include
+    - pipx install pandoc-include
     # requires pandoc 3.0.0 or higher
     - pandoc -s --filter pandoc-include -o ../README.md ./README.md
 
@@ -11,11 +15,12 @@ tasks:
     deps:
       - readme
     cmds:
-      - pip install -q -U GitPython sphinx-rtd-theme breathe sphinx-sitemap sphinxcontrib-moderncmakedomain myst-parser pandoc-include
-      - cmake -S ./ -B ./build -G "Ninja Multi-Config" -DCMAKE_BUILD_TYPE=Release
-      - cmake --build ./build --config Release
-      - touch ./build/.nojekyll
-      - rm -rf ./build/*.ninja ./build/*log ./build/*.py ./build/CMakeFiles ./build/CMakeCache.txt ./build/*.cmake
+      - |
+        pip install GitPython sphinx-rtd-theme breathe sphinx-sitemap sphinxcontrib-moderncmakedomain myst-parser
+        cmake -S ./ -B ./build -G "Ninja Multi-Config" -DCMAKE_BUILD_TYPE=Release
+        cmake --build ./build --config Release
+        touch ./build/.nojekyll
+        rm -rf ./build/*.ninja ./build/*log ./build/*.py ./build/CMakeFiles ./build/CMakeCache.txt ./build/*.cmake
 
   docs.preview:
     deps:
@@ -27,4 +32,4 @@ tasks:
     deps:
       - docs
     cmds:
-      - npx gh-pages -d ./build/ -t true
+      - npx -y gh-pages -d ./build/ -t true

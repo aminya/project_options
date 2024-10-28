@@ -46,7 +46,21 @@ function(is_msvc value)
   set(${value} OFF PARENT_SCOPE)
 endfunction()
 
-# Include msvc toolchain on windows if the generator is not visual studio. Should be called before run_vcpkg and run_conan to be effective
+#[[.rst:
+
+``msvc_toolchain``
+===============
+
+Include msvc toolchain on windows if the generator is not visual studio. Should be called before run_vcpkg and run_conan to be effective
+
+Notes: if running in a cross-compilation situation, the toolchain might not work as expected. So add proper if-checks if you have such a configuration
+
+.. code:: cmake
+
+      msvc_toolchain()
+      # should be included before run_vcpkg/run_conan to be effective
+
+]]
 macro(msvc_toolchain)
   if(# if on windows and the generator is not Visual Studio
      WIN32 AND NOT CMAKE_GENERATOR MATCHES "Visual Studio*"
