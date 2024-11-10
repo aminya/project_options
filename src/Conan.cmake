@@ -169,6 +169,9 @@ macro(_run_conan1)
         # Pass either autodetected settings or a conan profile
         ${CONAN_SETTINGS}
         ${OUTPUT_QUIET}
+        CONF
+        -c tools.system.package_manager:mode=install
+        -c tools.system.package_manager:sudo=True
       )
     endforeach()
   endif()
