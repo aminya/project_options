@@ -24,6 +24,8 @@ run_conan()
 
 project(myproj VERSION 0.2.0 LANGUAGES CXX C)
 
+include(cmake/rpath.cmake)  # Set rpath for installed programs, used in runtime installation test
+
 set(PCH_HEADERS
     <Eigen/Dense>
     <fmt/core.h>
@@ -90,21 +92,14 @@ project_options(
 add_executable(main ./src/main/main.cpp)
 target_link_libraries(main PRIVATE myproj_project_options myproj_project_warnings)
 
-target_find_dependencies(
-  main
+target_find_dependencies(main
   PUBLIC
-  PACKAGE
-  fmt
-  CONFIG
-  PACKAGE
-  Eigen3
-  CONFIG
-  PACKAGE
-  docopt
-  CONFIG
+    PACKAGE fmt CONFIG
+    PACKAGE Eigen3 CONFIG
+    PACKAGE docopt CONFIG
 )
 
-target_link_system_libraries(main PRIVATE fmt::fmt Eigen3::Eigen)
+target_link_system_libraries(main PRIVATE fmt::fmt Eigen3::Eigen docopt)
 
 add_subdirectory(libs)
 
@@ -174,7 +169,7 @@ package_project(
   myproj_project_options
   myproj_project_warnings
   PUBLIC_INCLUDES
-  ${lib2_INCLUDE_DIR22}
+  ${lib2_INCLUDE_DIR2}
 )
 
 package_project(NAME myproj_main TARGETS main)
