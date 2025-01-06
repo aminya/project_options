@@ -269,7 +269,7 @@ function(package_project)
         [[kernel32\.dll]]
         [[(libc|libgcc_s|libgcc_s_seh|libm|libstdc\+\+|libc\+\+|libunwind)(-[0-9.]+)?\..*]]
       POST_EXCLUDE_REGEXES
-        [[.*/system32/.*\.dll]]
+        [[.*(\\|/)system32(\\|/).*\.dll]] # according to https://discourse.cmake.org/t/migration-experiences-comparison-runtime-dependency-set-vs-fixup-bundle-bundleutilities/11323/6
         [[^/lib.*]]
         [[^/usr/lib.*]]
       DIRECTORIES
