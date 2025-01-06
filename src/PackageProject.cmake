@@ -134,6 +134,7 @@ function(package_project)
   set(_PackageProject_NAMESPACE "${_PackageProject_NAME}::")
   set(_PackageProject_VARS_PREFIX ${_PackageProject_NAME})
   set(_PackageProject_EXPORT ${_PackageProject_NAME})
+  set(_PackageProject_SET "${_PackageProject}_deps_set")
 
   # default version to the project version
   if("${_PackageProject_VERSION}" STREQUAL "")
@@ -249,6 +250,7 @@ function(package_project)
   install(
     TARGETS ${_targets_list}
     EXPORT ${_PackageProject_EXPORT}
+    RUNTIME_DEPENDENCY_SET ${_PackageProject_SET}
     LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
     ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT lib
     RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
