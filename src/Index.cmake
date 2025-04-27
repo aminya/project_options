@@ -4,6 +4,10 @@ cmake_minimum_required(VERSION 3.20)
 
 include_guard()
 
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.31.0")
+  cmake_policy(SET CMP0177 NEW)
+endif()
+
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
   # fix DOWNLOAD_EXTRACT_TIMESTAMP warning in FetchContent
   cmake_policy(SET CMP0135 NEW)
