@@ -18,7 +18,7 @@ jobs:
           - macos-14
         compiler:
           - llvm-19
-          - gcc-14
+          - gcc
         vcvarsall:
           - true
         include:
