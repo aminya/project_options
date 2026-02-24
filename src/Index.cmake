@@ -18,6 +18,11 @@ if(POLICY CMP0141)
   cmake_policy(SET CMP0141 NEW)
 endif()
 
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.31.0")
+  # normalize install directories
+  cmake_policy(SET CMP0177 NEW)
+endif()
+
 # only useable here
 set(ProjectOptions_SRC_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
