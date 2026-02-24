@@ -77,7 +77,7 @@ include(${_project_options_SOURCE_DIR}/Index.cmake)
 # install vcpkg dependencies: - should be called before defining project()
 run_vcpkg(
     VCPKG_URL "https://github.com/microsoft/vcpkg.git"
-    VCPKG_REV "86a181505ac6460f98496a79abdee6a0f49905ec"
+    VCPKG_REV "0cb95c860ea83aafc1b24350510b30dec535989a"
 )
 # Install conan dependencies: - should be called before defining project()
 run_conan()
