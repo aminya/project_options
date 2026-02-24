@@ -17,8 +17,8 @@ jobs:
           - ubuntu-22.04
           - macos-14
         compiler:
-          - llvm-17
-          - gcc
+          - llvm-18
+          - gcc-14
         vcvarsall:
           - true
         include:
