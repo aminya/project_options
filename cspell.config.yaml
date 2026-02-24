@@ -11,6 +11,7 @@ allowCompoundWords: true
 enableGlobDot: true
 words:
   - aarch
+  - cmakelang
   - aminya
   - Amnet
   - anotherproj
