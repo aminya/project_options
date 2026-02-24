@@ -15,10 +15,9 @@ jobs:
         os:
           - windows-2022
           - ubuntu-22.04
-          - macos-13
-          # - macos-14
+          - macos-14
         compiler:
-          - llvm
+          - llvm-19
           - gcc
         vcvarsall:
           - true
@@ -63,7 +62,7 @@ jobs:
           cmake: true
           ninja: true
           vcpkg: true
-          conan: 2.6.0
+          conan: true
           cppcheck: true
           cmakelang: true
           clang-tidy: true
