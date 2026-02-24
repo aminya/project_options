@@ -15,10 +15,9 @@ jobs:
         os:
           - windows-2022
           - ubuntu-22.04
-          - macos-13
-          # - macos-14
+          - macos-14
         compiler:
-          - llvm
+          - llvm-17
           - gcc
         vcvarsall:
           - true
