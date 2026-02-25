@@ -246,8 +246,21 @@ function(package_project)
     set(FILE_SET_ARGS "FILE_SET" "HEADERS")
   endif()
 
+  set(_filtered_targets_list)
+  set(_imported_targets_list)
+  foreach(_target ${_targets_list})
+    if(TARGET ${_target})
+      get_target_property(is_imported ${_target} IMPORTED)
+      if(NOT ${is_imported})
+        list(APPEND _filtered_targets_list ${_target})
+      else()
+        list(APPEND _imported_targets_list ${_target})
+      endif()
+    endif()
+  endforeach()
+
   install(
-    TARGETS ${_targets_list}
+    TARGETS ${_filtered_targets_list}
     EXPORT ${_PackageProject_EXPORT}
     LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
     ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT lib
@@ -255,6 +268,22 @@ function(package_project)
     PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_PackageProject_NAME}" COMPONENT dev
                   ${FILE_SET_ARGS}
   )
+
+  foreach(_imported_target ${_imported_targets_list})
+    get_target_property(_imported_location ${_imported_target} IMPORTED_LOCATION)
+    get_target_property(_imported_type ${_imported_target} TYPE)
+    if(${_imported_type} STREQUAL "SHARED_LIBRARY" OR ${_imported_type} STREQUAL "EXECUTABLE")
+      install(
+        FILES ${_imported_location}
+        TYPE BIN
+        COMPONENT bin)
+    elseif(${_imported_type} STREQUAL "STATIC_LIBRARY")
+      install(
+        FILES ${_imported_location}
+        TYPE LIB
+        COMPONENT lib)
+    endif()
+  endforeach()
 
   # download ForwardArguments
   FetchContent_Declare(

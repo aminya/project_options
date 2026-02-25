@@ -6,7 +6,11 @@ set(ProjectOptions_SRC_DIR "${CMAKE_CURRENT_LIST_DIR}")
 macro(set_project_options_src_dir)
   get_directory_property(LISTFILE_STACK LISTFILE_STACK)
   list(POP_BACK LISTFILE_STACK _LIST_FILE)
-  cmake_path(GET _LIST_FILE PARENT_PATH ProjectOptions_SRC_DIR)
+  cmake_path(
+    GET
+    _LIST_FILE
+    PARENT_PATH
+    ProjectOptions_SRC_DIR)
 endmacro()
 
 # Common project settings run by default for all the projects that call `project_options()`
