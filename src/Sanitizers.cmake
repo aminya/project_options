@@ -41,18 +41,29 @@ loader can find it.
 
 A shared runtime is required whenever an instrumented shared library is loaded by a host that did not
 link the sanitizer itself — a plugin loaded by a DAW or an IDE, a Python extension module, a codec
-loaded by a media framework. On Windows it is the only ASan runtime clang ships, so it is always used
-there.
+loaded by a media framework.
 
-Called by ``enable_sanitizers()``; you do not need to call it yourself.
+**Opt-in, and only needed for that case.** On Windows ``enable_sanitizers()`` already applies it,
+because the shared runtime is the only ASan runtime clang ships there. Everywhere else the default
+static runtime is left alone, since switching to the shared one means the loader has to find
+``libclang_rt.asan.so`` at run time; call this yourself if your build produces such a library:
 
 .. code:: cmake
 
-  link_shared_sanitizer(<target>)
+  project_options(... ${ENABLE_SANITIZER_ADDRESS})
+  link_shared_sanitizer(myproject_project_options)
+
+Safe to call more than once, and a no-op for non-clang compilers.
 
 ]]
 function(link_shared_sanitizer _project_name)
   if(NOT CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+    return()
+  endif()
+
+  # `enable_sanitizers()` already applies this on Windows, so make repeated calls harmless
+  get_target_property(EXISTING_OPTIONS ${_project_name} INTERFACE_COMPILE_OPTIONS)
+  if(EXISTING_OPTIONS AND "-shared-libsan" IN_LIST EXISTING_OPTIONS)
     return()
   endif()
 
