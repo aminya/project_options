@@ -54,7 +54,10 @@ and with `clang++` driving its GNU command line. Four things to know for the cla
 - **Use a non-debug configuration.** clang's ASan cannot be used with the debug CRT — `msvcp140d.dll`
   frees through the debug heap at teardown, so every process aborts with
   `attempting free on address which was not malloc()-ed`. Build `RelWithDebInfo`, or set
-  `CMAKE_MSVC_RUNTIME_LIBRARY` to a non-debug runtime. `project_options` warns when it can tell.
+  `CMAKE_MSVC_RUNTIME_LIBRARY` to a non-debug runtime. `project_options` leaves both sanitizers off
+  when the debug CRT is in play, rather than handing back binaries that cannot run — including for
+  multi-config generators, which only pick their runtime at build time, unless
+  `CMAKE_MSVC_RUNTIME_LIBRARY` pins a non-debug one.
 - **UBSan needs ASan alongside it, or a static CRT.** The standalone UBSan runtime is only shipped
   for `/MT`, so on its own it fails to link into a `/MD` build with a `RuntimeLibrary`
   `/failifmismatch` error. Enabling both sanitizers takes the checks from the ASan runtime instead.

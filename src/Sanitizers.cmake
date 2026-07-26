@@ -33,6 +33,49 @@ endfunction()
 
 #[[.rst:
 
+``check_msvc_debug_runtime``
+===============
+
+Sets ``<output_variable>`` to ``ON`` when the build can end up using the *debug* MSVC runtime library
+(``ucrtbased.dll``/``msvcp140d.dll``), which clang's sanitizer runtimes cannot be combined with.
+
+``CMAKE_MSVC_RUNTIME_LIBRARY`` settles it whenever the project sets it. Otherwise CMake's default is
+``MultiThreaded$<$<CONFIG:Debug>:Debug>DLL``, so the answer follows the configuration: the build type
+for a single-config generator, and any configuration a multi-config generator can be asked to build —
+the choice is only made at build time there, so the debug runtime has to be assumed.
+
+.. code:: cmake
+
+  check_msvc_debug_runtime(USES_MSVC_DEBUG_RUNTIME)
+
+]]
+function(check_msvc_debug_runtime output_variable)
+  if(NOT "${CMAKE_MSVC_RUNTIME_LIBRARY}" STREQUAL "")
+    if("${CMAKE_MSVC_RUNTIME_LIBRARY}" MATCHES "Debug")
+      set(${output_variable} ON PARENT_SCOPE)
+    else()
+      set(${output_variable} OFF PARENT_SCOPE)
+    endif()
+    return()
+  endif()
+
+  get_property(IS_MULTI_CONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+
+  if(IS_MULTI_CONFIG)
+    if("Debug" IN_LIST CMAKE_CONFIGURATION_TYPES)
+      set(${output_variable} ON PARENT_SCOPE)
+    else()
+      set(${output_variable} OFF PARENT_SCOPE)
+    endif()
+  elseif("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+    set(${output_variable} ON PARENT_SCOPE)
+  else()
+    set(${output_variable} OFF PARENT_SCOPE)
+  endif()
+endfunction()
+
+#[[.rst:
+
 ``link_shared_sanitizer``
 ===============
 
@@ -151,18 +194,6 @@ function(enable_windows_clang_sanitizers _project_name SANITIZERS)
   target_compile_definitions(
     ${_project_name} INTERFACE "_DISABLE_VECTOR_ANNOTATION" "_DISABLE_STRING_ANNOTATION"
   )
-
-  # ASan is incompatible with the debug CRT: `msvcp140d.dll` allocates during its static init and
-  # frees through the debug heap at teardown, which ASan's interceptors do not own, so every process
-  # — down to a hello-world using `std::string` — aborts with "attempting free on address which was
-  # not malloc()-ed". Only Debug can be checked here; a multi-config generator picks its runtime at
-  # build time.
-  if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug" OR "${CMAKE_MSVC_RUNTIME_LIBRARY}" MATCHES "Debug")
-    message(
-      WARNING
-        "clang's address sanitizer does not work against the debug CRT on Windows: the process aborts at exit with \"attempting free on address which was not malloc()-ed\". Use RelWithDebInfo, or set CMAKE_MSVC_RUNTIME_LIBRARY to a non-debug runtime."
-    )
-  endif()
 endfunction()
 
 #[[.rst:
@@ -389,12 +420,14 @@ function(
       target_compile_options(${_project_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
       target_link_options(${_project_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
 
-      if("address" IN_LIST SANITIZERS)
-        link_shared_sanitizer(${_project_name})
-      endif()
-
       check_clang_gnu_driver_on_windows(IS_CLANG_GNU_ON_WINDOWS)
       if(IS_CLANG_GNU_ON_WINDOWS)
+        # The shared runtime is the only ASan runtime clang ships on Windows. Everywhere else it stays
+        # opt-in through `link_shared_sanitizer()`, so existing builds keep the default static one.
+        if("address" IN_LIST SANITIZERS)
+          link_shared_sanitizer(${_project_name})
+        endif()
+
         enable_windows_clang_sanitizers(${_project_name} "${SANITIZERS}")
       endif()
     else()
@@ -518,9 +551,23 @@ function(
     # this compiler, so it reaches neither branch above even though clang ships working ASan and
     # UBSan runtimes for the `*-pc-windows-msvc` triple.
     #
-    # Leak, thread and memory sanitizers have no Windows runtime, and pointer-compare/subtract are
-    # GCC-only, so address and undefined are the whole list.
-    list(APPEND SUPPORTED_SANITIZERS "address" "undefined")
+    # Neither of them works against the debug CRT: ASan's interceptors do not own the debug heap, so
+    # `msvcp140d.dll` freeing through it at teardown aborts every process — down to a hello-world
+    # using `std::string` — with "attempting free on address which was not malloc()-ed", and the
+    # standalone UBSan runtime is only built for the static CRT. Instrumenting anyway would hand back
+    # binaries that cannot run, so leave them off and say why.
+    check_msvc_debug_runtime(USES_MSVC_DEBUG_RUNTIME)
+
+    if(USES_MSVC_DEBUG_RUNTIME)
+      message(
+        STATUS
+          "clang's sanitizers do not work against the debug CRT on Windows. Not enabling them. Build a non-Debug configuration, or set CMAKE_MSVC_RUNTIME_LIBRARY to a non-debug runtime."
+      )
+    else()
+      # Leak, thread and memory sanitizers have no Windows runtime, and pointer-compare/subtract are
+      # GCC-only, so address and undefined are the whole list.
+      list(APPEND SUPPORTED_SANITIZERS "address" "undefined")
+    endif()
   endif()
 
   if(NOT SUPPORTED_SANITIZERS OR "${SUPPORTED_SANITIZERS}" STREQUAL "")
