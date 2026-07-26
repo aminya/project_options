@@ -45,15 +45,21 @@ The full documentation is available here:
 ### Sanitizers on Windows
 
 `ENABLE_SANITIZER_ADDRESS` and `ENABLE_SANITIZER_UNDEFINED` work on Windows both with MSVC/`clang-cl`
-and with `clang++` driving its GNU command line. Two things to know for the clang case:
+and with `clang++` driving its GNU command line. Four things to know for the clang case:
 
+- **C++ exceptions crash under ASan.** Entering a `catch` handler faults while reading the exception
+  object, so any `throw` — even one caught in the same function — takes the process down. Reproduced
+  with clang 20.1.8 on both drivers, both linkers, and every optimization level. Code paths that
+  throw cannot be checked with clang's ASan on Windows; MSVC's `/fsanitize=address` handles them.
 - **Use a non-debug configuration.** clang's ASan cannot be used with the debug CRT — `msvcp140d.dll`
   frees through the debug heap at teardown, so every process aborts with
   `attempting free on address which was not malloc()-ed`. Build `RelWithDebInfo`, or set
   `CMAKE_MSVC_RUNTIME_LIBRARY` to a non-debug runtime. `project_options` warns when it can tell.
-- **Ship the runtime next to your binaries.** ASan is a DLL on Windows. Use
-  `get_sanitizer_runtime_libraries()` to locate it and copy it into each executable's output
-  directory, otherwise instrumented binaries fail to start.
+- **UBSan needs ASan alongside it, or a static CRT.** The standalone UBSan runtime is only shipped
+  for `/MT`, so on its own it fails to link into a `/MD` build with a `RuntimeLibrary`
+  `/failifmismatch` error. Enabling both sanitizers takes the checks from the ASan runtime instead.
+- **Ship the runtime next to your binaries.** ASan is a DLL on Windows. `install_sanitizer_runtime()`
+  copies it into a target's output directory; without it instrumented binaries fail to start.
 
 ## `project_options` function
 

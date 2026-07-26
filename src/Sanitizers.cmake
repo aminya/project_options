@@ -85,15 +85,50 @@ endfunction()
 ``enable_windows_clang_sanitizers``
 ===============
 
-Apply the extra settings clang's sanitizers need when targeting Windows through the GNU driver.
+Apply the extra settings clang's sanitizers need when targeting Windows through the GNU driver, and
+warn about the combinations that cannot work there.
 Called by ``enable_sanitizers()``; you do not need to call it yourself.
 
 .. code:: cmake
 
-  enable_windows_clang_sanitizers(<target>)
+  enable_windows_clang_sanitizers(<target> "<list of sanitizers>")
 
 ]]
-function(enable_windows_clang_sanitizers _project_name)
+function(enable_windows_clang_sanitizers _project_name SANITIZERS)
+  # clang's ASan breaks C++ exception handling on Windows: entering a catch handler faults while
+  # reading the exception object, so any `throw` — even one caught in the same function — takes the
+  # process down. Reproduced with clang 20.1.8 on both drivers, both linkers, and every optimization
+  # level; MSVC's own /fsanitize=address is unaffected.
+  if("address" IN_LIST SANITIZERS)
+    message(
+      STATUS
+        "Note: clang's address sanitizer on Windows crashes when a C++ exception is thrown. Code paths that throw cannot be checked with it; MSVC's /fsanitize=address handles them."
+    )
+  endif()
+
+  # The standalone UBSan runtime is only shipped for the static CRT, so on its own it cannot be
+  # linked into a /MD build:
+  #
+  #   lld-link: error: /failifmismatch: mismatch detected for 'RuntimeLibrary':
+  #   >>> clang_rt.ubsan_standalone_cxx-x86_64.lib(...) has value MT_StaticRelease
+  #
+  # Combined with the address sanitizer the checks come from the ASan runtime instead, which is the
+  # combination that works.
+  if("undefined" IN_LIST SANITIZERS AND NOT "address" IN_LIST SANITIZERS)
+    if(NOT "${CMAKE_MSVC_RUNTIME_LIBRARY}" MATCHES "^MultiThreaded(Debug)?$")
+      message(
+        WARNING
+          "On Windows, clang's standalone undefined behavior sanitizer runtime is only built for the static CRT and will fail to link against /MD. Enable the address sanitizer alongside it, or set CMAKE_MSVC_RUNTIME_LIBRARY to a static runtime."
+      )
+    endif()
+
+    return()
+  endif()
+
+  if(NOT "address" IN_LIST SANITIZERS)
+    return()
+  endif()
+
   # The MSVC STL turns on ASan container annotations as soon as `__SANITIZE_ADDRESS__` is defined and
   # stamps every object with `#pragma detect_mismatch("annotate_vector"/"annotate_string", "1")`.
   # Prebuilt dependencies (vcpkg, Conan, a system SDK) carry "0", so linking against them fails with
@@ -345,11 +380,11 @@ function(
 
       if("address" IN_LIST SANITIZERS)
         link_shared_sanitizer(${_project_name})
+      endif()
 
-        check_clang_gnu_driver_on_windows(IS_CLANG_GNU_ON_WINDOWS)
-        if(IS_CLANG_GNU_ON_WINDOWS)
-          enable_windows_clang_sanitizers(${_project_name})
-        endif()
+      check_clang_gnu_driver_on_windows(IS_CLANG_GNU_ON_WINDOWS)
+      if(IS_CLANG_GNU_ON_WINDOWS)
+        enable_windows_clang_sanitizers(${_project_name} "${SANITIZERS}")
       endif()
     else()
       string(FIND "$ENV{PATH}" "$ENV{VSINSTALLDIR}" index_of_vs_install_dir)
