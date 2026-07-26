@@ -57,6 +57,7 @@ words:
   - emcmake
   - emscripten
   - EMSDK
+  - failifmismatch
   - fanalyzer
   - fargs
   - fcolor
@@ -88,6 +89,7 @@ words:
   - moderncmakedomain
   - msbuild
   - msvc
+  - msvcp
   - msys
   - mthumb
   - multilib
@@ -128,6 +130,7 @@ words:
   - TOLOWER
   - TOUPPER
   - ubsan
+  - ucrtbased
   - undoc
   - vcpkg
   - vcvarsall
