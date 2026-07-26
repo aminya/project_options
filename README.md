@@ -42,6 +42,19 @@ The full documentation is available here:
 
 <https://aminya.github.io/project_options/>
 
+### Sanitizers on Windows
+
+`ENABLE_SANITIZER_ADDRESS` and `ENABLE_SANITIZER_UNDEFINED` work on Windows both with MSVC/`clang-cl`
+and with `clang++` driving its GNU command line. Two things to know for the clang case:
+
+- **Use a non-debug configuration.** clang's ASan cannot be used with the debug CRT — `msvcp140d.dll`
+  frees through the debug heap at teardown, so every process aborts with
+  `attempting free on address which was not malloc()-ed`. Build `RelWithDebInfo`, or set
+  `CMAKE_MSVC_RUNTIME_LIBRARY` to a non-debug runtime. `project_options` warns when it can tell.
+- **Ship the runtime next to your binaries.** ASan is a DLL on Windows. Use
+  `get_sanitizer_runtime_libraries()` to locate it and copy it into each executable's output
+  directory, otherwise instrumented binaries fail to start.
+
 ## `project_options` function
 
 See the `project_options()` in action in [this template
