@@ -33,6 +33,55 @@ endfunction()
 
 #[[.rst:
 
+``link_shared_sanitizer``
+===============
+
+Link the *shared* sanitizer runtime into ``<target>`` instead of the static one, and make sure the
+loader can find it.
+
+A shared runtime is required whenever an instrumented shared library is loaded by a host that did not
+link the sanitizer itself — a plugin loaded by a DAW or an IDE, a Python extension module, a codec
+loaded by a media framework. On Windows it is the only ASan runtime clang ships, so it is always used
+there.
+
+Called by ``enable_sanitizers()``; you do not need to call it yourself.
+
+.. code:: cmake
+
+  link_shared_sanitizer(<target>)
+
+]]
+function(link_shared_sanitizer _project_name)
+  if(NOT CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+    return()
+  endif()
+
+  target_compile_options(${_project_name} INTERFACE "-shared-libsan")
+  target_link_options(${_project_name} INTERFACE "-shared-libsan")
+
+  # Linux keeps the runtime in the compiler's own tree rather than on the loader's search path, so
+  # the directory has to be baked into the rpath.
+  if(LINUX)
+    file(GLOB SANITIZER_LIB_DIRS "/usr/lib/llvm-*/lib/clang/*/lib/linux")
+    list(SORT SANITIZER_LIB_DIRS ORDER DESCENDING)
+
+    find_library(SANITIZER_LIB NAMES "libclang_rt.asan-x86_64" HINTS ${SANITIZER_LIB_DIRS})
+
+    if(SANITIZER_LIB)
+      get_filename_component(SANITIZER_LIB_DIR "${SANITIZER_LIB}" DIRECTORY)
+    elseif(SANITIZER_LIB_DIRS)
+      list(GET SANITIZER_LIB_DIRS 0 SANITIZER_LIB_DIR)
+    endif()
+
+    if(SANITIZER_LIB_DIR)
+      target_link_options(${_project_name} INTERFACE "-L${SANITIZER_LIB_DIR}")
+      target_link_options(${_project_name} INTERFACE "-Wl,--rpath=${SANITIZER_LIB_DIR}")
+    endif()
+  endif()
+endfunction()
+
+#[[.rst:
+
 ``enable_windows_clang_sanitizers``
 ===============
 
@@ -41,27 +90,18 @@ Called by ``enable_sanitizers()``; you do not need to call it yourself.
 
 .. code:: cmake
 
-  enable_windows_clang_sanitizers(<target> "<list of sanitizers>")
+  enable_windows_clang_sanitizers(<target>)
 
 ]]
-function(enable_windows_clang_sanitizers _project_name SANITIZERS)
-  if(NOT "address" IN_LIST SANITIZERS)
-    return()
-  endif()
-
-  # Windows only has a *shared* ASan runtime (`clang_rt.asan_dynamic-<arch>.dll`), and a shared
-  # runtime is required anyway whenever an instrumented DLL is loaded by a host that did not link
-  # ASan itself.
-  target_compile_options(${_project_name} INTERFACE "-shared-libsan")
-  target_link_options(${_project_name} INTERFACE "-shared-libsan")
-
+function(enable_windows_clang_sanitizers _project_name)
   # The MSVC STL turns on ASan container annotations as soon as `__SANITIZE_ADDRESS__` is defined and
   # stamps every object with `#pragma detect_mismatch("annotate_vector"/"annotate_string", "1")`.
   # Prebuilt dependencies (vcpkg, Conan, a system SDK) carry "0", so linking against them fails with
   #
   #   lld-link: error: /failifmismatch: mismatch detected for 'annotate_string'
   #
-  # Opting out puts both sides on "0". The defines are inert without `__SANITIZE_ADDRESS__`.
+  # Opting out puts both sides on "0". The defines are inert without `__SANITIZE_ADDRESS__`, and they
+  # ride on the same target as `-fsanitize=address` so the two cannot drift apart.
   target_compile_definitions(
     ${_project_name} INTERFACE "_DISABLE_VECTOR_ANNOTATION" "_DISABLE_STRING_ANNOTATION"
   )
@@ -84,24 +124,26 @@ endfunction()
 ``get_sanitizer_runtime_libraries``
 ===============
 
-Sets ``<output_variable>`` to the sanitizer runtime files that must sit next to an instrumented
+Sets ``<output_variable>`` to the sanitizer runtime files that have to sit next to an instrumented
 binary for it to start, or to an empty list when the loader resolves them on its own.
 
-Only Windows needs this: the ASan runtime is a DLL found through the standard search order. Copy it
-into the output directory of every instrumented executable, for example with
+Only Windows needs this: there the ASan runtime is a DLL resolved through the standard search order.
+Prefer ``install_sanitizer_runtime()``, which copies them for you; use this when you need the paths
+themselves, for example to add them to an installer.
+
+The result is cached, so calling this repeatedly is cheap.
 
 .. code:: cmake
 
   get_sanitizer_runtime_libraries(SANITIZER_RUNTIME)
-  foreach(runtime IN LISTS SANITIZER_RUNTIME)
-    add_custom_command(
-      TARGET my_exe POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy_if_different "${runtime}" "$<TARGET_FILE_DIR:my_exe>"
-    )
-  endforeach()
 
 ]]
 function(get_sanitizer_runtime_libraries output_variable)
+  if(DEFINED CACHE{SANITIZER_RUNTIME_LIBRARIES})
+    set(${output_variable} "${SANITIZER_RUNTIME_LIBRARIES}" PARENT_SCOPE)
+    return()
+  endif()
+
   set(RUNTIME_LIBRARIES "")
 
   check_clang_gnu_driver_on_windows(IS_CLANG_GNU_ON_WINDOWS)
@@ -127,10 +169,78 @@ function(get_sanitizer_runtime_libraries output_variable)
 
     if(EXISTS "${ASAN_PATH}")
       list(APPEND RUNTIME_LIBRARIES "${ASAN_PATH}")
+    else()
+      message(
+        WARNING
+          "Could not find ${ASAN_DLL} via ${CMAKE_CXX_COMPILER}. Instrumented binaries will fail to start unless the clang runtime directory is on PATH."
+      )
     endif()
   endif()
 
+  set(SANITIZER_RUNTIME_LIBRARIES "${RUNTIME_LIBRARIES}" CACHE INTERNAL
+                                                               "Sanitizer runtimes to ship next to binaries"
+  )
   set(${output_variable} "${RUNTIME_LIBRARIES}" PARENT_SCOPE)
+endfunction()
+
+#[[.rst:
+
+``install_sanitizer_runtime``
+===============
+
+Copy the sanitizer runtime next to each given target after it is built, so instrumented binaries run
+without the compiler's runtime directory on ``PATH``.
+
+A no-op unless the platform needs it, so it is safe to call unconditionally. Targets defined in
+another directory are handled too — ``add_custom_command(TARGET ...)`` rejects those, so the copy is
+driven from a helper target instead.
+
+Give it every binary that has to load the runtime: the executables you run, and any tool that loads
+an instrumented shared library (a plugin validator, a test host).
+
+.. code:: cmake
+
+  install_sanitizer_runtime(my_exe my_tests)
+
+]]
+function(install_sanitizer_runtime)
+  get_sanitizer_runtime_libraries(RUNTIME_LIBRARIES)
+
+  if(NOT RUNTIME_LIBRARIES)
+    return()
+  endif()
+
+  foreach(TARGET_NAME IN LISTS ARGN)
+    if(NOT TARGET ${TARGET_NAME})
+      message(WARNING "install_sanitizer_runtime: ${TARGET_NAME} is not a target.")
+      continue()
+    endif()
+
+    get_target_property(IS_IMPORTED ${TARGET_NAME} IMPORTED)
+    if(IS_IMPORTED)
+      message(WARNING "install_sanitizer_runtime: ${TARGET_NAME} is imported; not copying next to it.")
+      continue()
+    endif()
+
+    get_target_property(TARGET_SOURCE_DIR ${TARGET_NAME} SOURCE_DIR)
+
+    if("${TARGET_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
+      add_custom_command(
+        TARGET ${TARGET_NAME}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${RUNTIME_LIBRARIES} "$<TARGET_FILE_DIR:${TARGET_NAME}>"
+        VERBATIM
+      )
+    else()
+      add_custom_target(
+        ${TARGET_NAME}_sanitizer_runtime
+        COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:${TARGET_NAME}>"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${RUNTIME_LIBRARIES} "$<TARGET_FILE_DIR:${TARGET_NAME}>"
+        VERBATIM
+      )
+      add_dependencies(${TARGET_NAME} ${TARGET_NAME}_sanitizer_runtime)
+    endif()
+  endforeach()
 endfunction()
 
 # Enable the sanitizers for the given project
@@ -233,9 +343,13 @@ function(
       target_compile_options(${_project_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
       target_link_options(${_project_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
 
-      check_clang_gnu_driver_on_windows(IS_CLANG_GNU_ON_WINDOWS)
-      if(IS_CLANG_GNU_ON_WINDOWS)
-        enable_windows_clang_sanitizers(${_project_name} "${SANITIZERS}")
+      if("address" IN_LIST SANITIZERS)
+        link_shared_sanitizer(${_project_name})
+
+        check_clang_gnu_driver_on_windows(IS_CLANG_GNU_ON_WINDOWS)
+        if(IS_CLANG_GNU_ON_WINDOWS)
+          enable_windows_clang_sanitizers(${_project_name})
+        endif()
       endif()
     else()
       string(FIND "$ENV{PATH}" "$ENV{VSINSTALLDIR}" index_of_vs_install_dir)
