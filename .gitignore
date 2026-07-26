@@ -6,3 +6,4 @@ build/
 compile_commands.json
 .mypy_cache/
 .venv/
+worktrees/
