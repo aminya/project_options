@@ -17,6 +17,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: true
+          fetch-deps: 0
 
       - name: Setup Cpp
         uses: aminya/setup-cpp@v1
