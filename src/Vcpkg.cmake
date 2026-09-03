@@ -103,7 +103,6 @@ macro(_install_and_update_vcpkg)
   _clone_vcpkg_repository()
   _is_vcpkg_outdated()
   _update_vcpkg_repository()
-  _bootstrap_vcpkg()
 endmacro()
 
 macro(_checkout_vcpkg_repository)
@@ -228,6 +227,9 @@ macro(run_vcpkg)
 
   # checkout the given revision if necessary
   _checkout_vcpkg_repository()
+
+  # bootstrap vcpkg after checking out the requested revision
+  _bootstrap_vcpkg()
 
   configure_mingw_vcpkg()
   # configure_clang_vcpkg()
