@@ -70,6 +70,21 @@ jobs:
           doxygen: true
           python: true
 
+      # The mingw64 distribution used for the Windows gcc job ships its own CMake, and its libcurl has
+      # no trust store ("no trust anchors configured"), so every HTTPS download made through it —
+      # FetchContent, ExternalProject — fails certificate verification. Point it at the CA bundle that
+      # Git for Windows installs. SSL_CERT_FILE is honored by CMake 3.25 and later.
+      - name: Setup CA bundle for the mingw CMake
+        if: ${{ contains(matrix.os, 'windows') && matrix.compiler == 'gcc' }}
+        shell: pwsh
+        run: |
+          $bundle = "$env:ProgramFiles\Git\mingw64\etc\ssl\certs\ca-bundle.crt"
+          if (Test-Path $bundle) {
+            "SSL_CERT_FILE=$bundle" >> $env:GITHUB_ENV
+          } else {
+            Write-Host "::warning::No CA bundle found at $bundle"
+          }
+
       - name: Test
         if: ${{ !cancelled() }}
         run: |
