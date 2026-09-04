@@ -1,5 +1,7 @@
 include_guard()
 
+include(CheckCXXCompilerFlag)
+
 # Enable the sanitizers for the given project
 function(
   enable_hardening
@@ -11,17 +13,30 @@ function(
   ENABLE_RUNTIME_SYMBOLS_RESOLUTION
 )
   set(HARDENING_COMPILE_OPTIONS "")
+  set(HARDENING_COMPILE_DEFINITIONS "")
   set(HARDENING_LINK_OPTIONS "")
 
   if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+    if(ENABLE_CONTROL_FLOW_PROTECTION OR ENABLE_STACK_PROTECTION OR ENABLE_OVERFLOW_PROTECTION OR ENABLE_ELF_PROTECTION)
+      list(APPEND HARDENING_COMPILE_DEFINITIONS _GLIBCXX_ASSERTIONS)
+    endif()
+
     if(${ENABLE_CONTROL_FLOW_PROTECTION} AND CMAKE_SYSTEM_PROCESSOR MATCHES
                                              "([xX]86)|(amd64)|(AMD64)|([xX]86_64)|(i686)"
     )
-      list(APPEND HARDENING_COMPILE_OPTIONS -fcf-protection=full)
-      list(APPEND HARDENING_LINK_OPTIONS -fcf-protection=full)
+      check_cxx_compiler_flag("-fcf-protection=full" PROJECT_OPTIONS_HAS_CF_PROTECTION)
+      if(PROJECT_OPTIONS_HAS_CF_PROTECTION)
+        list(APPEND HARDENING_COMPILE_OPTIONS -fcf-protection=full)
+        list(APPEND HARDENING_LINK_OPTIONS -fcf-protection=full)
+      endif()
     endif()
 
     if(${ENABLE_STACK_PROTECTION})
+      check_cxx_compiler_flag("-fstack-protector-strong" PROJECT_OPTIONS_HAS_STACK_PROTECTOR)
+      if(PROJECT_OPTIONS_HAS_STACK_PROTECTOR)
+        list(APPEND HARDENING_COMPILE_OPTIONS -fstack-protector-strong)
+      endif()
+
       set(_enable_stack_clash_protection TRUE)
       if(APPLE)
         # `-fstack-clash-protection` doesn't work on MacOS M1 with clang
@@ -31,10 +46,11 @@ function(
       endif()
 
       if(_enable_stack_clash_protection)
-        list(APPEND HARDENING_COMPILE_OPTIONS -fstack-clash-protection)
+        check_cxx_compiler_flag("-fstack-clash-protection" PROJECT_OPTIONS_HAS_STACK_CLASH_PROTECTION)
+        if(PROJECT_OPTIONS_HAS_STACK_CLASH_PROTECTION)
+          list(APPEND HARDENING_COMPILE_OPTIONS -fstack-clash-protection)
+        endif()
       endif()
-
-      list(APPEND HARDENING_COMPILE_OPTIONS -fstack-protector-strong)
     endif()
 
     if(${ENABLE_OVERFLOW_PROTECTION})
@@ -60,14 +76,20 @@ function(
 
   if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     if(${ENABLE_CONTROL_FLOW_PROTECTION})
-      list(APPEND HARDENING_COMPILE_OPTIONS /guard:cf)
-      list(APPEND HARDENING_LINK_OPTIONS /guard:cf)
+      check_cxx_compiler_flag("/guard:cf" PROJECT_OPTIONS_HAS_GUARD_CF)
+      if(PROJECT_OPTIONS_HAS_GUARD_CF)
+        list(APPEND HARDENING_COMPILE_OPTIONS /guard:cf)
+        list(APPEND HARDENING_LINK_OPTIONS /guard:cf)
+      endif()
     endif()
 
     list(APPEND HARDENING_COMPILE_OPTIONS $<$<CONFIG:Debug>:/RTC1>)
 
     if(${ENABLE_OVERFLOW_PROTECTION})
-      list(APPEND HARDENING_COMPILE_OPTIONS /sdl)
+      check_cxx_compiler_flag("/sdl" PROJECT_OPTIONS_HAS_SDL)
+      if(PROJECT_OPTIONS_HAS_SDL)
+        list(APPEND HARDENING_COMPILE_OPTIONS /sdl)
+      endif()
     endif()
   endif()
 
@@ -75,6 +97,8 @@ function(
     ${_project_name} INTERFACE $<$<COMPILE_LANGUAGE:CXX>:${HARDENING_COMPILE_OPTIONS}>
                                $<$<COMPILE_LANGUAGE:C>:${HARDENING_COMPILE_OPTIONS}>
   )
+
+  target_compile_definitions(${_project_name} INTERFACE ${HARDENING_COMPILE_DEFINITIONS})
 
   target_link_options(
     ${_project_name} INTERFACE $<$<COMPILE_LANGUAGE:CXX>:${HARDENING_LINK_OPTIONS}>
