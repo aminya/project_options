@@ -6,6 +6,7 @@
 .. cmake-module:: ../../src/SystemLink.cmake
 .. cmake-module:: ../../src/DynamicProjectOptions.cmake
 .. cmake-module:: ../../src/StaticAnalyzers.cmake
+.. cmake-module:: ../../src/LibFuzzer.cmake
 .. cmake-module:: ../../src/Sanitizers.cmake
 .. cmake-module:: ../../src/Linker.cmake
 .. cmake-module:: ../../src/CrossCompiler.cmake

@@ -22,6 +22,7 @@ words:
   - buildtools
   - ccache
   - ccmake
+  - CETCOMPAT
   - choco
   - cmake
   - CMAKE
@@ -71,6 +72,7 @@ words:
   - ftime
   - gcovr
   - genex
+  - GLIBCXX
   - gnueabi
   - gnueabihf
   - Graphviz
@@ -112,6 +114,7 @@ words:
   - nosys
   - nothrow
   - nvcc
+  - NXCOMPAT
   - Opencppcoverage
   - pargs
   - pipx
