@@ -44,6 +44,7 @@ words:
   - DCONFIGURE
   - DCROSS
   - DDEFAULT_TRIPLET
+  - DTEST
   - deps
   - DEXERCISE
   - DFAKE
