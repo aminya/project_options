@@ -38,6 +38,12 @@ WORKDIR /home/project_options
 RUN git submodule update --init
 CMD ["/bin/bash", "-c", "task myproj:test"]
 
+FROM setup AS test-install
+COPY . /home/project_options
+WORKDIR /home/project_options
+RUN git submodule update --init
+CMD ["/bin/bash", "-c", "task install"]
+
 
 FROM setup-custom-linker AS build-with-custom-linker
 COPY . /home/project_options
