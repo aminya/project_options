@@ -11,7 +11,6 @@ allowCompoundWords: true
 enableGlobDot: true
 words:
   - aarch
-  - cmakelang
   - aminya
   - Amnet
   - anotherproj
@@ -26,6 +25,7 @@ words:
   - choco
   - cmake
   - CMAKE
+  - cmakelang
   - cmakelint
   - cmds
   - cond
@@ -39,12 +39,17 @@ words:
   - ctest
   - Cuda
   - DCMAKE
+  - DCONFIGURE
   - DCROSS
   - DDEFAULT_TRIPLET
   - deps
+  - DEXERCISE
+  - DFAKE
   - DOPT
   - dpkg
-  - pipx
+  - DPROJECT
+  - DREPO
+  - DSHARED
   - DTARGET
   - DVCPKG
   - dyld
@@ -109,6 +114,7 @@ words:
   - nvcc
   - Opencppcoverage
   - pargs
+  - pipx
   - pkgs
   - pnpm
   - POSIX
