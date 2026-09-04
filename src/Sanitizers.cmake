@@ -258,6 +258,30 @@ function(get_sanitizer_runtime_libraries output_variable)
           "Could not find ${ASAN_DLL} via ${CMAKE_CXX_COMPILER}. Instrumented binaries will fail to start unless the clang runtime directory is on PATH."
       )
     endif()
+  elseif(MSVC AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
+    detect_architecture(ARCHITECTURE)
+
+    if("${ARCHITECTURE}" STREQUAL "arm64")
+      set(ASAN_DLL "clang_rt.asan_dynamic-aarch64.dll")
+    elseif("${ARCHITECTURE}" STREQUAL "x86")
+      set(ASAN_DLL "clang_rt.asan_dynamic-i386.dll")
+    else()
+      set(ASAN_DLL "clang_rt.asan_dynamic-x86_64.dll")
+    endif()
+
+    # MSVC installs its ASan runtime beside cl.exe. Unlike the GNU clang driver, cl.exe has no
+    # `-print-file-name` equivalent, so resolve the DLL directly from the compiler directory.
+    get_filename_component(MSVC_COMPILER_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
+    set(ASAN_PATH "${MSVC_COMPILER_DIR}/${ASAN_DLL}")
+
+    if(EXISTS "${ASAN_PATH}")
+      list(APPEND RUNTIME_LIBRARIES "${ASAN_PATH}")
+    else()
+      message(
+        WARNING
+          "Could not find ${ASAN_DLL} beside ${CMAKE_CXX_COMPILER}. Instrumented binaries will fail to start unless the MSVC sanitizer runtime directory is on PATH."
+      )
+    endif()
   endif()
 
   set(SANITIZER_RUNTIME_LIBRARIES "${RUNTIME_LIBRARIES}" CACHE INTERNAL

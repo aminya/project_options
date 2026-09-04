@@ -106,6 +106,8 @@ target_find_dependencies(
 
 target_link_system_libraries(main PRIVATE fmt::fmt Eigen3::Eigen)
 
+install_sanitizer_runtime(main)
+
 add_subdirectory(libs)
 
 ## tests
