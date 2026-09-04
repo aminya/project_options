@@ -6,7 +6,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/Git.cmake")
 macro(_find_vcpkg_repository)
   if(NOT "${_vcpkg_args_VCPKG_DIR}" STREQUAL "")
     # the installation directory is specified
-    get_filename_component(VCPKG_PARENT_DIR "${_vcpkg_args_VCPKG_DIR}" DIRECTORY)
+    get_filename_component(_vcpkg_args_VCPKG_DIR "${_vcpkg_args_VCPKG_DIR}" ABSOLUTE)
   else()
     # Default vcpkg installation directory
     if(WIN32)
@@ -17,6 +17,19 @@ macro(_find_vcpkg_repository)
       set(_vcpkg_args_VCPKG_DIR "${VCPKG_PARENT_DIR}/vcpkg")
     endif()
   endif()
+
+  get_filename_component(VCPKG_PARENT_DIR "${_vcpkg_args_VCPKG_DIR}" DIRECTORY)
+endmacro()
+
+macro(_lock_vcpkg_repository)
+  set(_vcpkg_lock_file "${_vcpkg_args_VCPKG_DIR}.lock")
+  get_filename_component(_vcpkg_lock_parent_dir "${_vcpkg_lock_file}" DIRECTORY)
+  file(MAKE_DIRECTORY "${_vcpkg_lock_parent_dir}")
+  file(LOCK "${_vcpkg_lock_file}" GUARD PROCESS TIMEOUT 300)
+endmacro()
+
+macro(_unlock_vcpkg_repository)
+  file(LOCK "${_vcpkg_lock_file}" RELEASE)
 endmacro()
 
 macro(_clone_vcpkg_repository)
@@ -222,6 +235,9 @@ macro(run_vcpkg)
   # find the vcpkg directory
   _find_vcpkg_repository()
 
+  # serialize all operations that mutate or consume the shared vcpkg directory
+  _lock_vcpkg_repository()
+
   # install and update vcpkg if necessary
   _install_and_update_vcpkg()
 
@@ -241,4 +257,6 @@ macro(run_vcpkg)
 
   # setup cross-compiling if necessary
   _cross_compiling_vcpkg()
+
+  _unlock_vcpkg_repository()
 endmacro()
