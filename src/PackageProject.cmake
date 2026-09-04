@@ -134,7 +134,14 @@ function(package_project)
   set(_PackageProject_NAMESPACE "${_PackageProject_NAME}::")
   set(_PackageProject_VARS_PREFIX ${_PackageProject_NAME})
   set(_PackageProject_EXPORT ${_PackageProject_NAME})
-  set(_PackageProject_SET "${_PackageProject}_deps_set")
+  get_property(_PackageProject_SET_INDEX GLOBAL PROPERTY PROJECT_OPTIONS_PACKAGE_PROJECT_SET_INDEX)
+  if(NOT _PackageProject_SET_INDEX)
+    set(_PackageProject_SET_INDEX 0)
+  endif()
+  math(EXPR _PackageProject_SET_INDEX "${_PackageProject_SET_INDEX} + 1")
+  set_property(GLOBAL PROPERTY PROJECT_OPTIONS_PACKAGE_PROJECT_SET_INDEX "${_PackageProject_SET_INDEX}")
+  string(MAKE_C_IDENTIFIER "${_PackageProject_NAME}" _PackageProject_SET_PREFIX)
+  set(_PackageProject_SET "${_PackageProject_SET_PREFIX}_deps_set_${_PackageProject_SET_INDEX}")
 
   # default version to the project version
   if("${_PackageProject_VERSION}" STREQUAL "")
@@ -241,6 +248,20 @@ function(package_project)
   # Installation of package (compatible with vcpkg, etc)
   set(_targets_list ${_PackageProject_TARGETS})
   unset(_PackageProject_TARGETS) # to avoid ycm conflict
+  set(runtime_dirs)
+  if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.21.0" AND VCPKG_INSTALLED_DIR AND VCPKG_TARGET_TRIPLET)
+    list(APPEND runtime_dirs
+      "${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}$<$<CONFIG:Debug>:/debug>/bin"
+      "${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}$<$<CONFIG:Debug>:/debug>/lib"
+    )
+  endif()
+  set(_PackageProject_RUNTIME_DEPENDENCY_SET_ARGS)
+  if(runtime_dirs)
+    set(_PackageProject_RUNTIME_DEPENDENCY_SET_ARGS
+      RUNTIME_DEPENDENCY_SET
+      "${_PackageProject_SET}"
+    )
+  endif()
 
   if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.23.0")
     # required in CMake 3.23 and more
@@ -250,21 +271,14 @@ function(package_project)
   install(
     TARGETS ${_targets_list}
     EXPORT ${_PackageProject_EXPORT}
-    RUNTIME_DEPENDENCY_SET ${_PackageProject_SET}
+    ${_PackageProject_RUNTIME_DEPENDENCY_SET_ARGS}
     LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
     ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT lib
     RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
     PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_PackageProject_NAME}" COMPONENT dev
                   ${FILE_SET_ARGS}
   )
-  set(runtime_dirs)
-  if(VCPKG_INSTALLED_DIR)
-    list(APPEND runtime_dirs
-      "${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}$<$<CONFIG:Debug>:/debug>/bin"
-      "${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}$<$<CONFIG:Debug>:/debug>/lib"
-    )
-  endif()
-  if(runtime_dirs)
+  if(_PackageProject_RUNTIME_DEPENDENCY_SET_ARGS)
     install(RUNTIME_DEPENDENCY_SET ${_PackageProject_SET}
       PRE_EXCLUDE_REGEXES
         [[api-ms-win-.*]]
@@ -272,7 +286,7 @@ function(package_project)
         [[kernel32\.dll]]
         [[(libc|libgcc_s|libgcc_s_seh|libm|libstdc\+\+|libc\+\+|libunwind)(-[0-9.]+)?\..*]]
       POST_EXCLUDE_REGEXES
-        [[.*/system32/.*\.dll]]
+        [[.*(\\|/)system32(\\|/).*\.dll]]
         [[^/lib.*]]
         [[^/usr/lib.*]]
       DIRECTORIES
