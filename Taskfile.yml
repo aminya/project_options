@@ -37,6 +37,12 @@ tasks:
     - task: myproj:test
     - task: myproj:test.release
     - task: install
+    - task: vcpkg-parallel
+
+  vcpkg-parallel:
+    cmds:
+      - cmake -S ./tests/vcpkg-parallel -B ./build/vcpkg-parallel
+      - cd ./build/vcpkg-parallel && ctest --parallel 2 --output-on-failure
 
   lint.cspell: npx -y cspell lint --no-progress --show-suggestions
 
