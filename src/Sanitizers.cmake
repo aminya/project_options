@@ -96,10 +96,16 @@ static runtime is left alone, since switching to the shared one means the loader
   project_options(... ${ENABLE_SANITIZER_ADDRESS})
   link_shared_sanitizer(myproject_project_options)
 
-Safe to call more than once, and a no-op for non-clang compilers.
+Safe to call more than once, and a no-op for non-clang compilers or Emscripten targets.
 
 ]]
 function(link_shared_sanitizer _project_name)
+  # Emscripten has its own sanitizer runtime and linking model; do not add native Clang
+  # shared-runtime flags to Emscripten targets.
+  if(EMSCRIPTEN)
+    return()
+  endif()
+
   if(NOT CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
     return()
   endif()
@@ -333,6 +339,12 @@ function(
   ENABLE_SANITIZER_POINTER_SUBTRACT
 )
 
+  # Emscripten provides its own sanitizer handling; do not probe the host compiler or add flags
+  # intended for native targets.
+  if(EMSCRIPTEN)
+    return()
+  endif()
+
   # check if the sanitizers are supported
   check_sanitizers_support(
     SUPPORTS_SANITIZER_ADDRESS
@@ -497,6 +509,24 @@ function(
   ENABLE_SANITIZER_POINTER_COMPARE
   ENABLE_SANITIZER_POINTER_SUBTRACT
 )
+
+  if(EMSCRIPTEN)
+    foreach(
+      OUTPUT_VARIABLE IN ITEMS "${ENABLE_SANITIZER_ADDRESS}"
+                              "${ENABLE_SANITIZER_UNDEFINED}"
+                              "${ENABLE_SANITIZER_LEAK}"
+                              "${ENABLE_SANITIZER_THREAD}"
+                              "${ENABLE_SANITIZER_MEMORY}"
+                              "${ENABLE_SANITIZER_POINTER_COMPARE}"
+                              "${ENABLE_SANITIZER_POINTER_SUBTRACT}"
+    )
+      if(NOT "${OUTPUT_VARIABLE}" STREQUAL "")
+        set(${OUTPUT_VARIABLE} "" PARENT_SCOPE)
+      endif()
+    endforeach()
+    return()
+  endif()
+
   set(SUPPORTED_SANITIZERS "")
   check_clang_gnu_driver_on_windows(IS_CLANG_GNU_ON_WINDOWS)
 
