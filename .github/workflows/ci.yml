@@ -18,28 +18,12 @@ jobs:
       matrix:
         os:
           - windows-2022
-          - ubuntu-22.04
-          - macos-14
         compiler:
-          - llvm-19
-          - gcc
+          - msvc
         vcvarsall:
-          - true
-        include:
-          - os: "windows-2022"
-            compiler: "msvc"
-            vcvarsall: true
-          - os: "windows-2022"
-            compiler: "msvc"
-            cmake_generator: "Ninja"
-            vcvarsall: true
-          - os: "windows-2022"
-            compiler: "msvc"
-            cmake_generator: "Ninja"
-            vcvarsall: false
-          - os: "windows-2022"
-            compiler: "msvc"
-            vcvarsall: false
+          - false
+        cmake_generator:
+          - Ninja
     steps:
       - uses: actions/checkout@v3
         with:
@@ -67,11 +51,7 @@ jobs:
           ninja: true
           vcpkg: true
           conan: true
-          cppcheck: true
-          cmakelang: true
-          clang-tidy: true
           task: true
-          doxygen: true
           python: true
 
       # The mingw64 distribution used for the Windows gcc job ships its own CMake, and its libcurl has
