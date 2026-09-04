@@ -1,10 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
-foreach(REQUIRED_VARIABLE IN ITEMS
-        FAKE_VCPKG_REPOSITORY
-        SHARED_VCPKG_DIR
-        CONFIGURE_A_BINARY_DIR
-        CONFIGURE_B_BINARY_DIR
+foreach(REQUIRED_VARIABLE IN ITEMS FAKE_VCPKG_REPOSITORY SHARED_VCPKG_DIR CONFIGURE_A_BINARY_DIR
+                                   CONFIGURE_B_BINARY_DIR
 )
   if(NOT DEFINED ${REQUIRED_VARIABLE})
     message(FATAL_ERROR "${REQUIRED_VARIABLE} is required")
@@ -25,5 +22,6 @@ execute_process(
 )
 if(CLONE_RESULT)
   message(FATAL_ERROR "Could not prepare shared fake vcpkg repository (${CLONE_RESULT}):\n"
-                     "${CLONE_OUTPUT}\n${CLONE_ERROR}")
+                      "${CLONE_OUTPUT}\n${CLONE_ERROR}"
+  )
 endif()

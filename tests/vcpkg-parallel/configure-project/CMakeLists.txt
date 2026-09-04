@@ -16,16 +16,22 @@ if(EXERCISE_REENTRANT_LOCK)
 endif()
 
 run_vcpkg(
-  VCPKG_DIR "${VCPKG_DIR}"
-  VCPKG_URL "${VCPKG_URL}"
-  VCPKG_REV "${VCPKG_REV}"
+  VCPKG_DIR
+  "${VCPKG_DIR}"
+  VCPKG_URL
+  "${VCPKG_URL}"
+  VCPKG_REV
+  "${VCPKG_REV}"
 )
 
 if(EXERCISE_REENTRANT_LOCK)
   run_vcpkg(
-    VCPKG_DIR "${VCPKG_DIR}"
-    VCPKG_URL "${VCPKG_URL}"
-    VCPKG_REV "${VCPKG_REV}"
+    VCPKG_DIR
+    "${VCPKG_DIR}"
+    VCPKG_URL
+    "${VCPKG_URL}"
+    VCPKG_REV
+    "${VCPKG_REV}"
   )
 endif()
 

@@ -512,13 +512,14 @@ function(
 
   if(EMSCRIPTEN)
     foreach(
-      OUTPUT_VARIABLE IN ITEMS "${ENABLE_SANITIZER_ADDRESS}"
-                              "${ENABLE_SANITIZER_UNDEFINED}"
-                              "${ENABLE_SANITIZER_LEAK}"
-                              "${ENABLE_SANITIZER_THREAD}"
-                              "${ENABLE_SANITIZER_MEMORY}"
-                              "${ENABLE_SANITIZER_POINTER_COMPARE}"
-                              "${ENABLE_SANITIZER_POINTER_SUBTRACT}"
+      OUTPUT_VARIABLE IN
+      ITEMS "${ENABLE_SANITIZER_ADDRESS}"
+            "${ENABLE_SANITIZER_UNDEFINED}"
+            "${ENABLE_SANITIZER_LEAK}"
+            "${ENABLE_SANITIZER_THREAD}"
+            "${ENABLE_SANITIZER_MEMORY}"
+            "${ENABLE_SANITIZER_POINTER_COMPARE}"
+            "${ENABLE_SANITIZER_POINTER_SUBTRACT}"
     )
       if(NOT "${OUTPUT_VARIABLE}" STREQUAL "")
         set(${OUTPUT_VARIABLE} "" PARENT_SCOPE)

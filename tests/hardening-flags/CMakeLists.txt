@@ -39,10 +39,7 @@ function(assert_directory_property_excludes property value)
 endfunction()
 
 assert_target_property_contains(
-  no_hardening_project_options
-  INTERFACE_COMPILE_DEFINITIONS
-  _GLIBCXX_ASSERTIONS
-  FALSE
+  no_hardening_project_options INTERFACE_COMPILE_DEFINITIONS _GLIBCXX_ASSERTIONS FALSE
 )
 
 foreach(property IN ITEMS COMPILE_OPTIONS COMPILE_DEFINITIONS LINK_OPTIONS)

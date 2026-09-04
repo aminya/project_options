@@ -8,7 +8,9 @@ find_program(GIT_EXECUTABLE git REQUIRED)
 file(REMOVE_RECURSE "${REPO_DIR}")
 file(MAKE_DIRECTORY "${REPO_DIR}/scripts/buildsystems")
 
-file(WRITE "${REPO_DIR}/bootstrap-vcpkg.sh" [=[
+file(
+  WRITE "${REPO_DIR}/bootstrap-vcpkg.sh"
+  [=[
 #!/bin/sh
 set -eu
 
@@ -22,12 +24,24 @@ sleep 3
 printf '#!/bin/sh\nexit 0\n' > vcpkg
 chmod +x vcpkg
 rmdir "$part"
-]=])
-file(CHMOD "${REPO_DIR}/bootstrap-vcpkg.sh"
-     PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
+]=]
+)
+file(
+  CHMOD
+  "${REPO_DIR}/bootstrap-vcpkg.sh"
+  PERMISSIONS
+  OWNER_READ
+  OWNER_WRITE
+  OWNER_EXECUTE
+  GROUP_READ
+  GROUP_EXECUTE
+  WORLD_READ
+  WORLD_EXECUTE
 )
 
-file(WRITE "${REPO_DIR}/bootstrap-vcpkg.bat" [=[
+file(
+  WRITE "${REPO_DIR}/bootstrap-vcpkg.bat"
+  [=[
 @echo off
 
 mkdir vcpkg.part >nul 2>&1
@@ -40,11 +54,15 @@ timeout /t 3 /nobreak >nul
 >vcpkg.exe echo @echo off
 rmdir vcpkg.part
 exit /b 0
-]=])
+]=]
+)
 
-file(WRITE "${REPO_DIR}/scripts/buildsystems/vcpkg.cmake" [=[
+file(
+  WRITE "${REPO_DIR}/scripts/buildsystems/vcpkg.cmake"
+  [=[
 # The generated fixture only needs a valid toolchain file.
-]=])
+]=]
+)
 
 function(run_git)
   execute_process(
@@ -55,10 +73,7 @@ function(run_git)
     ERROR_VARIABLE GIT_ERROR
   )
   if(GIT_RESULT)
-    message(
-      FATAL_ERROR
-      "git ${ARGV} failed (${GIT_RESULT}):\n${GIT_OUTPUT}\n${GIT_ERROR}"
-    )
+    message(FATAL_ERROR "git ${ARGV} failed (${GIT_RESULT}):\n${GIT_OUTPUT}\n${GIT_ERROR}")
   endif()
 endfunction()
 

@@ -37,6 +37,7 @@ words:
   - CPPFLAGS
   - cpprc
   - cppreference
+  - cstddef
   - ctest
   - Cuda
   - DCMAKE
@@ -83,6 +84,7 @@ words:
   - lgcc
   - libc
   - libcuda
+  - libfuzzer
   - libg
   - libstdc
   - LPSTR

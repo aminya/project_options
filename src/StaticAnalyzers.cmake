@@ -43,7 +43,7 @@ macro(enable_cppcheck CPPCHECK_OPTIONS)
       else()
         message(
           STATUS
-          "cppcheck doesn't support specified C++ standard ${CMAKE_CXX_STANDARD}. Using the cppcheck default C++ standard version."
+            "cppcheck doesn't support specified C++ standard ${CMAKE_CXX_STANDARD}. Using the cppcheck default C++ standard version."
         )
       endif()
     endif()
@@ -54,8 +54,9 @@ macro(enable_cppcheck CPPCHECK_OPTIONS)
       elseif(CMAKE_C_STANDARD MATCHES [[99|11]])
         set(CMAKE_C_CPPCHECK ${CMAKE_C_CPPCHECK} --std=c${CMAKE_C_STANDARD})
       else()
-        message(STATUS
-                "cppcheck doesn't support C ${CMAKE_C_STANDARD} standard. Using the cppcheck default C standard version"
+        message(
+          STATUS
+            "cppcheck doesn't support C ${CMAKE_C_STANDARD} standard. Using the cppcheck default C standard version"
         )
       endif()
     endif()

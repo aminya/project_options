@@ -170,8 +170,10 @@ macro(_run_conan1)
         ${CONAN_SETTINGS}
         ${OUTPUT_QUIET}
         CONF
-        -c tools.system.package_manager:mode=install
-        -c tools.system.package_manager:sudo=True
+        -c
+        tools.system.package_manager:mode=install
+        -c
+        tools.system.package_manager:sudo=True
       )
     endforeach()
   endif()
@@ -220,10 +222,8 @@ macro(_run_conan2)
   endif()
 
   if(NOT _args_INSTALL_ARGS)
-    set(_args_INSTALL_ARGS
-        --build=missing
-        -c tools.system.package_manager:mode=install
-        -c tools.system.package_manager:sudo=True
+    set(_args_INSTALL_ARGS --build=missing -c tools.system.package_manager:mode=install -c
+                           tools.system.package_manager:sudo=True
     )
   endif()
 

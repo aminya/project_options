@@ -107,9 +107,15 @@ macro(dynamic_project_options)
   foreach(default_type IN ITEMS DEFAULT DEVELOPER_DEFAULT USER_DEFAULT)
     if(DEFINED ENABLE_SANITIZER_UNDEFINED_BEHAVIOR_${default_type})
       if(DEFINED ENABLE_SANITIZER_UNDEFINED_${default_type})
-        message(WARNING "Don't set both ENABLE_SANITIZER_UNDEFINED_BEHAVIOR_${default_type} and ENABLE_SANITIZER_UNDEFINED_${default_type}. Use ENABLE_SANITIZER_UNDEFINED_${default_type} only.")
+        message(
+          WARNING
+            "Don't set both ENABLE_SANITIZER_UNDEFINED_BEHAVIOR_${default_type} and ENABLE_SANITIZER_UNDEFINED_${default_type}. Use ENABLE_SANITIZER_UNDEFINED_${default_type} only."
+        )
       else()
-        message(DEPRECATION "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR_${default_type} is deprecated. Use ENABLE_SANITIZER_UNDEFINED_${default_type} instead.")
+        message(
+          DEPRECATION
+            "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR_${default_type} is deprecated. Use ENABLE_SANITIZER_UNDEFINED_${default_type} instead."
+        )
       endif()
 
       set(ENABLE_SANITIZER_UNDEFINED_${default_type} ${ENABLE_SANITIZER_UNDEFINED_BEHAVIOR_${default_type}})

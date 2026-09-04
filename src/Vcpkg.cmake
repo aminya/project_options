@@ -29,10 +29,8 @@ macro(_lock_vcpkg_repository)
   if(_vcpkg_lock_depth)
     get_property(_vcpkg_active_lock_file GLOBAL PROPERTY _project_options_vcpkg_lock_file)
     if(NOT "${_vcpkg_active_lock_file}" STREQUAL "${_vcpkg_requested_lock_file}")
-      message(
-        FATAL_ERROR
-        "Cannot acquire nested vcpkg lock '${_vcpkg_requested_lock_file}': "
-        "the process already holds '${_vcpkg_active_lock_file}'"
+      message(FATAL_ERROR "Cannot acquire nested vcpkg lock '${_vcpkg_requested_lock_file}': "
+                          "the process already holds '${_vcpkg_active_lock_file}'"
       )
     endif()
 
