@@ -34,10 +34,15 @@ vars:
 
 tasks:
   test:
+    - task: test.cmake-regressions
     - task: myproj:test
     - task: myproj:test.release
     - task: install
     - task: vcpkg-parallel
+
+  test.cmake-regressions:
+    cmds:
+      - cmake -S ./tests/hardening-flags -B ./build/regressions/hardening-flags {{.CMAKE_ARGS}}
 
   vcpkg-parallel:
     cmds:
