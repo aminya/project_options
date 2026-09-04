@@ -22,14 +22,46 @@ macro(_find_vcpkg_repository)
 endmacro()
 
 macro(_lock_vcpkg_repository)
-  set(_vcpkg_lock_file "${_vcpkg_args_VCPKG_DIR}.lock")
-  get_filename_component(_vcpkg_lock_parent_dir "${_vcpkg_lock_file}" DIRECTORY)
-  file(MAKE_DIRECTORY "${_vcpkg_lock_parent_dir}")
-  file(LOCK "${_vcpkg_lock_file}" GUARD PROCESS TIMEOUT 300)
+  set(_vcpkg_requested_lock_file "${_vcpkg_args_VCPKG_DIR}.lock")
+  get_filename_component(_vcpkg_requested_lock_file "${_vcpkg_requested_lock_file}" ABSOLUTE)
+
+  get_property(_vcpkg_lock_depth GLOBAL PROPERTY _project_options_vcpkg_lock_depth)
+  if(_vcpkg_lock_depth)
+    get_property(_vcpkg_active_lock_file GLOBAL PROPERTY _project_options_vcpkg_lock_file)
+    if(NOT "${_vcpkg_active_lock_file}" STREQUAL "${_vcpkg_requested_lock_file}")
+      message(
+        FATAL_ERROR
+        "Cannot acquire nested vcpkg lock '${_vcpkg_requested_lock_file}': "
+        "the process already holds '${_vcpkg_active_lock_file}'"
+      )
+    endif()
+
+    math(EXPR _vcpkg_lock_depth "${_vcpkg_lock_depth} + 1")
+    set_property(GLOBAL PROPERTY _project_options_vcpkg_lock_depth "${_vcpkg_lock_depth}")
+  else()
+    get_filename_component(_vcpkg_lock_parent_dir "${_vcpkg_requested_lock_file}" DIRECTORY)
+    file(MAKE_DIRECTORY "${_vcpkg_lock_parent_dir}")
+    file(LOCK "${_vcpkg_requested_lock_file}" GUARD PROCESS TIMEOUT 300)
+    set_property(GLOBAL PROPERTY _project_options_vcpkg_lock_file "${_vcpkg_requested_lock_file}")
+    set_property(GLOBAL PROPERTY _project_options_vcpkg_lock_depth 1)
+  endif()
 endmacro()
 
 macro(_unlock_vcpkg_repository)
-  file(LOCK "${_vcpkg_lock_file}" RELEASE)
+  get_property(_vcpkg_lock_depth GLOBAL PROPERTY _project_options_vcpkg_lock_depth)
+  if(NOT _vcpkg_lock_depth)
+    message(FATAL_ERROR "Cannot release vcpkg lock because this process does not hold one")
+  endif()
+
+  if(_vcpkg_lock_depth GREATER 1)
+    math(EXPR _vcpkg_lock_depth "${_vcpkg_lock_depth} - 1")
+    set_property(GLOBAL PROPERTY _project_options_vcpkg_lock_depth "${_vcpkg_lock_depth}")
+  else()
+    get_property(_vcpkg_active_lock_file GLOBAL PROPERTY _project_options_vcpkg_lock_file)
+    file(LOCK "${_vcpkg_active_lock_file}" RELEASE)
+    set_property(GLOBAL PROPERTY _project_options_vcpkg_lock_file "")
+    set_property(GLOBAL PROPERTY _project_options_vcpkg_lock_depth 0)
+  endif()
 endmacro()
 
 macro(_clone_vcpkg_repository)

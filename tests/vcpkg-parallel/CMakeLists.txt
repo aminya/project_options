@@ -16,6 +16,7 @@ set(FAKE_VCPKG_REPOSITORY "${HARNESS_ROOT}/fake-vcpkg-repository")
 set(SHARED_VCPKG_DIR "${HARNESS_ROOT}/shared-vcpkg")
 set(CONFIGURE_A_BINARY_DIR "${HARNESS_ROOT}/configure-a")
 set(CONFIGURE_B_BINARY_DIR "${HARNESS_ROOT}/configure-b")
+set(CONFIGURE_REENTRANT_BINARY_DIR "${HARNESS_ROOT}/configure-reentrant")
 
 execute_process(
   COMMAND "${CMAKE_COMMAND}"
@@ -77,3 +78,23 @@ foreach(CONFIGURE_NAME IN ITEMS a b)
     PROPERTIES FIXTURES_REQUIRED vcpkg_parallel_shared
   )
 endforeach()
+
+add_test(
+  NAME vcpkg_parallel_reentrant_configure
+  COMMAND "${CMAKE_COMMAND}"
+          "-S"
+          "${CMAKE_CURRENT_LIST_DIR}/configure-project"
+          "-B"
+          "${CONFIGURE_REENTRANT_BINARY_DIR}"
+          "-DPROJECT_OPTIONS_ROOT=${PROJECT_OPTIONS_ROOT}"
+          "-DVCPKG_DIR=${SHARED_VCPKG_DIR}"
+          "-DVCPKG_URL=${FAKE_VCPKG_REPOSITORY}"
+          "-DVCPKG_REV=${FAKE_VCPKG_REVISION}"
+          "-DEXERCISE_REENTRANT_LOCK=ON"
+)
+set_tests_properties(
+  vcpkg_parallel_reentrant_configure
+  PROPERTIES
+    FIXTURES_REQUIRED vcpkg_parallel_shared
+    TIMEOUT 5
+)

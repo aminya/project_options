@@ -10,10 +10,27 @@ endif()
 
 include("${PROJECT_OPTIONS_ROOT}/src/Index.cmake")
 
+if(EXERCISE_REENTRANT_LOCK)
+  set(_vcpkg_args_VCPKG_DIR "${VCPKG_DIR}")
+  _lock_vcpkg_repository()
+endif()
+
 run_vcpkg(
   VCPKG_DIR "${VCPKG_DIR}"
   VCPKG_URL "${VCPKG_URL}"
   VCPKG_REV "${VCPKG_REV}"
 )
+
+if(EXERCISE_REENTRANT_LOCK)
+  run_vcpkg(
+    VCPKG_DIR "${VCPKG_DIR}"
+    VCPKG_URL "${VCPKG_URL}"
+    VCPKG_REV "${VCPKG_REV}"
+  )
+endif()
+
+if(EXERCISE_REENTRANT_LOCK)
+  _unlock_vcpkg_repository()
+endif()
 
 project(vcpkg_parallel_fixture NONE)
