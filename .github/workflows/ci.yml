@@ -52,10 +52,6 @@ jobs:
           vcpkg: true
           conan: true
           task: true
-          cppcheck: true
-          cmakelang: true
-          clang-tidy: true
-          doxygen: true
           python: true
 
       # The mingw64 distribution used for the Windows gcc job ships its own CMake, and its libcurl has
