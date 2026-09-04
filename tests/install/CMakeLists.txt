@@ -52,6 +52,8 @@ endforeach()
 
 target_link_libraries(another_main PRIVATE myproj::lib myproj::lib2)
 
+install_sanitizer_runtime(another_main)
+
 # tests
 enable_testing()
 add_test(NAME another_main COMMAND another_main)
