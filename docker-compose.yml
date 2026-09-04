@@ -15,6 +15,13 @@ services:
       args:
         compiler: gcc
       target: test
+  test-install:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      args:
+        compiler: gcc
+      target: test-install
   build-llvm:
     build:
       context: .
