@@ -258,7 +258,7 @@ function(get_sanitizer_runtime_libraries output_variable)
           "Could not find ${ASAN_DLL} via ${CMAKE_CXX_COMPILER}. Instrumented binaries will fail to start unless the clang runtime directory is on PATH."
       )
     endif()
-  elseif(MSVC AND "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
+  elseif(MSVC AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
     detect_architecture(ARCHITECTURE)
 
     if("${ARCHITECTURE}" STREQUAL "arm64")
