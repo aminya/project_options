@@ -43,6 +43,7 @@ tasks:
   test.cmake-regressions:
     cmds:
       - cmake -S ./tests/hardening-flags -B ./build/regressions/hardening-flags {{.CMAKE_ARGS}}
+      - cmake -S ./tests/emscripten-sanitizers -B ./build/regressions/emscripten-sanitizers {{.CMAKE_ARGS}}
 
   vcpkg-parallel:
     cmds:
