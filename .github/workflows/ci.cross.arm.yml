@@ -6,6 +6,10 @@ on:
       - main
       - master
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   Test:
     runs-on: ${{ matrix.os }}
