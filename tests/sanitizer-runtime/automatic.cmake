@@ -27,6 +27,12 @@ project_options(ENABLE_SANITIZER_ADDRESS)
 add_library(options_bridge INTERFACE)
 target_link_libraries(options_bridge INTERFACE project_options)
 
+get_target_property(options_link_options project_options INTERFACE_LINK_OPTIONS)
+if(NOT options_link_options MATCHES "sanitize")
+  file(WRITE "${CMAKE_BINARY_DIR}/automatic_sanitizer_runtime_skipped.txt" "AddressSanitizer is unsupported\n")
+  return()
+endif()
+
 add_executable(automatic_runtime main.cpp)
 target_link_libraries(automatic_runtime PRIVATE options_bridge)
 file(GENERATE OUTPUT "${CMAKE_BINARY_DIR}/automatic_runtime_dir.txt" CONTENT "$<TARGET_FILE_DIR:automatic_runtime>")
@@ -57,6 +63,11 @@ if(CONFIGURE_RESULT)
     FATAL_ERROR
       "Automatic sanitizer-runtime regression configure failed:\n${CONFIGURE_OUTPUT}\n${CONFIGURE_ERROR}"
   )
+endif()
+
+if(EXISTS "${TEST_BUILD}/automatic_sanitizer_runtime_skipped.txt")
+  message(STATUS "Skipping automatic sanitizer-runtime regression because AddressSanitizer is unsupported")
+  return()
 endif()
 
 execute_process(
