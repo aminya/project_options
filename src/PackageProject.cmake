@@ -134,6 +134,7 @@ function(package_project)
   set(_PackageProject_NAMESPACE "${_PackageProject_NAME}::")
   set(_PackageProject_VARS_PREFIX ${_PackageProject_NAME})
   set(_PackageProject_EXPORT ${_PackageProject_NAME})
+  set(_PackageProject_SET "${_PackageProject}_deps_set")
 
   # default version to the project version
   if("${_PackageProject_VERSION}" STREQUAL "")
@@ -249,12 +250,32 @@ function(package_project)
   install(
     TARGETS ${_targets_list}
     EXPORT ${_PackageProject_EXPORT}
+    RUNTIME_DEPENDENCY_SET ${_PackageProject_SET}
     LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
     ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT lib
     RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
     PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_PackageProject_NAME}" COMPONENT dev
                   ${FILE_SET_ARGS}
   )
+  set(runtime_dirs)
+  if(CONAN_RUNTIME_LIB_DIRS)
+    list(APPEND runtime_dirs ${CONAN_RUNTIME_LIB_DIRS})
+  endif()
+  if(runtime_dirs)
+    install(RUNTIME_DEPENDENCY_SET ${_PackageProject_SET}
+      PRE_EXCLUDE_REGEXES
+        [[api-ms-win-.*]]
+        [[ext-ms-.*]]
+        [[kernel32\.dll]]
+        [[(libc|libgcc_s|libgcc_s_seh|libm|libstdc\+\+|libc\+\+|libunwind)(-[0-9.]+)?\..*]]
+      POST_EXCLUDE_REGEXES
+        [[.*(\\|/)system32(\\|/).*\.dll]] # according to https://discourse.cmake.org/t/migration-experiences-comparison-runtime-dependency-set-vs-fixup-bundle-bundleutilities/11323/6
+        [[^/lib.*]]
+        [[^/usr/lib.*]]
+      DIRECTORIES
+        ${runtime_dirs}
+    )
+  endif()
 
   # download ForwardArguments
   FetchContent_Declare(
