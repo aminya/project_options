@@ -42,15 +42,15 @@ tasks:
 
   test.cmake-regressions:
     cmds:
-      - cmake -S ./tests/libfuzzer -B ./build/regressions/libfuzzer -DPROJECT_OPTIONS_ROOT={{.CWD}} {{.CMAKE_ARGS}}
-      - cmake -S ./tests/emscripten-sanitizers -B ./build/regressions/emscripten-sanitizers {{.CMAKE_ARGS}}
-      - cmake -S ./tests/hardening-flags -B ./build/regressions/hardening-flags {{.CMAKE_ARGS}}
+      - cmake -G "Ninja Multi-Config" -S ./tests/libfuzzer -B ./build/regressions/libfuzzer -DPROJECT_OPTIONS_ROOT={{.CWD}} {{.CMAKE_ARGS}}
+      - cmake -G "Ninja Multi-Config" -S ./tests/emscripten-sanitizers -B ./build/regressions/emscripten-sanitizers {{.CMAKE_ARGS}}
+      - cmake -G "Ninja Multi-Config" -S ./tests/hardening-flags -B ./build/regressions/hardening-flags {{.CMAKE_ARGS}}
       - cmake -DTEST_ROOT=./build/regressions/sanitizer-runtime -P ./tests/sanitizer-runtime/msvc-runtime.cmake
 
   vcpkg-parallel:
     cmds:
-      - cmake -S ./tests/vcpkg-parallel -B ./build/vcpkg-parallel
-      - cd ./build/vcpkg-parallel && ctest --parallel 2 --output-on-failure
+      - cmake -S ./tests/vcpkg-parallel -B ./build/vcpkg-parallel -G "Ninja Multi-Config" {{.CMAKE_ARGS}}
+      - cd ./build/vcpkg-parallel && ctest --parallel 2 -C Debug --output-on-failure
 
   lint.cspell: npx -y cspell lint --no-progress --show-suggestions
 
@@ -88,9 +88,9 @@ tasks:
       - install:clean
       - minimal:clean
     cmds:
-      - cmd: powershell -c 'function rmrf($path) { if (test-path $path) { rm -r -force $path }}; rmrf ./install'
+      - cmd: powershell -c 'function rmrf($path) { if (test-path $path) { rm -r -force $path }}; rmrf ./install; rmrf ./build'
         platforms: [windows]
-      - cmd: rm -rf ./install
+      - cmd: rm -rf ./install ./build
         platforms: [linux, darwin]
 
   docs:
