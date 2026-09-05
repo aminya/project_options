@@ -61,8 +61,21 @@ and with `clang++` driving its GNU command line. Four things to know for the cla
 - **UBSan needs ASan alongside it, or a static CRT.** The standalone UBSan runtime is only shipped
   for `/MT`, so on its own it fails to link into a `/MD` build with a `RuntimeLibrary`
   `/failifmismatch` error. Enabling both sanitizers takes the checks from the ASan runtime instead.
-- **Ship the runtime next to your binaries.** ASan is a DLL on Windows. `install_sanitizer_runtime()`
-  copies it into a target's output directory; without it instrumented binaries fail to start.
+- **Ship the runtime next to your binaries.** ASan is a DLL on Windows. When AddressSanitizer is
+  enabled through `project_options`, the runtime is copied automatically into the output directory of
+  executable, shared-library, and module targets that link the options target. For a custom test host
+  or plugin loader outside that target graph, call `install_sanitizer_runtime()` explicitly.
+
+```cmake
+project_options(ENABLE_SANITIZER_ADDRESS)
+
+add_executable(my_tests tests.cpp)
+target_link_libraries(my_tests PRIVATE project_options project_warnings)
+# On Windows, the ASan runtime is staged automatically for my_tests.
+
+# Custom hosts that load instrumented plugins can opt in explicitly:
+# install_sanitizer_runtime(plugin_host)
+```
 
 ## `project_options` function
 

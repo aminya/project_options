@@ -305,6 +305,11 @@ driven from a helper target instead.
 Give it every binary that has to load the runtime: the executables you run, and any tool that loads
 an instrumented shared library (a plugin validator, a test host).
 
+When AddressSanitizer is enabled through ``project_options``, executable, shared-library, and module
+targets that link the options target are detected automatically at the end of directory processing.
+Call this function explicitly for custom hosts or plugin loaders that are not connected to that target
+graph.
+
 .. code:: cmake
 
   install_sanitizer_runtime(my_exe my_tests)
@@ -329,6 +334,11 @@ function(install_sanitizer_runtime)
       continue()
     endif()
 
+    get_target_property(RUNTIME_ALREADY_INSTALLED ${TARGET_NAME} _PROJECT_OPTIONS_SANITIZER_RUNTIME_INSTALLED)
+    if(RUNTIME_ALREADY_INSTALLED)
+      continue()
+    endif()
+
     get_target_property(TARGET_SOURCE_DIR ${TARGET_NAME} SOURCE_DIR)
 
     if("${TARGET_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
@@ -347,7 +357,124 @@ function(install_sanitizer_runtime)
       )
       add_dependencies(${TARGET_NAME} ${TARGET_NAME}_sanitizer_runtime)
     endif()
+
+    set_property(TARGET ${TARGET_NAME} PROPERTY _PROJECT_OPTIONS_SANITIZER_RUNTIME_INSTALLED TRUE)
   endforeach()
+endfunction()
+
+# `project_options` is an INTERFACE library, so it cannot own a POST_BUILD command. Defer the scan
+# until the current directory and its subdirectories have declared their build targets instead.
+function(_project_options_unwrap_link_item LINK_ITEM OUTPUT_VARIABLE)
+  set(_link_item "${LINK_ITEM}")
+
+  # Unwrap the generator expressions commonly used by target_link_libraries(). Nested wrappers are
+  # handled by the loop. More complex expressions are left alone and are conservatively ignored.
+  while(_link_item MATCHES "^\\$<(LINK_ONLY|BUILD_INTERFACE|INSTALL_INTERFACE|TARGET_NAME_IF_EXISTS):(.*)>$")
+    set(_link_item "${CMAKE_MATCH_2}")
+  endwhile()
+
+  set(${OUTPUT_VARIABLE} "${_link_item}" PARENT_SCOPE)
+endfunction()
+
+# Return ON when a target's direct or transitive link graph reaches the project_options interface
+# target.
+function(_project_options_target_uses_options TARGET_NAME OPTIONS_TARGET OUTPUT_VARIABLE)
+  set(${OUTPUT_VARIABLE} OFF PARENT_SCOPE)
+
+  set(_visited ${ARGN})
+  set(_target_name "${TARGET_NAME}")
+
+  if(TARGET "${_target_name}")
+    get_target_property(_aliased_target "${_target_name}" ALIASED_TARGET)
+    if(_aliased_target AND NOT _aliased_target MATCHES "-NOTFOUND$")
+      set(_target_name "${_aliased_target}")
+    endif()
+  endif()
+
+  if("${_target_name}" IN_LIST _visited)
+    return()
+  endif()
+  list(APPEND _visited "${_target_name}")
+
+  if("${_target_name}" STREQUAL "${OPTIONS_TARGET}")
+    set(${OUTPUT_VARIABLE} ON PARENT_SCOPE)
+    return()
+  endif()
+
+  if(NOT TARGET "${_target_name}")
+    return()
+  endif()
+
+  foreach(_property LINK_LIBRARIES INTERFACE_LINK_LIBRARIES)
+    get_target_property(_links "${_target_name}" "${_property}")
+    if("${_links}" STREQUAL "" OR "${_links}" MATCHES "-NOTFOUND$")
+      continue()
+    endif()
+
+    foreach(_link IN LISTS _links)
+      # CMake adds these directory-id entries when target_link_libraries() is called from another
+      # directory. They are metadata, not link targets.
+      if("${_link}" STREQUAL "::@" OR "${_link}" MATCHES "^::@\\(.*\\)$")
+        continue()
+      endif()
+
+      _project_options_unwrap_link_item("${_link}" _link_target)
+      if("${_link_target}" STREQUAL "")
+        continue()
+      endif()
+
+      if(TARGET "${_link_target}")
+        get_target_property(_aliased_target "${_link_target}" ALIASED_TARGET)
+        if(_aliased_target AND NOT _aliased_target MATCHES "-NOTFOUND$")
+          set(_link_target "${_aliased_target}")
+        endif()
+      endif()
+
+      _project_options_target_uses_options("${_link_target}" "${OPTIONS_TARGET}" _uses_options ${_visited})
+      if(_uses_options)
+        set(${OUTPUT_VARIABLE} ON PARENT_SCOPE)
+        return()
+      endif()
+    endforeach()
+  endforeach()
+endfunction()
+
+# Stage the runtime for instrumented binary targets in a directory tree.
+function(_project_options_install_sanitizer_runtime_for_directory OPTIONS_TARGET DIRECTORY_NAME)
+  get_property(_targets DIRECTORY "${DIRECTORY_NAME}" PROPERTY BUILDSYSTEM_TARGETS)
+  foreach(_target IN LISTS _targets)
+    get_target_property(_target_type "${_target}" TYPE)
+    if(NOT _target_type MATCHES "^(EXECUTABLE|SHARED_LIBRARY|MODULE_LIBRARY)$")
+      continue()
+    endif()
+
+    _project_options_target_uses_options("${_target}" "${OPTIONS_TARGET}" _uses_options)
+    if(_uses_options)
+      install_sanitizer_runtime("${_target}")
+    endif()
+  endforeach()
+
+  get_property(_subdirectories DIRECTORY "${DIRECTORY_NAME}" PROPERTY SUBDIRECTORIES)
+  foreach(_subdirectory IN LISTS _subdirectories)
+    _project_options_install_sanitizer_runtime_for_directory("${OPTIONS_TARGET}" "${_subdirectory}")
+  endforeach()
+endfunction()
+
+# Schedule one end-of-directory scan for an options target.
+function(_project_options_schedule_sanitizer_runtime OPTIONS_TARGET)
+  get_target_property(_scheduled "${OPTIONS_TARGET}" _PROJECT_OPTIONS_SANITIZER_RUNTIME_SCHEDULED)
+  if(_scheduled)
+    return()
+  endif()
+
+  set_property(TARGET "${OPTIONS_TARGET}" PROPERTY _PROJECT_OPTIONS_SANITIZER_RUNTIME_SCHEDULED TRUE)
+  # Deferred-call arguments are normally re-evaluated when the call runs. EVAL plus bracket
+  # arguments captures the target and directory values now, while still deferring the scan.
+  cmake_language(
+    EVAL
+    CODE
+    "cmake_language(DEFER CALL _project_options_install_sanitizer_runtime_for_directory [=[${OPTIONS_TARGET}]=] [=[${CMAKE_CURRENT_SOURCE_DIR}]=])"
+  )
 endfunction()
 
 # Enable the sanitizers for the given project
@@ -446,6 +573,10 @@ function(
       STATUS
         "To enable invalid pointer pairs detection, add detect_invalid_pointer_pairs=2 to the environment variable ASAN_OPTIONS."
     )
+  endif()
+
+  if("address" IN_LIST SANITIZERS)
+    _project_options_schedule_sanitizer_runtime(${_project_name})
   endif()
 
   # Join the sanitizers

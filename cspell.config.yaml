@@ -45,6 +45,7 @@ words:
   - DCROSS
   - DDEFAULT_TRIPLET
   - DTEST
+  - DSANITIZER
   - deps
   - DEXERCISE
   - DFAKE

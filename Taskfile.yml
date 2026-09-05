@@ -46,6 +46,7 @@ tasks:
       - cmake -G "Ninja Multi-Config" -S ./tests/emscripten-sanitizers -B ./build/regressions/emscripten-sanitizers {{.CMAKE_ARGS}}
       - cmake -G "Ninja Multi-Config" -S ./tests/hardening-flags -B ./build/regressions/hardening-flags {{.CMAKE_ARGS}}
       - cmake -DTEST_ROOT=./build/regressions/sanitizer-runtime -P ./tests/sanitizer-runtime/msvc-runtime.cmake
+      - cmake -DTEST_ROOT=./build/regressions/sanitizer-runtime -P ./tests/sanitizer-runtime/automatic.cmake
 
   vcpkg-parallel:
     cmds:
