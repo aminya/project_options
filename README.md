@@ -89,7 +89,7 @@ endif()
 
 # Add project_options from https://github.com/aminya/project_options
 # Change the version in the following URL to update the package (watch the releases of the repository for future updates)
-set(PROJECT_OPTIONS_VERSION "v0.42.1")
+set(PROJECT_OPTIONS_VERSION "v0.43.0")
 FetchContent_Declare(
   _project_options
   URL https://github.com/aminya/project_options/archive/refs/tags/${PROJECT_OPTIONS_VERSION}.zip)
@@ -193,6 +193,8 @@ target_link_system_libraries(main
   Eigen3::Eigen
 )
 
+install_sanitizer_runtime(main)
+
 # Package the project
 package_project(TARGETS main)
 ```
@@ -223,6 +225,8 @@ target_link_system_libraries(my_lib
   fmt::fmt
   Eigen3::Eigen
 )
+
+install_sanitizer_runtime(my_lib)
 
 # Package the project
 package_project(
