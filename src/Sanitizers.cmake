@@ -725,6 +725,18 @@ function(
 
         list(APPEND SUPPORTED_SANITIZERS ${SANITIZER})
       endforeach()
+
+      if(APPLE)
+        # AppleClang's driver removes LeakSanitizer, see:
+        # https://github.com/swiftlang/llvm-project/blob/5760c038c38e45a1d47a6321a4b96bc7ea4868cf/clang/lib/Driver/ToolChains/Darwin.cpp#L4290
+        # LLVM's LSan is also unreliable on Apple Silicon. Tracked on (llvm/llvm-project#131678)
+        detect_architecture(ARCHITECTURE)
+        if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR ARCHITECTURE STREQUAL "arm64")
+          list(REMOVE_ITEM SUPPORTED_SANITIZERS "leak")
+        endif()
+        # MemorySanitizer is not implemented for Darwin by clang.
+        list(REMOVE_ITEM SUPPORTED_SANITIZERS "memory")
+      endif()
     endif()
   elseif(MSVC)
     # or it is MSVC and has run vcvarsall
